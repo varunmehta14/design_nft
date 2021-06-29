@@ -10,13 +10,13 @@
 - [Truffle](https://www.trufflesuite.com/truffle) - Development environment, testing framework and asset pipeline for blockchains using the Ethereum Virtual Machine (EVM).
 - [Ganache](https://www.trufflesuite.com/ganache) - Personal blockchain for Ethereum development used to deploy contracts, develop DApps, and run tests.
 #
-### Interact with the deployed DApp
+<!-- ### Interact with the deployed DApp
 #### Crypto Boy Marketplace DApp requires [Metamask](https://metamask.io/) browser wallet extension to interact with.
 #### Connect metamask browser wallet to Kovan Test Network.
 #### Request and get test etheres for the metamask account from [Kovan Faucet](https://gitter.im/kovan-testnet/faucet) to make transactions.
 #### Crypto Boy Marketplace Smart Contract is deployed to Kovan Testnet - [0x420d2a6E87D87992EB01e5BFe762B3F437dBfD85](https://kovan.etherscan.io/address/0x420d2a6e87d87992eb01e5bfe762b3f437dbfd85)
 #### Access Crypto Boy Marketplace DApp at [cryptoboys-NFT-marketplace](https://devpavan04.github.io/cryptoboys-nft-marketplace/) and start minting your Crypto Boys.
-#
+# -->
 ### Run the DApp Locally
 #### Install truffle
 ```
@@ -32,11 +32,11 @@ ganache-cli --port 7545 --quiet
 ```
 #### Open new terminal window and clone this repository
 ```
-git clone https://github.com/devpavan04/cryptoboys-NFT-marketplace.git
+git clone https://github.com/BridgeX-Blockchain/varun_mehta.git
 ```
 #### Install dependencies
 ```
-cd cryptoboys-NFT-marketplace
+
 npm install
 ```
 #### Compile smart contract
