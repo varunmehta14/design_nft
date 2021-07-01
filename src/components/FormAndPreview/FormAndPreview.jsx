@@ -16,9 +16,11 @@ const thumbsContainer = {
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
-  marginTop: 16,
-  padding: 20,
-  justifyContent:"center"
+  //marginTop: 16,
+ // padding: 20,
+  justifyContent:"center",
+  height:"fitContent",
+  width:"fitContent"
 
 };
 
@@ -29,8 +31,8 @@ const thumb = {
   border: "1px solid #eaeaea",
   marginBottom: 8,
   marginRight: 8,
-  // width: 100,
- // height: "auto",
+  width: "auto",
+  height: "auto",
   padding: 4,
   boxSizing: "border-box"
 };
@@ -44,7 +46,7 @@ const thumbInner = {
 const img = {
   display: "block",
   width: "auto",
-  height: "100%"
+  height: "auto"
 };
 
 // const thumbButton = {
@@ -214,26 +216,20 @@ export default function FormAndPreview(props) {
           </div>
         </div></>):null}
        
-       {show ?(<> <div className="p-4 mt-1 border" style={{display:"flex"}}>
+       {show ?(<> <div className="p-4 mt-1 border" style={{display:"flex",justifyContent:"space-evenly"}}>
        
-       <div className="col-md-6" >
+      
          
          
            <button className="mt-3 btn btn-outline-primary" type="button" onClick={()=>{setSingle(true);setMultiple(false);setShow(false)}}>
-             Single
+             Single 
            </button>
-         
-       </div>
-       <div className="col-md-6">
-        
-       
            
            <button className="mt-3 btn btn-outline-primary" type="button" onClick={()=>{setMultiple(true);setSingle(false);setShow(false)}}>
-             Multiple
+             Multiple 
            </button>
-          
-        
-         </div>
+           
+         
          </div></>):(null)}
        
         
@@ -242,12 +238,16 @@ export default function FormAndPreview(props) {
          <div className="card mt-1">
           <div className="card-body   
           
-          "><div style={{display:"flex"}}>
-            <Button variant="contained"color="default" onClick={()=>{setSingle(false);setShow(true)}}>
-             Manage Collectible Type
+          "><div style={{textAlign:"center"}}>
+           
+            <Button variant="contained"color="default" style={{float:"left"}}onClick={()=>{setSingle(false);setShow(true)}}>
+            ← Back
            </Button>
+           
+          
             <h3 style={{justifyContent:"center"}}>Create Single Collectible</h3>
             </div>
+           <br/>
             Your collectible will be one of a kind 
 
           </div>
@@ -262,13 +262,15 @@ export default function FormAndPreview(props) {
          <Paper variant="outlined" >
          
          
-         
+         <div style={{margin:"1%"}}>
               <div {...getRootProps({ className: "dropzone" })}>
    <input {...getInputProps()}   />
    {!files?(<span>{files[0].name} </span>):( <span>Drag 'n' drop some files here, or click to select files</span>)}
  
  </div>
-             <br/><br/>
+ 
+             <br/><br/><hr/>
+             
              <FormControl fullWidth className={useStyles.margin} >
      <InputLabel htmlFor="standard-adornment-amount">Title</InputLabel>
      <Input
@@ -289,21 +291,18 @@ export default function FormAndPreview(props) {
      onChange={(e)=>setCryptoBoyDescription(e.target.value)}
    />
    <br/><br/>
-   <Grid container spacing={3}>
-    
-    <Grid item xs={4} >
-    <Paper className={useStyles.paper}><IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/><div style={{fontSize:20}}>  Fixed Price</div> </IconButton></Paper>
-   </Grid>
-   <Grid item xs={4}>
-   <Paper className={useStyles.paper}><IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:20}}>  Timed Auction </div></IconButton></Paper>
-   </Grid>
-   <Grid item xs={4}>
-   <Paper className={useStyles.paper}><IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:20}}>  Unlimited Auction</div> </IconButton></Paper>
-   </Grid>
+   <div style={{display:"flex",justifyContent:"space-evenly"}}> 
+    <IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/><div style={{fontSize:"larger"}}>  Fixed Price</div> </IconButton>
+   
+   
+   <IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:"larger"}}>  Timed Auction </div></IconButton>
    
   
-   
-   </Grid>   
+   <IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:"larger"}}>  Unlimited Auction</div> </IconButton>
+  
+   </div> 
+  
+   <hr/>
   
    <br/>
     <TextField
@@ -327,13 +326,14 @@ export default function FormAndPreview(props) {
    type="submit"
  >
    Create Item
+   <br/> ERC 721
  </Button>
- 
+ </div>
 </div>
            </Paper>
           
            </Grid>
-           <Grid item xs={3}><Paper className={useStyles.paper} style={{height:"fitContent"}}>
+           <Grid item xs={3}><Paper className={useStyles.paper} style={{height:"fitContent",padding:"1%"}}>
          <span>Upload file to view preview</span>    
  <aside style={thumbsContainer}>{thumbs}</aside></Paper></Grid>
            </Grid>
@@ -361,12 +361,13 @@ export default function FormAndPreview(props) {
         <div className="card mt-1">
           <div className="card-body   
           
-          "><div style={{display:"flex"}}>
-            <Button variant="contained"color="default" onClick={()=>{setMultiple(false);setShow(true)}}>
-             Manage Collectible Type
+          "><div style={{textAlign:"center"}}>
+            <Button variant="contained"color="default" style={{float:"left"}} onClick={()=>{setMultiple(false);setShow(true)}}>
+            ← Back
            </Button>
             <h3 style={{justifyContent:"center"}}>Create Multiple Collectibles</h3>
             </div>
+            <br/>
             You can sell one collectible multiple times 
 
           </div>
@@ -379,23 +380,23 @@ export default function FormAndPreview(props) {
         <Grid item xs={9}>
          <Paper variant="outlined" >
          
-         
+         <div style={{margin:"1%"}}>
          
               <div {...getRootProps({ className: "dropzone" })}>
    <input {...getInputProps()}   />
    {!files?(<span>{files[0].name} </span>):( <span>Drag 'n' drop some files here, or click to select files</span>)}
  
  </div>
-             <br/><br/>
-             <FormControl fullWidth className={useStyles.margin} >
-     <InputLabel htmlFor="standard-adornment-amount">Title</InputLabel>
-     <Input
-       id="standard-adornment-amount"
-       value={cryptoBoyName}
-       onChange={(e)=>setCryptoBoyName(e.target.value)}
-      
-     />
-   </FormControl>
+             <br/><br/><hr/>
+           
+   <TextField
+     id="standard-multiline-flexible"
+     label="Title"
+     fullWidth
+     rowsMax={4}
+     value={cryptoBoyName}
+     onChange={(e)=>setCryptoBoyName(e.target.value)}
+   />
    <br/>
    <TextField
      id="standard-multiline-flexible"
@@ -407,23 +408,24 @@ export default function FormAndPreview(props) {
      onChange={(e)=>setCryptoBoyDescription(e.target.value)}
    />
    <br/><br/>
-   <Grid container spacing={3}>
+  
     
-    <Grid item xs={4} >
-    <Paper className={useStyles.paper}><IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/><div style={{fontSize:20}}>  Fixed Price</div> </IconButton></Paper>
-   </Grid>
-   <Grid item xs={4}>
-   <Paper className={useStyles.paper}><IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:20}}>  Timed Auction </div></IconButton></Paper>
-   </Grid>
-   <Grid item xs={4}>
-   <Paper className={useStyles.paper}><IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:20}}>  Unlimited Auction</div> </IconButton></Paper>
-   </Grid>
+  <div style={{display:"flex",justifyContent:"space-evenly"}}> 
+    <IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/><div style={{fontSize:"larger"}}>  Fixed Price</div> </IconButton>
+   
+   
+   <IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:"larger"}}>  Timed Auction </div></IconButton>
    
   
-   
-   </Grid>   
+   <IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:"larger"}}>  Unlimited Auction</div> </IconButton>
   
-   <br/><div>
+   </div> 
+  
+   <hr/>
+    
+  
+   <br/><div  style={{display:"flex",justifyContent:"space-evenly"}}>
+     <div>
     <TextField
      label="Price"
      id="standard-start-adornment"
@@ -434,9 +436,9 @@ export default function FormAndPreview(props) {
        startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
      }}
    /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
-    
-   </div>
-   <hr/>
+    </div>
+   
+   <div>
    <TextField
           id="standard-number"
           label="Enter number of Copies"
@@ -445,7 +447,9 @@ export default function FormAndPreview(props) {
           InputLabelProps={{
             shrink: true,
           }}
-        />
+      />
+      </div>
+    </div>    
    <br/>
    <div style={{textAlign:"center"}}>
    <Button
@@ -457,15 +461,18 @@ export default function FormAndPreview(props) {
    type="submit"
  >
    Create Item
+   <br/> ERC 1155
  </Button>
- 
+ </div>
 </div>
            </Paper>
           
            </Grid>
-           <Grid item xs={3}><Paper className={useStyles.paper} style={{height:"fitContent"}}>
+           <Grid item xs={3}  style={{height:"fitContent", width:"fitContent"}}>
+             <Paper className={useStyles.paper} style={{height:"fitContent", width:"fitContent",padding:"1%"}}>
          <span>Upload file to view preview</span>    
- <aside style={thumbsContainer}>{thumbs}</aside></Paper></Grid>
+ <aside style={thumbsContainer}>{thumbs}</aside></Paper>
+ </Grid>
            </Grid>
            </div>
             

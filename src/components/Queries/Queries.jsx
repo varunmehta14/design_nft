@@ -60,9 +60,9 @@ console.log(props.token)
           <h5>View Proof Of Authenticity</h5>
         </div>
       </div>
-      <div className="p-4 mt-1 border" style={{display:"flex"}}>
+      <div className="p-4 mt-1 border" style={{display:"flex",justifyContent:"space-evenly"}}>
        
-          <div className="col-md-5">
+         
             
             {/* <form onSubmit={getTokenOwner}> */}
               {/* <div className="form-group">
@@ -75,7 +75,7 @@ console.log(props.token)
                   onChange={(e) => setTokenIdForOwner(e.target.value)}
                 />
               </div> */}
-              <button className="mt-3 btn btn-outline-primary" type="submit">
+              <button className="mt-3 btn btn-outline-primary" type="submit" disabled>
                 View On EtherScan
               </button>
               {/* {tokenIdForOwnerNotFound ? (
@@ -88,8 +88,8 @@ console.log(props.token)
               ) : null} */}
             {/* </form> */}
             {/* <p className="mt-4">{tokenOwner}</p> */}
-          </div>
-          <div className="col-md-7">
+         
+         
            
            <form onSubmit={(e)=>{handleClick(e)}}>
               {/* <div className="form-group">
@@ -124,7 +124,7 @@ console.log(props.token)
                 {tokenMetadata}
               </a>
             </p> */}
-          </div>
+        
         
       </div>
     </div>
