@@ -129,8 +129,11 @@ export default function FormAndPreview(props) {
     const [cryptoBoyDescription,setCryptoBoyDescription] = useState("");
     const [buffer,setBuffer] = useState(null);
     const [receivePrice, setReceivePrice] = useState("");
-    const [cryptoBoyImageHash,setCryptoBoyImageHash] = useState("");
+    const [cryptoBoyCopy,setCryptoBoyCopies] = useState(0);
     const [files, setFiles] = useState([]);
+    const [single,setSingle]=useState(false);
+    const [multiple,setMultiple]=useState(false);
+    const [show,setShow]=useState(true);
     //const [preview,setPreview]=useState([]);
     const {getRootProps, getInputProps} = useDropzone({
       accept: 'image/*',
@@ -200,145 +203,289 @@ export default function FormAndPreview(props) {
     return (
       
       <div>
+        {show?(<> <div className="card mt-1">
+          <div className="card-body  
+          
+          ">
+            <h3 style={{display:"flex",justifyContent:"center"}}>Create Collectible</h3>
+            
+            Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times
+            
+          </div>
+        </div></>):null}
+       
+       {show ?(<> <div className="p-4 mt-1 border" style={{display:"flex"}}>
+       
+       <div className="col-md-6" >
+         
+         
+           <button className="mt-3 btn btn-outline-primary" type="button" onClick={()=>{setSingle(true);setMultiple(false);setShow(false)}}>
+             Single
+           </button>
+         
+       </div>
+       <div className="col-md-6">
+        
+       
+           
+           <button className="mt-3 btn btn-outline-primary" type="button" onClick={()=>{setMultiple(true);setSingle(false);setShow(false)}}>
+             Multiple
+           </button>
+          
+        
+         </div>
+         </div></>):(null)}
+       
+        
+         {single?
+         (<>
+         <div className="card mt-1">
+          <div className="card-body   
+          
+          "><div style={{display:"flex"}}>
+            <Button variant="contained"color="default" onClick={()=>{setSingle(false);setShow(true)}}>
+             Manage Collectible Type
+           </Button>
+            <h3 style={{justifyContent:"center"}}>Create Single Collectible</h3>
+            </div>
+            Your collectible will be one of a kind 
+
+          </div>
+        </div>
+        
+         <form onSubmit={callMintMyNFTFromApp} className="pt-4 mt-1">
+        
+             
+        <div className={useStyles.root} >
+        <Grid container spacing={3}>
+        <Grid item xs={9}>
+         <Paper variant="outlined" >
+         
+         
+         
+              <div {...getRootProps({ className: "dropzone" })}>
+   <input {...getInputProps()}   />
+   {!files?(<span>{files[0].name} </span>):( <span>Drag 'n' drop some files here, or click to select files</span>)}
+ 
+ </div>
+             <br/><br/>
+             <FormControl fullWidth className={useStyles.margin} >
+     <InputLabel htmlFor="standard-adornment-amount">Title</InputLabel>
+     <Input
+       id="standard-adornment-amount"
+       value={cryptoBoyName}
+       onChange={(e)=>setCryptoBoyName(e.target.value)}
+      
+     />
+   </FormControl>
+   <br/>
+   <TextField
+     id="standard-multiline-flexible"
+     label="Description"
+     multiline
+     fullWidth
+     rowsMax={4}
+     value={cryptoBoyDescription}
+     onChange={(e)=>setCryptoBoyDescription(e.target.value)}
+   />
+   <br/><br/>
+   <Grid container spacing={3}>
+    
+    <Grid item xs={4} >
+    <Paper className={useStyles.paper}><IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/><div style={{fontSize:20}}>  Fixed Price</div> </IconButton></Paper>
+   </Grid>
+   <Grid item xs={4}>
+   <Paper className={useStyles.paper}><IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:20}}>  Timed Auction </div></IconButton></Paper>
+   </Grid>
+   <Grid item xs={4}>
+   <Paper className={useStyles.paper}><IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:20}}>  Unlimited Auction</div> </IconButton></Paper>
+   </Grid>
+   
+  
+   
+   </Grid>   
+  
+   <br/>
+    <TextField
+     label="Price"
+     id="standard-start-adornment"
+     placeholder="Enter price for one piece"
+     className={clsx(useStyles.margin, useStyles.textField)}
+     onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+     InputProps={{
+       startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+     }}
+   /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+   <br/>
+   <div style={{textAlign:"center"}}>
+   <Button
+   variant="contained"
+   color="default"
+   className={useStyles.button}
+   startIcon={<AddIcon />}
+   style={{borderRadius:20}}
+   type="submit"
+ >
+   Create Item
+ </Button>
+ 
+</div>
+           </Paper>
+          
+           </Grid>
+           <Grid item xs={3}><Paper className={useStyles.paper} style={{height:"fitContent"}}>
+         <span>Upload file to view preview</span>    
+ <aside style={thumbsContainer}>{thumbs}</aside></Paper></Grid>
+           </Grid>
+           </div>
+            
+         <div className="mt-4">
+           {props.imageIsUsed ? (
+             <div className="alert alert-danger alert-dissmissible">
+               <button
+                 type="button"
+                 className="close"
+                 data-dismiss="alert"
+               >
+                 <span>&times;</span>
+               </button>
+               <strong>This image is taken!</strong>
+             </div>
+           ) :     
+             null}
+         </div>
+   </form>
+         </>)
+         :multiple?
+         (<>
         <div className="card mt-1">
-          <div className="card-body align-items-center d-flex justify-content-center">
-            <h5>Upload Your Designs</h5>
+          <div className="card-body   
+          
+          "><div style={{display:"flex"}}>
+            <Button variant="contained"color="default" onClick={()=>{setMultiple(false);setShow(true)}}>
+             Manage Collectible Type
+           </Button>
+            <h3 style={{justifyContent:"center"}}>Create Multiple Collectibles</h3>
+            </div>
+            You can sell one collectible multiple times 
+
           </div>
         </div>
         <form onSubmit={callMintMyNFTFromApp} className="pt-4 mt-1">
         
-              {/* <img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt=""/> */}
-             <div className={useStyles.root} >
-             <Grid container spacing={3}>
-             <Grid item xs={9}>
-              <Paper variant="outlined" >
-              
-              
-               {/* <input hidden="" accept="image/png,image/jpeg,image/gif,image/webp,video/mp4,video/webm,audio/mp3,audio/webm,audio/mpeg" 
-                  name="primary-attachment" 
-                  data-marker="root/appPage/create/form/primaryAttachmentInput/input" 
-                  type="file" 
-                 
-                  /> */}
-                   <div {...getRootProps({ className: "dropzone" })}>
-        <input {...getInputProps()}   />
-        {!files?(<span>{files[0].name} </span>):( <span>Drag 'n' drop some files here, or click to select files</span>)}
-      
-      </div>
-                  <br/><br/>
-                  <FormControl fullWidth className={useStyles.margin} >
-          <InputLabel htmlFor="standard-adornment-amount">Title</InputLabel>
-          <Input
-            id="standard-adornment-amount"
-            value={cryptoBoyName}
-            onChange={(e)=>setCryptoBoyName(e.target.value)}
-           
-          />
-        </FormControl>
-        <br/>
-        <TextField
-          id="standard-multiline-flexible"
-          label="Description"
-          multiline
-          fullWidth
-          rowsMax={4}
-          value={cryptoBoyDescription}
-          onChange={(e)=>setCryptoBoyDescription(e.target.value)}
-        />
-        <br/><br/>
+             
+        <div className={useStyles.root} >
         <Grid container spacing={3}>
+        <Grid item xs={9}>
+         <Paper variant="outlined" >
          
-         <Grid item xs={4} >
-         <Paper className={useStyles.paper}><IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/><div style={{fontSize:20}}>  Fixed Price</div> </IconButton></Paper>
-        </Grid>
-        <Grid item xs={4}>
-        <Paper className={useStyles.paper}><IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:20}}>  Timed Auction </div></IconButton></Paper>
-        </Grid>
-        <Grid item xs={4}>
-        <Paper className={useStyles.paper}><IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:20}}>  Unlimited Auction</div> </IconButton></Paper>
-        </Grid>
-        
-       
-        
-        </Grid>   
-        {/* <TextField
-          id="standard-select-currency-native"
-          select
-          label="Native select"
-          value={currency}
-          onChange={(e)=>setCurrency(e.target.value)}
-          SelectProps={{
-            native: true,
+         
+         
+              <div {...getRootProps({ className: "dropzone" })}>
+   <input {...getInputProps()}   />
+   {!files?(<span>{files[0].name} </span>):( <span>Drag 'n' drop some files here, or click to select files</span>)}
+ 
+ </div>
+             <br/><br/>
+             <FormControl fullWidth className={useStyles.margin} >
+     <InputLabel htmlFor="standard-adornment-amount">Title</InputLabel>
+     <Input
+       id="standard-adornment-amount"
+       value={cryptoBoyName}
+       onChange={(e)=>setCryptoBoyName(e.target.value)}
+      
+     />
+   </FormControl>
+   <br/>
+   <TextField
+     id="standard-multiline-flexible"
+     label="Description"
+     multiline
+     fullWidth
+     rowsMax={4}
+     value={cryptoBoyDescription}
+     onChange={(e)=>setCryptoBoyDescription(e.target.value)}
+   />
+   <br/><br/>
+   <Grid container spacing={3}>
+    
+    <Grid item xs={4} >
+    <Paper className={useStyles.paper}><IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/><div style={{fontSize:20}}>  Fixed Price</div> </IconButton></Paper>
+   </Grid>
+   <Grid item xs={4}>
+   <Paper className={useStyles.paper}><IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:20}}>  Timed Auction </div></IconButton></Paper>
+   </Grid>
+   <Grid item xs={4}>
+   <Paper className={useStyles.paper}><IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:20}}>  Unlimited Auction</div> </IconButton></Paper>
+   </Grid>
+   
+  
+   
+   </Grid>   
+  
+   <br/><div>
+    <TextField
+     label="Price"
+     id="standard-start-adornment"
+     placeholder="Enter price for one piece"
+     className={clsx(useStyles.margin, useStyles.textField)}
+     onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+     InputProps={{
+       startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+     }}
+   /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+    
+   </div>
+   <hr/>
+   <TextField
+          id="standard-number"
+          label="Enter number of Copies"
+          type="number"
+          onChange={(e)=>{setCryptoBoyCopies(e.target.value)}}
+          InputLabelProps={{
+            shrink: true,
           }}
-          helperText="Please select your currency"
-        >
-          {currencies.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        
-        </TextField>     */}
-        <br/>
-         <TextField
-          label="Price"
-          id="standard-start-adornment"
-          placeholder="Enter price for one piece"
-          className={clsx(useStyles.margin, useStyles.textField)}
-          onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
-          InputProps={{
-            startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
-          }}
-        /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
-        <br/>
-        <div style={{textAlign:"center"}}>
-        <Button
-        variant="contained"
-        color="default"
-        className={useStyles.button}
-        startIcon={<AddIcon />}
-        style={{borderRadius:20}}
-        type="submit"
-      >
-        Create Item
-      </Button>
-    </div>
-                </Paper>
-               
-                </Grid>
-                <Grid item xs={3}><Paper className={useStyles.paper} style={{height:"fitContent"}}>
-              <span>Upload file to view preview</span>    
-      <aside style={thumbsContainer}>{thumbs}</aside></Paper></Grid>
-                </Grid>
-                </div>
-                  {/* <button class="sc-fujyUd sc-pNWxx sc-jrsJCI dAHnJY gSlGye hcOMxW sc-iqAbSa eIyFca" type="button">
-                    <span class="sc-dlnjPT sc-hKFyIo cuIYFB edyjka">Choose File</span></button> */}
-                   
-              
-               
+        />
+   <br/>
+   <div style={{textAlign:"center"}}>
+   <Button
+   variant="contained"
+   color="default"
+   className={useStyles.button}
+   startIcon={<AddIcon />}
+   style={{borderRadius:20}}
+   type="submit"
+ >
+   Create Item
+ </Button>
+ 
+</div>
+           </Paper>
           
-              
-              {/* <form onSubmit={this.onSubmit} >
-                <input type='file' onChange={this.captureFile} />
-                <TextField id="filled-basic" label="Filled" variant="filled" />
-                <input type='submit' />
-              </form> */}
-              <div className="mt-4">
-                {props.imageIsUsed ? (
-                  <div className="alert alert-danger alert-dissmissible">
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="alert"
-                    >
-                      <span>&times;</span>
-                    </button>
-                    <strong>This image is taken!</strong>
-                  </div>
-                ) :     
-                  null}
-              </div>
-        </form>
+           </Grid>
+           <Grid item xs={3}><Paper className={useStyles.paper} style={{height:"fitContent"}}>
+         <span>Upload file to view preview</span>    
+ <aside style={thumbsContainer}>{thumbs}</aside></Paper></Grid>
+           </Grid>
+           </div>
+            
+         <div className="mt-4">
+           {props.imageIsUsed ? (
+             <div className="alert alert-danger alert-dissmissible">
+               <button
+                 type="button"
+                 className="close"
+                 data-dismiss="alert"
+               >
+                 <span>&times;</span>
+               </button>
+               <strong>This image is taken!</strong>
+             </div>
+           ) :     
+             null}
+         </div>
+   </form></>):(null)}
+        
       </div>
     );
            

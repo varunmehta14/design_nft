@@ -210,6 +210,7 @@ class App extends Component {
      // const imageHash=file[0]["hash"]
       console.log(file.path)
       const imageHash = `https://ipfs.infura.io/ipfs/${file.path}`;
+      
       const imageIsUsed=await this.state.cryptoBoysContract.methods.imageExists(imageHash).call();
       console.log(imageIsUsed);
       if(!imageIsUsed){
