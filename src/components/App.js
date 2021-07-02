@@ -11,6 +11,7 @@ import ContractNotDeployed from "./ContractNotDeployed/ContractNotDeployed";
 import ConnectToMetamask from "./ConnectMetamask/ConnectToMetamask";
 import Loading from "./Loading/Loading";
 import Navbar from "./Navbar/Navbar";
+import Profile from "./Profile/Profile";
 import MyCryptoBoys from "./MyCryptoBoys/MyCryptoBoys";
 import TheirCryptoBoys from "./TheirCryptoBoys/TheirCryptoBoys";
 import Queries from "./Queries/Queries";
@@ -39,7 +40,6 @@ class App extends Component {
       totalTokensOwnedByAccount: 0,
       imageIsUsed: false,
       clickedAddress:"",
-      //colorIsUsed: false,
       tokenID:"",
       lastMintTime: null,
     };
@@ -112,6 +112,7 @@ class App extends Component {
       accountBalance = web3.utils.fromWei(accountBalance, "Ether");
       this.setState({ accountBalance });
       this.setState({ loading: false });
+      //Network ID
       const networkId = await web3.eth.net.getId();
       const networkData = CryptoBoys.networks[networkId];
       if (networkData) {
@@ -120,12 +121,15 @@ class App extends Component {
           CryptoBoys.abi,
           networkData.address
         );
+        //set contract
         this.setState({ cryptoBoysContract });
         this.setState({ contractDetected: true });
+        //get number of designs minted on the platform
         const cryptoBoysCount = await cryptoBoysContract.methods
           .cryptoBoyCounter()
           .call();
         this.setState({ cryptoBoysCount });
+        //get all the designs
         for (var i = 1; i <= cryptoBoysCount; i++) {
           const cryptoBoy = await cryptoBoysContract.methods
             .allCryptoBoys(i)
@@ -134,11 +138,13 @@ class App extends Component {
             cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
           });
         }
+        //get number of tokens on the platform
         let totalTokensMinted = await cryptoBoysContract.methods
           .getNumberOfTokensMinted()
           .call();
         totalTokensMinted = totalTokensMinted.toNumber();
         this.setState({ totalTokensMinted });
+        //get tokens owned by current account
         let totalTokensOwnedByAccount = await cryptoBoysContract.methods
           .getTotalNumberOfTokensOwnedByAnAddress(this.state.accountAddress)
           .call();
@@ -206,11 +212,14 @@ class App extends Component {
         .cryptoBoyCounter()
         .call();
       previousTokenId = previousTokenId.toNumber();
+
+      //set Token ID 
       const tokenId = previousTokenId + 1;
-    
+      //adding buffer of image on ipfs
       const  file= await ipfs.add(buffer)
      // const imageHash=file[0]["hash"]
       console.log(file.path)
+      //creating  a image hash to store on blockchain
       const imageHash = `https://ipfs.infura.io/ipfs/${file.path}`;
       
       const imageIsUsed=await this.state.cryptoBoysContract.methods.imageExists(imageHash).call();
@@ -225,8 +234,10 @@ class App extends Component {
         description:description,
         price:tokenPrice
         }
+        //storing the token object on ipfs
         const  cid= await ipfs.add(JSON.stringify(tokenObject))
         console.log(cid.path)
+        //setting the token uri as the path of token object
         let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
      const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
       this.state.cryptoBoysContract.methods
@@ -251,7 +262,7 @@ class App extends Component {
     //   }
     // }
   };
-
+// Put or remove from sale on the marketplace
   toggleForSale = (tokenId) => {
     this.setState({ loading: true });
     this.state.cryptoBoysContract.methods
@@ -262,7 +273,7 @@ class App extends Component {
         window.location.reload();
       });
   };
-
+//Change the price of token 
   changeTokenPrice = (tokenId, newPrice) => {
     this.setState({ loading: true });
     const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
@@ -275,6 +286,7 @@ class App extends Component {
       });
   };
 
+//Buy a token  
   buyCryptoBoy = (tokenId, price) => {
     this.setState({ loading: true });
     this.state.cryptoBoysContract.methods
@@ -289,143 +301,141 @@ class App extends Component {
   render() {
     
     return (
+    
       <div>
-        <Container maxWidth="xl"> 
-        {/* {!this.state.metamaskConnected ? (
+      {/* {
+      !this.state.metamaskConnected ? (
           <ConnectToMetamask connectToMetamask={this.connectToMetamask} />
-        ) : !this.state.contractDetected ? (
-          <ContractNotDeployed />
-        ) : this.state.loading ? (
-          <Loading />
-        ) : (<> */}
-          <HashRouter basename="/">
-            
-              <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected}/>
-              <Route
-                path="/"
-                exact
-                render={() => (
-                 <AllCryptoBoys
-                 accountAddress={this.state.accountAddress}
-                 cryptoBoys={this.state.cryptoBoys}
-                 totalTokensMinted={this.state.totalTokensMinted}
-                 changeTokenPrice={this.changeTokenPrice}
-                 toggleForSale={this.toggleForSale}
-                 buyCryptoBoy={this.buyCryptoBoy}
-                 callbackFromParent={this.myCallback2}/>
-                )}
-              />
-              <Route
-                path="/account"
-        
-                render={() => (
-                  <AccountDetails
-                    accountAddress={this.state.accountAddress}
-                    accountBalance={this.state.accountBalance}
-                  />
-                )}
-              />
-              <Route
-                path="/marketplace"
-                
-                render={() => (
-                  <AllCryptoBoys
-                    accountAddress={this.state.accountAddress}
-                    cryptoBoys={this.state.cryptoBoys}
-                    totalTokensMinted={this.state.totalTokensMinted}
-                    changeTokenPrice={this.changeTokenPrice}
-                    toggleForSale={this.toggleForSale}
-                    buyCryptoBoy={this.buyCryptoBoy}
-                    callbackFromParent={this.myCallback2}
-                  />
-                )}
-              />
-              <Route
-                path="/mint"
-               
-                render={() => (
-                  <FormAndPreview
-                    mintMyNFT={this.mintMyNFT}
-                    //nameIsUsed={this.state.nameIsUsed}
-                    imageIsUsed={this.state.imageIsUsed}
-                   
-                    setMintBtnTimer={this.setMintBtnTimer}
-                  />
-                )}
-              />
+        ) : 
+        !this.state.contractDetected ? (
+        <ContractNotDeployed />
+      ) 
+      this.state.loading ? (
+        <Loading />
+      ) :( */}
+      <> <Container maxWidth="xl"> 
+    
+      
+        <HashRouter basename="/">
+          
+            <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected}/>
+            <Route
+              path="/"
+              exact
+              render={() => (
+               <AllCryptoBoys
+               accountAddress={this.state.accountAddress}
+               cryptoBoys={this.state.cryptoBoys}
+               totalTokensMinted={this.state.totalTokensMinted}
+               changeTokenPrice={this.changeTokenPrice}
+               toggleForSale={this.toggleForSale}
+               buyCryptoBoy={this.buyCryptoBoy}
+               callbackFromParent={this.myCallback2}/>
+              )}
+            />
+            <Route
+              path="/account"
+      
+              render={() => (
+                <AccountDetails
+                  accountAddress={this.state.accountAddress}
+                  accountBalance={this.state.accountBalance}
+                />
+              )}
+            />
+             <Route
+              path="/profile"
+      
+              render={() => (
+                <Profile
+                  accountAddress={this.state.accountAddress}
+                  accountBalance={this.state.accountBalance}
+                />
+              )}
+            />
+            <Route
+              path="/marketplace"
               
-              <Route
-                path="/my-tokens"
-                
-                render={() => (
-                  <MyCryptoBoys
-                    accountAddress={this.state.accountAddress}
-                    cryptoBoys={this.state.cryptoBoys}
-                    totalTokensOwnedByAccount={
-                      this.state.totalTokensOwnedByAccount
-                    }
-                   callbackFromParent1={this.myCallback2}
-                  />
-                )}
-              />
-              <Route
-                path="/their-tokens"
-                
-                render={() => (
-                  <TheirCryptoBoys
-                    accountAddress={this.state.clickedAddress}
-                    cryptoBoys={this.state.cryptoBoys}
-                    totalTokensOwnedByAccount={
-                      this.state.totalTokensOwnedByAccount
-                    }
-                    callbackFromParent1={this.myCallback2}
-                  />
-                  
-                )}
-              />
-               {/* <Route
-                path="/nftDetails"
-        
-                render={() => (
-                <CryptoBoyNFTDetails
-                  cryptoboy={cryptoboy}
-                  accountAddress={accountAddress}
-                  changeTokenPrice={changeTokenPrice}
-                  toggleForSale={toggleForSale}
-                  buyCryptoBoy={buyCryptoBoy}
-                  callbackFromParent={myCallback1}
-              /> 
-                )}
-              /> */}
-              {/* <Route
-                path="/queries"
-                
-                render={() => (
-                  <Queries cryptoBoysContract={this.state.cryptoBoysContract} token={this.state.tokenID} />
-                )}
-              /> */}
-               <Route
-                // path={`/nftDetails/${this.clickedAddress}`}
-                path="/nftDetails"
-                
-                render={() => (
-                <CryptoBoyNFTDetails
-                 accountAddress={this.state.accountAddress}
-                 cryptoboy={this.state.cryptoBoys[this.state.clickedAddress-1]}
-                 totalTokensMinted={this.state.totalTokensMinted}
-                 changeTokenPrice={this.changeTokenPrice}
-                 toggleForSale={this.toggleForSale}
-                 buyCryptoBoy={this.buyCryptoBoy}
-                 clickedAddress={this.state.clickedAddress}
-                 callbackFromParent={this.myCallback2}
-                 callBack={this.tokenIDfun}
-                 cryptoBoysContract={this.state.cryptoBoysContract}/>
-                )}
-              />
+              render={() => (
+                <AllCryptoBoys
+                  accountAddress={this.state.accountAddress}
+                  cryptoBoys={this.state.cryptoBoys}
+                  totalTokensMinted={this.state.totalTokensMinted}
+                  changeTokenPrice={this.changeTokenPrice}
+                  toggleForSale={this.toggleForSale}
+                  buyCryptoBoy={this.buyCryptoBoy}
+                  callbackFromParent={this.myCallback2}
+                />
+              )}
+            />
+            <Route
+              path="/mint"
+             
+              render={() => (
+                <FormAndPreview
+                  mintMyNFT={this.mintMyNFT}
+                  //nameIsUsed={this.state.nameIsUsed}
+                  imageIsUsed={this.state.imageIsUsed}
+                 
+                  setMintBtnTimer={this.setMintBtnTimer}
+                />
+              )}
+            />
             
-            </HashRouter>
-        {/* </>)} */}
-        </Container>
+            <Route
+              path="/my-tokens"
+              
+              render={() => (
+                <MyCryptoBoys
+                  accountAddress={this.state.accountAddress}
+                  cryptoBoys={this.state.cryptoBoys}
+                  totalTokensOwnedByAccount={
+                    this.state.totalTokensOwnedByAccount
+                  }
+                 callbackFromParent1={this.myCallback2}
+                />
+              )}
+            />
+            <Route
+              path="/their-tokens"
+              
+              render={() => (
+                <TheirCryptoBoys
+                  accountAddress={this.state.clickedAddress}
+                  cryptoBoys={this.state.cryptoBoys}
+                  totalTokensOwnedByAccount={
+                    this.state.totalTokensOwnedByAccount
+                  }
+                  callbackFromParent1={this.myCallback2}
+                />
+                
+              )}
+            />
+            
+             <Route
+              // path={`/nftDetails/${this.clickedAddress}`}
+              path="/nftDetails"
+              
+              render={() => (
+              <CryptoBoyNFTDetails
+               accountAddress={this.state.accountAddress}
+               cryptoboy={this.state.cryptoBoys[this.state.clickedAddress-1]}
+               totalTokensMinted={this.state.totalTokensMinted}
+               changeTokenPrice={this.changeTokenPrice}
+               toggleForSale={this.toggleForSale}
+               buyCryptoBoy={this.buyCryptoBoy}
+               clickedAddress={this.state.clickedAddress}
+               callbackFromParent={this.myCallback2}
+               callBack={this.tokenIDfun}
+               cryptoBoysContract={this.state.cryptoBoysContract}/>
+              )}
+            />
+          
+          </HashRouter>
+     
+      </Container></>
+      {/* ) } */}
+       
       </div>
 
     );

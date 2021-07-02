@@ -39,10 +39,10 @@ console.log(props.token)
         metadata.substr(0, 60) + "..." + metadata.slice(metadata.length - 5)
       );
       setTokenMetadataLink(metadata);
-      // setTimeout(() => {
-      //   setTokenMetadata("");
-      //   setTokenIdForMetadata("");
-      // }, 5000);
+      setTimeout(() => {
+        setTokenMetadata("");
+        setTokenIdForMetadata("");
+      }, 5000);
     } catch (e) {
       setTokenIdForMetadataNotFound(true);
       setTokenIdForMetadata("");
@@ -75,9 +75,10 @@ console.log(props.token)
                   onChange={(e) => setTokenIdForOwner(e.target.value)}
                 />
               </div> */}
-              <button className="mt-3 btn btn-outline-primary" type="submit" disabled>
-                View On EtherScan
+              <button className="mt-3 btn btn-outline-primary" onClick={(e)=>{getTokenMetadata(e,props.token)}} >
+                View Token Object
               </button>
+             
               {/* {tokenIdForOwnerNotFound ? (
                 <div className="alert alert-danger alert-dissmissible mt-4">
                   <button type="button" className="close" data-dismiss="alert">
@@ -92,6 +93,7 @@ console.log(props.token)
          
            
            <form onSubmit={(e)=>{handleClick(e)}}>
+           {/* <form onSubmit={(e)=>{getTokenMetadata(e,props.token)}}> */}
               {/* <div className="form-group">
                 <input
                   required
@@ -114,19 +116,20 @@ console.log(props.token)
                 </div>
               ) : null} */}
             </form>
-            {/* <p className="mt-4">
-              <a
-                //href={`${tokenMetadataLink}`}
-                href={props.imageUrl}
-                target="_blank"
-                //rel="noopener noreferrer"
-              >
-                {tokenMetadata}
-              </a>
-            </p> */}
+           
         
         
       </div>
+      <p className="mt-4">
+              <a
+                href={`${tokenMetadataLink}`}
+               // href={props.imageUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {tokenMetadata}
+              </a>
+            </p>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-//import metamaskIcon from "./metamask.svg";
+import metamaskIcon from "./metamask.svg";
 
 const ConnectToMetamask = ({ connectToMetamask }) => {
   return (
@@ -19,7 +19,7 @@ const ConnectToMetamask = ({ connectToMetamask }) => {
       >
         Connect Metamask{" "}
         <img
-          //src={metamaskIcon}
+         // src={metamaskIcon}
           alt="metamask-icon"
           style={{ width: "2rem", marginLeft: "0.5rem" }}
         />
