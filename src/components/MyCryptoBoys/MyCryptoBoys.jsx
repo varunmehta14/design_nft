@@ -25,6 +25,7 @@ const MyCryptoBoys = ({
   accountAddress,
   cryptoBoys,
   totalTokensOwnedByAccount,
+  callbackFromParent1
 }) => {
   const [loading, setLoading] = useState(false);
   const [myBoughtCryptoBoys, setMyBoughtCryptoBoys] = useState([]);
@@ -57,6 +58,15 @@ const MyCryptoBoys = ({
     setMyAllCryptoBoys(my_all_crypto_boys);
   }, [cryptoBoys]);
   const classes=useStyles();
+  // myCallBack=(address)=>{
+  //   this.props.callbackFromParent(address)
+  // }
+  const myCallback1=(dataFromChild1)=>{
+    console.log(dataFromChild1)
+   // setAddress(dataFromChild1)
+  callbackFromParent1(dataFromChild1)
+   // console.log(address)
+  }
   return (
     <div>
       <div className="card mt-1">
@@ -91,6 +101,7 @@ const MyCryptoBoys = ({
         </div>
       </div>
       <div className="d-flex flex-wrap mb-2">
+        
          {myMintedCryptoBoys.map((cryptoboy) => {
           return (
             <>
@@ -113,8 +124,10 @@ const MyCryptoBoys = ({
                 <div className="col-md-6 text-center"
                 className="w-50 p-4 mt-1 border text-center">
                   <MyCryptoBoyNFTDetails
+                    callback1={myCallback1}
                     cryptoboy={cryptoboy}
                     accountAddress={accountAddress}
+                    
                   />
                 </div>
               </>
@@ -153,8 +166,10 @@ const MyCryptoBoys = ({
                 <div className="col-md-6 text-center"
                 className="w-50 p-4 mt-1 border text-center">
                   <MyCryptoBoyNFTDetails
+                    callback1={myCallback1}
                     cryptoboy={cryptoboy}
                     accountAddress={accountAddress}
+                    
                   />
                 </div>
               </>

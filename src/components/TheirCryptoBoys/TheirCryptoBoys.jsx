@@ -25,6 +25,7 @@ const TheirCryptoBoys = ({
   accountAddress,
   cryptoBoys,
   totalTokensOwnedByAccount,
+  callbackFromParent1
 }) => {
   const [loading, setLoading] = useState(false);
   const [myBoughtCryptoBoys, setMyBoughtCryptoBoys] = useState([]);
@@ -56,6 +57,12 @@ const TheirCryptoBoys = ({
     );
     setMyAllCryptoBoys(my_all_crypto_boys);
   }, [cryptoBoys]);
+  const myCallback1=(dataFromChild1)=>{
+    console.log(dataFromChild1)
+   // setAddress(dataFromChild1)
+  callbackFromParent1(dataFromChild1)
+   // console.log(address)
+  }
   const classes=useStyles();
   return (
     <div>
@@ -113,6 +120,7 @@ const TheirCryptoBoys = ({
                 <div className="col-md-6 text-center"
                 className="w-50 p-4 mt-1 border text-center">
                   <MyCryptoBoyNFTDetails
+                  callback1={myCallback1}
                     cryptoboy={cryptoboy}
                     accountAddress={accountAddress}
                   />
@@ -153,6 +161,7 @@ const TheirCryptoBoys = ({
                 <div className="col-md-6 text-center"
                 className="w-50 p-4 mt-1 border text-center">
                   <MyCryptoBoyNFTDetails
+                    callback1={myCallback1}
                     cryptoboy={cryptoboy}
                     accountAddress={accountAddress}
                   />

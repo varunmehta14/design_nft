@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import {Paper,Grid,Button,Select} from '@material-ui/core';
+import {Paper,Grid,Button,Select,Divider} from '@material-ui/core';
 import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage"; 
 import Queries from "../Queries/Queries";
+import Loading from "../Loading/Loading";
 
 
 
@@ -38,36 +39,26 @@ class CryptoBoyNFTDetails extends Component {
    
     return (
       <>{this.props.cryptoboy?
-        (<div className="d-flex flex-wrap mb-2">
+        (<div className="d-flex flex-wrap mb-2" style={{padding:"1%"}}>
         <div
                 key={this.props.cryptoboy.tokenId.toNumber()}
                 className="w-50 p-4 mt-1 border "
                 
               >
                 <div className="col-md-6" style={{margin:"auto"}}>
-                {/* {!loading ? (
-                  <CryptoBoyNFTImage
-                  cryptoboy={cryptoboy}
-                  /> 
-                 
-                ) : (
-                  <Loading />
-                )} */}
+               
                 <img style={{width:"inherit"}} src={this.props.cryptoboy.imageHash}/>
                   </div>
           </div>
-         <div className="col-md-6 ">
-          {/* <p>
-            <span className="font-weight-bold">Token Id</span> :{" "}
-            {this.props.cryptoboy.tokenId.toNumber()}
-          </p> */}
+         <div className="col-md-6 w-50  mt-1 border">
+          
           <p>
            <b style={{fontSize:"-webkit-xxx-large"}}>
             {this.props.cryptoboy.tokenName}
             </b>
           </p>
           <hr/>
-          <div className="d-flex flex-wrap ">
+          <div className="d-flex flex-wrap " style={{justifyContent:"space-evenly"}}>
           <div style={{display:"flex"}}>
           
             <span className="font-weight-bold">Creator</span> :{" "}
@@ -78,7 +69,7 @@ class CryptoBoyNFTDetails extends Component {
               )}</b> </Link>
           
           </div>
-          <div style={{borderLeft: "2px solid black",marginLeft:"5px"}}/>
+          <Divider orientation="vertical" flexItem />
           <div style={{display:"flex",paddingLeft:"5px"}}>
           
             <span className="font-weight-bold">Owner</span> :{" "}
@@ -218,16 +209,22 @@ class CryptoBoyNFTDetails extends Component {
          
           </div>
          
+          <div className="col-md-6 w-50  mt-1 border">
           
-          <div style={{flexGrow:1}}>
-          <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <Paper >
-            <h5>Description</h5>
-            <p>{this.props.cryptoboy.metaData.description}</p>
-            </Paper>
-            <Paper >
-            <h5>Sales History</h5>
+         
+          <div className="card mt-1">
+        <div className="card-body   justify-content-center">
+        <h5>Description</h5>
+        <hr/>
+        <p>{this.props.cryptoboy.metaData.description}</p>
+        </div>
+      </div>
+            
+           
+      <div className="card mt-1">
+        <div className="card-body   justify-content-center">
+        <h5>Sales History</h5>
+        <hr/>
             <p>
             <span className="font-weight-bold">Previous Owner</span> :{" "}
             <Link to="/their-tokens" onClick={()=>{this.handleClick(this.props.cryptoboy.previousOwner)}}>{this.props.cryptoboy.previousOwner.substr(0, 5) +
@@ -240,21 +237,23 @@ class CryptoBoyNFTDetails extends Component {
             <span className="font-weight-bold">No. of Transfers</span> :{" "}
             {this.props.cryptoboy.numberOfTransfers.toNumber()}
           </p>
-          <hr/>
-            </Paper>
+        </div>
+      </div>   
+          
+           
+         
+        
 
-          </Grid>
-          <Grid item xs={12} sm={6}> 
-          {/* <Link to="/queries" onClick={()=>{this.sendTokenID(this.props.cryptoboy.tokenId.toNumber())}}>
-                View Proof of Authenticity
-              </Link> */}
-
-         <Queries cryptoBoysContract={this.props.cryptoBoysContract} token={this.props.cryptoboy.tokenId.toNumber()} imageUrl={this.props.cryptoboy.imageHash} />
-         </Grid>
-            </Grid>
+         
           </div>
-
-        </div>):(<h1>Select a nft</h1>)
+          <Grid item xs={12} sm={6}> 
+          
+          <div className="col-md-12   mt-1 border">
+         <Queries cryptoBoysContract={this.props.cryptoBoysContract} token={this.props.cryptoboy.tokenId.toNumber()} imageUrl={this.props.cryptoboy.imageHash} />
+         </div>
+         </Grid>
+        </div>):(<><Loading/>
+        <h1 style={{textAlign:"center"}}>Select a nft</h1></>)
       }
      </>
     );

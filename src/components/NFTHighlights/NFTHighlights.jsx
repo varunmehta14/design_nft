@@ -18,9 +18,10 @@ class NFTHighlights extends Component {
     this.props.callbackFromParent(address)
     console.log(address)
   }
- 
+
   render() {
     //console.log(this.props.cryptoboy.imageHash)
+    //console.log(this.props.toggleForSale)
     return (
       <div key={this.props.cryptoboy.tokenId.toNumber()} className="mt-4">
        
@@ -55,10 +56,10 @@ class NFTHighlights extends Component {
           )}{" "}
           Ξ
         </p>
-        <p>
        
-     <Link to="/nftDetails" onClick={()=>this.handleClick(this.props.cryptoboy.tokenId.toNumber())} ><Button variant="contained" >View NFT</Button></Link> 
-        </p>
+       
+     <Link to="/nftDetails" style={{textDecoration:"none"}}onClick={()=>this.handleClick(this.props.cryptoboy.tokenId.toNumber())} ><Button variant="contained" >View NFT</Button></Link> 
+       
       
       </div>
     );

@@ -1,10 +1,19 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid,Paper} from '@material-ui/core';
+import { Link } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 
 
 
-const MyCryptoBoyNFTDetails = (props) => {
+const MyCryptoBoyNFTDetails = ({callback1,cryptoboy,accountAddress}) => {
+  
+  const handleClick=(tokID)=>{
+    console.log(tokID)
+     callback1(tokID)
+     
+    }
+  
   const {
     tokenId,
     tokenName,
@@ -13,7 +22,9 @@ const MyCryptoBoyNFTDetails = (props) => {
     mintedBy,
     previousOwner,
     numberOfTransfers,
-  } = props.cryptoboy;
+  } = cryptoboy;
+
+
 
   return (
   
@@ -41,6 +52,7 @@ const MyCryptoBoyNFTDetails = (props) => {
       ) : (
         <div className="alert alert-info w-50 text-center m-auto">Bought</div>
       )} */}
+      <Link to="/nftDetails" style={{textDecoration:"none"}}onClick={()=>{handleClick(tokenId.toNumber())}} ><Button variant="contained" >View NFT</Button></Link> 
     </div>
   
   );

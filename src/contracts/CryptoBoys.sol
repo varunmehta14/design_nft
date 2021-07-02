@@ -148,7 +148,7 @@ contract CryptoBoys is ERC721 {
     _transfer(tokenOwner, msg.sender, _tokenId);
     // get owner of the token
     address payable sendTo = cryptoboy.currentOwner;
-    // send token's worth of ethers to the owner
+    // send token's worth of ethers to the owner from smart contract
     sendTo.transfer(msg.value);
     // update the token's previous owner
     cryptoboy.previousOwner = cryptoboy.currentOwner;

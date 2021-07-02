@@ -56,6 +56,8 @@ class App extends Component {
    console.log(dataFromChild2)
    this.setState({clickedAddress:dataFromChild2})
  }
+
+
  tokenIDfun=(tokenIDdata)=>{
   console.log(tokenIDdata)
   this.setState({tokenID:tokenIDdata})
@@ -362,6 +364,7 @@ class App extends Component {
                     totalTokensOwnedByAccount={
                       this.state.totalTokensOwnedByAccount
                     }
+                   callbackFromParent1={this.myCallback2}
                   />
                 )}
               />
@@ -375,7 +378,7 @@ class App extends Component {
                     totalTokensOwnedByAccount={
                       this.state.totalTokensOwnedByAccount
                     }
-                    
+                    callbackFromParent1={this.myCallback2}
                   />
                   
                 )}
