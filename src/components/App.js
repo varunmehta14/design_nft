@@ -198,15 +198,15 @@ class App extends Component {
     }
   };
 
-  mintMyNFT = async (name,description,buffer,tokenPrice) => {
+  mintMyNFT = async (name,description,buffer,tokenPrice,finalbuffer) => {
     this.setState({ loading: true });
-   
+   console.log("buffer2",finalbuffer)
    
   //   const nameIsUsed = await this.state.cryptoBoysContract.methods
   //     .tokenNameExists(name)
   //     .call();
   //  if ( !nameIsUsed) {
-     
+      let imageHashes=[];
       let previousTokenId;
       previousTokenId = await this.state.cryptoBoysContract.methods
         .cryptoBoyCounter()
@@ -219,6 +219,14 @@ class App extends Component {
       const  file= await ipfs.add(buffer)
      // const imageHash=file[0]["hash"]
       console.log(file.path)
+      for(let i=0;i<finalbuffer.length;i++){
+      const filesI=await ipfs.add(finalbuffer[i])
+      console.log(filesI.path)
+      imageHashes.push(`https://ipfs.infura.io/ipfs/${filesI.path}`);
+      }
+     // const files3=await ipfs.add(buffer2)
+     // console.log(files3.path)
+   // const imageHash3 = `https://ipfs.infura.io/ipfs/${files3.path}`;
       //creating  a image hash to store on blockchain
       const imageHash = `https://ipfs.infura.io/ipfs/${file.path}`;
       
@@ -232,7 +240,14 @@ class App extends Component {
         image:`${imageHash}`,
         name:name,
         description:description,
-        price:tokenPrice
+        price:tokenPrice,
+        images:imageHashes
+        // metaData:{
+          
+        //   images:{
+        //     imageHash3
+        //   }
+        // }
         }
         //storing the token object on ipfs
         const  cid= await ipfs.add(JSON.stringify(tokenObject))
@@ -240,7 +255,10 @@ class App extends Component {
         //setting the token uri as the path of token object
         let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
      const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
-      this.state.cryptoBoysContract.methods
+    //  for(let i=0;i<cryptoBoyCopies;i++){
+        
+    //  }
+     this.state.cryptoBoysContract.methods
         .mintCryptoBoy(name,tokenURI,price,imageHash)
         .send({ from: this.state.accountAddress })
         .on("confirmation", () => {

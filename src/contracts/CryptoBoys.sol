@@ -25,6 +25,7 @@ contract CryptoBoys is ERC721 {
     address payable previousOwner;
     uint256 price;
     string imageHash;
+    
     uint256 numberOfTransfers;
     bool forSale;
   }

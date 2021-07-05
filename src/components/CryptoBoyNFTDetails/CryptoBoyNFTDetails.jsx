@@ -1,9 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Grid,Button,Select,Divider} from '@material-ui/core';
 import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage"; 
 import Queries from "../Queries/Queries";
 import Loading from "../Loading/Loading";
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css'
 
 
 
@@ -14,6 +21,7 @@ class CryptoBoyNFTDetails extends Component {
     this.state = {
       newCryptoBoyPrice: "",
       isHidden:true,
+     
      
 
 
@@ -34,11 +42,35 @@ class CryptoBoyNFTDetails extends Component {
   sendTokenID=(tokId)=>{
     this.props.callBack(tokId)
   }
+
+ useStyles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundSize: "cover"
+    },
+    gridList: {
+      flexWrap: 'nowrap',
+      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+      transform: 'translateZ(0)',
+    },
+  }));
+  properties = {
+    duration: 3000,
+   
+   
+   
+    autoplay: false,
+    indicators: true,
+  };
+
   render() {
     //console.log(this.props.cryptoboy.imageHash)
    
     return (
       <>{this.props.cryptoboy?
+       
         (<div className="d-flex flex-wrap mb-2" style={{padding:"1%"}}>
         <div
                 key={this.props.cryptoboy.tokenId.toNumber()}
@@ -48,6 +80,7 @@ class CryptoBoyNFTDetails extends Component {
                 <div className="col-md-6" style={{margin:"auto"}}>
                
                 <img style={{width:"inherit"}} src={this.props.cryptoboy.imageHash}/>
+               
                   </div>
           </div>
          <div className="col-md-6 w-50  mt-1 border">
@@ -238,9 +271,59 @@ class CryptoBoyNFTDetails extends Component {
             {this.props.cryptoboy.numberOfTransfers.toNumber()}
           </p>
         </div>
+        <br/>
+        
       </div>   
+      {/* <div className="card mt-1">
+        {this.props.cryptoboy.metaData.images.map
+                ((image)=>{return (
+                              <div className="card-body "style={{display:"contents"}} ><img src={image}/></div>
+                              );
+                          }
+                )
+        } 
+      </div>   */}
+      <div className="card mt-1">
+      {/* <div className={this.useStyles.root} >
+      <GridList className={this.useStyles.gridList} cols={3}>
+        {this.props.cryptoboy.metaData.images.map((image) => (
+          <GridListTile key={image} style={{width:"40%",height:"40%"}}>
+            <img src={image} style={{width:"inherit",height:"inherit"}}/>
+            
+          </GridListTile>
+        ))}
+      </GridList>
+    </div> */}
+    
+    {/* <Carousel >
+    {this.props.cryptoboy.metaData.images.map((image) => (
+         <div >
+            <img src={image}/>
+         </div>
+        
+            
           
-           
+        ))}
+    </Carousel> */}
+    <div>
+    <Slide slidesToShow={2}slidesToScroll={2}{...this.properties}>
+    {this.props.cryptoboy.metaData.images.map((image) => (
+        
+        <div className={this.useStyles.root} style={{padding:"2%"}}>
+          <a href={image} target="_blank">
+        <img src={image} style={{height: "100%", width: "100%", objectFit:"contain"}}/>
+        </a>
+         
+        </div>
+        
+    
+        
+            
+          
+        ))}
+          </Slide>
+      </div>
+    </div>    
          
         
 

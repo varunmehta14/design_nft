@@ -130,8 +130,9 @@ export default function FormAndPreview(props) {
     const [cryptoBoyPrice,setCryptoBoyPrice] = useState("");
     const [cryptoBoyDescription,setCryptoBoyDescription] = useState("");
     const [buffer,setBuffer] = useState(null);
+    const [finalbuffer,setFinalbuffer] = useState([]);
     const [receivePrice, setReceivePrice] = useState("");
-    const [cryptoBoyCopy,setCryptoBoyCopies] = useState(0);
+    const [cryptoBoyCopies,setCryptoBoyCopies] = useState(0);
     const [files, setFiles] = useState([]);
     const [single,setSingle]=useState(false);
     const [multiple,setMultiple]=useState(false);
@@ -175,6 +176,27 @@ export default function FormAndPreview(props) {
  useEffect(()=>{
  funA();
  },[]);
+ const captureFile=(event)=> {
+  event.preventDefault()
+  
+  const files = event.target.files
+  const buffer2= [];
+  for(let i=0;i<files.length;i++){
+  const reader = new FileReader()
+  reader.readAsArrayBuffer(files[i])
+  reader.onloadend = () => {
+   // console.log('buffer', buffer2)
+   buffer2.push(Buffer(reader.result))
+    //setBuffer2(...buffer2, Buffer(reader.result))
+    console.log('buffer', buffer2)
+  }
+  }
+  setFinalbuffer(buffer2);
+  
+}
+useEffect(()=>{
+ funA();
+ },[]);
  useEffect(
   () => () => {
     // Make sure to revoke the data uris to avoid memory leaks
@@ -183,14 +205,17 @@ export default function FormAndPreview(props) {
   [files]
 );
 
-  const callMintMyNFTFromApp = (e) => {
+  const callMintMyNFTFromApp  = (e) => {
     e.preventDefault();
-    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice)
+    
+    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,finalbuffer)
     props.mintMyNFT(
       cryptoBoyName,
       cryptoBoyDescription,
       buffer,
-      cryptoBoyPrice
+      cryptoBoyPrice,
+      finalbuffer,
+      
     );
   };
   // const receive=(cryptoBoyPrice)=>{
@@ -199,6 +224,21 @@ export default function FormAndPreview(props) {
   // }
   
   
+
+  // const onSubmit=(event)=> {
+  //   event.preventDefault()
+  //   ipfs.files.add(this.state.buffer, (error, result) => {
+  //     if(error) {
+  //       console.error(error)
+  //       return
+  //     }
+  //     this.simpleStorageInstance.set(result[0].hash, { from: this.state.account }).then((r) => {
+  //       return this.setState({ ipfsHash: result[0].hash })
+  //       console.log('ifpsHash', this.state.ipfsHash)
+  //     })
+  //   })
+  // }
+
   
  
    
@@ -316,6 +356,11 @@ export default function FormAndPreview(props) {
      }}
    /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
    <br/>
+   <h2>Upload Image</h2>
+              
+    <input type='file' multiple={true} onChange={captureFile} />
+                
+              
    <div style={{textAlign:"center"}}>
    <Button
    variant="contained"
@@ -451,6 +496,9 @@ export default function FormAndPreview(props) {
       </div>
     </div>    
    <br/>
+   <h2>Upload Image</h2>
+              
+              <input type='file' multiple={true} onChange={captureFile} />
    <div style={{textAlign:"center"}}>
    <Button
    variant="contained"
@@ -497,6 +545,3 @@ export default function FormAndPreview(props) {
     );
            
 }
-
-
-
