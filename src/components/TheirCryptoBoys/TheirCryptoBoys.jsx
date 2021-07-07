@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch'; 
+import TheirAccountDetails from "../TheirAccountDetails/TheirAccountDetails";
 
 
 
@@ -25,7 +26,9 @@ const TheirCryptoBoys = ({
   accountAddress,
   cryptoBoys,
   totalTokensOwnedByAccount,
-  callbackFromParent1
+  callbackFromParent1,
+  cryptoBoysContract
+
 }) => {
   const [loading, setLoading] = useState(false);
   const [myBoughtCryptoBoys, setMyBoughtCryptoBoys] = useState([]);
@@ -66,6 +69,14 @@ const TheirCryptoBoys = ({
   const classes=useStyles();
   return (
     <div>
+       <div className="card mt-1">
+        <div className="card-body align-items-center d-flex justify-content-center">
+          <TheirAccountDetails 
+          accountAddress={accountAddress}
+          cryptoBoysContract={cryptoBoysContract}
+          />
+        </div>
+        </div>
       <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
           {/* <h5>

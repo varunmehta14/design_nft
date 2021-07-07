@@ -13,8 +13,10 @@ const AllCryptoBoys = ({
   changeTokenPrice,
   toggleForSale,
   buyCryptoBoy,
-  callbackFromParent
+  callbackFromParent,
+  cryptoBoysContract
 }) => {
+  
   const [loading, setLoading] = useState(false);
   const [address,setAddress]=useState("");
  //console.log(cryptoBoys[0])
@@ -26,8 +28,9 @@ const AllCryptoBoys = ({
         setLoading(false);
       }
     }
-  }, [cryptoBoys]);
+  }, []);
   
+  console.log(cryptoBoysContract)
   const myCallback1=(dataFromChild1)=>{
     //console.log(dataFromChild)
    // setAddress(dataFromChild1)
@@ -85,6 +88,7 @@ const AllCryptoBoys = ({
                 toggleForSale={toggleForSale}
                 buyCryptoBoy={buyCryptoBoy}
                 callbackFromParent={myCallback1}
+                cryptoBoysContract={cryptoBoysContract}
               />
                
               </div>

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { HashRouter,Route } from "react-router-dom";
 import "./App.css";
+
 import Web3 from "web3";
 import CryptoBoys from "../abis/CryptoBoys.json";
+//import User from "../abis/User.json";
 import CryptoBoyNFTDetails from "./CryptoBoyNFTDetails/CryptoBoyNFTDetails";
 import FormAndPreview from "../components/FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
@@ -31,17 +33,23 @@ class App extends Component {
       accountAddress: "",
       accountBalance: "",
       cryptoBoysContract: null,
+      userContract:null,
       cryptoBoysCount: 0,
+      usersCount: 0,
       cryptoBoys: [],
+      users:[],
       loading: true,
       metamaskConnected: false,
       contractDetected: false,
       totalTokensMinted: 0,
       totalTokensOwnedByAccount: 0,
       imageIsUsed: false,
+      nameIsUsed: false,
       clickedAddress:"",
       tokenID:"",
       lastMintTime: null,
+      userLoggedIn:false,
+      currentUser:""
     };
   }
 
@@ -106,6 +114,7 @@ class App extends Component {
       this.setState({ metamaskConnected: false });
     } else {
       this.setState({ metamaskConnected: true });
+      this.setState({ userLoggedIn: true });
       this.setState({ loading: true });
       this.setState({ accountAddress: accounts[0] });
       let accountBalance = await web3.eth.getBalance(accounts[0]);
@@ -115,6 +124,7 @@ class App extends Component {
       //Network ID
       const networkId = await web3.eth.net.getId();
       const networkData = CryptoBoys.networks[networkId];
+
       if (networkData) {
         this.setState({ loading: true });
         const cryptoBoysContract = web3.eth.Contract(
@@ -123,14 +133,30 @@ class App extends Component {
         );
         //set contract
         this.setState({ cryptoBoysContract });
+        console.log(cryptoBoysContract)
         this.setState({ contractDetected: true });
         //get number of designs minted on the platform
         const cryptoBoysCount = await cryptoBoysContract.methods
           .cryptoBoyCounter()
           .call();
         this.setState({ cryptoBoysCount });
-        //get all the designs
-        for (var i = 1; i <= cryptoBoysCount; i++) {
+        
+        // //grt number of user
+        // const usersCount = await cryptoBoysContract.methods
+        //   .userCounter()
+        //   .call();
+        //   this.setState({ usersCount });
+        // //get all the designs
+        // for (var i = 1; i <= usersCount; i++) {
+        //   const user = await cryptoBoysContract.methods
+        //     .allUsers(i)
+        //     .call();
+        //   this.setState({
+        //     users: [...this.state.users, user],
+        //   });
+        // }
+         //get all the designs
+         for (var i = 1; i <= cryptoBoysCount; i++) {
           const cryptoBoy = await cryptoBoysContract.methods
             .allCryptoBoys(i)
             .call();
@@ -138,6 +164,13 @@ class App extends Component {
             cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
           });
         }
+        //current user 
+        const current=await cryptoBoysContract.methods
+        .allUsers(this.state.accountAddress)
+        .call();
+        this.setState({currentUser:current});
+       
+        
         //get number of tokens on the platform
         let totalTokensMinted = await cryptoBoysContract.methods
           .getNumberOfTokensMinted()
@@ -154,8 +187,34 @@ class App extends Component {
       } else {
         this.setState({ contractDetected: false });
       }
-    }
-  };
+    //   // const networkData2 = User.networks[networkId];
+    //   // if (networkData2) {
+       
+    //   //   const userContract = web3.eth.Contract(
+    //   //     User.abi,
+    //   //     networkData2.address
+    //   //   );
+    //   //   this.setState({userContract})
+    //   //   const usersCount = await userContract.methods
+    //   //     .getUserCount()
+    //   //     .call();
+    //   //   this.setState({ usersCount });
+    //   //   //get all the designs
+    //   //   for (var i = 1; i <= usersCount; i++) {
+    //   //     const user = await userContract.methods
+    //   //       .getUserByIndex(i)
+    //   //       .call();
+    //   //     this.setState({
+    //   //       users: [...this.state.users, user],
+    //   //     });
+    //   //   }
+    //     console.log(this.state.accountAddress)
+    //     const currentUser=await userContract.methods
+    //      .getUserByAddress(this.state.accountAddress)
+    //      .call();
+    //      this.setState({currentUser});
+    // }}
+  }};
   loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -198,6 +257,86 @@ class App extends Component {
     }
   };
 
+  createUser=async(userName,email,social,repo,bio,avatar)=>{
+   console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
+   let previousUserId;
+   const nameIsUsed=await this.state.cryptoBoysContract.methods.userNameExists(userName).call();
+   console.log(nameIsUsed);
+   if(!nameIsUsed){
+    previousUserId=await this.state.cryptoBoysContract.methods.userCounter().call();
+    previousUserId=previousUserId.toNumber();
+    const userId=previousUserId+1;
+   //  const userObject={
+   //    userId:userId,
+   //    userName:userName,
+   //    email:email,
+   //    social:social,
+   //    repo:repo,
+   //    bio:bio,
+   //    avatar:avatar
+   //  }
+    const  cid2= await ipfs.add(avatar);
+    console.log(cid2.path);
+    let avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+    this.state.cryptoBoysContract.methods
+           .createUser(userName,email,social,repo,bio,avatarHash)
+           .send({ from: this.state.accountAddress })
+           .on("confirmation", () => {
+             localStorage.setItem(this.state.accountAddress, new Date().getTime());
+             this.setState({ loading: false });
+             window.location.reload();
+           })
+   }
+   else {
+    {
+     this.setState({ nameIsUsed: true });
+     this.setState({ loading: false });
+   }
+ }
+   
+         
+};
+
+updateUser=async(userName,email,social,repo,bio,avatar)=>{
+  console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
+  //let previousUserId;
+  const nameIsUsed=await this.state.cryptoBoysContract.methods.userNameExists(userName).call();
+  console.log(nameIsUsed);
+  if(!nameIsUsed){
+   //previousUserId=await this.state.cryptoBoysContract.methods.userCounter().call();
+  // previousUserId=previousUserId.toNumber();
+//const userId=previousUserId+1;
+  //  const userObject={
+  //    userId:userId,
+  //    userName:userName,
+  //    email:email,
+  //    social:social,
+  //    repo:repo,
+  //    bio:bio,
+  //    avatar:avatar
+  //  }
+   const  cid2= await ipfs.add(avatar);
+   console.log(cid2.path);
+   let avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+   this.state.cryptoBoysContract.methods
+          .updateUser(userName,email,social,repo,bio,avatarHash)
+          .send({ from: this.state.accountAddress })
+          .on("confirmation", () => {
+            localStorage.setItem(this.state.accountAddress, new Date().getTime());
+            this.setState({ loading: false });
+            window.location.reload();
+          })
+  }
+  else {
+   {
+    this.setState({ nameIsUsed: true });
+    this.setState({ loading: false });
+  }
+}
+  
+        
+};
+
   mintMyNFT = async (name,description,buffer,tokenPrice,finalbuffer) => {
     this.setState({ loading: true });
    console.log("buffer2",finalbuffer)
@@ -206,6 +345,7 @@ class App extends Component {
   //     .tokenNameExists(name)
   //     .call();
   //  if ( !nameIsUsed) {
+    console.log(this.state.cryptoBoysContract)
       let imageHashes=[];
       let previousTokenId;
       previousTokenId = await this.state.cryptoBoysContract.methods
@@ -315,12 +455,13 @@ class App extends Component {
         window.location.reload();
       });
   };
-
+  
   render() {
-    
+    console.log(this.state.cryptoBoysContract)
+    console.log(this.state.cryptoBoys)
     return (
     
-      <div>
+      <div className="fashion">
       {/* {
       !this.state.metamaskConnected ? (
           <ConnectToMetamask connectToMetamask={this.connectToMetamask} />
@@ -336,7 +477,7 @@ class App extends Component {
       
         <HashRouter basename="/">
           
-            <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected}/>
+            <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}/>
             <Route
               path="/"
               exact
@@ -356,8 +497,12 @@ class App extends Component {
       
               render={() => (
                 <AccountDetails
+                  updateUser={this.updateUser}
                   accountAddress={this.state.accountAddress}
                   accountBalance={this.state.accountBalance}
+                  currentUser={this.state.currentUser}
+                  cryptoBoysContract={this.state.cryptoBoysContract}
+                  nameIsUsed={this.state.nameIsUsed}
                 />
               )}
             />
@@ -366,8 +511,13 @@ class App extends Component {
       
               render={() => (
                 <Profile
+                  createUser={this.createUser}
+                  //currentUser={this.state.currentUser}
+                 // users={this.state.users}
                   accountAddress={this.state.accountAddress}
                   accountBalance={this.state.accountBalance}
+                  nameIsUsed={this.state.nameIsUsed}
+                 // userContract={this.state.userContract}
                 />
               )}
             />
@@ -383,6 +533,7 @@ class App extends Component {
                   toggleForSale={this.toggleForSale}
                   buyCryptoBoy={this.buyCryptoBoy}
                   callbackFromParent={this.myCallback2}
+                  cryptoBoysContract={this.state.cryptoBoysContract}
                 />
               )}
             />
@@ -425,6 +576,7 @@ class App extends Component {
                     this.state.totalTokensOwnedByAccount
                   }
                   callbackFromParent1={this.myCallback2}
+                  cryptoBoysContract={this.state.cryptoBoysContract}
                 />
                 
               )}

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState,useEffect,useCallback } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper,Grid,Button,Select,Divider} from '@material-ui/core';
@@ -14,36 +14,46 @@ import 'react-slideshow-image/dist/styles.css'
 
 
 
-class CryptoBoyNFTDetails extends Component {
-  constructor(props) {
-    super(props);
-    console.log(props);
-    this.state = {
-      newCryptoBoyPrice: "",
-      isHidden:true,
-     
-     
+const CryptoBoyNFTDetails=(props)=> {
+  console.log(props.cryptoBoysContract)
+  const [ newCryptoBoyPrice,setNewCryptoBoyPrice]=useState("");
+  const [ isHidden,setIsHidden]=useState(true);
+  const [mintedByName,setMintedByName]=useState(" ") 
+  const [ownedByName,setOwnedByName]=useState(" ") 
+  const [prevByName,setPrevByName]=useState(" ") 
 
-
-
-
-    };
-  }
+  useEffect(()=>{
+    getCurrentUser();
+  },[]);
+  const getCurrentUser=(async()=>{
+    if(props.cryptoBoysContract){
+    const current1=await props.cryptoBoysContract.methods
+    .allUsers(props.cryptoboy.mintedBy)
+    .call();
+    setMintedByName(current1[1]);
+    const current2=await props.cryptoBoysContract.methods
+    .allUsers(props.cryptoboy.currentOwner)
+    .call();
+    setOwnedByName(current2[1]);
+    const current3=await props.cryptoBoysContract.methods
+    .allUsers(props.cryptoboy.previousOwner)
+    .call();
+    setPrevByName(current3[1]);
+    }
+  })
+console.log(mintedByName,ownedByName,prevByName)         
   
-  
-  
-  
-  callChangeTokenPriceFromApp = (tokenId, newPrice) => {
-    this.props.changeTokenPrice(tokenId, newPrice);
+  const callChangeTokenPriceFromApp = (tokenId, newPrice) => {
+    props.changeTokenPrice(tokenId, newPrice);
   };
-  handleClick=(address)=>{
-    this.props.callbackFromParent(address)
+  const handleClick=(address)=>{
+    props.callbackFromParent(address)
   }
-  sendTokenID=(tokId)=>{
-    this.props.callBack(tokId)
+  const sendTokenID=(tokId)=>{
+    props.callBack(tokId)
   }
 
- useStyles = makeStyles((theme) => ({
+ const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex",
   alignItems: "center",
@@ -56,30 +66,27 @@ class CryptoBoyNFTDetails extends Component {
       transform: 'translateZ(0)',
     },
   }));
-  properties = {
+  const properties = {
     duration: 3000,
-   
-   
-   
     autoplay: false,
     indicators: true,
   };
 
-  render() {
-    //console.log(this.props.cryptoboy.imageHash)
+  
+    //console.log(props.cryptoboy.imageHash)
    
     return (
-      <>{this.props.cryptoboy?
+      <>{props.cryptoboy?
        
         (<div className="d-flex flex-wrap mb-2" style={{padding:"1%"}}>
         <div
-                key={this.props.cryptoboy.tokenId.toNumber()}
+                key={props.cryptoboy.tokenId.toNumber()}
                 className="w-50 p-4 mt-1 border "
                 
               >
                 <div className="col-md-6" style={{margin:"auto"}}>
                
-                <img style={{width:"inherit"}} src={this.props.cryptoboy.imageHash}/>
+                <img style={{width:"inherit"}} src={props.cryptoboy.imageHash}/>
                
                   </div>
           </div>
@@ -87,7 +94,7 @@ class CryptoBoyNFTDetails extends Component {
           
           <p>
            <b style={{fontSize:"-webkit-xxx-large"}}>
-            {this.props.cryptoboy.tokenName}
+            {props.cryptoboy.tokenName}
             </b>
           </p>
           <hr/>
@@ -95,22 +102,28 @@ class CryptoBoyNFTDetails extends Component {
           <div style={{display:"flex"}}>
           
             <span className="font-weight-bold">Creator</span> :{" "}
-            <Link to="/their-tokens" onClick={()=>{this.handleClick(this.props.cryptoboy.mintedBy)}}><b>{this.props.cryptoboy.mintedBy.substr(0, 5) +
+            <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.mintedBy)}}><b>
+              {/* {props.cryptoboy.mintedBy.substr(0, 5) +
               "..." +
-              this.props.cryptoboy.mintedBy.slice(
-                this.props.cryptoboy.mintedBy.length - 5
-              )}</b> </Link>
+              props.cryptoboy.mintedBy.slice(
+                props.cryptoboy.mintedBy.length - 5
+              )} */}
+              {mintedByName}
+              </b> </Link>
           
           </div>
           <Divider orientation="vertical" flexItem />
           <div style={{display:"flex",paddingLeft:"5px"}}>
           
             <span className="font-weight-bold">Owner</span> :{" "}
-            <Link to="/their-tokens" onClick={()=>{this.handleClick(this.props.cryptoboy.currentOwner)}}><b>{this.props.cryptoboy.currentOwner.substr(0, 5) +
+            <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.currentOwner)}}><b>
+              {/* {props.cryptoboy.currentOwner.substr(0, 5) +
               "..." +
-              this.props.cryptoboy.currentOwner.slice(
-                this.props.cryptoboy.currentOwner.length - 5
-              )}</b> </Link>
+              props.cryptoboy.currentOwner.slice(
+                props.cryptoboy.currentOwner.length - 5
+              )} */}
+              {ownedByName}
+              </b> </Link>
           
           </div>
           </div>
@@ -120,7 +133,7 @@ class CryptoBoyNFTDetails extends Component {
             <span className="font-weight-bold">Price</span> :{" "}
             <b style={{fontSize:"xx-large"}}>
             {window.web3.utils.fromWei(
-              this.props.cryptoboy.price.toString(),
+              props.cryptoboy.price.toString(),
               "Ether"
             )}{" "}
             Ξ
@@ -130,13 +143,13 @@ class CryptoBoyNFTDetails extends Component {
           
         
           <div>
-            {this.props.accountAddress === this.props.cryptoboy.currentOwner ? (
+            {props.accountAddress === props.cryptoboy.currentOwner ? (
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  this.callChangeTokenPriceFromApp(
-                    this.props.cryptoboy.tokenId.toNumber(),
-                    this.state.newCryptoBoyPrice
+                  callChangeTokenPriceFromApp(
+                    props.cryptoboy.tokenId.toNumber(),
+                    newCryptoBoyPrice
                   );
                 }}
               >
@@ -149,13 +162,11 @@ class CryptoBoyNFTDetails extends Component {
                     type="number"
                     name="newCryptoBoyPrice"
                     id="newCryptoBoyPrice"
-                    value={this.state.newCryptoBoyPrice}
+                    value={newCryptoBoyPrice}
                     className="form-control w-50"
                     placeholder="Enter new price"
                     onChange={(e) =>
-                      this.setState({
-                        newCryptoBoyPrice: e.target.value,
-                      })
+                      setNewCryptoBoyPrice(e.target.value)
                     }
                   />
                 </div>
@@ -170,14 +181,14 @@ class CryptoBoyNFTDetails extends Component {
             ) : null}
           </div>
           <div>
-            {this.props.accountAddress === this.props.cryptoboy.currentOwner ? (
-              this.props.cryptoboy.forSale ? (
+            {props.accountAddress === props.cryptoboy.currentOwner ? (
+              props.cryptoboy.forSale ? (
                 <button
                   className="btn btn-outline-danger mt-4 w-50"
                   style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                   onClick={() =>
-                    this.props.toggleForSale(
-                      this.props.cryptoboy.tokenId.toNumber()
+                    props.toggleForSale(
+                      props.cryptoboy.tokenId.toNumber()
                     )
                   }
                 >
@@ -188,8 +199,8 @@ class CryptoBoyNFTDetails extends Component {
                   className="btn btn-outline-success mt-4 w-50"
                   style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                   onClick={() =>
-                    this.props.toggleForSale(
-                      this.props.cryptoboy.tokenId.toNumber()
+                    props.toggleForSale(
+                      props.cryptoboy.tokenId.toNumber()
                     )
                   }
                 >
@@ -200,22 +211,22 @@ class CryptoBoyNFTDetails extends Component {
             </div>
           
           <div>
-            {this.props.accountAddress !== this.props.cryptoboy.currentOwner ? (
-              this.props.cryptoboy.forSale ? (
+            {props.accountAddress !== props.cryptoboy.currentOwner ? (
+              props.cryptoboy.forSale ? (
                 <button
                   className="btn btn-outline-primary mt-3 w-50"
-                  value={this.props.cryptoboy.price}
+                  value={props.cryptoboy.price}
                   style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                   onClick={(e) =>
-                    this.props.buyCryptoBoy(
-                      this.props.cryptoboy.tokenId.toNumber(),
+                    props.buyCryptoBoy(
+                      props.cryptoboy.tokenId.toNumber(),
                       e.target.value
                     )
                   }
                 >
                   Buy For{" "}
                   {window.web3.utils.fromWei(
-                    this.props.cryptoboy.price.toString(),
+                    props.cryptoboy.price.toString(),
                     "Ether"
                   )}{" "}
                   Ξ
@@ -229,7 +240,7 @@ class CryptoBoyNFTDetails extends Component {
                   >
                     Buy For{" "}
                     {window.web3.utils.fromWei(
-                      this.props.cryptoboy.price.toString(),
+                      props.cryptoboy.price.toString(),
                       "Ether"
                     )}{" "}
                     Ξ
@@ -249,7 +260,7 @@ class CryptoBoyNFTDetails extends Component {
         <div className="card-body   justify-content-center">
         <h5>Description</h5>
         <hr/>
-        <p>{this.props.cryptoboy.metaData.description}</p>
+        <p>{props.cryptoboy.metaData.description}</p>
         </div>
       </div>
             
@@ -260,22 +271,25 @@ class CryptoBoyNFTDetails extends Component {
         <hr/>
             <p>
             <span className="font-weight-bold">Previous Owner</span> :{" "}
-            <Link to="/their-tokens" onClick={()=>{this.handleClick(this.props.cryptoboy.previousOwner)}}>{this.props.cryptoboy.previousOwner.substr(0, 5) +
+            <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.previousOwner)}}>
+              {/* {props.cryptoboy.previousOwner.substr(0, 5) +
               "..." +
-              this.props.cryptoboy.previousOwner.slice(
-                this.props.cryptoboy.previousOwner.length - 5
-              )}</Link>
+              props.cryptoboy.previousOwner.slice(
+                props.cryptoboy.previousOwner.length - 5
+              )} */}
+              {prevByName}
+              </Link>
           </p>
           <p>
             <span className="font-weight-bold">No. of Transfers</span> :{" "}
-            {this.props.cryptoboy.numberOfTransfers.toNumber()}
+            {props.cryptoboy.numberOfTransfers.toNumber()}
           </p>
         </div>
         <br/>
         
       </div>   
       {/* <div className="card mt-1">
-        {this.props.cryptoboy.metaData.images.map
+        {props.cryptoboy.metaData.images.map
                 ((image)=>{return (
                               <div className="card-body "style={{display:"contents"}} ><img src={image}/></div>
                               );
@@ -284,9 +298,9 @@ class CryptoBoyNFTDetails extends Component {
         } 
       </div>   */}
       <div className="card mt-1">
-      {/* <div className={this.useStyles.root} >
-      <GridList className={this.useStyles.gridList} cols={3}>
-        {this.props.cryptoboy.metaData.images.map((image) => (
+      {/* <div className={useStyles.root} >
+      <GridList className={useStyles.gridList} cols={3}>
+        {props.cryptoboy.metaData.images.map((image) => (
           <GridListTile key={image} style={{width:"40%",height:"40%"}}>
             <img src={image} style={{width:"inherit",height:"inherit"}}/>
             
@@ -296,7 +310,7 @@ class CryptoBoyNFTDetails extends Component {
     </div> */}
     
     {/* <Carousel >
-    {this.props.cryptoboy.metaData.images.map((image) => (
+    {props.cryptoboy.metaData.images.map((image) => (
          <div >
             <img src={image}/>
          </div>
@@ -306,10 +320,10 @@ class CryptoBoyNFTDetails extends Component {
         ))}
     </Carousel> */}
     <div>
-    <Slide slidesToShow={2}slidesToScroll={2}{...this.properties}>
-    {this.props.cryptoboy.metaData.images.map((image) => (
+    <Slide slidesToShow={2}slidesToScroll={2}{...properties}>
+    {props.cryptoboy.metaData.images.map((image) => (
         
-        <div className={this.useStyles.root} style={{padding:"2%"}}>
+        <div className={useStyles.root} style={{padding:"2%"}}>
           <a href={image} target="_blank">
         <img src={image} style={{height: "100%", width: "100%", objectFit:"contain"}}/>
         </a>
@@ -332,7 +346,7 @@ class CryptoBoyNFTDetails extends Component {
           <Grid item xs={12} sm={6}> 
           
           <div className="col-md-12   mt-1 border">
-         <Queries cryptoBoysContract={this.props.cryptoBoysContract} token={this.props.cryptoboy.tokenId.toNumber()} imageUrl={this.props.cryptoboy.imageHash} />
+         <Queries cryptoBoysContract={props.cryptoBoysContract} token={props.cryptoboy.tokenId.toNumber()} imageUrl={props.cryptoboy.imageHash} />
          </div>
          </Grid>
         </div>):(<><Loading/>
@@ -340,7 +354,7 @@ class CryptoBoyNFTDetails extends Component {
       }
      </>
     );
-  }
+ 
 }
 
 export default CryptoBoyNFTDetails;

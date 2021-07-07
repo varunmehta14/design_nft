@@ -215,7 +215,7 @@ useEffect(()=>{
       buffer,
       cryptoBoyPrice,
       finalbuffer,
-      
+     // cryptoBoyCopies
     );
   };
   // const receive=(cryptoBoyPrice)=>{

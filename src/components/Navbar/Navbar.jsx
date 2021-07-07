@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Navbar = ({connectToMetamask,metamaskConnected}) => {
+const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn}) => {
   const classes = useStyles();
 const [anchorEl, setAnchorEl] = useState(null);
 //const [metamaskConnected,setMetamaskConnected]=useState(false);
@@ -301,7 +301,7 @@ const renderMobileMenu = (
           style={{ width: "2rem", marginLeft: "0.5rem" }}
         />
       </Button>):null}
-              <IconButton
+      {!userLoggedIn?( <IconButton
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
@@ -309,8 +309,18 @@ const renderMobileMenu = (
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
-            </IconButton>
+            
+            </IconButton>):(<IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+               <AccountCircle />
+            </IconButton>)}
+             
           </div>
           <div className={classes.sectionMobile}>
           <li className="nav-item">

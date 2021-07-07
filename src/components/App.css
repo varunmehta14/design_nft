@@ -5,3 +5,6 @@ input::-webkit-input-placeholder {
 input[type="color"]:hover {
   cursor: pointer;
 }
+.fashion{
+font-family: "Nunito Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}

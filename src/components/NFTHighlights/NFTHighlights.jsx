@@ -1,69 +1,98 @@
-import React, { Component } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import Loading from "../Loading/Loading";
 
 
-class NFTHighlights extends Component {
-  constructor(props) {
-    super(props);
-    // this.state = {
-    //   newCryptoBoyPrice: "",
-    // };
-  }
+const NFTHighlights=(props)=> {
+  console.log(props)
+    
+      const [mintedByName,setMintedByName]=useState(" ") 
+      const [ownedByName,setOwnedByName]=useState(" ") 
+   
+     
+      const getCurrentUser=async()=>{
+       if(props.cryptoBoysContract){
+         console.log(props)
+          const current1=await props.cryptoBoysContract.methods
+          .allUsers(props.cryptoboy.mintedBy)
+          .call();
+          setMintedByName(current1[1]);
+          const current2=await props.cryptoBoysContract.methods
+          .allUsers(props.cryptoboy.currentOwner)
+          .call();
+          setOwnedByName(current2[1]);
+        }
+        
+       
+        
+      }
+      useEffect(()=>{
+        getCurrentUser();
+      },[props.cryptoboy]);
+console.log(mintedByName,ownedByName)
 
 //   callChangeTokenPriceFromApp = (tokenId, newPrice) => {
-//     this.props.changeTokenPrice(tokenId, newPrice);
+//     props.changeTokenPrice(tokenId, newPrice);
 //   };
-  handleClick=(address)=>{
-    this.props.callbackFromParent(address)
+  const handleClick=(address)=>{
+    props.callbackFromParent(address)
     console.log(address)
   }
 
-  render() {
-    //console.log(this.props.cryptoboy.imageHash)
-    //console.log(this.props.toggleForSale)
+  
+    //console.log(props.cryptoboy.imageHash)
+    //console.log(props.toggleForSale)
     return (
-      <div key={this.props.cryptoboy.tokenId.toNumber()} className="mt-4">
+      <>
+      {props.cryptoboy?( <div key={props.cryptoboy.tokenId.toNumber()} className="mt-4">
        
       
-        <p>
-         
-          <h4>{this.props.cryptoboy.tokenName}</h4>
-        </p>
-        <p>
-          <span className="font-weight-bold">Created By</span> :{" "}
-          <Link to="/their-tokens" onClick={()=>{this.handleClick(this.props.cryptoboy.mintedBy)}}> {this.props.cryptoboy.mintedBy.substr(0, 5) +
-            "..." +
-            this.props.cryptoboy.mintedBy.slice(
-              this.props.cryptoboy.mintedBy.length - 5
-            )}</Link>
-        </p>
-        <p>
-          <span className="font-weight-bold">Owned By</span> :{" "}
-          <Link to="/their-tokens" onClick={()=>{this.handleClick(this.props.cryptoboy.currentOwner)}}> {this.props.cryptoboy.currentOwner.substr(0, 5) +
-            "..." +
-            this.props.cryptoboy.currentOwner.slice(
-              this.props.cryptoboy.currentOwner.length - 5
-            )}</Link>
-        </p>
+      <p>
+       
+        <h4>{props.cryptoboy.tokenName}</h4>
+      </p>
+      <p>
+        <span className="font-weight-bold">Created By</span> :{" "}
+        <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.mintedBy)}}>
+           {/* {props.cryptoboy.mintedBy.substr(0, 5) +
+          "..." +
+          props.cryptoboy.mintedBy.slice(
+            props.cryptoboy.mintedBy.length - 5
+          )} */}
+          {mintedByName}
+          </Link>
+      </p>
+      <p>
+        <span className="font-weight-bold">Owned By</span> :{" "}
+        <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.currentOwner)}}> 
+        {/* {props.cryptoboy.currentOwner.substr(0, 5) +
+          "..." +
+          props.cryptoboy.currentOwner.slice(
+            props.cryptoboy.currentOwner.length - 5
+          )} */}
+          {ownedByName}
+          </Link>
+      </p>
+   
      
-       
-        <p>
-          <span className="font-weight-bold">Price</span> :{" "}
-          {window.web3.utils.fromWei(
-            this.props.cryptoboy.price.toString(),
-            "Ether"
-          )}{" "}
-          Ξ
-        </p>
-       
-       
-     <Link to="/nftDetails" style={{textDecoration:"none"}}onClick={()=>this.handleClick(this.props.cryptoboy.tokenId.toNumber())} ><Button variant="contained" >View NFT</Button></Link> 
-       
-      
-      </div>
+      <p>
+        <span className="font-weight-bold">Price</span> :{" "}
+        {window.web3.utils.fromWei(
+          props.cryptoboy.price.toString(),
+          "Ether"
+        )}{" "}
+        Ξ
+      </p>
+     
+     
+   <Link to="/nftDetails" style={{textDecoration:"none"}}onClick={()=>handleClick(props.cryptoboy.tokenId.toNumber())} ><Button variant="contained" >View NFT</Button></Link> 
+     
+    
+    </div>):(<Loading/>)}
+     </>
     );
-  }
+ 
 }
 
 export default NFTHighlights;
