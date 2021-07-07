@@ -40,16 +40,16 @@ contract("Crypto Boys", async (accounts) => {
       
       result=await cryptoBoys.createUser("varunm14","https://gateway.pinata.cloud/ipfs/QmZchsHzuXJrRN9mQERkUvRk5sbNSobgdTXYtryPWs283d","mehtavarunj@gmail.com","varun__mehta__","hello repo","hello world",{ from: accounts[0] })
 
-      result=await cryptoBoys.createUser("varunm15","https://gateway.pinata.cloud/ipfs/QmZchsHzuXJrRN9mQERkUvRk5sbNSobgdTXYtryPWs283d","mehtavarunj@gmail.com","varun__mehta__","hello repo","hello world",{ from: accounts[1] })
-      //reject since same account
-      await cryptoBoys.createUser("varunm15","https://gateway.pinata.cloud/ipfs/QmZchsHzuXJrRN9mQERkUvRk5sbNSobgdTXYtryPWs283d","mehtavarunj@gmail.com","varun__mehta__","hello repo","hello world",{ from: accounts[1] }).should.be.rejected;
+      result=await cryptoBoys.createUser("varunm15","https://gateway.pinata.cloud/ipfs/QmZchsHzuXJrRN9mQERkUvRk5sbNSobgdTXYtryPWs283d","mehtavarun@gmail.com","varun__mehta__","hello repo","hello world",{ from: accounts[1] })
+       //reject since same account
+       await cryptoBoys.createUser("varunm15","https://gateway.pinata.cloud/ipfs/QmZchsHzuXJrRN9mQERkUvRk5sbNSobgdTXYtryPWs283d","mehtavarunj@gmail.com","varun__mehta__","hello repo","hello world",{ from: accounts[1] }).should.be.rejected;
       userCount = await cryptoBoys.userCounter();
       assert.equal(userCount.toNumber(), 2);
 
-      result=await cryptoBoys.getIndexByAddress(accounts[1]);
-      assert.equal(result.toNumber(),2);
+      // result=await cryptoBoys.getIndexByAddress(accounts[1]);
+      // assert.equal(result.toNumber(),2);
       
-      result=await cryptoBoys.updateUser("varunm16","https://gateway.pinata.cloud/ipfs/QmZchsHzuXJrRN9mQERkUvRk5sbNSobgdTXYtryPWs283d","mehtavarunj@gmail.com","varun__mehta__","hello repo","hello world",{ from: accounts[1] })
+      result=await cryptoBoys.updateUser("varunm16","https://gateway.pinata.cloud/ipfs/QmZchsHzuXJrRN9mQERkUvRk5sbNSobgdTXYtryPWs283d","mehtavarunj@gmail.com","varun__mehta__","hello repo","hello world",{ from: accounts[1] });
       userCount = await cryptoBoys.userCounter();
       assert.equal(userCount.toNumber(), 2);
   });
