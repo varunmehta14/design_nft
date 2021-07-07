@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { HashRouter,Route } from "react-router-dom";
+import { HashRouter,Route,withRouter } from "react-router-dom";
 import "./App.css";
 
 import Web3 from "web3";
@@ -50,6 +50,7 @@ class App extends Component {
       lastMintTime: null,
       userLoggedIn:false,
       currentUser:""
+     
     };
   }
 
@@ -269,7 +270,9 @@ class App extends Component {
              localStorage.setItem(this.state.accountAddress, new Date().getTime());
              this.setState({ loading: false });
              window.location.reload();
+            this.props.history.push("/account");
            })
+           this.setState({userLoggedIn:true});
    }
    else {
     {
@@ -296,6 +299,7 @@ updateUser=async(userName,email,social,repo,bio,avatar,account)=>{
            localStorage.setItem(this.state.accountAddress, new Date().getTime());
            this.setState({ loading: false });
            window.location.reload();
+
          })
  }
  else{
@@ -476,7 +480,7 @@ updateUser=async(userName,email,social,repo,bio,avatar,account)=>{
       
         <HashRouter basename="/">
           
-            <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}/>
+            <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}/>
             <Route
               path="/"
               exact

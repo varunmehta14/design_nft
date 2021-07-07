@@ -18,6 +18,7 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
   const[email,setEmail]=useState(currentUser.email);
   const[updateProfile,setUpdateProfile]=useState(false);
   const[src,setSrc]=useState("");
+  const[buffer,setBuffer]=useState(null);
   
   const handleSubmit=async(e)=>{
     e.preventDefault();
@@ -34,6 +35,16 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
     //console.log(updatedUser);
     updateUser(userName,email,social,repo,bio,preview,accountAddress);
   }
+  const captureFile=(event)=> {
+    event.preventDefault()
+    const file = event.target.files[0]
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+    reader.onloadend = () => {
+      setBuffer( Buffer(reader.result) )
+      console.log('buffer', buffer)
+    }
+  }
   const onClose=()=> {
     setPreview(null)
   }
@@ -45,14 +56,14 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
 
   console.log(cryptoBoysContract)
   console.log(accountAddress);
-  console.log(currentUser);
+  console.log(currentUser[6]);
   return (
     <div>
       <div className="jumbotron">
         {!updateProfile?(<> <h1 className="display-5">Account Details</h1>
        
        <hr className="my-4" />
-        <img src={currentUser[5]} alt="Avatar"/>
+        <img src={currentUser[6]} alt="Avatar"/>
        <p className="lead">Account address :</p>
        <h4>{currentUser.userAddress}</h4>
        <p className="lead">Account balance :</p>
@@ -79,7 +90,7 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
        (<>
        <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
         <div  className="d-flex  p-4  mt-1 border ">
-          <div className="col-md-6">
+          {/* <div className="col-md-6">
       <Avatar
        //   width={390}
         //  height={295}
@@ -99,7 +110,8 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
           </a>
         </>
       )}
-       </div>
+       </div> */}
+        <input type='file' multiple={true} onChange={captureFile} />
        </div> 
       <CssBaseline />
       <div >

@@ -19,6 +19,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import metamaskIcon from "./metamask.svg";
+import Avatar from '@material-ui/core/Avatar';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -86,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn}) => {
+const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn,currentUser}) => {
   const classes = useStyles();
 const [anchorEl, setAnchorEl] = useState(null);
 //const [metamaskConnected,setMetamaskConnected]=useState(false);
@@ -130,9 +131,11 @@ const renderMenu = (
     open={isMenuOpen}
     onClose={handleMenuClose}
   >
-    <MenuItem onClick={handleMenuClose}><Link to="/profile" className="nav-link" >
+    {console.log(currentUser)}
+    {!currentUser[1]?( <MenuItem onClick={handleMenuClose}><Link to="/profile" className="nav-link" >
     Profile
-              </Link></MenuItem>
+              </Link></MenuItem>):null}
+   
     <MenuItem onClick={handleMenuClose}><Link to="/account" className="nav-link" >
     My account
               </Link></MenuItem>
@@ -268,17 +271,17 @@ const renderMobileMenu = (
               
 
            
-              <Link to="/mint" className="nav-link" style={{color: "#e8e2e2"}}>
+              <Link to="/mint" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
                 Create
               </Link>
            
             
-              <Link to="/marketplace" className="nav-link" style={{color: "#e8e2e2"}}>
+              <Link to="/marketplace" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
                 Marketplace
               </Link>
             
             
-              <Link to="/my-tokens" className="nav-link" style={{color: "#e8e2e2"}}>
+              <Link to="/my-tokens" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
                 My Tokens
               </Link>
             
@@ -301,7 +304,7 @@ const renderMobileMenu = (
           style={{ width: "2rem", marginLeft: "0.5rem" }}
         />
       </Button>):null}
-      {!userLoggedIn?( <IconButton
+      {!currentUser?( <IconButton
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
@@ -309,7 +312,7 @@ const renderMobileMenu = (
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-            
+             <AccountCircle />
             </IconButton>):(<IconButton
               edge="end"
               aria-label="account of current user"
@@ -318,7 +321,7 @@ const renderMobileMenu = (
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-               <AccountCircle />
+               <Avatar alt={currentUser[1]} src={currentUser[6]}/>
             </IconButton>)}
              
           </div>

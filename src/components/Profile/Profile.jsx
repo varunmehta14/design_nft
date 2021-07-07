@@ -59,6 +59,7 @@ export default function Profile( { createUser,accountAddress, accountBalance,nam
   const[social,setSocial]=useState("");
   const[repo,setRepo]=useState("");
   const[email,setEmail]=useState("");
+  const[buffer,setBuffer]=useState(null);
 
   const onClose=()=> {
     setPreview(null)
@@ -77,10 +78,19 @@ export default function Profile( { createUser,accountAddress, accountBalance,nam
   }
   const handleSubmit=(e)=>{
     e.preventDefault();
-    console.log(userName,email,social,repo,bio,preview)
-    createUser(userName,email,social,repo,bio,preview);
+    console.log(userName,email,social,repo,bio,buffer)
+    createUser(userName,email,social,repo,bio,buffer);
   }
- 
+  const captureFile=(event)=> {
+    event.preventDefault()
+    const file = event.target.files[0]
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+    reader.onloadend = () => {
+      setBuffer( Buffer(reader.result) )
+      console.log('buffer', buffer)
+    }
+  }
   return (
     <div style={{padding:"1%"}}>
     <div className="card mt-1">
@@ -94,7 +104,7 @@ export default function Profile( { createUser,accountAddress, accountBalance,nam
         </div>
         </div>  
         <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
-        <div  className="d-flex  p-4  mt-1 border ">
+        {/* <div  className="d-flex  p-4  mt-1 border ">
           <div className="col-md-6">
       <Avatar
        //   width={390}
@@ -116,7 +126,8 @@ export default function Profile( { createUser,accountAddress, accountBalance,nam
         </>
       )}
        </div>
-       </div> 
+       </div>  */}
+       <input type='file' multiple={true} onChange={captureFile} />
       <CssBaseline />
       <div className={classes.paper}>
      
