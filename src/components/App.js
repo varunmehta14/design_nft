@@ -4,7 +4,7 @@ import "./App.css";
 
 import Web3 from "web3";
 import CryptoBoys from "../abis/CryptoBoys.json";
-//import User from "../abis/User.json";
+import Users from "../abis/Users.json";
 import CryptoBoyNFTDetails from "./CryptoBoyNFTDetails/CryptoBoyNFTDetails";
 import FormAndPreview from "../components/FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
@@ -33,7 +33,7 @@ class App extends Component {
       accountAddress: "",
       accountBalance: "",
       cryptoBoysContract: null,
-      userContract:null,
+      usersContract:null,
       cryptoBoysCount: 0,
       usersCount: 0,
       cryptoBoys: [],
@@ -123,13 +123,13 @@ class App extends Component {
       this.setState({ loading: false });
       //Network ID
       const networkId = await web3.eth.net.getId();
-      const networkData = CryptoBoys.networks[networkId];
+      const networkData1 = CryptoBoys.networks[networkId];
 
-      if (networkData) {
+      if (networkData1) {
         this.setState({ loading: true });
         const cryptoBoysContract = web3.eth.Contract(
           CryptoBoys.abi,
-          networkData.address
+          networkData1.address
         );
         //set contract
         this.setState({ cryptoBoysContract });
@@ -164,11 +164,7 @@ class App extends Component {
             cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
           });
         }
-        //current user 
-        const current=await cryptoBoysContract.methods
-        .allUsers(this.state.accountAddress)
-        .call();
-        this.setState({currentUser:current});
+       
        
         
         //get number of tokens on the platform
@@ -187,34 +183,22 @@ class App extends Component {
       } else {
         this.setState({ contractDetected: false });
       }
-    //   // const networkData2 = User.networks[networkId];
-    //   // if (networkData2) {
+      const networkData2 = Users.networks[networkId];
+      if (networkData2) {
        
-    //   //   const userContract = web3.eth.Contract(
-    //   //     User.abi,
-    //   //     networkData2.address
-    //   //   );
-    //   //   this.setState({userContract})
-    //   //   const usersCount = await userContract.methods
-    //   //     .getUserCount()
-    //   //     .call();
-    //   //   this.setState({ usersCount });
-    //   //   //get all the designs
-    //   //   for (var i = 1; i <= usersCount; i++) {
-    //   //     const user = await userContract.methods
-    //   //       .getUserByIndex(i)
-    //   //       .call();
-    //   //     this.setState({
-    //   //       users: [...this.state.users, user],
-    //   //     });
-    //   //   }
-    //     console.log(this.state.accountAddress)
-    //     const currentUser=await userContract.methods
-    //      .getUserByAddress(this.state.accountAddress)
-    //      .call();
-    //      this.setState({currentUser});
-    // }}
-  }};
+        const usersContract = web3.eth.Contract(
+          Users.abi,
+          networkData2.address
+        );
+        this.setState({usersContract})
+        //current user 
+        const current=await usersContract.methods
+        .allUsers(this.state.accountAddress)
+        .call();
+        this.setState({currentUser:current});
+        
+    }}
+  };
   loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -260,10 +244,10 @@ class App extends Component {
   createUser=async(userName,email,social,repo,bio,avatar)=>{
    console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
    let previousUserId;
-   const nameIsUsed=await this.state.cryptoBoysContract.methods.userNameExists(userName).call();
+   const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
    console.log(nameIsUsed);
    if(!nameIsUsed){
-    previousUserId=await this.state.cryptoBoysContract.methods.userCounter().call();
+    previousUserId=await this.state.usersContract.methods.userCounter().call();
     previousUserId=previousUserId.toNumber();
     const userId=previousUserId+1;
    //  const userObject={
@@ -278,8 +262,8 @@ class App extends Component {
     const  cid2= await ipfs.add(avatar);
     console.log(cid2.path);
     let avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
-    this.state.cryptoBoysContract.methods
-           .createUser(userName,email,social,repo,bio,avatarHash)
+    this.state.usersContract.methods
+           .createUser(userName,avatarHash,email,social,repo,bio)
            .send({ from: this.state.accountAddress })
            .on("confirmation", () => {
              localStorage.setItem(this.state.accountAddress, new Date().getTime());
@@ -297,10 +281,25 @@ class App extends Component {
          
 };
 
-updateUser=async(userName,email,social,repo,bio,avatar)=>{
-  console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
+updateUser=async(userName,email,social,repo,bio,avatar,account)=>{
+  console.log(userName,email,social,repo,bio,avatar,account)
   //let previousUserId;
-  const nameIsUsed=await this.state.cryptoBoysContract.methods.userNameExists(userName).call();
+  const getUserName=await this.state.usersContract.methods.allUsers(account).call();
+ if(getUserName[1]==userName){
+  const  cid2= await ipfs.add(avatar);
+  console.log(cid2.path);
+  let avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+  this.state.usersContract.methods
+         .updateUser(userName,avatarHash,email,social,repo,bio)
+         .send({ from: this.state.accountAddress })
+         .on("confirmation", () => {
+           localStorage.setItem(this.state.accountAddress, new Date().getTime());
+           this.setState({ loading: false });
+           window.location.reload();
+         })
+ }
+ else{
+  const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
   console.log(nameIsUsed);
   if(!nameIsUsed){
    //previousUserId=await this.state.cryptoBoysContract.methods.userCounter().call();
@@ -318,7 +317,7 @@ updateUser=async(userName,email,social,repo,bio,avatar)=>{
    const  cid2= await ipfs.add(avatar);
    console.log(cid2.path);
    let avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
-   this.state.cryptoBoysContract.methods
+   this.state.usersContract.methods
           .updateUser(userName,email,social,repo,bio,avatarHash)
           .send({ from: this.state.accountAddress })
           .on("confirmation", () => {
@@ -332,7 +331,7 @@ updateUser=async(userName,email,social,repo,bio,avatar)=>{
     this.setState({ nameIsUsed: true });
     this.setState({ loading: false });
   }
-}
+}}
   
         
 };
@@ -517,7 +516,7 @@ updateUser=async(userName,email,social,repo,bio,avatar)=>{
                   accountAddress={this.state.accountAddress}
                   accountBalance={this.state.accountBalance}
                   nameIsUsed={this.state.nameIsUsed}
-                 // userContract={this.state.userContract}
+                 usersContract={this.state.usersContract}
                 />
               )}
             />
@@ -534,6 +533,7 @@ updateUser=async(userName,email,social,repo,bio,avatar)=>{
                   buyCryptoBoy={this.buyCryptoBoy}
                   callbackFromParent={this.myCallback2}
                   cryptoBoysContract={this.state.cryptoBoysContract}
+                  usersContract={this.state.usersContract}
                 />
               )}
             />
@@ -577,6 +577,7 @@ updateUser=async(userName,email,social,repo,bio,avatar)=>{
                   }
                   callbackFromParent1={this.myCallback2}
                   cryptoBoysContract={this.state.cryptoBoysContract}
+                  usersContract={this.state.usersContract}
                 />
                 
               )}
@@ -597,7 +598,8 @@ updateUser=async(userName,email,social,repo,bio,avatar)=>{
                clickedAddress={this.state.clickedAddress}
                callbackFromParent={this.myCallback2}
                callBack={this.tokenIDfun}
-               cryptoBoysContract={this.state.cryptoBoysContract}/>
+               cryptoBoysContract={this.state.cryptoBoysContract}
+               usersContract={this.state.usersContract}/>
               )}
             />
           

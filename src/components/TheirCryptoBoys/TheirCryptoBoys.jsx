@@ -27,7 +27,8 @@ const TheirCryptoBoys = ({
   cryptoBoys,
   totalTokensOwnedByAccount,
   callbackFromParent1,
-  cryptoBoysContract
+  cryptoBoysContract,
+  usersContract
 
 }) => {
   const [loading, setLoading] = useState(false);
@@ -74,6 +75,7 @@ const TheirCryptoBoys = ({
           <TheirAccountDetails 
           accountAddress={accountAddress}
           cryptoBoysContract={cryptoBoysContract}
+          usersContract={usersContract}
           />
         </div>
         </div>

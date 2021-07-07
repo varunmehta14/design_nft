@@ -14,7 +14,8 @@ const AllCryptoBoys = ({
   toggleForSale,
   buyCryptoBoy,
   callbackFromParent,
-  cryptoBoysContract
+  cryptoBoysContract,
+  usersContract
 }) => {
   
   const [loading, setLoading] = useState(false);
@@ -89,6 +90,7 @@ const AllCryptoBoys = ({
                 buyCryptoBoy={buyCryptoBoy}
                 callbackFromParent={myCallback1}
                 cryptoBoysContract={cryptoBoysContract}
+                usersContract={usersContract}
               />
                
               </div>

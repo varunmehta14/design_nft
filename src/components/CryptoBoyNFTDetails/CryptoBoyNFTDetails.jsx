@@ -26,16 +26,16 @@ const CryptoBoyNFTDetails=(props)=> {
     getCurrentUser();
   },[]);
   const getCurrentUser=(async()=>{
-    if(props.cryptoBoysContract){
-    const current1=await props.cryptoBoysContract.methods
+    if(props.usersContract){
+    const current1=await props.usersContract.methods
     .allUsers(props.cryptoboy.mintedBy)
     .call();
     setMintedByName(current1[1]);
-    const current2=await props.cryptoBoysContract.methods
+    const current2=await props.usersContract.methods
     .allUsers(props.cryptoboy.currentOwner)
     .call();
     setOwnedByName(current2[1]);
-    const current3=await props.cryptoBoysContract.methods
+    const current3=await props.usersContract.methods
     .allUsers(props.cryptoboy.previousOwner)
     .call();
     setPrevByName(current3[1]);

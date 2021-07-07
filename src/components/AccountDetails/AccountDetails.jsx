@@ -10,12 +10,12 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
   // useEffect(()=>{
   //   getCurrentUser();
   // },[]);
-  const[preview,setPreview]=useState(currentUser[5]);
-  const[userName,setUserName]=useState(currentUser[1]);
-  const[bio,setBio]=useState(currentUser[4]);
-  const[social,setSocial]=useState(currentUser[2]);
-  const[repo,setRepo]=useState(currentUser[3]);
-  const[email,setEmail]=useState(currentUser[6]);
+  const[preview,setPreview]=useState(currentUser.avatarHash);
+  const[userName,setUserName]=useState(currentUser.userName);
+  const[bio,setBio]=useState(currentUser.bio);
+  const[social,setSocial]=useState(currentUser.social);
+  const[repo,setRepo]=useState(currentUser.repo);
+  const[email,setEmail]=useState(currentUser.email);
   const[updateProfile,setUpdateProfile]=useState(false);
   const[src,setSrc]=useState("");
   
@@ -32,7 +32,7 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
     
     //setUpdatedUser(current);
     //console.log(updatedUser);
-    updateUser(userName,email,social,repo,bio,preview);
+    updateUser(userName,email,social,repo,bio,preview,accountAddress);
   }
   const onClose=()=> {
     setPreview(null)
@@ -54,19 +54,19 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
        <hr className="my-4" />
         <img src={currentUser[5]} alt="Avatar"/>
        <p className="lead">Account address :</p>
-       <h4>{currentUser[7]}</h4>
+       <h4>{currentUser.userAddress}</h4>
        <p className="lead">Account balance :</p>
        <h4>{accountBalance} Ξ</h4>
        <p className="lead">User Name :</p>
-       <h4>{currentUser[1]}</h4>
+       <h4>{currentUser.userName}</h4>
        <p className="lead">Email :</p>
-       <h4>{currentUser[6]} </h4>
+       <h4>{currentUser.email} </h4>
        <p className="lead">Social Media</p>
-       <h4>{currentUser[2]}</h4>
+       <h4>{currentUser.social}</h4>
        <p className="lead">Custom Url</p>
-       <h4>{currentUser[3]}</h4>
+       <h4>{currentUser.repo}</h4>
        <p className="lead">Bio :</p>
-       <h4>{currentUser[4]}</h4>
+       <h4>{currentUser.bio}</h4>
        <Button
            
            onClick={()=>setUpdateProfile(true)}

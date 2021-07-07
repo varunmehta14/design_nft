@@ -12,13 +12,13 @@ const NFTHighlights=(props)=> {
    
      
       const getCurrentUser=async()=>{
-       if(props.cryptoBoysContract){
+       if(props.usersContract){
          console.log(props)
-          const current1=await props.cryptoBoysContract.methods
+          const current1=await props.usersContract.methods
           .allUsers(props.cryptoboy.mintedBy)
           .call();
           setMintedByName(current1[1]);
-          const current2=await props.cryptoBoysContract.methods
+          const current2=await props.usersContract.methods
           .allUsers(props.cryptoboy.currentOwner)
           .call();
           setOwnedByName(current2[1]);

@@ -14,8 +14,7 @@ contract CryptoBoys is ERC721 {
   string public collectionNameSymbol;
   // total number of crypto boys minted
   uint256 public cryptoBoyCounter;
-  // total number of users
-  uint256 public userCounter;
+  
 
   // define crypto boy struct
    struct CryptoBoy {
@@ -32,17 +31,7 @@ contract CryptoBoys is ERC721 {
     bool forSale;
   }
 
-  //define user struct
-  struct User{
-    uint userId;
-    string userName;
-    string email;
-    string social;
-    string repo;
-    string bio;
-    string avatarhash;
-    address userAddress;
-  }
+  
 
   // map cryptoboy's token id to crypto boy
   mapping(uint256 => CryptoBoy) public allCryptoBoys;
@@ -52,14 +41,7 @@ contract CryptoBoys is ERC721 {
   mapping(string => bool) public imageExists;
   // check if token URI exists
   mapping(string => bool) public tokenURIExists;
-  // map cryptoboy's token id to crypto boy
-  mapping(address => User) public allUsers;
-  // check if token name exists
-  mapping(string => bool) public userNameExists;
-  // check if image exists
-  mapping(string => bool) public userEmailExists;
-  // check if user Address exists
-  mapping(address => bool) public userAddressExists;
+  
 
   // initialize contract while deployment with contract's collection name and token
   constructor() ERC721("Crypto Boys Collection", "CB") {
@@ -68,69 +50,7 @@ contract CryptoBoys is ERC721 {
   }
 
 
-  //create a user
-  function createUser(string memory _userName,string memory _avatar,string memory _email,string memory _social,string memory _repo,string memory _bio)external{
-    // check if thic fucntion caller is not an zero address account
-    require(msg.sender != address(0));
-    
-    // increment counter
-    userCounter ++;
-    // check if user already exists
-    require(!userAddressExists[msg.sender]); 
-    // check if the userName already exists or not
-    require(!userNameExists[_userName]);
-    // check if the email already exists or not
-    require(!userEmailExists[_email]);
-    // make passed userName as exists
-    userNameExists[_userName]=true;
-    // make passed userAddress as exists
-    userAddressExists[msg.sender]=true;
-    // make passed email as exists
-    userEmailExists[_email]=true;
-    // creat a new user (struct) and pass in new values
-    User memory newUser=User(
-     userCounter,
-     _userName,
-     _email,
-     _social,
-     _repo,
-     _bio,
-     _avatar,
-     msg.sender
-    );
-    // add the address and it's user to all users mapping
-    allUsers[msg.sender] = newUser;
-
-  }
-
-  //update User
-  function updateUser(string memory _userName,string memory _avatar,string memory _email,string memory _social,string memory _repo,string memory _bio)external{
-   // check if thic fucntion caller is not an zero address account
-    require(msg.sender != address(0));
-    // user already exists
-    require(userAddressExists[msg.sender]); 
-    // check if the userName already exists or not
-    require(!userNameExists[_userName]);
-    // check if the email already exists or not
-    //require(!userEmailExists[_email]);
-    // // make passed userName as exists
-    userNameExists[_userName]=true;
-    // make passed email as exists
-    userEmailExists[_email]=true;
-    // creat a new user (struct) and pass in new values
-    User memory newUser=User(
-     userCounter,
-     _userName,
-     _email,
-     _social,
-     _repo,
-     _bio,
-     _avatar,
-     msg.sender
-    );
-    // add the address and it's user to all users mapping
-    allUsers[msg.sender] = newUser;
-  }
+  
 
   // mint a new crypto boy
   function mintCryptoBoy(string memory _name, string memory _tokenURI, uint256 _price,string memory _imageHash) external {
