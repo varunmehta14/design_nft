@@ -7,8 +7,8 @@ import Queries from "../Queries/Queries";
 import Loading from "../Loading/Loading";
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
+//import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+//import { Carousel } from 'react-responsive-carousel';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 
@@ -108,7 +108,10 @@ console.log(mintedByName,ownedByName,prevByName)
               props.cryptoboy.mintedBy.slice(
                 props.cryptoboy.mintedBy.length - 5
               )} */}
-              {mintedByName}
+              {!(mintedByName=="")?(mintedByName):(props.cryptoboy.mintedBy.substr(0, 5) +
+              "..." +
+              props.cryptoboy.mintedBy.slice(
+                props.cryptoboy.mintedBy.length - 5))}
               </b> </Link>
           
           </div>
@@ -122,7 +125,11 @@ console.log(mintedByName,ownedByName,prevByName)
               props.cryptoboy.currentOwner.slice(
                 props.cryptoboy.currentOwner.length - 5
               )} */}
-              {ownedByName}
+              {!(ownedByName=="")?(ownedByName):(props.cryptoboy.currentOwner.substr(0, 5) +
+              "..." +
+              props.cryptoboy.currentOwner.slice(
+                props.cryptoboy.currentOwner.length - 5
+              ))}
               </b> </Link>
           
           </div>

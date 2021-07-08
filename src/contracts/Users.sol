@@ -18,6 +18,7 @@ contract Users{
     string avatarhash;
     address userAddress;
   }
+  
   // map cryptoboy's token id to crypto boy
   mapping(address => User) public allUsers;
   // check if token name exists
@@ -31,6 +32,9 @@ contract Users{
   //map address to userId
   mapping(address=>uint)public addressToId;
   
+  constructor(){
+   // userAddressExists[msg.sender]=true;
+  }
 
  
   //create a user

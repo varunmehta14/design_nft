@@ -1,10 +1,10 @@
 import React,{useState,useEffect} from "react";
 import Button from '@material-ui/core/Button';
-import Avatar from 'react-avatar-edit';
+//import Avatar from 'react-avatar-edit';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 
-const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,cryptoBoysContract,nameIsUsed}) => {
+const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,currentUser,cryptoBoysContract,nameIsUsed}) => {
 
   const[updatedUser,setUpdatedUser]=useState("");
   // useEffect(()=>{
@@ -33,7 +33,7 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
     
     //setUpdatedUser(current);
     //console.log(updatedUser);
-    updateUser(userName,email,social,repo,bio,preview,accountAddress);
+    updateUserFromApp(userName,preview,email,social,repo,bio,accountAddress);
   }
   const captureFile=(event)=> {
     event.preventDefault()
@@ -65,7 +65,7 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
        <hr className="my-4" />
         <img src={currentUser[6]} alt="Avatar"/>
        <p className="lead">Account address :</p>
-       <h4>{currentUser.userAddress}</h4>
+       <h4>{accountAddress}</h4>
        <p className="lead">Account balance :</p>
        <h4>{accountBalance} Ξ</h4>
        <p className="lead">User Name :</p>
@@ -111,6 +111,7 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
         </>
       )}
        </div> */}
+       <img src={currentUser[6]}/>
         <input type='file' multiple={true} onChange={captureFile} />
        </div> 
       <CssBaseline />
@@ -122,9 +123,11 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
         <p className="lead">Account balance :</p>
         <h4>{accountBalance} Ξ</h4>
         </div>
+
         <div className="card mt-1 p-4">
         
        <div style={{display:"flex",justifyContent:"space-evenly"}}>
+         
         <TextField
                 autoComplete="username"
                 name="userName"
@@ -187,6 +190,7 @@ const AccountDetails = ({ updateUser,accountAddress, accountBalance,currentUser,
         
         />
          </div>
+         <br/>
          <div style={{display:"flex",justifyContent:"space-evenly"}}>
           <Button
             type="submit"

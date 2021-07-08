@@ -242,7 +242,7 @@ class App extends Component {
     }
   };
 
-  createUser=async(userName,email,social,repo,bio,avatar)=>{
+  createUserFromApp=async(userName,avatar,email,social,repo,bio)=>{
    console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
    let previousUserId;
    const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
@@ -284,8 +284,8 @@ class App extends Component {
          
 };
 
-updateUser=async(userName,email,social,repo,bio,avatar,account)=>{
-  console.log(userName,email,social,repo,bio,avatar,account)
+updateUserFromApp=async(userName,avatar,email,social,repo,bio,account)=>{
+  console.log(userName,avatar,email,social,repo,bio,account)
   //let previousUserId;
   const getUserName=await this.state.usersContract.methods.allUsers(account).call();
  if(getUserName[1]==userName){
@@ -500,7 +500,7 @@ updateUser=async(userName,email,social,repo,bio,avatar,account)=>{
       
               render={() => (
                 <AccountDetails
-                  updateUser={this.updateUser}
+                  updateUserFromApp={this.updateUserFromApp}
                   accountAddress={this.state.accountAddress}
                   accountBalance={this.state.accountBalance}
                   currentUser={this.state.currentUser}
@@ -514,7 +514,7 @@ updateUser=async(userName,email,social,repo,bio,avatar,account)=>{
       
               render={() => (
                 <Profile
-                  createUser={this.createUser}
+                  createUserFromApp={this.createUserFromApp}
                   //currentUser={this.state.currentUser}
                  // users={this.state.users}
                   accountAddress={this.state.accountAddress}

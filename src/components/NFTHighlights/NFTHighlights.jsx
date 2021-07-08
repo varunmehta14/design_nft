@@ -7,8 +7,8 @@ import Loading from "../Loading/Loading";
 const NFTHighlights=(props)=> {
   console.log(props)
     
-      const [mintedByName,setMintedByName]=useState(" ") 
-      const [ownedByName,setOwnedByName]=useState(" ") 
+      const [mintedByName,setMintedByName]=useState(props.cryptoboy.mintedBy) 
+      const [ownedByName,setOwnedByName]=useState(props.cryptoboy.currentOwner) 
    
      
       const getCurrentUser=async()=>{
@@ -60,7 +60,10 @@ console.log(mintedByName,ownedByName)
           props.cryptoboy.mintedBy.slice(
             props.cryptoboy.mintedBy.length - 5
           )} */}
-          {mintedByName}
+          {!(mintedByName=="")?(mintedByName):(props.cryptoboy.mintedBy.substr(0, 5) +
+              "..." +
+              props.cryptoboy.mintedBy.slice(
+                props.cryptoboy.mintedBy.length - 5))}
           </Link>
       </p>
       <p>
@@ -71,7 +74,11 @@ console.log(mintedByName,ownedByName)
           props.cryptoboy.currentOwner.slice(
             props.cryptoboy.currentOwner.length - 5
           )} */}
-          {ownedByName}
+          {!(ownedByName=="")?(ownedByName):(props.cryptoboy.currentOwner.substr(0, 5) +
+              "..." +
+              props.cryptoboy.currentOwner.slice(
+                props.cryptoboy.currentOwner.length - 5
+              ))}
           </Link>
       </p>
    

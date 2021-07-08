@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Avatar from 'react-avatar-edit'
+//import Avatar from 'react-avatar-edit'
 
 function Copyright() {
   return (
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function Profile( { createUser,accountAddress, accountBalance,nameIsUsed }) {
+export default function Profile( { createUserFromApp,accountAddress, accountBalance,nameIsUsed }) {
   const classes = useStyles();
   const[preview,setPreview]=useState(null);
   const[src,setSrc]=useState("");
@@ -79,7 +79,7 @@ export default function Profile( { createUser,accountAddress, accountBalance,nam
   const handleSubmit=(e)=>{
     e.preventDefault();
     console.log(userName,email,social,repo,bio,buffer)
-    createUser(userName,email,social,repo,bio,buffer);
+    createUserFromApp(userName,buffer,email,social,repo,bio);
   }
   const captureFile=(event)=> {
     event.preventDefault()
@@ -205,7 +205,7 @@ export default function Profile( { createUser,accountAddress, accountBalance,nam
          <div style={{display:"flex",justifyContent:"space-evenly"}}>
           <Button
             type="submit"
-            
+           // href="/account"
             variant="contained"
             color="primary"
             className={classes.submit}

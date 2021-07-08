@@ -1,4 +1,6 @@
 import React,{useState,useEffect} from "react";
+import Avatar from '@material-ui/core/Avatar';
+import { makeStyles } from '@material-ui/core/styles';
 
 
 const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract}) => {
@@ -19,14 +21,25 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract})
   console.log(cryptoBoysContract)
   console.log(accountAddress);
   console.log(currentUser);
+
+  const useStyles = makeStyles((theme) => ({
+   
+    large: {
+      width: theme.spacing(10),
+      height: theme.spacing(10),
+    },
+  }));
   return (
     <div>
       
        
         <hr className="my-4" />
-         <img src={currentUser[5]} alt="Avatar"/>
+        <div style={{display:"flex",justifyContent:"center"}}>
+        <Avatar alt={currentUser.userName} src={currentUser.avatarhash} className={useStyles().large}/>
+        </div>
+        
         <p className="lead">Account address :</p>
-        <h4>{currentUser.userAddress}</h4>
+        <h4>{accountAddress}</h4>
        
         <p className="lead">User Name :</p>
         <h4>{currentUser.userName}</h4>
