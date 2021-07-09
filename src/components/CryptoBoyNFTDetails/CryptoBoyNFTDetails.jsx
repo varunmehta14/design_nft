@@ -10,7 +10,8 @@ import GridListTile from '@material-ui/core/GridListTile';
 //import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 //import { Carousel } from 'react-responsive-carousel';
 import { Slide } from 'react-slideshow-image';
-import 'react-slideshow-image/dist/styles.css'
+import 'react-slideshow-image/dist/styles.css';
+import Avatar from '@material-ui/core/Avatar';
 
 
 
@@ -18,29 +19,37 @@ const CryptoBoyNFTDetails=(props)=> {
   console.log(props.cryptoBoysContract)
   const [ newCryptoBoyPrice,setNewCryptoBoyPrice]=useState("");
   const [ isHidden,setIsHidden]=useState(true);
-  const [mintedByName,setMintedByName]=useState(" ") 
-  const [ownedByName,setOwnedByName]=useState(" ") 
-  const [prevByName,setPrevByName]=useState(" ") 
+  const [mintedByName,setMintedByName]=useState("") 
+  const [ownedByName,setOwnedByName]=useState("") 
+  const [prevByName,setPrevByName]=useState("") 
+  const [mintedAvatar,setMintedAvatar]=useState(null) 
+  const [ownedAvatar,setOwnedAvatar]=useState(null) 
+  const [prevAvatar,setPrevAvatar]=useState(null) 
 
-  useEffect(()=>{
-    getCurrentUser();
-  },[]);
   const getCurrentUser=(async()=>{
     if(props.usersContract){
     const current1=await props.usersContract.methods
     .allUsers(props.cryptoboy.mintedBy)
     .call();
     setMintedByName(current1[1]);
+    setMintedAvatar(current1[6])
     const current2=await props.usersContract.methods
     .allUsers(props.cryptoboy.currentOwner)
     .call();
     setOwnedByName(current2[1]);
+    setOwnedAvatar(current2[6]);
     const current3=await props.usersContract.methods
     .allUsers(props.cryptoboy.previousOwner)
     .call();
     setPrevByName(current3[1]);
+     setPrevAvatar(current3[6]);
     }
-  })
+  }) 
+ 
+  useEffect(()=>{
+    getCurrentUser();
+  },[props.cryptoboy]);
+  
 console.log(mintedByName,ownedByName,prevByName)         
   
   const callChangeTokenPriceFromApp = (tokenId, newPrice) => {
@@ -99,40 +108,36 @@ console.log(mintedByName,ownedByName,prevByName)
           </p>
           <hr/>
           <div className="d-flex flex-wrap " style={{justifyContent:"space-evenly"}}>
-          <div style={{display:"flex"}}>
-          
-            <span className="font-weight-bold">Creator</span> :{" "}
-            <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.mintedBy)}}><b>
-              {/* {props.cryptoboy.mintedBy.substr(0, 5) +
-              "..." +
-              props.cryptoboy.mintedBy.slice(
-                props.cryptoboy.mintedBy.length - 5
-              )} */}
-              {!(mintedByName=="")?(mintedByName):(props.cryptoboy.mintedBy.substr(0, 5) +
+          <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+        <span className="font-weight-bold">Created By :&nbsp;</span>
+        <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.mintedBy)}}>
+           {/* {props.cryptoboy.mintedBy.substr(0, 5) +
+          "..." +
+          props.cryptoboy.mintedBy.slice(
+            props.cryptoboy.mintedBy.length - 5
+          )} */}
+          {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;{mintedByName}</div>):(props.cryptoboy.mintedBy.substr(0, 5) +
               "..." +
               props.cryptoboy.mintedBy.slice(
                 props.cryptoboy.mintedBy.length - 5))}
-              </b> </Link>
-          
-          </div>
+          </Link>
+      </div>
           <Divider orientation="vertical" flexItem />
-          <div style={{display:"flex",paddingLeft:"5px"}}>
-          
-            <span className="font-weight-bold">Owner</span> :{" "}
-            <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.currentOwner)}}><b>
-              {/* {props.cryptoboy.currentOwner.substr(0, 5) +
-              "..." +
-              props.cryptoboy.currentOwner.slice(
-                props.cryptoboy.currentOwner.length - 5
-              )} */}
-              {!(ownedByName=="")?(ownedByName):(props.cryptoboy.currentOwner.substr(0, 5) +
+          <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+        <span className="font-weight-bold">Owned By :&nbsp;</span>
+        <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.currentOwner)}}> 
+        {/* {props.cryptoboy.currentOwner.substr(0, 5) +
+          "..." +
+          props.cryptoboy.currentOwner.slice(
+            props.cryptoboy.currentOwner.length - 5
+          )} */}
+          {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;{ownedByName}</div>):(props.cryptoboy.currentOwner.substr(0, 5) +
               "..." +
               props.cryptoboy.currentOwner.slice(
                 props.cryptoboy.currentOwner.length - 5
               ))}
-              </b> </Link>
-          
-          </div>
+          </Link>
+      </div>
           </div>
           <hr/>
           
@@ -276,17 +281,22 @@ console.log(mintedByName,ownedByName,prevByName)
         <div className="card-body   justify-content-center">
         <h5>Sales History</h5>
         <hr/>
-            <p>
-            <span className="font-weight-bold">Previous Owner</span> :{" "}
-            <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.previousOwner)}}>
-              {/* {props.cryptoboy.previousOwner.substr(0, 5) +
+        <div style={{display:"flex",alignItems:"center"}}>
+        <span className="font-weight-bold">Previous Owner :&nbsp;</span>
+        <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.previousOwner)}}> 
+        {/* {props.cryptoboy.currentOwner.substr(0, 5) +
+          "..." +
+          props.cryptoboy.currentOwner.slice(
+            props.cryptoboy.currentOwner.length - 5
+          )} */}
+          {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(props.cryptoboy.previousOwner.substr(0, 5) +
               "..." +
               props.cryptoboy.previousOwner.slice(
                 props.cryptoboy.previousOwner.length - 5
-              )} */}
-              {prevByName}
-              </Link>
-          </p>
+              ))}
+          </Link>
+      </div>
+      <hr/>
           <p>
             <span className="font-weight-bold">No. of Transfers</span> :{" "}
             {props.cryptoboy.numberOfTransfers.toNumber()}

@@ -2,13 +2,16 @@ import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import Loading from "../Loading/Loading";
+import Avatar from '@material-ui/core/Avatar';
 
 
 const NFTHighlights=(props)=> {
   console.log(props)
     
       const [mintedByName,setMintedByName]=useState(props.cryptoboy.mintedBy) 
+      const [mintedAvatar,setMintedAvatar]=useState(null) 
       const [ownedByName,setOwnedByName]=useState(props.cryptoboy.currentOwner) 
+      const [ownedAvatar,setOwnedAvatar]=useState(null) 
    
      
       const getCurrentUser=async()=>{
@@ -18,10 +21,12 @@ const NFTHighlights=(props)=> {
           .allUsers(props.cryptoboy.mintedBy)
           .call();
           setMintedByName(current1[1]);
+          setMintedAvatar(current1[6])
           const current2=await props.usersContract.methods
           .allUsers(props.cryptoboy.currentOwner)
           .call();
           setOwnedByName(current2[1]);
+          setOwnedAvatar(current2[6]);
         }
         
        
@@ -52,37 +57,39 @@ console.log(mintedByName,ownedByName)
        
         <h4>{props.cryptoboy.tokenName}</h4>
       </p>
-      <p>
-        <span className="font-weight-bold">Created By</span> :{" "}
+      <hr/>
+      <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+        <span className="font-weight-bold">Created By :&nbsp;</span>
         <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.mintedBy)}}>
            {/* {props.cryptoboy.mintedBy.substr(0, 5) +
           "..." +
           props.cryptoboy.mintedBy.slice(
             props.cryptoboy.mintedBy.length - 5
           )} */}
-          {!(mintedByName=="")?(mintedByName):(props.cryptoboy.mintedBy.substr(0, 5) +
+          {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;{mintedByName}</div>):(props.cryptoboy.mintedBy.substr(0, 5) +
               "..." +
               props.cryptoboy.mintedBy.slice(
                 props.cryptoboy.mintedBy.length - 5))}
           </Link>
-      </p>
-      <p>
-        <span className="font-weight-bold">Owned By</span> :{" "}
+      </div>
+      <hr/>
+      <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+        <span className="font-weight-bold">Owned By :&nbsp;</span>
         <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.currentOwner)}}> 
         {/* {props.cryptoboy.currentOwner.substr(0, 5) +
           "..." +
           props.cryptoboy.currentOwner.slice(
             props.cryptoboy.currentOwner.length - 5
           )} */}
-          {!(ownedByName=="")?(ownedByName):(props.cryptoboy.currentOwner.substr(0, 5) +
+          {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;{ownedByName}</div>):(props.cryptoboy.currentOwner.substr(0, 5) +
               "..." +
               props.cryptoboy.currentOwner.slice(
                 props.cryptoboy.currentOwner.length - 5
               ))}
           </Link>
-      </p>
-   
-     
+      </div>
+  
+     <hr/>
       <p>
         <span className="font-weight-bold">Price</span> :{" "}
         {window.web3.utils.fromWei(
@@ -92,7 +99,7 @@ console.log(mintedByName,ownedByName)
         Ξ
       </p>
      
-     
+     <hr/>
    <Link to="/nftDetails" style={{textDecoration:"none"}}onClick={()=>handleClick(props.cryptoboy.tokenId.toNumber())} ><Button variant="contained" >View NFT</Button></Link> 
      
     
