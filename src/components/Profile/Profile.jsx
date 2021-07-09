@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 //import Avatar from 'react-avatar-edit'
+import AvatarImageCropper from 'react-avatar-image-cropper';
 
 function Copyright() {
   return (
@@ -53,13 +54,14 @@ const useStyles = makeStyles((theme) => ({
 export default function Profile( { createUserFromApp,accountAddress, accountBalance,nameIsUsed }) {
   const classes = useStyles();
   const[preview,setPreview]=useState(null);
-  const[src,setSrc]=useState("");
+  const[uploaded,setUploaded]=useState(false);
   const[userName,setUserName]=useState("");
   const[bio,setBio]=useState("");
   const[social,setSocial]=useState("");
   const[repo,setRepo]=useState("");
   const[email,setEmail]=useState("");
   const[buffer,setBuffer]=useState(null);
+  const[src,setSrc]=useState("");
 
   const onClose=()=> {
     setPreview(null)
@@ -76,21 +78,48 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
       elem.target.value = "";
     };
   }
+  const handleSubmit2=(e)=>{
+    e.preventDefault();
+    console.log(buffer)
+  }
   const handleSubmit=(e)=>{
     e.preventDefault();
     console.log(userName,email,social,repo,bio,buffer)
-    createUserFromApp(userName,buffer,email,social,repo,bio);
+    createUserFromApp(userName,email,social,repo,bio,buffer);
   }
-  const captureFile=(event)=> {
-    event.preventDefault()
-    const file = event.target.files[0]
-    const reader = new window.FileReader()
-    reader.readAsArrayBuffer(file)
-    reader.onloadend = () => {
-      setBuffer( Buffer(reader.result) )
-      console.log('buffer', buffer)
-    }
+  // const captureFile=(event)=> {
+  //   event.preventDefault()
+  //   const file = event.target.files[0]
+  //   const reader = new window.FileReader()
+  //   reader.readAsArrayBuffer(file)
+  //   reader.onloadend = () => {
+  //     setBuffer( Buffer(reader.result) )
+  //     console.log('buffer', buffer)
+  //   }
+  // }
+  const actions = [
+    <button key={0}>test_cancel</button>,
+    <button key={1} onClick={console.log("cliccked")}>test_apply</button>,
+]
+  const apply = (file) => {
+    
+    // handle the blob file you want
+    // such as get the image src
+    console.log(file);
+    setUploaded(true);
+    setBuffer(file);
+     var src = window.URL.createObjectURL(file);
+     setSrc(src);
+    // console.log(src);
+//     const reader = new window.FileReader()
+//     reader.readAsBinaryString(file)
+//     console.log(reader.result)
+//     reader.onloadend = () => {
+//       setBuffer( Buffer(reader.result) )
+ console.log('buffer', buffer)
+// }
   }
+  
   return (
     <div style={{padding:"1%"}}>
     <div className="card mt-1">
@@ -103,6 +132,19 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
           </h5>
         </div>
         </div>  
+        <form onSubmit={handleSubmit2}>
+        {uploaded? (
+        <div style={{display:"flex",justifyContent:"center"}}>
+        <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+         <img src={src} alt="Preview" />
+          </div> 
+        <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+        <AvatarImageCropper apply={apply} text={"Change"} />
+          </div>   
+        </div>): <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+            <AvatarImageCropper apply={apply}  />
+        </div>}
+        </form>
         <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
         {/* <div  className="d-flex  p-4  mt-1 border ">
           <div className="col-md-6">
@@ -127,7 +169,9 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
       )}
        </div>
        </div>  */}
-       <input type='file' multiple={true} onChange={captureFile} />
+        
+       
+       {/* <input type='file' multiple={true} onChange={captureFile} /> */}
       <CssBaseline />
       <div className={classes.paper}>
      

@@ -242,7 +242,7 @@ class App extends Component {
     }
   };
 
-  createUserFromApp=async(userName,avatar,email,social,repo,bio)=>{
+  createUserFromApp=async(userName,email,social,repo,bio,avatar)=>{
    console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
    let previousUserId;
    const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
@@ -264,7 +264,7 @@ class App extends Component {
     console.log(cid2.path);
     let avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
     this.state.usersContract.methods
-           .createUser(userName,avatarHash,email,social,repo,bio)
+           .createUser(userName,email,social,repo,bio,avatarHash)
            .send({ from: this.state.accountAddress })
            .on("confirmation", () => {
              localStorage.setItem(this.state.accountAddress, new Date().getTime());
@@ -284,16 +284,26 @@ class App extends Component {
          
 };
 
-updateUserFromApp=async(userName,avatar,email,social,repo,bio,account)=>{
-  console.log(userName,avatar,email,social,repo,bio,account)
-  //let previousUserId;
+updateUserFromApp=async(userName,email,social,repo,bio,avatar,account)=>{
+  console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
+  let avatarHash;
   const getUserName=await this.state.usersContract.methods.allUsers(account).call();
+  console.log(avatar instanceof Blob)
  if(getUserName[1]==userName){
+
+  if (avatar instanceof Blob){
+    console.log("name is  used and avatar is blob")
   const  cid2= await ipfs.add(avatar);
   console.log(cid2.path);
-  let avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+  
+   avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+  }
+  else{
+    console.log("name is  used and avatar is link")
+    avatarHash=avatar;
+  }
   this.state.usersContract.methods
-         .updateUser(userName,avatarHash,email,social,repo,bio)
+         .updateUser(userName,email,social,repo,bio,avatarHash)
          .send({ from: this.state.accountAddress })
          .on("confirmation", () => {
            localStorage.setItem(this.state.accountAddress, new Date().getTime());
@@ -318,9 +328,17 @@ updateUserFromApp=async(userName,avatar,email,social,repo,bio,account)=>{
   //    bio:bio,
   //    avatar:avatar
   //  }
-   const  cid2= await ipfs.add(avatar);
-   console.log(cid2.path);
-   let avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+  
+  if(avatar instanceof Blob){
+    console.log("name is not used and avatar is blob")
+    const  cid2= await ipfs.add(avatar);
+    console.log(cid2.path);
+     avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+  }
+  else {
+    console.log("name is not used and avatar is link")
+     avatarHash=avatar;
+  }
    this.state.usersContract.methods
           .updateUser(userName,email,social,repo,bio,avatarHash)
           .send({ from: this.state.accountAddress })

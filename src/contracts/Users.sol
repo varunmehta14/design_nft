@@ -38,7 +38,7 @@ contract Users{
 
  
   //create a user
-  function createUser(string memory _userName,string memory _avatar,string memory _email,string memory _social,string memory _repo,string memory _bio)external{
+  function createUser(string memory _userName,string memory _email,string memory _social,string memory _repo,string memory _bio,string memory _avatar)external{
     // check if thic fucntion caller is not an zero address account
     require(msg.sender != address(0));
     
@@ -74,7 +74,7 @@ contract Users{
   }
 
   //update User
-  function updateUser(string memory _userName,string memory _avatar,string memory _email,string memory _social,string memory _repo,string memory _bio)external{
+  function updateUser(string memory _userName,string memory _email,string memory _social,string memory _repo,string memory _bio,string memory _avatar)external{
    // check if thic fucntion caller is not an zero address account
     require(msg.sender != address(0));
     // user already exists

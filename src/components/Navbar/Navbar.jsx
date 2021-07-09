@@ -134,11 +134,11 @@ const renderMenu = (
     {console.log(currentUser)}
     {!currentUser[1]?( <MenuItem onClick={handleMenuClose}><Link to="/profile" className="nav-link" >
     Profile
-              </Link></MenuItem>):null}
-   
-    <MenuItem onClick={handleMenuClose}><Link to="/account" className="nav-link" >
+              </Link></MenuItem>):(   <MenuItem onClick={handleMenuClose}><Link to="/account" className="nav-link" >
     My account
-              </Link></MenuItem>
+              </Link></MenuItem>)}
+   
+ 
   </Menu>
 );
 

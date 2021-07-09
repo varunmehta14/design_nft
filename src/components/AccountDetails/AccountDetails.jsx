@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 //import Avatar from 'react-avatar-edit';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import AvatarImageCropper from 'react-avatar-image-cropper';
 
 const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,currentUser,cryptoBoysContract,nameIsUsed}) => {
 
@@ -10,16 +11,22 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
   // useEffect(()=>{
   //   getCurrentUser();
   // },[]);
-  const[preview,setPreview]=useState(currentUser.avatarHash);
+  //const[preview,setPreview]=useState(currentUser.avatarHash);
   const[userName,setUserName]=useState(currentUser.userName);
   const[bio,setBio]=useState(currentUser.bio);
   const[social,setSocial]=useState(currentUser.social);
   const[repo,setRepo]=useState(currentUser.repo);
   const[email,setEmail]=useState(currentUser.email);
   const[updateProfile,setUpdateProfile]=useState(false);
-  const[src,setSrc]=useState("");
-  const[buffer,setBuffer]=useState(null);
+  const[src,setSrc]=useState(currentUser.avatarhash);
+  const[buffer,setBuffer]=useState(currentUser.avatarhash);
   
+  
+  console.log(buffer);
+  const handleSubmit2=async(e)=>{
+    e.preventDefault();
+    
+  }
   const handleSubmit=async(e)=>{
     e.preventDefault();
     // const current=await cryptoBoysContract.methods
@@ -30,40 +37,60 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
     // //  this.setState({ loading: false });
     //   window.location.reload();
     // });
-    
+    console.log(buffer)
     //setUpdatedUser(current);
     //console.log(updatedUser);
-    updateUserFromApp(userName,preview,email,social,repo,bio,accountAddress);
+    updateUserFromApp(userName,email,social,repo,bio,buffer,accountAddress);
   }
-  const captureFile=(event)=> {
-    event.preventDefault()
-    const file = event.target.files[0]
-    const reader = new window.FileReader()
-    reader.readAsArrayBuffer(file)
-    reader.onloadend = () => {
-      setBuffer( Buffer(reader.result) )
-      console.log('buffer', buffer)
-    }
-  }
-  const onClose=()=> {
-    setPreview(null)
+  // const captureFile=(event)=> {
+  //   event.preventDefault()
+  //   const file = event.target.files[0]
+  //   const reader = new window.FileReader()
+  //   reader.readAsArrayBuffer(file)
+  //   reader.onloadend = () => {
+  //     setBuffer( Buffer(reader.result) )
+  //     console.log('buffer', buffer)
+  //   }
+  // }
+  // const onClose=()=> {
+  //   setPreview(null)
+  // }
+  
+  // const onCrop=(preview)=> {
+  //   setPreview(preview)
+  //   console.log(preview)
+  // }
+  const apply = (file) => {
+    
+    // handle the blob file you want
+    // such as get the image src
+    console.log(file);
+    
+    setBuffer(file);
+     var src = window.URL.createObjectURL(file);
+     setSrc(src);
+    // console.log(src);
+//     const reader = new window.FileReader()
+//     reader.readAsBinaryString(file)
+//     console.log(reader.result)
+//     reader.onloadend = () => {
+//       setBuffer( Buffer(reader.result) )
+ console.log('buffer', buffer)
+// }
   }
   
-  const onCrop=(preview)=> {
-    setPreview(preview)
-    console.log(preview)
-  }
+  
 
-  console.log(cryptoBoysContract)
-  console.log(accountAddress);
-  console.log(currentUser[6]);
+ // console.log(cryptoBoysContract)
+ // console.log(accountAddress);
+ // console.log(currentUser[6]);
   return (
     <div>
       <div className="jumbotron">
         {!updateProfile?(<> <h1 className="display-5">Account Details</h1>
        
        <hr className="my-4" />
-        <img src={currentUser[6]} alt="Avatar"/>
+        <img src={currentUser.avatarhash} alt="Avatar"/>
        <p className="lead">Account address :</p>
        <h4>{accountAddress}</h4>
        <p className="lead">Account balance :</p>
@@ -88,8 +115,8 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
            Update Profile
          </Button> </>):
        (<>
-       <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
-        <div  className="d-flex  p-4  mt-1 border ">
+      
+       
           {/* <div className="col-md-6">
       <Avatar
        //   width={390}
@@ -111,10 +138,23 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
         </>
       )}
        </div> */}
-       <img src={currentUser[6]}/>
-        <input type='file' multiple={true} onChange={captureFile} />
-       </div> 
+       <div style={{display:"flex",justifyContent:"center"}}>
+      
+        <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+         <img src={src} alt="Preview" />
+          </div> 
+          <form onSubmit={handleSubmit2}>
+        <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+         
+        <AvatarImageCropper apply={apply} text={"Change"} />
+        
+          </div> 
+          </form>
+           
+        </div>
+       
       <CssBaseline />
+      <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
       <div >
      
       <div className="card mt-1 p-4">
