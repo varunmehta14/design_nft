@@ -143,7 +143,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
         <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
          <img src={src} alt="Preview" />
           </div> 
-          <form onSubmit={handleSubmit2}>
+          <form onSubmit={handleSubmit2} style={{display:"contents"}}>
         <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
          
         <AvatarImageCropper apply={apply} text={"Change"} />
