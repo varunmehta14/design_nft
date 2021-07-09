@@ -2,7 +2,7 @@ import React, { Component,useEffect,useState } from "react";
 import clsx from 'clsx';
 //import {create} from 'doka';
 import {useDropzone} from 'react-dropzone';
-import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage";
+
 import {Paper,FormControl,InputLabel,Input,TextField,Grid,IconButton,InputAdornment,FormHelperText,Button} from '@material-ui/core';
 import LocalOfferOutlinedIcon from '@material-ui/icons/LocalOfferOutlined';
 import AccessTimeSharpIcon from '@material-ui/icons/AccessTimeSharp';
@@ -49,58 +49,7 @@ const img = {
   height: "auto"
 };
 
-// const thumbButton = {
-//   position: "absolute",
-//   right: 10,
-//   bottom: 10,
-//   background: "rgba(0,0,0,.8)",
-//   color: "#fff",
-//   border: 0,
-//   borderRadius: ".325em",
-//   cursor: "pointer"
-// };
 
-// const editImage = (image, done) => {
-//   const imageFile = image.doka ? image.doka.file : image;
-//   const imageState = image.doka ? image.doka.data : {};
-//   create({
-//     // recreate previous state
-//     ...imageState,
-
-//     // load original image file
-//     src: imageFile,
-//     outputData: true,
-
-//     onconfirm: ({ file, data }) => {
-//       Object.assign(file, {
-//         doka: { file: imageFile, data }
-//       });
-//       done(file);
-//     }
-//   });
-// };
-const currencies = [
-  {
-    value: 'USD',
-    label: '$',
-  },
-  {
-    value: 'EUR',
-    label: '€',
-  },
-  {
-    value: 'BTC',
-    label: '฿',
-  },
-  {
-    value: 'JPY',
-    label: '¥',
-  },
-  {
-    value: 'ETH',
-    label: 'Ξ',
-  },
-];
 
 export default function FormAndPreview(props) {
  //console.log(props.imageIsUsed)
@@ -218,33 +167,14 @@ useEffect(()=>{
      // cryptoBoyCopies
     );
   };
-  // const receive=(cryptoBoyPrice)=>{
-  //   let receivePrice=(cryptoBoyPrice*2.5)/100;
-    
-  // }
-  
-  
-
-  // const onSubmit=(event)=> {
-  //   event.preventDefault()
-  //   ipfs.files.add(this.state.buffer, (error, result) => {
-  //     if(error) {
-  //       console.error(error)
-  //       return
-  //     }
-  //     this.simpleStorageInstance.set(result[0].hash, { from: this.state.account }).then((r) => {
-  //       return this.setState({ ipfsHash: result[0].hash })
-  //       console.log('ifpsHash', this.state.ipfsHash)
-  //     })
-  //   })
-  // }
+ 
 
   
  
    
     return (
       
-      <div>
+      <div style={{padding:"0.5%"}}>
         {show?(<> <div className="card mt-1">
           <div className="card-body  
           
@@ -256,7 +186,7 @@ useEffect(()=>{
           </div>
         </div></>):null}
        
-       {show ?(<> <div className="p-4 mt-1 border" style={{display:"flex",justifyContent:"space-evenly"}}>
+       {show ?(<div style={{padding:"0.5%"}}> <div className="p-4 mt-1 border" style={{display:"flex",justifyContent:"space-evenly"}}>
        
       
          
@@ -270,7 +200,7 @@ useEffect(()=>{
            </button>
            
          
-         </div></>):(null)}
+         </div></div>):(null)}
        
         
          {single?
@@ -293,7 +223,7 @@ useEffect(()=>{
           </div>
         </div>
         
-         <form onSubmit={callMintMyNFTFromApp} className="pt-4 mt-1">
+         <form onSubmit={callMintMyNFTFromApp} style={{padding:"0.5%"}}className="pt-4 mt-1">
         
              
         <div className={useStyles.root} >

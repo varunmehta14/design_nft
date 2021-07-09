@@ -1,18 +1,18 @@
 import React,{useState} from 'react';
-// import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+
+
 import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
+
 import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-//import Avatar from 'react-avatar-edit'
+import validator from 'validator';
+
+
 import AvatarImageCropper from 'react-avatar-image-cropper';
 
 function Copyright() {
@@ -62,45 +62,47 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
   const[email,setEmail]=useState("");
   const[buffer,setBuffer]=useState(null);
   const[src,setSrc]=useState("");
+  const [emailError, setEmailError] = useState(false);
 
-  const onClose=()=> {
-    setPreview(null)
+  const validateEmail = (e) => {
+    var email = e;
+  
+    if (validator.isEmail(email)) {
+     
+      setEmailError(false)
+    } else {
+      setEmailError(true)
+    }
+    return emailError;
   }
   
-  const onCrop=(preview)=> {
-    setPreview(preview)
-    console.log(preview)
-  }
-
-  const onBeforeFileLoad=(elem)=> {
-    if(elem.target.files[0].size > 71680){
-      alert("File is too big!");
-      elem.target.value = "";
-    };
-  }
+  
   const handleSubmit2=(e)=>{
     e.preventDefault();
     console.log(buffer)
   }
   const handleSubmit=(e)=>{
     e.preventDefault();
+    // if(buffer==null){
+    //   // console.log(defaultProfile)
+    //   // setBuffer(defaultProfile)
+    //   // const reader =new window.FileReader();
+    //   // reader.readAsArrayBuffer(defaultProfile);
+    //   // reader.onloadEnd=()=>{
+    //   //   setBuffer(Buffer(reader.result));
+    //   //   console.log("buffer null",buffer)
+    //   // }
+    // }
+    const em=validateEmail(email);
+    if(em){
+      createUserFromApp(userName,email,social,repo,bio,buffer);
+    }
+
     console.log(userName,email,social,repo,bio,buffer)
-    createUserFromApp(userName,email,social,repo,bio,buffer);
+    
   }
-  // const captureFile=(event)=> {
-  //   event.preventDefault()
-  //   const file = event.target.files[0]
-  //   const reader = new window.FileReader()
-  //   reader.readAsArrayBuffer(file)
-  //   reader.onloadend = () => {
-  //     setBuffer( Buffer(reader.result) )
-  //     console.log('buffer', buffer)
-  //   }
-  // }
-  const actions = [
-    <button key={0}>test_cancel</button>,
-    <button key={1} onClick={console.log("cliccked")}>test_apply</button>,
-]
+  
+  
   const apply = (file) => {
     
     // handle the blob file you want
@@ -110,12 +112,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
     setBuffer(file);
      var src = window.URL.createObjectURL(file);
      setSrc(src);
-    // console.log(src);
-//     const reader = new window.FileReader()
-//     reader.readAsBinaryString(file)
-//     console.log(reader.result)
-//     reader.onloadend = () => {
-//       setBuffer( Buffer(reader.result) )
+   
  console.log('buffer', buffer)
 // }
   }
@@ -124,9 +121,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
     <div style={{padding:"1%"}}>
     <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
-          {/* <h5>
-            Total No. of Designs They Own : {myAllCryptoBoys.length}
-          </h5> */}
+    
            <h5>
            Profile
           </h5>
@@ -134,45 +129,19 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
         </div>  
         <form onSubmit={handleSubmit2}>
         {uploaded? (
-        <div style={{display:"flex",justifyContent:"center"}}>
+        <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
         <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
          <img src={src} alt="Preview" />
           </div> 
         <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
         <AvatarImageCropper apply={apply} text={"Change"} />
           </div>   
-        </div>): <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+        </div>): ( <div style={{display:"flex",justifyContent:"center",padding:"1%"}}><div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
             <AvatarImageCropper apply={apply}  />
-        </div>}
+        </div></div>)}
         </form>
         <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
-        {/* <div  className="d-flex  p-4  mt-1 border ">
-          <div className="col-md-6">
-      <Avatar
-       //   width={390}
-        //  height={295}
-          onCrop={onCrop}
-          onClose={onClose}
-         // onBeforeFileLoad={onBeforeFileLoad}
-        // exportMimeType="image/jpeg"
-          src={src}
-        />
-        </div>
-        <div className="col-md-6" style={{margin:"auto"}}>
-        {preview && (
-        <>
-          <img src={preview} alt="Preview" />
-          <a href={preview} download="avatar">
-            Download image
-          </a>
-        </>
-      )}
-       </div>
-       </div>  */}
-        
-       
-       {/* <input type='file' multiple={true} onChange={captureFile} /> */}
-      <CssBaseline />
+           <CssBaseline />
       <div className={classes.paper}>
      
       <div className="card mt-1 p-4">
@@ -191,6 +160,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
                 required
                 value={userName}
                 onChange={(e)=>{setUserName(e.target.value)}}
+               
                 id="userName"
                 label="User Name"
                 autoFocus
@@ -205,9 +175,14 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
             id="email"
             label="Email Address"
             name="email"
+            error={emailError}
             autoComplete="email"
             autoFocus
           />
+            {/* <span style={{
+          fontWeight: 'bold',
+          color: 'red',
+        }}>{emailError}</span> */}
         </div>
         <br/>
         <div style={{display:"flex",justifyContent:"space-evenly"}}>

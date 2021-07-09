@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import AvatarImageCropper from 'react-avatar-image-cropper';
+import validator from 'validator';
 
 const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,currentUser,cryptoBoysContract,nameIsUsed}) => {
 
@@ -20,6 +21,19 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
   const[updateProfile,setUpdateProfile]=useState(false);
   const[src,setSrc]=useState(currentUser.avatarhash);
   const[buffer,setBuffer]=useState(currentUser.avatarhash);
+  const [emailError, setEmailError] = useState(false);
+
+  const validateEmail = (e) => {
+    var email = e;
+  
+    if (validator.isEmail(email)) {
+     
+      setEmailError(false)
+    } else {
+      setEmailError(true)
+    }
+    return emailError;
+  }
   
   
   console.log(buffer);
@@ -38,9 +52,13 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
     //   window.location.reload();
     // });
     console.log(buffer)
+    const em=validateEmail(email);
     //setUpdatedUser(current);
     //console.log(updatedUser);
-    updateUserFromApp(userName,email,social,repo,bio,buffer,accountAddress);
+    if(em){
+      updateUserFromApp(userName,email,social,repo,bio,buffer,accountAddress);
+    }
+    
   }
   // const captureFile=(event)=> {
   //   event.preventDefault()
@@ -85,12 +103,13 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
  // console.log(accountAddress);
  // console.log(currentUser[6]);
   return (
-    <div>
+    <div style={{padding:"0.5%"}}>
       <div className="jumbotron">
         {!updateProfile?(<> <h1 className="display-5">Account Details</h1>
        
        <hr className="my-4" />
         <img src={currentUser.avatarhash} alt="Avatar"/>
+        <hr/>
        <p className="lead">Account address :</p>
        <h4>{accountAddress}</h4>
        <p className="lead">Account balance :</p>
@@ -105,6 +124,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
        <h4>{currentUser.repo}</h4>
        <p className="lead">Bio :</p>
        <h4>{currentUser.bio}</h4>
+       <hr/>
        <Button
            
            onClick={()=>setUpdateProfile(true)}
@@ -138,8 +158,13 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
         </>
       )}
        </div> */}
+        <div className="card mt-1 p-4">
+          <div>
+        <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setUpdateProfile(false)}}>
+            ← Back
+           </Button></div>
        <div style={{display:"flex",justifyContent:"center"}}>
-      
+     
         <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
          <img src={src} alt="Preview" />
           </div> 
@@ -152,7 +177,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
           </form>
            
         </div>
-       
+        </div>
       <CssBaseline />
       <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
       <div >
@@ -191,6 +216,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
             name="email"
             autoComplete="email"
             autoFocus
+            error={emailError}
           />
         </div>
         <br/>

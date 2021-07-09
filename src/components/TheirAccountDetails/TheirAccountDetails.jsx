@@ -30,7 +30,7 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract})
     },
   }));
   return (
-    <div>
+    <div style={{padding:"0.5%"}}>
       
        
         <hr className="my-4" />

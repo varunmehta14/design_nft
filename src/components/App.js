@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { HashRouter,Route,withRouter } from "react-router-dom";
 import "./App.css";
-
+import defaultProfile from "./Profile/blank-profile-picture-973460_640.png"
 import Web3 from "web3";
 import CryptoBoys from "../abis/CryptoBoys.json";
 import Users from "../abis/Users.json";
@@ -245,6 +245,10 @@ class App extends Component {
   createUserFromApp=async(userName,email,social,repo,bio,avatar)=>{
    console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
    let previousUserId;
+  //  if(avatar==null){
+  //    console.log("avatar null");
+  //   avatar=defaultProfile;
+  // }
    const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
    console.log(nameIsUsed);
    if(!nameIsUsed){
@@ -287,6 +291,7 @@ class App extends Component {
 updateUserFromApp=async(userName,email,social,repo,bio,avatar,account)=>{
   console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
   let avatarHash;
+ 
   const getUserName=await this.state.usersContract.methods.allUsers(account).call();
   console.log(avatar instanceof Blob)
  if(getUserName[1]==userName){
@@ -493,7 +498,7 @@ updateUserFromApp=async(userName,email,social,repo,bio,avatar,account)=>{
       this.state.loading ? (
         <Loading />
       ) :( */}
-      <> <Container maxWidth="xl"> 
+      <> <Container maxWidth="false" style={{padding:"0%"}}> 
     
       
         <HashRouter basename="/">

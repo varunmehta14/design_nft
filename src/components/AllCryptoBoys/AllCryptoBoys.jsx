@@ -40,7 +40,7 @@ const AllCryptoBoys = ({
   }
   
   return (
-    <div>
+    <div style={{padding:"0.5%"}}>
       <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
           <h5>
