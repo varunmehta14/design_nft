@@ -1,7 +1,7 @@
 # Digital NFT Marketplace
 #### NFT marketplace where users mint ERC721 implemented Digital designs NFTs and manage them on the Ethereum Blockchain.
 #
-![Alt text](screenshots\view nft.png )
+
 ### Stack
 - [Solidity](https://docs.soliditylang.org/en/v0.7.6/) - Object-oriented, high-level language for implementing smart contracts.
 - [Bootstrap 4](https://getbootstrap.com/) - CSS framework for faster and easier web development.
@@ -38,7 +38,6 @@ ganache-cli --port 7545 --quiet
 ```
 #### Install dependencies
 ```
-
 npm install
 ```
 #### Compile smart contract
@@ -59,3 +58,41 @@ npm start
 ```
 #### Open metamask browser wallet and connect network to Localhost 7545.
 #### Import accounts from ganache-cli into the metamask browser wallet to make transactions on the DApp.
+
+### Screenshots
+-Create Profile
+![Profile](screenshots/1profile.png )
+-View account Details
+![Account](screenshots/2account.png )
+-Update Profile
+![Update](screenshots/3updateProfile.png )
+-Details Changed
+![Details changed](screenshots/4detailschanged.png )
+-Create a design
+![Create](screenshots/5create.png )
+-View created design on our marketplace
+![View](screenshots/6view.png )
+-View all details of the design
+![View all details](screenshots/7viewalldetails.png )
+-Change Price
+![Change price](screenshots/8changeprice.png )
+-Price changed
+![Price changed](screenshots/9pricechanged.png )
+-Swap account and create new design
+![Swap acc and create new](screenshots/10swapaccountandcreatenew.png )
+-Removed from sale
+![Removed from sale](screenshots/11removedfromsale.png )
+-Not for sale
+![Not for sale](screenshots/12notforsale.png )
+-Bought by other account
+![Bought by other account](screenshots/13boughtbyotheraccount.png )
+-My collection
+![My collection](screenshots/14mycollection.png )
+-My bought
+![My bought](screenshots/15mybought.png )
+-Marketplace
+![Marketplace](screenshots/16marketplace.png )
+-View others account and their collection
+![View other account and collection](screenshots/17viewotheraccount.png )
+-View others account and their bought
+![View other account and bought](screenshots/18viewotherbought.png )
