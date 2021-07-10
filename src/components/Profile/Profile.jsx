@@ -94,7 +94,9 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
     //   // }
     // }
     const em=validateEmail(email);
-    if(em){
+    console.log(em)
+    if(!em){
+      
       createUserFromApp(userName,email,social,repo,bio,buffer);
     }
 

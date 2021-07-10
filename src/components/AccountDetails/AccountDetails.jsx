@@ -55,7 +55,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
     const em=validateEmail(email);
     //setUpdatedUser(current);
     //console.log(updatedUser);
-    if(em){
+    if(!em){
       updateUserFromApp(userName,email,social,repo,bio,buffer,accountAddress);
     }
     
