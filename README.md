@@ -1,7 +1,22 @@
 # Digital NFT Marketplace
 #### NFT marketplace where users mint ERC721 implemented Digital designs NFTs and manage them on the Ethereum Blockchain.
 #
+###Structure
+```
 
+├── migrations/                -> Contains Migrations for Smart Contracts
+├── public/
+├── screenshots/
+├── src
+|   ├── abis/
+|   ├── components/            -> Contains Frontend React pages
+|   ├── contracts/             -> Conatains Smart Contracts
+|   └── index.js
+├── test/                      -> Contains Chai and Mocha tests for Smart Contracts
+├── package.json               -> Npm package.json file
+└── truffle-config.js          -> Configuration file for truffle
+
+```
 ### Stack
 - [Solidity](https://docs.soliditylang.org/en/v0.7.6/) - Object-oriented, high-level language for implementing smart contracts.
 - [Bootstrap 4](https://getbootstrap.com/) - CSS framework for faster and easier web development.
