@@ -1,7 +1,7 @@
 # Digital NFT Marketplace
 #### NFT marketplace where users mint ERC721 implemented Digital designs NFTs and manage them on the Ethereum Blockchain.
 #
-
+![Alt text](screenshots\view nft.png )
 ### Stack
 - [Solidity](https://docs.soliditylang.org/en/v0.7.6/) - Object-oriented, high-level language for implementing smart contracts.
 - [Bootstrap 4](https://getbootstrap.com/) - CSS framework for faster and easier web development.
