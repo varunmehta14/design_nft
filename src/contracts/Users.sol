@@ -74,7 +74,7 @@ contract Users{
   }
 
   //update User
-  function updateUser(string memory _userName,string memory _email,string memory _social,string memory _repo,string memory _bio,string memory _avatar)external{
+  function updateUser(string memory _userName,string memory _oldemail,string memory _email,string memory _social,string memory _repo,string memory _bio,string memory _avatar)external{
    // check if thic fucntion caller is not an zero address account
     require(msg.sender != address(0));
     // user already exists
@@ -105,6 +105,7 @@ contract Users{
     // check if the email already exists or not
     //require(!userEmailExists[_email]);
     // // make passed userName as exists
+    userEmailExists[_oldemail]=false;
     userNameExists[_userName]=true;
     // make passed email as exists
     userEmailExists[_email]=true;

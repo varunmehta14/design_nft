@@ -7,8 +7,8 @@ import Queries from "../Queries/Queries";
 import Loading from "../Loading/Loading";
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-//import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-//import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import Avatar from '@material-ui/core/Avatar';
@@ -326,17 +326,17 @@ console.log(mintedByName,ownedByName,prevByName)
       </GridList>
     </div> */}
     
-    {/* <Carousel >
+    <Carousel showArrows={true} dynamicHeight={true}>
     {props.cryptoboy.metaData.images.map((image) => (
-         <div >
+         
             <img src={image}/>
-         </div>
+         
         
             
           
         ))}
-    </Carousel> */}
-    <div>
+    </Carousel>
+    {/* <div>
     <Slide slidesToShow={2}slidesToScroll={2}{...properties}>
     {props.cryptoboy.metaData.images.map((image) => (
         
@@ -353,7 +353,7 @@ console.log(mintedByName,ownedByName,prevByName)
           
         ))}
           </Slide>
-      </div>
+      </div> */}
     </div>    
          
         

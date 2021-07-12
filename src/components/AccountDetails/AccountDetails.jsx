@@ -14,6 +14,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
   // },[]);
   //const[preview,setPreview]=useState(currentUser.avatarHash);
   const[userName,setUserName]=useState(currentUser.userName);
+  //const[olduserName,setOlduserName]=useState(currentUser.userName);
   const[bio,setBio]=useState(currentUser.bio);
   const[social,setSocial]=useState(currentUser.social);
   const[repo,setRepo]=useState(currentUser.repo);
@@ -22,23 +23,30 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
   const[src,setSrc]=useState(currentUser.avatarhash);
   const[buffer,setBuffer]=useState(currentUser.avatarhash);
   const [emailError, setEmailError] = useState(false);
+  const [clickedChange,setClickedChange]=useState(false);
 
+  const oldemail=currentUser.email;
+  
   const validateEmail = (e) => {
     var email = e;
   
     if (validator.isEmail(email)) {
      
       setEmailError(false)
+      return true;
     } else {
       setEmailError(true)
+      return false;
     }
-    return emailError;
+   
   }
   
   
   console.log(buffer);
   const handleSubmit2=async(e)=>{
+   
     e.preventDefault();
+   
     
   }
   const handleSubmit=async(e)=>{
@@ -53,10 +61,11 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
     // });
     console.log(buffer)
     const em=validateEmail(email);
+    console.log(em)
     //setUpdatedUser(current);
     //console.log(updatedUser);
-    if(!em){
-      updateUserFromApp(userName,email,social,repo,bio,buffer,accountAddress);
+    if(em){
+      updateUserFromApp(userName,oldemail,email,social,repo,bio,buffer,accountAddress);
     }
     
   }
@@ -87,6 +96,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
     setBuffer(file);
      var src = window.URL.createObjectURL(file);
      setSrc(src);
+     setClickedChange(false)
     // console.log(src);
 //     const reader = new window.FileReader()
 //     reader.readAsBinaryString(file)
@@ -164,19 +174,27 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
             ← Back
            </Button></div>
        <div style={{display:"flex",justifyContent:"center"}}>
-     
-        <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
-         <img src={src} alt="Preview" />
-          </div> 
-          <form onSubmit={handleSubmit2} style={{display:"contents"}}>
+     {clickedChange?( <form onSubmit={handleSubmit2} style={{display:"contents"}}>
         <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
          
         <AvatarImageCropper apply={apply} text={"Change"} />
         
           </div> 
-          </form>
-           
+          </form>  ):( <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+         <img src={src} alt="Preview" />
+          </div> )}
+       
+          
+         
         </div>
+        <div style={{display:"flex",justifyContent:"space-around"}}>
+        <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
+            Remove Dp
+           </Button>
+           <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setClickedChange(true)}}>
+            Change Dp
+           </Button> 
+          </div>  
         </div>
       <CssBaseline />
       <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
@@ -203,6 +221,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
                 id="userName"
                 label="User Name"
                 autoFocus
+                disabled={true}
           />
 
           <TextField

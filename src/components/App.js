@@ -45,6 +45,7 @@ class App extends Component {
       totalTokensOwnedByAccount: 0,
       imageIsUsed: false,
       nameIsUsed: false,
+      emailIsUsed: false,
       clickedAddress:"",
       tokenID:"",
       lastMintTime: null,
@@ -245,13 +246,12 @@ class App extends Component {
   createUserFromApp=async(userName,email,social,repo,bio,avatar)=>{
    console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
    let previousUserId;
-  //  if(avatar==null){
-  //    console.log("avatar null");
-  //   avatar=defaultProfile;
-  // }
+   let avatarHash;
+   
    const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
+   const emailIsUsed=await this.state.usersContract.methods.userEmailExists(email).call();
    console.log(nameIsUsed);
-   if(!nameIsUsed){
+   if(!nameIsUsed && !emailIsUsed){
     previousUserId=await this.state.usersContract.methods.userCounter().call();
     previousUserId=previousUserId.toNumber();
     const userId=previousUserId+1;
@@ -264,9 +264,13 @@ class App extends Component {
    //    bio:bio,
    //    avatar:avatar
    //  }
+   if(avatar instanceof Blob){
     const  cid2= await ipfs.add(avatar);
     console.log(cid2.path);
-    let avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+     avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+ }else{
+   avatarHash=avatar
+  }
     this.state.usersContract.methods
            .createUser(userName,email,social,repo,bio,avatarHash)
            .send({ from: this.state.accountAddress })
@@ -281,6 +285,7 @@ class App extends Component {
    else {
     {
      this.setState({ nameIsUsed: true });
+     this.setState({ emailIsUsed: true });
      this.setState({ loading: false });
    }
  }
@@ -288,8 +293,8 @@ class App extends Component {
          
 };
 
-updateUserFromApp=async(userName,email,social,repo,bio,avatar,account)=>{
-  console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
+updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=>{
+  console.log(userName,oldemail,email,social,repo,bio,avatar,this.state.accountAddress)
   let avatarHash;
  
   const getUserName=await this.state.usersContract.methods.allUsers(account).call();
@@ -308,7 +313,7 @@ updateUserFromApp=async(userName,email,social,repo,bio,avatar,account)=>{
     avatarHash=avatar;
   }
   this.state.usersContract.methods
-         .updateUser(userName,email,social,repo,bio,avatarHash)
+         .updateUser(userName,oldemail,email,social,repo,bio,avatarHash)
          .send({ from: this.state.accountAddress })
          .on("confirmation", () => {
            localStorage.setItem(this.state.accountAddress, new Date().getTime());
@@ -321,6 +326,7 @@ updateUserFromApp=async(userName,email,social,repo,bio,avatar,account)=>{
   const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
   console.log(nameIsUsed);
   if(!nameIsUsed){
+    this.setState({ nameIsUsed: false });
    //previousUserId=await this.state.cryptoBoysContract.methods.userCounter().call();
   // previousUserId=previousUserId.toNumber();
 //const userId=previousUserId+1;
@@ -345,7 +351,7 @@ updateUserFromApp=async(userName,email,social,repo,bio,avatar,account)=>{
      avatarHash=avatar;
   }
    this.state.usersContract.methods
-          .updateUser(userName,email,social,repo,bio,avatarHash)
+          .updateUser(userName,oldemail,email,social,repo,bio,avatarHash)
           .send({ from: this.state.accountAddress })
           .on("confirmation", () => {
             localStorage.setItem(this.state.accountAddress, new Date().getTime());
@@ -508,14 +514,17 @@ updateUserFromApp=async(userName,email,social,repo,bio,avatar,account)=>{
               path="/"
               exact
               render={() => (
-               <AllCryptoBoys
-               accountAddress={this.state.accountAddress}
-               cryptoBoys={this.state.cryptoBoys}
-               totalTokensMinted={this.state.totalTokensMinted}
-               changeTokenPrice={this.changeTokenPrice}
-               toggleForSale={this.toggleForSale}
-               buyCryptoBoy={this.buyCryptoBoy}
-               callbackFromParent={this.myCallback2}/>
+                <AllCryptoBoys
+                accountAddress={this.state.accountAddress}
+                cryptoBoys={this.state.cryptoBoys}
+                totalTokensMinted={this.state.totalTokensMinted}
+                changeTokenPrice={this.changeTokenPrice}
+                toggleForSale={this.toggleForSale}
+                buyCryptoBoy={this.buyCryptoBoy}
+                callbackFromParent={this.myCallback2}
+                cryptoBoysContract={this.state.cryptoBoysContract}
+                usersContract={this.state.usersContract}
+              />
               )}
             />
             <Route
@@ -543,6 +552,7 @@ updateUserFromApp=async(userName,email,social,repo,bio,avatar,account)=>{
                   accountAddress={this.state.accountAddress}
                   accountBalance={this.state.accountBalance}
                   nameIsUsed={this.state.nameIsUsed}
+                  emailIsUsed={this.state.emailIsUsed}
                  usersContract={this.state.usersContract}
                 />
               )}

@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function Profile( { createUserFromApp,accountAddress, accountBalance,nameIsUsed }) {
+export default function Profile( { createUserFromApp,accountAddress, accountBalance,nameIsUsed ,emailIsUsed}) {
   const classes = useStyles();
   const[preview,setPreview]=useState(null);
   const[uploaded,setUploaded]=useState(false);
@@ -60,9 +60,10 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
   const[social,setSocial]=useState("");
   const[repo,setRepo]=useState("");
   const[email,setEmail]=useState("");
-  const[buffer,setBuffer]=useState(null);
-  const[src,setSrc]=useState("");
+  const[buffer,setBuffer]=useState("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");
+  const[src,setSrc]=useState("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");
   const [emailError, setEmailError] = useState(false);
+  const [clickedChange,setClickedChange]=useState(false);
 
   const validateEmail = (e) => {
     var email = e;
@@ -70,10 +71,12 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
     if (validator.isEmail(email)) {
      
       setEmailError(false)
+      return true;
     } else {
       setEmailError(true)
+      return false;
     }
-    return emailError;
+   
   }
   
   
@@ -95,7 +98,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
     // }
     const em=validateEmail(email);
     console.log(em)
-    if(!em){
+    if(em){
       
       createUserFromApp(userName,email,social,repo,bio,buffer);
     }
@@ -114,7 +117,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
     setBuffer(file);
      var src = window.URL.createObjectURL(file);
      setSrc(src);
-   
+     setClickedChange(false)
  console.log('buffer', buffer)
 // }
   }
@@ -129,19 +132,28 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
           </h5>
         </div>
         </div>  
-        <form onSubmit={handleSubmit2}>
-        {uploaded? (
-        <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
+        <div style={{display:"flex",justifyContent:"center"}}>
+     {clickedChange?( <form onSubmit={handleSubmit2} style={{display:"contents"}}>
         <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
-         <img src={src} alt="Preview" />
-          </div> 
-        <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+         
         <AvatarImageCropper apply={apply} text={"Change"} />
-          </div>   
-        </div>): ( <div style={{display:"flex",justifyContent:"center",padding:"1%"}}><div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
-            <AvatarImageCropper apply={apply}  />
-        </div></div>)}
-        </form>
+        
+          </div> 
+          </form>  ):( <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+         <img src={src} alt="Preview" />
+          </div> )}
+       
+          
+         
+        </div>
+        <div style={{display:"flex",justifyContent:"space-around"}}>
+        <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
+            Remove Dp
+           </Button>
+           <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setClickedChange(true)}}>
+            Change Dp
+           </Button> 
+          </div>  
         <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
            <CssBaseline />
       <div className={classes.paper}>
@@ -162,7 +174,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
                 required
                 value={userName}
                 onChange={(e)=>{setUserName(e.target.value)}}
-               
+                error={nameIsUsed}
                 id="userName"
                 label="User Name"
                 autoFocus
@@ -239,7 +251,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
       </div>
       <div className="mt-4">
            {nameIsUsed ? (
-             <div className="alert alert-danger alert-dissmissible">
+             <div className="alert alert-danger ">
                <button
                  type="button"
                  className="close"
