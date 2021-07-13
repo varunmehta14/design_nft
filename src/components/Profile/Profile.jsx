@@ -7,10 +7,12 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 
 import Box from '@material-ui/core/Box';
-
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import validator from 'validator';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 
 import AvatarImageCropper from 'react-avatar-image-cropper';
@@ -46,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor:"#173e43"
   },
 }));
 
@@ -147,12 +150,19 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
          
         </div>
         <div style={{display:"flex",justifyContent:"space-around"}}>
-        <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
+        {/* <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
             Remove Dp
-           </Button>
-           <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setClickedChange(true)}}>
+           </Button> */}
+           <IconButton color="primary"  style={{float:"left"}}component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
+          <HighlightOffIcon style={{fontSize:"-webkit-xxx-large"}}/>
+        </IconButton>
+           {/* <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setClickedChange(true)}}>
             Change Dp
-           </Button> 
+           </Button>  */}
+           <IconButton color="primary" aria-label="upload picture" component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setClickedChange(true)}}>
+          <PhotoCamera style={{fontSize:"-webkit-xxx-large"}}/>
+        </IconButton>
+
           </div>  
         <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
            <CssBaseline />
@@ -242,6 +252,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
             variant="contained"
             color="primary"
             className={classes.submit}
+            
           >
             Create Profile
           </Button>
@@ -260,6 +271,21 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
                  <span>&times;</span>
                </button>
                <strong>This name is taken!</strong>
+             </div>
+           ) :     
+             null}
+         </div>
+         <div className="mt-4">
+           {emailIsUsed ? (
+             <div className="alert alert-danger ">
+               <button
+                 type="button"
+                 className="close"
+                 data-dismiss="alert"
+               >
+                 <span>&times;</span>
+               </button>
+               <strong>This email is taken!</strong>
              </div>
            ) :     
              null}

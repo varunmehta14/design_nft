@@ -232,13 +232,13 @@ const renderMobileMenu = (
     //   </div>
     // </nav>
     <div className={classes.grow}>
-      <AppBar position="static" style={{fontSize:"5 px" }}>
+      <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" }}>
         <Toolbar>
           <IconButton href="/">
         <img src={icon} alt="" style={{width:"32px",height:"32px"}}/>
         
         </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap >
+          <Typography className={classes.title} variant="h6" noWrap style={{fontFamily:"cursive"}}>
             Digitart
           </Typography>
           <div className={classes.search}>

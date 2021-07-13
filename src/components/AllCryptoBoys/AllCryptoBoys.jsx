@@ -7,19 +7,29 @@ import Loading from "../Loading/Loading";
 
 
 const AllCryptoBoys = ({
-  cryptoBoys,
+  
   accountAddress,
+  cryptoBoys,
+ // allcryptoBoys,
   totalTokensMinted,
   changeTokenPrice,
   toggleForSale,
   buyCryptoBoy,
   callbackFromParent,
   cryptoBoysContract,
-  usersContract
+  usersContract,
+  cryptoBoysCount
 }) => {
   
   const [loading, setLoading] = useState(false);
   const [address,setAddress]=useState("");
+  const [start,setStart]=useState(3);
+  const [startState,setStartState]=useState(1);
+  const [end,setEnd]=useState(4);
+  const [endState,setEndState]=useState(2);
+  const [allCryptoBoys,setAllCryptoBoys]=useState([]);
+  const [endOfDesigns,setEndOfDesigns]=useState(false);
+
  //console.log(cryptoBoys[0])
   useEffect(() => {
     if (cryptoBoys.length !== 0) {
@@ -29,15 +39,66 @@ const AllCryptoBoys = ({
         setLoading(false);
       }
     }
-  }, []);
+   
+   // loadDesigns(startState,endState)
+  }, [usersContract]);
   
-  console.log(cryptoBoysContract)
+  //console.log(cryptoBoysContract)
   const myCallback1=(dataFromChild1)=>{
     //console.log(dataFromChild)
    // setAddress(dataFromChild1)
     callbackFromParent(dataFromChild1)
    // console.log(address)
   }
+  // const loadDesigns=async(start,end)=>{
+  //   console.log("end",end)
+  // //   const cryptoBoysCount = await cryptoBoysContract.methods
+  // //   .cryptoBoyCounter()
+  // //   .call();
+  // // this.setState({ cryptoBoysCount }); 
+  // if(cryptoBoysContract){
+  //  for (var i = start; i <= end; i++) {
+  
+    
+  //   const cryptoBoy = await cryptoBoysContract.methods
+  //     .allCryptoBoys(i)
+  //     .call();
+  //     console.log(cryptoBoy)
+  //  setAllCryptoBoys(allCryptoBoys=>
+  //     [...allCryptoBoys, cryptoBoy]);
+     
+  //   if(i===totalTokensMinted){
+  //     setEndOfDesigns(true)
+  //     break;
+  //   }}
+  // }
+  // }
+  
+  // const scrollToEnd=()=>{
+  //   // this.setState({page:this.state.page+1});
+  //    setStart(end+1);
+  //    setEnd(end+2);
+  //    //setLoading(true);
+  //    console.log(console.log("start",start))
+     
+  //    loadDesigns(start,end);}
+     
+     
+   
+
+  //   // console.log(this.state.page);
+   
+ 
+  //  window.onscroll=function(){
+  //    console.log(window,document.documentElement.scrollTop,document.documentElement.offsetHeight)
+  //    if(
+  //      window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight 
+  //    ){
+  //     if(!endOfDesigns){
+  //      scrollToEnd();}
+  //      console.log("here")
+  //    }
+  //  }
   
   return (
     <div style={{padding:"0.5%"}}>

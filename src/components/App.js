@@ -25,6 +25,7 @@ const ipfs = ipfsClient({
   port: 5001,
   protocol: "https",
 });
+const PAGE_NUMBER=1;
 
 class App extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class App extends Component {
       cryptoBoysCount: 0,
       usersCount: 0,
       cryptoBoys: [],
+      
       users:[],
       loading: true,
       metamaskConnected: false,
@@ -50,14 +52,21 @@ class App extends Component {
       tokenID:"",
       lastMintTime: null,
       userLoggedIn:false,
-      currentUser:""
+      currentUser:"",
+      page:PAGE_NUMBER,
+      start:1,
+      startState:1,
+      end:2,
+      endState:2,
+      endOfDesigns:false,
      
     };
   }
-
+ 
   componentWillMount = async () => {
     await this.loadWeb3();
     await this.loadBlockchainData();
+  //  await this.loadDesigns(this.state.startState,this.state.endState);
     await this.setMetaData();
     await this.setMintBtnTimer();
   };
@@ -109,6 +118,7 @@ class App extends Component {
   
 
   loadBlockchainData = async () => {
+   
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
     console.log(accounts[0])
@@ -158,7 +168,10 @@ class App extends Component {
         //   });
         // }
          //get all the designs
-         for (var i = 1; i <= cryptoBoysCount; i++) {
+         
+         for (var i = 1; i <=cryptoBoysCount; i++) {
+           
+         
           const cryptoBoy = await cryptoBoysContract.methods
             .allCryptoBoys(i)
             .call();
@@ -201,6 +214,28 @@ class App extends Component {
         
     }}
   };
+
+//   loadDesigns=async(start,end)=>{
+//     console.log("end",end)
+//     const cryptoBoysCount = await this.state.cryptoBoysContract.methods
+//     .cryptoBoyCounter()
+//     .call();
+//  // this.setState({ cryptoBoysCount }); 
+//    for (var i = start; i <= end; i++) {
+     
+    
+//     const cryptoBoy = await this.state.cryptoBoysContract.methods
+//       .allCryptoBoys(i)
+//       .call();
+//     this.setState({
+//       allcryptoBoys: [...this.state.allcryptoBoys, cryptoBoy],
+//     });
+//     if(i==cryptoBoysCount){
+//       this.setState({endOfDesigns:true})
+//       break;
+//     }
+//   }
+//   }
   loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -297,9 +332,9 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
   console.log(userName,oldemail,email,social,repo,bio,avatar,this.state.accountAddress)
   let avatarHash;
  
-  const getUserName=await this.state.usersContract.methods.allUsers(account).call();
+  const getUserEmail=await this.state.usersContract.methods.allUsers(account).call();
   console.log(avatar instanceof Blob)
- if(getUserName[1]==userName){
+ if(getUserEmail[2]==email){
 
   if (avatar instanceof Blob){
     console.log("name is  used and avatar is blob")
@@ -324,8 +359,9 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
  }
  else{
   const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
+  const emailIsUsed=await this.state.usersContract.methods.userEmailExists(email).call();
   console.log(nameIsUsed);
-  if(!nameIsUsed){
+  if(!nameIsUsed && !emailIsUsed){
     this.setState({ nameIsUsed: false });
    //previousUserId=await this.state.cryptoBoysContract.methods.userCounter().call();
   // previousUserId=previousUserId.toNumber();
@@ -362,6 +398,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
   else {
    {
     this.setState({ nameIsUsed: true });
+    this.setState({ emailIsUsed: true });
     this.setState({ loading: false });
   }
 }}
@@ -487,13 +524,42 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         window.location.reload();
       });
   };
+   
+ 
+  
   
   render() {
+    // const scrollToEnd=()=>{
+    //  // this.setState({page:this.state.page+1});
+    //   this.setState({start:this.state.end+1});
+    //   this.setState({end:this.state.end+2});
+    //   this.setState({loading:true});
+    //   console.log(console.log("start",this.state.start))
+    //   if(!this.state.endOfDesigns){
+    //   this.loadDesigns(this.state.start,this.state.end);}
+    //   else{
+    //     return;
+    //   }
+    
+
+    //  // console.log(this.state.page);
+    // }
+  
+    // window.onscroll=function(){
+    //   //console.log(window,document.documentElement.scrollTop,document.documentElement.offsetHeight)
+    //   if(
+    //     window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight 
+    //   ){
+        
+    //     scrollToEnd()
+    //     console.log("here")
+    //   }
+    // }
     console.log(this.state.cryptoBoysContract)
     console.log(this.state.cryptoBoys)
     return (
     
-      <div className="fashion">
+      <div className="fashion" style={{backgroundColor:"#f1f1ef"}}>
       {/* {
       !this.state.metamaskConnected ? (
           <ConnectToMetamask connectToMetamask={this.connectToMetamask} />
@@ -516,6 +582,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
               render={() => (
                 <AllCryptoBoys
                 accountAddress={this.state.accountAddress}
+               // allcryptoBoys={this.state.allcryptoBoys}
                 cryptoBoys={this.state.cryptoBoys}
                 totalTokensMinted={this.state.totalTokensMinted}
                 changeTokenPrice={this.changeTokenPrice}
@@ -524,6 +591,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                 callbackFromParent={this.myCallback2}
                 cryptoBoysContract={this.state.cryptoBoysContract}
                 usersContract={this.state.usersContract}
+                cryptoBoysCount={this.state.cryptoBoysCount}
               />
               )}
             />
@@ -538,6 +606,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                   currentUser={this.state.currentUser}
                   cryptoBoysContract={this.state.cryptoBoysContract}
                   nameIsUsed={this.state.nameIsUsed}
+                  emailIsUsed={this.state.emailIsUsed}
                 />
               )}
             />
@@ -564,6 +633,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                 <AllCryptoBoys
                   accountAddress={this.state.accountAddress}
                   cryptoBoys={this.state.cryptoBoys}
+                 // allcryptoBoys={this.state.allcryptoBoys}
                   totalTokensMinted={this.state.totalTokensMinted}
                   changeTokenPrice={this.changeTokenPrice}
                   toggleForSale={this.toggleForSale}
@@ -599,6 +669,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                     this.state.totalTokensOwnedByAccount
                   }
                  callbackFromParent1={this.myCallback2}
+                 loading={this.state.loading}
                 />
               )}
             />
@@ -615,6 +686,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                   callbackFromParent1={this.myCallback2}
                   cryptoBoysContract={this.state.cryptoBoysContract}
                   usersContract={this.state.usersContract}
+                  loading={this.state.loading}
                 />
                 
               )}
@@ -636,7 +708,8 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                callbackFromParent={this.myCallback2}
                callBack={this.tokenIDfun}
                cryptoBoysContract={this.state.cryptoBoysContract}
-               usersContract={this.state.usersContract}/>
+               usersContract={this.state.usersContract}
+               loading={this.state.loading}/>
               )}
             />
           

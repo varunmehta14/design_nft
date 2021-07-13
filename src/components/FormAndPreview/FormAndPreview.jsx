@@ -9,6 +9,8 @@ import AccessTimeSharpIcon from '@material-ui/icons/AccessTimeSharp';
 import AllInclusiveSharpIcon from '@material-ui/icons/AllInclusiveSharp';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles'
+import ArrowBackIosSharpIcon from '@material-ui/icons/ArrowBackIosSharp';
+
 
 
 
@@ -210,10 +212,14 @@ useEffect(()=>{
           
           "><div style={{textAlign:"center"}}>
            
-            <Button variant="contained"color="default" style={{float:"left"}}onClick={()=>{setSingle(false);setShow(true)}}>
+            {/* <Button variant="contained"color="default" style={{float:"left"}}onClick={()=>{setSingle(false);setShow(true)}}>
             ← Back
-           </Button>
-           
+           </Button> */}
+          
+           <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setSingle(false);setShow(true)}}>
+          <ArrowBackIosSharpIcon />
+        </IconButton> 
+      
           
             <h3 style={{justifyContent:"center"}}>Create Single Collectible</h3>
             </div>
@@ -297,7 +303,8 @@ useEffect(()=>{
    color="default"
    className={useStyles.button}
    startIcon={<AddIcon />}
-   style={{borderRadius:20}}
+   style={{borderRadius:20,backgroundColor:"#173e43",color:"ghostwhite"}}
+  
    type="submit"
  >
    Create Item
@@ -337,9 +344,12 @@ useEffect(()=>{
           <div className="card-body   
           
           "><div style={{textAlign:"center"}}>
-            <Button variant="contained"color="default" style={{float:"left"}} onClick={()=>{setMultiple(false);setShow(true)}}>
+            {/* <Button variant="contained"color="default" style={{float:"left"}} onClick={()=>{setMultiple(false);setShow(true)}}>
             ← Back
-           </Button>
+           </Button> */}
+           <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setMultiple(false);setShow(true)}}>
+          <ArrowBackIosSharpIcon />
+        </IconButton> 
             <h3 style={{justifyContent:"center"}}>Create Multiple Collectibles</h3>
             </div>
             <br/>
@@ -435,7 +445,7 @@ useEffect(()=>{
    color="default"
    className={useStyles.button}
    startIcon={<AddIcon />}
-   style={{borderRadius:20}}
+   style={{borderRadius:20,backgroundColor:"#173e43",color:"ghostwhite"}}
    type="submit"
  >
    Create Item

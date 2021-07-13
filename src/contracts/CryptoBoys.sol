@@ -30,7 +30,10 @@ contract CryptoBoys is ERC721 {
     uint256 numberOfTransfers;
     bool forSale;
   }
-
+//  struct Collection{
+//    uint256 collectionId;
+//    CryptoBoy design;
+//  }
   
 
   // map cryptoboy's token id to crypto boy

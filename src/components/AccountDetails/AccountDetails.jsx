@@ -5,8 +5,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import AvatarImageCropper from 'react-avatar-image-cropper';
 import validator from 'validator';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import ArrowBackIosSharpIcon from '@material-ui/icons/ArrowBackIosSharp';
 
-const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,currentUser,cryptoBoysContract,nameIsUsed}) => {
+
+const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,currentUser,cryptoBoysContract,nameIsUsed,emailIsUsed}) => {
 
   const[updatedUser,setUpdatedUser]=useState("");
   // useEffect(()=>{
@@ -140,7 +145,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
            onClick={()=>setUpdateProfile(true)}
            variant="contained"
            color="primary"
-           
+           style={{backgroundColor:"#173e43"}}
          >
            Update Profile
          </Button> </>):
@@ -168,11 +173,16 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
         </>
       )}
        </div> */}
-        <div className="card mt-1 p-4">
+        <div className="card  p-4">
           <div>
-        <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setUpdateProfile(false)}}>
+        {/* <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setUpdateProfile(false)}}>
             ← Back
-           </Button></div>
+           </Button> */}
+           <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setUpdateProfile(false)}}>
+          <ArrowBackIosSharpIcon style={{fontSize:"-webkit-xxx-large"}}/>
+        </IconButton> 
+           </div>
+
        <div style={{display:"flex",justifyContent:"center"}}>
      {clickedChange?( <form onSubmit={handleSubmit2} style={{display:"contents"}}>
         <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
@@ -188,16 +198,22 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
          
         </div>
         <div style={{display:"flex",justifyContent:"space-around"}}>
-        <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
+        {/* <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
             Remove Dp
-           </Button>
-           <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setClickedChange(true)}}>
+           </Button> */}
+           <IconButton color="primary"  style={{float:"left"}}component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
+          <HighlightOffIcon style={{fontSize:"-webkit-xxx-large"}}/>
+        </IconButton>
+           {/* <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setClickedChange(true)}}>
             Change Dp
-           </Button> 
+           </Button>  */}
+           <IconButton color="primary" aria-label="upload picture" component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setClickedChange(true)}}>
+          <PhotoCamera style={{fontSize:"-webkit-xxx-large"}}/>
+        </IconButton>
           </div>  
         </div>
       <CssBaseline />
-      <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
+      <form validate onSubmit={handleSubmit}>
       <div >
      
       <div className="card mt-1 p-4">
@@ -205,9 +221,9 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
         <h4>{accountAddress}</h4>
         <p className="lead">Account balance :</p>
         <h4>{accountBalance} Ξ</h4>
-        </div>
+        
 
-        <div className="card mt-1 p-4">
+       <br/>
         
        <div style={{display:"flex",justifyContent:"space-evenly"}}>
          
@@ -279,7 +295,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
          <div style={{display:"flex",justifyContent:"space-evenly"}}>
           <Button
             type="submit"
-            
+            style={{backgroundColor:"#173e43"}}
             variant="contained"
             color="primary"
             //className={classes.submit}
@@ -287,11 +303,11 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
             Update Profile
           </Button>
         </div>
-        
         </div>
+        
       </div>
       <div className="mt-4">
-           {nameIsUsed ? (
+           {emailIsUsed ? (
              <div className="alert alert-danger alert-dissmissible">
                <button
                  type="button"
@@ -300,7 +316,7 @@ const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,curre
                >
                  <span>&times;</span>
                </button>
-               <strong>This name is taken!</strong>
+               <strong>This email is taken!</strong>
              </div>
            ) :     
              null}

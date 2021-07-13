@@ -1,6 +1,6 @@
 import React, { useState,useEffect,useCallback } from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
+
 import {Paper,Grid,Button,Select,Divider} from '@material-ui/core';
 import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage"; 
 import Queries from "../Queries/Queries";
@@ -12,11 +12,43 @@ import { Carousel } from 'react-responsive-carousel';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import Avatar from '@material-ui/core/Avatar';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import MobileStepper from '@material-ui/core/MobileStepper';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import SwipeableViews from 'react-swipeable-views';
+import { autoPlay } from 'react-swipeable-views-utils';
 
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+alignItems: "center",
+justifyContent: "center",
+backgroundSize: "cover"
+  },
+  gridList: {
+    flexWrap: 'nowrap',
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: 'translateZ(0)',
+  },
+  img: {
+    height: '100%',
+    maxHeight:400,
+    display: 'block',
+    maxWidth: 400,
+    overflow: 'hidden',
+    width: '100%',
+  },
+}));
 
 const CryptoBoyNFTDetails=(props)=> {
+
+  const classes=useStyles();
+  const theme=useTheme();
   console.log(props.cryptoBoysContract)
+  console.log(props.cryptoboy)
   const [ newCryptoBoyPrice,setNewCryptoBoyPrice]=useState("");
   const [ isHidden,setIsHidden]=useState(true);
   const [mintedByName,setMintedByName]=useState("") 
@@ -25,6 +57,8 @@ const CryptoBoyNFTDetails=(props)=> {
   const [mintedAvatar,setMintedAvatar]=useState(null) 
   const [ownedAvatar,setOwnedAvatar]=useState(null) 
   const [prevAvatar,setPrevAvatar]=useState(null) 
+  const [activeStep, setActiveStep] = useState(0);
+  const maxSteps = props.cryptoboy.metaData.images.length;
 
   const getCurrentUser=(async()=>{
     if(props.usersContract){
@@ -62,26 +96,24 @@ console.log(mintedByName,ownedByName,prevByName)
     props.callBack(tokId)
   }
 
- const useStyles = makeStyles((theme) => ({
-    root: {
-      display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  backgroundSize: "cover"
-    },
-    gridList: {
-      flexWrap: 'nowrap',
-      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-      transform: 'translateZ(0)',
-    },
-  }));
+ 
   const properties = {
     duration: 3000,
     autoplay: false,
     indicators: true,
   };
 
-  
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleStepChange = (step) => {
+    setActiveStep(step);
+  };
     //console.log(props.cryptoboy.imageHash)
    
     return (
@@ -102,11 +134,10 @@ console.log(mintedByName,ownedByName,prevByName)
          <div className="col-md-6 w-50  mt-1 border">
           
           <p>
-           <b style={{fontSize:"-webkit-xxx-large"}}>
+           <b style={{fontSize:"-webkit-xxx-large",color:"black",fontWeight:"bold"}}>
             {props.cryptoboy.tokenName}
             </b>
           </p>
-          <hr/>
           <div className="d-flex flex-wrap " style={{justifyContent:"space-evenly"}}>
           <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
         <span className="font-weight-bold">Created By :&nbsp;</span>
@@ -116,13 +147,13 @@ console.log(mintedByName,ownedByName,prevByName)
           props.cryptoboy.mintedBy.slice(
             props.cryptoboy.mintedBy.length - 5
           )} */}
-          {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;{mintedByName}</div>):(props.cryptoboy.mintedBy.substr(0, 5) +
+          {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{mintedByName}</b></div>):(props.cryptoboy.mintedBy.substr(0, 5) +
               "..." +
               props.cryptoboy.mintedBy.slice(
                 props.cryptoboy.mintedBy.length - 5))}
           </Link>
       </div>
-          <Divider orientation="vertical" flexItem />
+          <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
           <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
         <span className="font-weight-bold">Owned By :&nbsp;</span>
         <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.currentOwner)}}> 
@@ -131,7 +162,7 @@ console.log(mintedByName,ownedByName,prevByName)
           props.cryptoboy.currentOwner.slice(
             props.cryptoboy.currentOwner.length - 5
           )} */}
-          {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;{ownedByName}</div>):(props.cryptoboy.currentOwner.substr(0, 5) +
+          {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{ownedByName}</b></div>):(props.cryptoboy.currentOwner.substr(0, 5) +
               "..." +
               props.cryptoboy.currentOwner.slice(
                 props.cryptoboy.currentOwner.length - 5
@@ -139,11 +170,11 @@ console.log(mintedByName,ownedByName,prevByName)
           </Link>
       </div>
           </div>
-          <hr/>
+          <hr style={{borderWidth:"medium",borderColor:"revert"}}/>
           
           <p>
             <span className="font-weight-bold">Price</span> :{" "}
-            <b style={{fontSize:"xx-large"}}>
+            <b style={{fontSize:"xx-large",color:"black"}}>
             {window.web3.utils.fromWei(
               props.cryptoboy.price.toString(),
               "Ether"
@@ -163,9 +194,11 @@ console.log(mintedByName,ownedByName,prevByName)
                     props.cryptoboy.tokenId.toNumber(),
                     newCryptoBoyPrice
                   );
+                  
                 }}
+               
               >
-                <div className="form-group mt-4 ">
+                <div className="form-group mt-4 " >
                   <label htmlFor="newCryptoBoyPrice">
                     <span className="font-weight-bold">Change Token Price</span> :
                   </label>{" "}
@@ -222,7 +255,7 @@ console.log(mintedByName,ownedByName,prevByName)
             ) : null}
             </div>
           
-          <div>
+          <div style={{display:"flex",justifyContent:"center"}}>
             {props.accountAddress !== props.cryptoboy.currentOwner ? (
               props.cryptoboy.forSale ? (
                 <button
@@ -268,19 +301,19 @@ console.log(mintedByName,ownedByName,prevByName)
           <div className="col-md-6 w-50  mt-1 border">
           
          
-          <div className="card mt-1">
-        <div className="card-body   justify-content-center">
+          {/* <div className="card mt-1">
+        <div className="card-body   justify-content-center"> */}
         <h5>Description</h5>
-        <hr/>
+        
         <p>{props.cryptoboy.metaData.description}</p>
-        </div>
-      </div>
-            
-           
-      <div className="card mt-1">
+        {/* </div>
+      </div> */}
+             <hr/>
+            <h5>Sales History</h5>  
+      <div className="card mt-1" style={{backgroundColor:"ghostwhite",borderRadius:"15px"}}>
         <div className="card-body   justify-content-center">
-        <h5>Sales History</h5>
-        <hr/>
+        
+       
         <div style={{display:"flex",alignItems:"center"}}>
         <span className="font-weight-bold">Previous Owner :&nbsp;</span>
         <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.previousOwner)}}> 
@@ -314,7 +347,7 @@ console.log(mintedByName,ownedByName,prevByName)
                 )
         } 
       </div>   */}
-      <div className="card mt-1">
+      
       {/* <div className={useStyles.root} >
       <GridList className={useStyles.gridList} cols={3}>
         {props.cryptoboy.metaData.images.map((image) => (
@@ -326,7 +359,7 @@ console.log(mintedByName,ownedByName,prevByName)
       </GridList>
     </div> */}
     
-    <Carousel showArrows={true} dynamicHeight={true}>
+    {/* <Carousel showArrows={true} dynamicHeight={true}>
     {props.cryptoboy.metaData.images.map((image) => (
          
             <img src={image}/>
@@ -335,7 +368,43 @@ console.log(mintedByName,ownedByName,prevByName)
             
           
         ))}
-    </Carousel>
+    </Carousel> */}
+    <br/>
+    <div>
+    <AutoPlaySwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={activeStep}
+        onChangeIndex={handleStepChange}
+        enableMouseEvents
+      >
+        {props.cryptoboy.metaData.images.map((image,index) => (
+          <div style={{display:"flex",justifyContent:"center"}}>
+            {Math.abs(activeStep - index) <= 2 ? (
+              <img className={classes.img} src={image}  />
+            ) : null}
+          </div>
+        ))}
+      </AutoPlaySwipeableViews>
+      <MobileStepper
+        style={{backgroundColor:"#173e43",color:"aliceblue"}}
+        steps={maxSteps}
+        position="static"
+        variant="text"
+        activeStep={activeStep}
+        nextButton={
+          <Button size="small" style={{backgroundColor:"#dddfd4"}} onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+           
+            {theme.direction === 'rtl' ? <KeyboardArrowLeft  /> : <KeyboardArrowRight />}
+          </Button>
+        }
+        backButton={
+          <Button size="small" style={{backgroundColor:"#dddfd4"}}onClick={handleBack} disabled={activeStep === 0}>
+            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+           
+          </Button>
+        }
+      />
+      </div>
     {/* <div>
     <Slide slidesToShow={2}slidesToScroll={2}{...properties}>
     {props.cryptoboy.metaData.images.map((image) => (
@@ -354,7 +423,7 @@ console.log(mintedByName,ownedByName,prevByName)
         ))}
           </Slide>
       </div> */}
-    </div>    
+    
          
         
 
@@ -366,8 +435,8 @@ console.log(mintedByName,ownedByName,prevByName)
          <Queries cryptoBoysContract={props.cryptoBoysContract} token={props.cryptoboy.tokenId.toNumber()} imageUrl={props.cryptoboy.imageHash} />
          </div>
          </Grid>
-        </div>):(<><Loading/>
-        <h1 style={{textAlign:"center"}}>Select a nft</h1></>)
+        </div>):(<><Loading/>{props.loading?(<> <h1 style={{textAlign:"center"}}>Select a nft</h1></>):(null)}</>
+       )
       }
      </>
     );

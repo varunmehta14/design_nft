@@ -66,7 +66,7 @@ console.log(mintedByName,ownedByName)
           props.cryptoboy.mintedBy.slice(
             props.cryptoboy.mintedBy.length - 5
           )} */}
-          {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;{mintedByName}</div>):(props.cryptoboy.mintedBy.substr(0, 5) +
+          {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center",fontWeight:"bolder"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;@{mintedByName}</div>):(props.cryptoboy.mintedBy.substr(0, 5) +
               "..." +
               props.cryptoboy.mintedBy.slice(
                 props.cryptoboy.mintedBy.length - 5))}
@@ -81,7 +81,7 @@ console.log(mintedByName,ownedByName)
           props.cryptoboy.currentOwner.slice(
             props.cryptoboy.currentOwner.length - 5
           )} */}
-          {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;{ownedByName}</div>):(props.cryptoboy.currentOwner.substr(0, 5) +
+          {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center",fontWeight:"bolder"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;@{ownedByName}</div>):(props.cryptoboy.currentOwner.substr(0, 5) +
               "..." +
               props.cryptoboy.currentOwner.slice(
                 props.cryptoboy.currentOwner.length - 5
