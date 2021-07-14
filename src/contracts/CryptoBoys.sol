@@ -44,6 +44,8 @@ contract CryptoBoys is ERC721 {
   mapping(string => bool) public imageExists;
   // check if token URI exists
   mapping(string => bool) public tokenURIExists;
+  //check if tokenId exists
+  mapping(uint256=>bool)public tokenIdExists;
   
 
   // initialize contract while deployment with contract's collection name and token
@@ -90,6 +92,8 @@ contract CryptoBoys is ERC721 {
     tokenNameExists[_name] = true;
     // make passed image as exists
     imageExists[_imageHash]=true;
+    //make tokenId passed as exists
+    tokenIdExists[cryptoBoyCounter]=true;
 
     // creat a new crypto boy (struct) and pass in new values
     CryptoBoy memory newCryptoBoy = CryptoBoy(

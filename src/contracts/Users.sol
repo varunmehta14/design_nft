@@ -72,6 +72,7 @@ contract Users{
     );
     // add the address and it's user to all users mapping
     allUsers[msg.sender] = newUser;
+    nameToAddress[_userName]=msg.sender;
 
   }
 
@@ -124,6 +125,7 @@ contract Users{
     );
      // add the address and it's user to all users mapping
     allUsers[msg.sender] = newUser;
+    
     }
    
 }

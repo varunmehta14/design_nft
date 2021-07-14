@@ -67,7 +67,8 @@ class App extends Component {
       end:2,
       endState:2,
       endOfDesigns:false,
-      searchedDesign:null
+      searchedDesign:null,
+      tokenExists:true,
      
     };
   }
@@ -271,6 +272,7 @@ class App extends Component {
 
   setMetaData = async () => {
     if (this.state.cryptoBoys.length !== 0) {
+      this.setState({loading:true})
       this.state.cryptoBoys.map(async (cryptoboy) => {
         const result = await fetch(cryptoboy.tokenURI);
         const metaData = await result.json();
@@ -284,7 +286,7 @@ class App extends Component {
               : cryptoboy
           ),
         });
-      });
+      });this.setState({loading:false});
     }
   };
 
@@ -539,14 +541,29 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
    
  searchTermfromApp=async(search)=>{
   if(!isNaN(search)){
-  const searchedDesign=await this.state.cryptoBoysContract.methods.
-           allCryptoBoys(search).call();
-           this.setState({searchedDesign})
-           console.log(this.state.searchedDesign)
-       
-         this.setState({clickedAddress: search})
-         
-         window.location.href=`/nftDetails/${search}`
+    const tokenExist=await this.state.cryptoBoysContract.methods.
+                    getTokenExists(search).call();
+                    if(tokenExist){
+                      this.setState({tokenExists:true});
+                      // const searchedDesign=await this.state.cryptoBoysContract.methods.
+                      // allCryptoBoys(search).call();
+                      // this.setState({searchedDesign})
+                     // console.log(this.state.searchedDesign)
+                  
+                    this.setState({clickedAddress: search})
+                    
+                    window.location.href=`/nftDetails/${search}`
+                    }
+                    else{
+                      this.setState({tokenExists:false});
+                      console.log("Token doesnt exist")
+                    }
+  
+  }else{
+    const addressFromName=await this.state.usersContract.methods.
+    nameToAddress(search).call();
+    this.setState({clickedAddress:addressFromName})
+    window.location.href=`/their-tokens/${addressFromName}`
   }
  }
   
@@ -753,7 +770,8 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                cryptoBoysContract={this.state.cryptoBoysContract}
                usersContract={this.state.usersContract}
                cryptoBoys={this.state.cryptoBoys}
-               loading={this.state.loading}/>
+               loading={this.state.loading}
+               tokenExists={this.state.tokenExists}/>
               )}
              />
           

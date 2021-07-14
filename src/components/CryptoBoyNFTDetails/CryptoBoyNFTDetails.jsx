@@ -51,10 +51,10 @@ const CryptoBoyNFTDetails=(props)=> {
   console.log(window.location.href.split("/")[4])
   const classes=useStyles();
   const theme=useTheme();
-  //console.log(thisdesignsContract)
-  console.log(thisdesign)
+  //console.log(props.cryptoBoys[thistokenId]sContract)
+  
   const [ newCryptoBoyPrice,setNewCryptoBoyPrice]=useState("");
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
   const [ isHidden,setIsHidden]=useState(true);
   const [mintedByName,setMintedByName]=useState("") 
   const [ownedByName,setOwnedByName]=useState("") 
@@ -63,52 +63,99 @@ const CryptoBoyNFTDetails=(props)=> {
   const [ownedAvatar,setOwnedAvatar]=useState(null) 
   const [prevAvatar,setPrevAvatar]=useState(null) 
   const [activeStep, setActiveStep] = useState(0);
- // const [thisdesign,setThisdesign]=useState("");
-  const [tokenNo,setTokenNo]=useState(window.location.href.split("/")[4]);
- // const maxSteps = thisdesign.metaData.images.length;
-console.log(props.cryptoBoys)
-console.log(tokenNo)
+  
+ // const [props.cryptoBoys[thistokenId],setprops.cryptoBoys[thistokenId]]=useState("");
+  //const [tokenNo,setTokenNo]=useState(window.location.href.split("/")[4]);
+ // const maxSteps = props.cryptoBoys[thistokenId].metaData.images.length;
+ let thistokenId=props.clickedAddress-1;
+ if(!props.clickedAddress){thistokenId=window.location.href.split("/")[4]-1};
+console.log(props.cryptoBoys[thistokenId])
+//console.log(tokenNo)
+
+const [designMetadata,setDesignMetadata]=useState("");
+
 // if (props.cryptoBoys[window.location.href.split("/")[4]].metaData) {
 //   setLoading(false);
-//   setThisdesign(props.cryptoBoys[window.location.href.split("/")[4]-1]);
+//   setprops.cryptoBoys[thistokenId](props.cryptoBoys[window.location.href.split("/")[4]-1]);
 // } else {
 //   setLoading(true);
 // }
-let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
+
   const getCurrentUser=(async()=>{
-    //setThisdesign(props.cryptoBoys[window.location.href.split("/")[4]]);
+    //setprops.cryptoBoys[thistokenId](props.cryptoBoys[window.location.href.split("/")[4]]);
    
      
 
     if(props.usersContract&&props.cryptoBoysContract){
     const current1=await props.usersContract.methods
-    .allUsers(thisdesign.mintedBy)
+    .allUsers(props.cryptoBoys[thistokenId].mintedBy)
     .call();
     setMintedByName(current1[1]);
     setMintedAvatar(current1[6])
     const current2=await props.usersContract.methods
-    .allUsers(thisdesign.currentOwner)
+    .allUsers(props.cryptoBoys[thistokenId].currentOwner)
     .call();
     setOwnedByName(current2[1]);
     setOwnedAvatar(current2[6]);
     const current3=await props.usersContract.methods
-    .allUsers(thisdesign.previousOwner)
+    .allUsers(props.cryptoBoys[thistokenId].previousOwner)
     .call();
     setPrevByName(current3[1]);
      setPrevAvatar(current3[6]);
-    
+     console.log(props.cryptoBoys[thistokenId].metaData)
+    if(props.cryptoBoys[thistokenId].metaData!==undefined){
+      console.log("undefined")
+     const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
+     const metaData = await result.json();
+    // props.cryptoBoys[thistokenId]
+     setDesignMetadata(metaData)
+      console.log(designMetadata)
+    }   
+   }
      
     
-    }
+    })
 
-  }) 
- 
   useEffect(()=>{
-  // setTokenNo(window.location.href.split("/")[4])
     getCurrentUser();
-   
   
   },[props.usersContract]);
+ 
+  // useEffect(()=>{
+  // // setTokenNo(window.location.href.split("/")[4])
+  // console.log("useEffect called")
+  // async function getCurrentUser(){
+  //   if(props.usersContract&&props.cryptoBoysContract){
+  //     const current1=await props.usersContract.methods
+  //     .allUsers(props.cryptoBoys[thistokenId].mintedBy)
+  //     .call();
+  //     setMintedByName(current1[1]);
+  //     setMintedAvatar(current1[6])
+  //     const current2=await props.usersContract.methods
+  //     .allUsers(props.cryptoBoys[thistokenId].currentOwner)
+  //     .call();
+  //     setOwnedByName(current2[1]);
+  //     setOwnedAvatar(current2[6]);
+  //     const current3=await props.usersContract.methods
+  //     .allUsers(props.cryptoBoys[thistokenId].previousOwner)
+  //     .call();
+  //     setPrevByName(current3[1]);
+  //      setPrevAvatar(current3[6]);
+  //      console.log(props.cryptoBoys[thistokenId].metaData)
+  //     if(props.cryptoBoys[thistokenId].metaData!==undefined){
+  //       console.log("undefined")
+  //      const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
+  //      const metaData = await result.json();
+  //     // props.cryptoBoys[thistokenId]
+  //      setDesignMetadata(metaData)
+  //       console.log(designMetadata)
+  //     }   
+  //    }
+  // }
+  //   getCurrentUser();
+  
+  
+  // },[]);
   
 //console.log(mintedByName,ownedByName,prevByName)         
   
@@ -121,7 +168,7 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
   const sendTokenID=(tokId)=>{
     props.callBack(tokId)
   }
-  console.log(thisdesign);
+  console.log(props.cryptoBoys[thistokenId]);
  
   const properties = {
     duration: 3000,
@@ -140,20 +187,20 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
   const handleStepChange = (step) => {
     setActiveStep(step);
   };
-    //console.log(thisdesign.imageHash)
+    //console.log(props.cryptoBoys[thistokenId].imageHash)
    
     return (
-      <>{thisdesign ?
+      <>{!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.loading?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
        
         (<div className="d-flex flex-wrap mb-2" style={{padding:"1%"}}>
         <div
-                key={thisdesign.tokenId.toNumber()}
+                key={props.cryptoBoys[thistokenId].tokenId.toNumber()}
                 className="w-50 p-4 mt-1 border "
                 
               >
                 <div className="col-md-6" style={{margin:"auto"}}>
                
-                <img style={{width:"inherit"}} src={thisdesign.imageHash}/>
+                <img style={{width:"inherit"}} src={props.cryptoBoys[thistokenId].imageHash}/>
                
                   </div>
           </div>
@@ -161,37 +208,37 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
           
           <p>
            <b style={{fontSize:"-webkit-xxx-large",color:"black",fontWeight:"bold"}}>
-            {thisdesign.tokenName}
+            {props.cryptoBoys[thistokenId].tokenName}
             </b>
           </p>
           <div className="d-flex flex-wrap " style={{justifyContent:"space-evenly"}}>
           <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
         <span className="font-weight-bold">Created By :&nbsp;</span>
-        <Link to={`/their-tokens/${thisdesign.mintedBy}`} onClick={()=>{handleClick(thisdesign.mintedBy)}}>
-           {/* {thisdesign.mintedBy.substr(0, 5) +
+        <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].mintedBy}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].mintedBy)}}>
+           {/* {props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
           "..." +
-          thisdesign.mintedBy.slice(
-            thisdesign.mintedBy.length - 5
+          props.cryptoBoys[thistokenId].mintedBy.slice(
+            props.cryptoBoys[thistokenId].mintedBy.length - 5
           )} */}
-          {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{mintedByName}</b></div>):(thisdesign.mintedBy.substr(0, 5) +
+          {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{mintedByName}</b></div>):(props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
               "..." +
-              thisdesign.mintedBy.slice(
-                thisdesign.mintedBy.length - 5))}
+              props.cryptoBoys[thistokenId].mintedBy.slice(
+                props.cryptoBoys[thistokenId].mintedBy.length - 5))}
           </Link>
       </div>
           <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
           <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
         <span className="font-weight-bold">Owned By :&nbsp;</span>
-        <Link to={`/their-tokens/${thisdesign.currentOwner}`} onClick={()=>{handleClick(thisdesign.currentOwner)}}> 
-        {/* {thisdesign.currentOwner.substr(0, 5) +
+        <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].currentOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].currentOwner)}}> 
+        {/* {props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
           "..." +
-          thisdesign.currentOwner.slice(
-            thisdesign.currentOwner.length - 5
+          props.cryptoBoys[thistokenId].currentOwner.slice(
+            props.cryptoBoys[thistokenId].currentOwner.length - 5
           )} */}
-          {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{ownedByName}</b></div>):(thisdesign.currentOwner.substr(0, 5) +
+          {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{ownedByName}</b></div>):(props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
               "..." +
-              thisdesign.currentOwner.slice(
-                thisdesign.currentOwner.length - 5
+              props.cryptoBoys[thistokenId].currentOwner.slice(
+                props.cryptoBoys[thistokenId].currentOwner.length - 5
               ))}
           </Link>
       </div>
@@ -202,7 +249,7 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
             <span className="font-weight-bold">Price</span> :{" "}
             <b style={{fontSize:"xx-large",color:"black"}}>
             {window.web3.utils.fromWei(
-              thisdesign.price.toString(),
+              props.cryptoBoys[thistokenId].price.toString(),
               "Ether"
             )}{" "}
             Ξ
@@ -212,12 +259,12 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
           
         
           <div>
-            {props.accountAddress === thisdesign.currentOwner ? (
+            {props.accountAddress === props.cryptoBoys[thistokenId].currentOwner ? (
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   callChangeTokenPriceFromApp(
-                    thisdesign.tokenId.toNumber(),
+                    props.cryptoBoys[thistokenId].tokenId.toNumber(),
                     newCryptoBoyPrice
                   );
                   
@@ -252,14 +299,14 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
             ) : null}
           </div>
           <div>
-            {props.accountAddress === thisdesign.currentOwner ? (
-              thisdesign.forSale ? (
+            {props.accountAddress === props.cryptoBoys[thistokenId].currentOwner ? (
+              props.cryptoBoys[thistokenId].forSale ? (
                 <button
                   className="btn btn-outline-danger mt-4 w-50"
                   style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                   onClick={() =>
                     props.toggleForSale(
-                      thisdesign.tokenId.toNumber()
+                      props.cryptoBoys[thistokenId].tokenId.toNumber()
                     )
                   }
                 >
@@ -271,7 +318,7 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
                   style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                   onClick={() =>
                     props.toggleForSale(
-                      thisdesign.tokenId.toNumber()
+                      props.cryptoBoys[thistokenId].tokenId.toNumber()
                     )
                   }
                 >
@@ -282,22 +329,22 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
             </div>
           
           <div style={{display:"flex",justifyContent:"center"}}>
-            {props.accountAddress !== thisdesign.currentOwner ? (
-              thisdesign.forSale ? (
+            {props.accountAddress !== props.cryptoBoys[thistokenId].currentOwner ? (
+              props.cryptoBoys[thistokenId].forSale ? (
                 <button
                   className="btn btn-outline-primary mt-3 w-50"
-                  value={thisdesign.price}
+                  value={props.cryptoBoys[thistokenId].price}
                   style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                   onClick={(e) =>
                     props.buyCryptoBoy(
-                      thisdesign.tokenId.toNumber(),
+                      props.cryptoBoys[thistokenId].tokenId.toNumber(),
                       e.target.value
                     )
                   }
                 >
                   Buy For{" "}
                   {window.web3.utils.fromWei(
-                    thisdesign.price.toString(),
+                    props.cryptoBoys[thistokenId].price.toString(),
                     "Ether"
                   )}{" "}
                   Ξ
@@ -312,7 +359,7 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
                   >
                     Buy For{" "}
                     {window.web3.utils.fromWei(
-                      thisdesign.price.toString(),
+                      props.cryptoBoys[thistokenId].price.toString(),
                       "Ether"
                     )}{" "}
                     Ξ
@@ -334,7 +381,7 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
         <div className="card-body   justify-content-center"> */}
         <h5>Description</h5>
         
-        {/* <p>{thisdesign.metaData.description}</p> */}
+        <p>{!props.cryptoBoys[thistokenId].metaData?(<>{designMetadata.description}</>):(<>{props.cryptoBoys[thistokenId].metaData.description}</>)}</p>
         {/* </div>
       </div> */}
              <hr/>
@@ -345,30 +392,30 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
        
         <div style={{display:"flex",alignItems:"center"}}>
         <span className="font-weight-bold">Previous Owner :&nbsp;</span>
-        <Link to={`/their-tokens/${thisdesign.previousOwner}`} onClick={()=>{handleClick(thisdesign.previousOwner)}}> 
-        {/* {thisdesign.currentOwner.substr(0, 5) +
+        <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].previousOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].previousOwner)}}> 
+        {/* {props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
           "..." +
-          thisdesign.currentOwner.slice(
-            thisdesign.currentOwner.length - 5
+          props.cryptoBoys[thistokenId].currentOwner.slice(
+            props.cryptoBoys[thistokenId].currentOwner.length - 5
           )} */}
-          {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(thisdesign.previousOwner.substr(0, 5) +
+          {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
               "..." +
-              thisdesign.previousOwner.slice(
-                thisdesign.previousOwner.length - 5
+              props.cryptoBoys[thistokenId].previousOwner.slice(
+                props.cryptoBoys[thistokenId].previousOwner.length - 5
               ))}
           </Link>
       </div>
       <hr/>
           <p>
             <span className="font-weight-bold">No. of Transfers</span> :{" "}
-            {thisdesign.numberOfTransfers.toNumber()}
+            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()}
           </p>
         </div>
         <br/>
         
       </div>   
       {/* <div className="card mt-1">
-        {thisdesign.metaData.images.map
+        {props.cryptoBoys[thistokenId].metaData.images.map
                 ((image)=>{return (
                               <div className="card-body "style={{display:"contents"}} ><img src={image}/></div>
                               );
@@ -379,7 +426,7 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
       
       {/* <div className={useStyles.root} >
       <GridList className={useStyles.gridList} cols={3}>
-        {thisdesign.metaData.images.map((image) => (
+        {props.cryptoBoys[thistokenId].metaData.images.map((image) => (
           <GridListTile key={image} style={{width:"40%",height:"40%"}}>
             <img src={image} style={{width:"inherit",height:"inherit"}}/>
             
@@ -389,7 +436,7 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
     </div> */}
     
     {/* <Carousel showArrows={true} dynamicHeight={true}>
-    {thisdesign.metaData.images.map((image) => (
+    {props.cryptoBoys[thistokenId].metaData.images.map((image) => (
          
             <img src={image}/>
          
@@ -400,13 +447,15 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
     </Carousel> */}
     <br/>
     <div>
-    {/* <AutoPlaySwipeableViews
+      {!props.cryptoBoys[thistokenId].metaData?(
+        <>
+        {/* <AutoPlaySwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={activeStep}
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {thisdesign.metaData.images.map((image,index) => (
+        {designMetadata.images.map((image,index) => (
           <div style={{display:"flex",justifyContent:"center"}}>
             {Math.abs(activeStep - index) <= 2 ? (
               <img className={classes.img} src={image}  />
@@ -416,12 +465,12 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
       </AutoPlaySwipeableViews>
       <MobileStepper
         style={{backgroundColor:"#173e43",color:"aliceblue"}}
-        steps={thisdesign.metaData.images.length}
+        steps={designMetadata.images.length}
         position="static"
         variant="text"
         activeStep={activeStep}
         nextButton={
-          <Button size="small" style={{backgroundColor:"#dddfd4"}} onClick={handleNext} disabled={activeStep === thisdesign.metaData.images.length - 1}>
+          <Button size="small" style={{backgroundColor:"#dddfd4"}} onClick={handleNext} disabled={activeStep ===designMetadata.images.length - 1}>
            
             {theme.direction === 'rtl' ? <KeyboardArrowLeft  /> : <KeyboardArrowRight />}
           </Button>
@@ -433,10 +482,46 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
           </Button>
         }
       /> */}
+      </>
+      ):(<>
+      <AutoPlaySwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={activeStep}
+        onChangeIndex={handleStepChange}
+        enableMouseEvents
+      >
+        {props.cryptoBoys[thistokenId].metaData.images.map((image,index) => (
+          <div style={{display:"flex",justifyContent:"center"}}>
+            {Math.abs(activeStep - index) <= 2 ? (
+              <img className={classes.img} src={image}  />
+            ) : null}
+          </div>
+        ))}
+      </AutoPlaySwipeableViews>
+      <MobileStepper
+        style={{backgroundColor:"#173e43",color:"aliceblue"}}
+        steps={props.cryptoBoys[thistokenId].metaData.images.length}
+        position="static"
+        variant="text"
+        activeStep={activeStep}
+        nextButton={
+          <Button size="small" style={{backgroundColor:"#dddfd4"}} onClick={handleNext} disabled={activeStep ===props.cryptoBoys[thistokenId].metaData.images.length - 1}>
+           
+            {theme.direction === 'rtl' ? <KeyboardArrowLeft  /> : <KeyboardArrowRight />}
+          </Button>
+        }
+        backButton={
+          <Button size="small" style={{backgroundColor:"#dddfd4"}}onClick={handleBack} disabled={activeStep === 0}>
+            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+           
+          </Button>
+        }
+      /></>)}
+    
       </div>
     {/* <div>
     <Slide slidesToShow={2}slidesToScroll={2}{...properties}>
-    {thisdesign.metaData.images.map((image) => (
+    {props.cryptoBoys[thistokenId].metaData.images.map((image) => (
         
         <div className={useStyles.root} style={{padding:"2%"}}>
           <a href={image} target="_blank">
@@ -461,7 +546,7 @@ let thisdesign=props.cryptoBoys[window.location.href.split("/")[4]-1];
           <Grid item xs={12} sm={6}> 
           
           <div className="col-md-12   mt-1 border">
-         <Queries cryptoBoysContract={props.cryptoBoysContract} token={thisdesign.tokenId.toNumber()} imageUrl={thisdesign.imageHash} />
+         <Queries cryptoBoysContract={props.cryptoBoysContract} token={props.cryptoBoys[thistokenId].tokenId.toNumber()} imageUrl={props.cryptoBoys[thistokenId].imageHash} />
          </div>
          </Grid>
         </div>):(<><Loading/>{props.loading?(<> <h1 style={{textAlign:"center"}}>Select a nft</h1></>):(null)}</>
