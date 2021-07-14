@@ -127,14 +127,14 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
   
   return (
     <div style={{padding:"1%"}}>
-    <div className="card mt-1">
+    {/* <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
     
            <h5>
            Profile
           </h5>
         </div>
-        </div>  
+        </div>   */}
         <div style={{display:"flex",justifyContent:"center"}}>
      {clickedChange?( <form onSubmit={handleSubmit2} style={{display:"contents"}}>
         <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>

@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { HashRouter,Route,withRouter } from "react-router-dom";
+//import { HashRouter,Route,withRouter } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,withRouter 
+} from "react-router-dom";
+
 import "./App.css";
 import defaultProfile from "./Profile/blank-profile-picture-973460_640.png"
 import Web3 from "web3";
@@ -14,6 +21,7 @@ import ConnectToMetamask from "./ConnectMetamask/ConnectToMetamask";
 import Loading from "./Loading/Loading";
 import Navbar from "./Navbar/Navbar";
 import Profile from "./Profile/Profile";
+import UpdateProfile from "./UpdateProfile/UpdateProfile";
 import MyCryptoBoys from "./MyCryptoBoys/MyCryptoBoys";
 import TheirCryptoBoys from "./TheirCryptoBoys/TheirCryptoBoys";
 import Queries from "./Queries/Queries";
@@ -59,6 +67,7 @@ class App extends Component {
       end:2,
       endState:2,
       endOfDesigns:false,
+      searchedDesign:null
      
     };
   }
@@ -200,7 +209,7 @@ class App extends Component {
       }
       const networkData2 = Users.networks[networkId];
       if (networkData2) {
-       
+        this.setState({ loading: true });
         const usersContract = web3.eth.Contract(
           Users.abi,
           networkData2.address
@@ -211,6 +220,7 @@ class App extends Component {
         .allUsers(this.state.accountAddress)
         .call();
         this.setState({currentUser:current});
+        this.setState({loading:false});
         
     }}
   };
@@ -312,10 +322,12 @@ class App extends Component {
            .on("confirmation", () => {
              localStorage.setItem(this.state.accountAddress, new Date().getTime());
              this.setState({ loading: false });
+             window.location.href=`/account`
              window.location.reload();
-            this.props.history.push("/account");
+            
            })
            this.setState({userLoggedIn:true});
+          
    }
    else {
     {
@@ -525,7 +537,18 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
       });
   };
    
- 
+ searchTermfromApp=async(search)=>{
+  if(!isNaN(search)){
+  const searchedDesign=await this.state.cryptoBoysContract.methods.
+           allCryptoBoys(search).call();
+           this.setState({searchedDesign})
+           console.log(this.state.searchedDesign)
+       
+         this.setState({clickedAddress: search})
+         
+         window.location.href=`/nftDetails/${search}`
+  }
+ }
   
   
   render() {
@@ -571,11 +594,14 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         <Loading />
       ) :( */}
       <> <Container maxWidth="false" style={{padding:"0%"}}> 
-    
+    <Router>
+
+    <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}searchTermfromApp={this.searchTermfromApp}/>
+      <Switch>
       
-        <HashRouter basename="/">
+      
           
-            <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}/>
+            
             <Route
               path="/"
               exact
@@ -607,6 +633,22 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                   cryptoBoysContract={this.state.cryptoBoysContract}
                   nameIsUsed={this.state.nameIsUsed}
                   emailIsUsed={this.state.emailIsUsed}
+                />
+              )}
+            />
+             <Route
+              path="/updateProfile"
+      
+              render={() => (
+                <UpdateProfile
+                  updateUserFromApp={this.updateUserFromApp}
+                  accountAddress={this.state.accountAddress}
+                  accountBalance={this.state.accountBalance}
+                  currentUser={this.state.currentUser}
+                  cryptoBoysContract={this.state.cryptoBoysContract}
+                  nameIsUsed={this.state.nameIsUsed}
+                  emailIsUsed={this.state.emailIsUsed}
+                  loading={this.state.loading}
                 />
               )}
             />
@@ -674,7 +716,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
               )}
             />
             <Route
-              path="/their-tokens"
+              path={`/their-tokens/${this.state.clickedAddress}`}
               
               render={() => (
                 <TheirCryptoBoys
@@ -686,6 +728,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                   callbackFromParent1={this.myCallback2}
                   cryptoBoysContract={this.state.cryptoBoysContract}
                   usersContract={this.state.usersContract}
+                  
                   loading={this.state.loading}
                 />
                 
@@ -693,13 +736,13 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
             />
             
              <Route
-              // path={`/nftDetails/${this.clickedAddress}`}
-              path="/nftDetails"
+                path={`/nftDetails/${this.state.clickedAddress}`}
+             //path="/nftDetails"
               
               render={() => (
               <CryptoBoyNFTDetails
                accountAddress={this.state.accountAddress}
-               cryptoboy={this.state.cryptoBoys[this.state.clickedAddress-1]}
+               //cryptoboy={this.state.cryptoBoys[this.state.clickedAddress-1]}
                totalTokensMinted={this.state.totalTokensMinted}
                changeTokenPrice={this.changeTokenPrice}
                toggleForSale={this.toggleForSale}
@@ -709,12 +752,14 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                callBack={this.tokenIDfun}
                cryptoBoysContract={this.state.cryptoBoysContract}
                usersContract={this.state.usersContract}
+               cryptoBoys={this.state.cryptoBoys}
                loading={this.state.loading}/>
               )}
-            />
+             />
           
-          </HashRouter>
-     
+        
+          </Switch>
+    </Router>
       </Container></>
       {/* ) } */}
        

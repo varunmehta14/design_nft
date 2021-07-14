@@ -3,21 +3,43 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 
 
-const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract}) => {
+const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,currentUser}) => {
+ // if(!accountAddress){accountAddress=window.location.href.split("/")[4]};
+ //const[currentUser,setCurrentUser]=useState("");
+  console.log(usersContract)
+//  const getCurrentUser=async()=>{
+//   if(usersContract){
+//     console.log("here")
+//   const current=await usersContract.methods
+//   .allUsers(accountAddress)
+//   .call();
+//   setCurrentUser(current);
+//   console.log(currentUser);
+  
+  
+// }
+// }
+ 
+ useEffect(()=>{
+  setUserName(currentUser.userName);
+  setBio(currentUser.bio);
+  setSocial(currentUser.social);
+  setRepo(currentUser.repo);
+  setEmail(currentUser.email);
+  setSrc(currentUser.avatarhash);
 
- const[currentUser,setCurrentUser]=useState("");
-  useEffect(()=>{
-    getCurrentUser();
-  },[]);
-  const getCurrentUser=async()=>{
-    if(usersContract){
-    const current=await usersContract.methods
-    .allUsers(accountAddress)
-    .call();
-    setCurrentUser(current);
-    console.log(currentUser);
-  }
-}
+  
+  
+  },[currentUser]);
+  const[userName,setUserName]=useState(currentUser.userName);
+  //const[olduserName,setOlduserName]=useState(currentUser.userName);
+  const[bio,setBio]=useState(currentUser.bio);
+  const[social,setSocial]=useState(currentUser.social);
+  const[repo,setRepo]=useState(currentUser.repo);
+  const[email,setEmail]=useState(currentUser.email);
+
+  const[src,setSrc]=useState(currentUser.avatarhash);
+ 
   console.log(cryptoBoysContract)
   console.log(accountAddress);
   console.log(currentUser);

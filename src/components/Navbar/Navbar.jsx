@@ -87,12 +87,12 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn,currentUser}) => {
+const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn,currentUser,searchTermfromApp}) => {
   const classes = useStyles();
 const [anchorEl, setAnchorEl] = useState(null);
 //const [metamaskConnected,setMetamaskConnected]=useState(false);
 const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =useState(null);
-
+const [search,setSearch]=useState("");
 const isMenuOpen = Boolean(anchorEl);
 const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -109,6 +109,12 @@ const handleMenuClose = () => {
   handleMobileMenuClose();
 };
 
+const handleSearchSubmit=(e)=>{
+e.preventDefault();
+
+console.log("form submitted", search)
+searchTermfromApp(search)
+}
 // const connectToMetamask = async () => {
   
 //   await window.ethereum.enable();
@@ -245,6 +251,8 @@ const renderMobileMenu = (
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
+            <form  onSubmit={handleSearchSubmit}>
+            {/* <Link to="/mint" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}> */}
             <InputBase
               placeholder="Search…"
               classes={{
@@ -252,7 +260,11 @@ const renderMobileMenu = (
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={(e)=>setSearch(e.target.value)}
+             
             />
+            {/* </Link> */}
+            </form>
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

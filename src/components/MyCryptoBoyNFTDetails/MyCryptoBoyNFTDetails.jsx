@@ -52,7 +52,7 @@ const MyCryptoBoyNFTDetails = ({callback1,cryptoboy,accountAddress}) => {
       ) : (
         <div className="alert alert-info w-50 text-center m-auto">Bought</div>
       )} */}
-      <Link to="/nftDetails" style={{textDecoration:"none"}}onClick={()=>{handleClick(tokenId.toNumber())}} ><Button variant="contained" >View NFT</Button></Link> 
+      <Link to={`/nftDetails/${tokenId.toNumber()}`} style={{textDecoration:"none"}}onClick={()=>{handleClick(tokenId.toNumber())}} ><Button variant="contained" >View NFT</Button></Link> 
     </div>
   
   );

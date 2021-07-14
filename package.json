@@ -23,6 +23,7 @@
     "doka": "^0.1.0",
     "ipfs-http-client": "^49.0.2",
     "peer-id": "0.14.8",
+    "query-string": "^7.0.1",
     "react": "16.8.4",
     "react-avatar-edit": "^1.0.0",
     "react-avatar-editor": "^11.1.0",

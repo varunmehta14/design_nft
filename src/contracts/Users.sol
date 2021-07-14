@@ -31,6 +31,8 @@ contract Users{
   mapping(address=>string)public addressToName;
   //map address to userId
   mapping(address=>uint)public addressToId;
+  //map name to address
+  mapping(string=>address)public nameToAddress;
   
   constructor(){
    // userAddressExists[msg.sender]=true;

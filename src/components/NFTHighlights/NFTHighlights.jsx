@@ -34,7 +34,7 @@ const NFTHighlights=(props)=> {
       }
       useEffect(()=>{
         getCurrentUser();
-      },[props.cryptoboy]);
+      },[props]);
 console.log(mintedByName,ownedByName)
 
 //   callChangeTokenPriceFromApp = (tokenId, newPrice) => {
@@ -53,14 +53,14 @@ console.log(mintedByName,ownedByName)
       {props.cryptoboy?( <div key={props.cryptoboy.tokenId.toNumber()} className="mt-4">
        
       
-      <p>
+      <h4>
        
-        <h4>{props.cryptoboy.tokenName}</h4>
-      </p>
+        <p>{props.cryptoboy.tokenName}</p>
+      </h4>
       <hr/>
       <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
         <span className="font-weight-bold">Created By :&nbsp;</span>
-        <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.mintedBy)}}>
+        <Link to={`/their-tokens/${props.cryptoboy.mintedBy}`} onClick={()=>{handleClick(props.cryptoboy.mintedBy)}}>
            {/* {props.cryptoboy.mintedBy.substr(0, 5) +
           "..." +
           props.cryptoboy.mintedBy.slice(
@@ -75,7 +75,7 @@ console.log(mintedByName,ownedByName)
       <hr/>
       <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
         <span className="font-weight-bold">Owned By :&nbsp;</span>
-        <Link to="/their-tokens" onClick={()=>{handleClick(props.cryptoboy.currentOwner)}}> 
+        <Link to={`/their-tokens/${props.cryptoboy.currentOwner}`} onClick={()=>{handleClick(props.cryptoboy.currentOwner)}}> 
         {/* {props.cryptoboy.currentOwner.substr(0, 5) +
           "..." +
           props.cryptoboy.currentOwner.slice(
@@ -100,8 +100,8 @@ console.log(mintedByName,ownedByName)
       </p>
      
      <hr/>
-   <Link to="/nftDetails" style={{textDecoration:"none"}}onClick={()=>handleClick(props.cryptoboy.tokenId.toNumber())} ><Button variant="contained" >View NFT</Button></Link> 
-     
+   <Link to= {`/nftDetails/${props.cryptoboy.tokenId.toNumber()}`}style={{textDecoration:"none"}}onClick={()=>handleClick(props.cryptoboy.tokenId.toNumber())} ><Button variant="contained" >View NFT</Button></Link> 
+  
     
     </div>):(<Loading/>)}
      </>

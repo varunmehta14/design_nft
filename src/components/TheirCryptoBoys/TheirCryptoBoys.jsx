@@ -35,12 +35,27 @@ const TheirCryptoBoys = ({
   const [myBoughtCryptoBoys, setMyBoughtCryptoBoys] = useState([]);
   const [myMintedCryptoBoys, setMyMintedCryptoBoys] = useState([]);
   const [myAllCryptoBoys, setMyAllCryptoBoys] = useState([]);
-
+  const[currentUser,setCurrentUser]=useState("");
+  //const [theirAccountAddress,setTheirAccountAddress]=useState("")
+  //console.log(theirAccountAddress);
+  let theirAccountAddress=accountAddress;
+  if(!accountAddress){theirAccountAddress=window.location.href.split("/")[4]};
+  console.log(accountAddress);
   const [checked, setChecked] = useState(false);
   
-
+  const getCurrentUser=async()=>{
+    if(usersContract){
+      console.log("here")
+    const current=await usersContract.methods
+    .allUsers(theirAccountAddress)
+    .call();
+    setCurrentUser(current);
+    console.log(currentUser);
+    }
+  }
 
   useEffect(() => {
+    getCurrentUser();
     if (cryptoBoys.length !== 0) {
       if (cryptoBoys[0].metaData !== undefined) {
         setLoading(loading);
@@ -49,15 +64,15 @@ const TheirCryptoBoys = ({
       }
     }
     const my_bought_crypto_boys = cryptoBoys.filter(
-      (cryptoboy) => cryptoboy.currentOwner === accountAddress && !(cryptoboy.mintedBy === accountAddress)
+      (cryptoboy) => cryptoboy.currentOwner === theirAccountAddress && !(cryptoboy.mintedBy === theirAccountAddress)
     );
     setMyBoughtCryptoBoys(my_bought_crypto_boys);
     const my_minted_crypto_boys = cryptoBoys.filter(
-      (cryptoboy) => cryptoboy.mintedBy === accountAddress
+      (cryptoboy) => cryptoboy.mintedBy === theirAccountAddress
     );
     setMyMintedCryptoBoys(my_minted_crypto_boys);
     const my_all_crypto_boys = cryptoBoys.filter(
-      (cryptoboy) => cryptoboy.currentOwner === accountAddress
+      (cryptoboy) => cryptoboy.currentOwner === theirAccountAddress
     );
     setMyAllCryptoBoys(my_all_crypto_boys);
   }, [cryptoBoys]);
@@ -73,9 +88,10 @@ const TheirCryptoBoys = ({
        <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
           <TheirAccountDetails 
-          accountAddress={accountAddress}
+          accountAddress={theirAccountAddress}
           cryptoBoysContract={cryptoBoysContract}
           usersContract={usersContract}
+          currentUser={currentUser}
           />
         </div>
         </div>
@@ -135,7 +151,7 @@ const TheirCryptoBoys = ({
                   <MyCryptoBoyNFTDetails
                   callback1={myCallback1}
                     cryptoboy={cryptoboy}
-                    accountAddress={accountAddress}
+                    accountAddress={theirAccountAddress}
                   />
                 </div>
               </>
@@ -176,7 +192,7 @@ const TheirCryptoBoys = ({
                   <MyCryptoBoyNFTDetails
                     callback1={myCallback1}
                     cryptoboy={cryptoboy}
-                    accountAddress={accountAddress}
+                    accountAddress={theirAccountAddress}
                   />
                 </div>
               </>
