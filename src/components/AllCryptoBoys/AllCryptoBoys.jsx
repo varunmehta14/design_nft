@@ -40,7 +40,7 @@ const AllCryptoBoys = ({
       }
     }
    
-   // loadDesigns(startState,endState)
+    loadDesigns(startState,endState)
   }, [usersContract]);
   
   //console.log(cryptoBoysContract)
@@ -50,55 +50,56 @@ const AllCryptoBoys = ({
     callbackFromParent(dataFromChild1)
    // console.log(address)
   }
-  // const loadDesigns=async(start,end)=>{
-  //   console.log("end",end)
-  // //   const cryptoBoysCount = await cryptoBoysContract.methods
-  // //   .cryptoBoyCounter()
-  // //   .call();
-  // // this.setState({ cryptoBoysCount }); 
-  // if(cryptoBoysContract){
-  //  for (var i = start; i <= end; i++) {
+  const loadDesigns=async(start,end)=>{
+    console.log("end",end)
+  //   const cryptoBoysCount = await cryptoBoysContract.methods
+  //   .cryptoBoyCounter()
+  //   .call();
+  // this.setState({ cryptoBoysCount }); 
+  if(cryptoBoysContract){
+    if(totalTokensMinted!=0){
+   for (var i = start; i <= end; i++) {
   
     
-  //   const cryptoBoy = await cryptoBoysContract.methods
-  //     .allCryptoBoys(i)
-  //     .call();
-  //     console.log(cryptoBoy)
-  //  setAllCryptoBoys(allCryptoBoys=>
-  //     [...allCryptoBoys, cryptoBoy]);
+    const cryptoBoy = await cryptoBoysContract.methods
+      .allCryptoBoys(i)
+      .call();
+      console.log(cryptoBoy)
+   setAllCryptoBoys(allCryptoBoys=>
+      [...allCryptoBoys, cryptoBoy]);
      
-  //   if(i===totalTokensMinted){
-  //     setEndOfDesigns(true)
-  //     break;
-  //   }}
-  // }
-  // }
+    if(i===totalTokensMinted){
+      setEndOfDesigns(true)
+      break;
+    }}}
+  }
+  }
   
-  // const scrollToEnd=()=>{
-  //   // this.setState({page:this.state.page+1});
-  //    setStart(end+1);
-  //    setEnd(end+2);
-  //    //setLoading(true);
-  //    console.log(console.log("start",start))
+  const scrollToEnd=()=>{
+    // this.setState({page:this.state.page+1});
+     setStart(end+1);
+     setEnd(end+2);
+     //setLoading(true);
+     console.log(console.log("start",start))
      
-  //    loadDesigns(start,end);}
+     loadDesigns(start,end);}
      
      
    
 
-  //   // console.log(this.state.page);
+    // console.log(this.state.page);
    
  
-  //  window.onscroll=function(){
-  //    console.log(window,document.documentElement.scrollTop,document.documentElement.offsetHeight)
-  //    if(
-  //      window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight 
-  //    ){
-  //     if(!endOfDesigns){
-  //      scrollToEnd();}
-  //      console.log("here")
-  //    }
-  //  }
+   window.onscroll=function(){
+     console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
+     if(
+       window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight -1
+     ){
+      if(!endOfDesigns){
+       scrollToEnd();}
+       console.log("here")
+     }
+   }
   
   return (
     <div style={{padding:"0.5%"}}>
@@ -111,7 +112,7 @@ const AllCryptoBoys = ({
         </div>
       </div>
       <div className="d-flex flex-wrap mb-2">
-        {cryptoBoys.map((cryptoboy) => {
+        {allCryptoBoys.map((cryptoboy) => {
           return (
            <
            

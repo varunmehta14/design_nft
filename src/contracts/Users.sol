@@ -21,6 +21,7 @@ contract Users{
   
   // map cryptoboy's token id to crypto boy
   mapping(address => User) public allUsers;
+  mapping(uint => User) public allUsersById;
   // check if token name exists
   mapping(string => bool) public userNameExists;
   // check if image exists
@@ -72,6 +73,7 @@ contract Users{
     );
     // add the address and it's user to all users mapping
     allUsers[msg.sender] = newUser;
+    allUsersById[userCounter] =newUser;
     nameToAddress[_userName]=msg.sender;
 
   }
@@ -125,7 +127,7 @@ contract Users{
     );
      // add the address and it's user to all users mapping
     allUsers[msg.sender] = newUser;
-    
+    allUsersById[addressToId[msg.sender]] =newUser;
     }
    
 }

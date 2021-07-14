@@ -279,7 +279,10 @@ const renderMobileMenu = (
               </Badge>
             </IconButton> */}
 
-               
+              <Link to="/creators" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
+                Creators
+              </Link>
+           
               
 
            

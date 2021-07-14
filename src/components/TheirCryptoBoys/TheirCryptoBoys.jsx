@@ -28,7 +28,8 @@ const TheirCryptoBoys = ({
   totalTokensOwnedByAccount,
   callbackFromParent1,
   cryptoBoysContract,
-  usersContract
+  usersContract,
+  userExists
 
 }) => {
   const [loading, setLoading] = useState(false);
@@ -84,8 +85,10 @@ const TheirCryptoBoys = ({
   }
   const classes=useStyles();
   return (
+    
     <div style={{padding:"0.5%"}}>
-       <div className="card mt-1">
+      {userExists?(<>
+        <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
           <TheirAccountDetails 
           accountAddress={theirAccountAddress}
@@ -197,7 +200,8 @@ const TheirCryptoBoys = ({
                 </div>
               </>
           )})}</div></>
-        )}
+        )}</>):(<><h3>User name does not exist</h3></>)}
+     
        
     </div>
     

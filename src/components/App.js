@@ -15,6 +15,7 @@ import Users from "../abis/Users.json";
 import CryptoBoyNFTDetails from "./CryptoBoyNFTDetails/CryptoBoyNFTDetails";
 import FormAndPreview from "../components/FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
+import AllCreators from "./AllCreators/AllCreators";
 import AccountDetails from "./AccountDetails/AccountDetails";
 import ContractNotDeployed from "./ContractNotDeployed/ContractNotDeployed";
 import ConnectToMetamask from "./ConnectMetamask/ConnectToMetamask";
@@ -69,6 +70,7 @@ class App extends Component {
       endOfDesigns:false,
       searchedDesign:null,
       tokenExists:true,
+      userExists:true,
      
     };
   }
@@ -163,20 +165,7 @@ class App extends Component {
           .call();
         this.setState({ cryptoBoysCount });
         
-        // //grt number of user
-        // const usersCount = await cryptoBoysContract.methods
-        //   .userCounter()
-        //   .call();
-        //   this.setState({ usersCount });
-        // //get all the designs
-        // for (var i = 1; i <= usersCount; i++) {
-        //   const user = await cryptoBoysContract.methods
-        //     .allUsers(i)
-        //     .call();
-        //   this.setState({
-        //     users: [...this.state.users, user],
-        //   });
-        // }
+       
          //get all the designs
          
          for (var i = 1; i <=cryptoBoysCount; i++) {
@@ -222,7 +211,21 @@ class App extends Component {
         .call();
         this.setState({currentUser:current});
         this.setState({loading:false});
-        
+         //grt number of user
+         const usersCount = await usersContract.methods
+         .userCounter()
+         .call();
+         this.setState({ usersCount });
+       //get all the designs
+       for (var i = 1; i <= usersCount; i++) {
+         const user = await usersContract.methods
+           .allUsersById(i)
+           .call();
+         this.setState({
+           users: [...this.state.users, user],
+         });
+       }
+       console.log(this.state.users)
     }}
   };
 
@@ -560,10 +563,19 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                     }
   
   }else{
+    const userNameExists=await this.state.usersContract.methods.
+    userNameExists(search).call();
+    if(userNameExists){
+      this.setState({userExists:true});
     const addressFromName=await this.state.usersContract.methods.
     nameToAddress(search).call();
     this.setState({clickedAddress:addressFromName})
     window.location.href=`/their-tokens/${addressFromName}`
+    }
+    else{
+      this.setState({userExists:false});
+      console.log("username doesnt exist")
+    }
   }
  }
   
@@ -703,6 +715,12 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                 />
               )}
             />
+            <Route 
+              path="/creators"
+              render={()=>(
+                <AllCreators
+                users={this.state.users}/>
+              )}/>
             <Route
               path="/mint"
              
@@ -745,8 +763,8 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                   callbackFromParent1={this.myCallback2}
                   cryptoBoysContract={this.state.cryptoBoysContract}
                   usersContract={this.state.usersContract}
-                  
-                  loading={this.state.loading}
+                  userExists={this.state.userExists}
+                 // loading={this.state.loading}
                 />
                 
               )}
