@@ -9,6 +9,35 @@ import Switch from '@material-ui/core/Switch';
 
 
 
+const useGridStyles = makeStyles(({ breakpoints }) => ({
+  root: {
+    width:"fit-content",
+    [breakpoints.up('md')]: {
+     justifyContent: 'center',
+    },
+  },
+  // parent:{
+  //   display: "grid",// activate grid
+  //   gridTemplateColumns: "repeat(4, 1fr)", //make 4 cols with size 1fr
+  //   gridGap: "20px", //gap between the rows
+  // },
+  // child:{
+  //   '&:nthChild(3n+1)' :{
+  //     gridColumn: 1,
+  //   },
+  //  ' &:nthChild(3n+2)' :{
+  //     gridColumn: 2,
+  //   },
+  //   '&:nthChild(3n+3)' :{
+  //     gridColumn: 3,
+  //   },
+  //   '&:nthChild(3n+4)' :{
+  //     gridColumn: 1, //put the fourth item in a new row
+  //   },
+    
+  // },
+  
+}));
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,6 +96,7 @@ const MyCryptoBoys = ({
   callbackFromParent1(dataFromChild1)
    // console.log(address)
   }
+  const gridStyles = useGridStyles();
   return (
     <div style={{padding:"0.5%"}}>
       <div className="card mt-1">
@@ -100,20 +130,19 @@ const MyCryptoBoys = ({
           </h5>
         </div>
       </div>
-      <div className="d-flex flex-wrap mb-2">
-        
+      <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
+      <Grid classes={gridStyles} container spacing={4} >
          {myMintedCryptoBoys.map((cryptoboy) => {
           return (
             <>
-            <div
-              key={cryptoboy.tokenId.toNumber()}
-              className="col-md-6 "
-              className="w-50 p-4 mt-1 border"
-              style={{display:"flex"}}
-              
-            >
-            
-                  {!loading ? (
+            <Grid item xs={4}>
+            <MyCryptoBoyNFTDetails
+                    callback1={myCallback1}
+                    cryptoboy={cryptoboy}
+                    accountAddress={accountAddress}
+               
+                  />
+                  {/* {!loading ? (
                     <CryptoBoyNFTImage
                      cryptoboy={cryptoboy}
                     />
@@ -129,12 +158,15 @@ const MyCryptoBoys = ({
                     accountAddress={accountAddress}
                     
                   />
-                </div>
+                </div> */}
+                </Grid>
               </>
             
           );
 
-        })}</div></>):(
+        })}</Grid>
+        </div>
+        </>):(
           <>
       <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
@@ -143,19 +175,19 @@ const MyCryptoBoys = ({
           </h5>
         </div>
       </div>
-      <div className="d-flex flex-wrap mb-2">
+      <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
+      <Grid classes={gridStyles} container spacing={4} >
          {myBoughtCryptoBoys.map((cryptoboy) => {
           return (
             <>
-            <div
-              key={cryptoboy.tokenId.toNumber()}
-              className="col-md-6 "
-              className="w-50 p-4 mt-1 border"
-              style={{display:"flex"}}
-              
-            >
-            
-                  {!loading ? (
+            <Grid item xs={4}>
+            <MyCryptoBoyNFTDetails
+                    callback1={myCallback1}
+                    cryptoboy={cryptoboy}
+                    accountAddress={accountAddress}
+               
+                  />
+                  {/* {!loading ? (
                     <CryptoBoyNFTImage
                      cryptoboy={cryptoboy}
                     />
@@ -171,9 +203,10 @@ const MyCryptoBoys = ({
                     accountAddress={accountAddress}
                     
                   />
-                </div>
+                </div> */}
+                </Grid>
               </>
-          )})}</div></>
+          )})}</Grid></div></>
         )}
        
     </div>

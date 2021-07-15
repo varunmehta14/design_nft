@@ -3,14 +3,44 @@ import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage";
 import CryptoBoyNFTDetails from "../CryptoBoyNFTDetails/CryptoBoyNFTDetails";
 import NFTHighlights from "../NFTHighlights/NFTHighlights";
 import Loading from "../Loading/Loading";
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 
 
-
+const useGridStyles = makeStyles(({ breakpoints }) => ({
+  root: {
+    width:"fit-content",
+    [breakpoints.up('md')]: {
+     justifyContent: 'center',
+    },
+  },
+  // parent:{
+  //   display: "grid",// activate grid
+  //   gridTemplateColumns: "repeat(4, 1fr)", //make 4 cols with size 1fr
+  //   gridGap: "20px", //gap between the rows
+  // },
+  // child:{
+  //   '&:nthChild(3n+1)' :{
+  //     gridColumn: 1,
+  //   },
+  //  ' &:nthChild(3n+2)' :{
+  //     gridColumn: 2,
+  //   },
+  //   '&:nthChild(3n+3)' :{
+  //     gridColumn: 3,
+  //   },
+  //   '&:nthChild(3n+4)' :{
+  //     gridColumn: 1, //put the fourth item in a new row
+  //   },
+    
+  // },
+  
+}));
 const AllCryptoBoys = ({
   
   accountAddress,
   cryptoBoys,
- // allcryptoBoys,
+  //allcryptoBoys,
   totalTokensMinted,
   changeTokenPrice,
   toggleForSale,
@@ -40,7 +70,7 @@ const AllCryptoBoys = ({
       }
     }
    
-    loadDesigns(startState,endState)
+  //  loadDesigns(startState,endState)
   }, [usersContract]);
   
   //console.log(cryptoBoysContract)
@@ -50,58 +80,58 @@ const AllCryptoBoys = ({
     callbackFromParent(dataFromChild1)
    // console.log(address)
   }
-  const loadDesigns=async(start,end)=>{
-    console.log("end",end)
-  //   const cryptoBoysCount = await cryptoBoysContract.methods
-  //   .cryptoBoyCounter()
-  //   .call();
-  // this.setState({ cryptoBoysCount }); 
-  if(cryptoBoysContract){
-    if(totalTokensMinted!=0){
-   for (var i = start; i <= end; i++) {
+  // const loadDesigns=async(start,end)=>{
+  //   console.log("end",end)
+  // //   const cryptoBoysCount = await cryptoBoysContract.methods
+  // //   .cryptoBoyCounter()
+  // //   .call();
+  // // this.setState({ cryptoBoysCount }); 
+  // if(cryptoBoysContract){
+  //   if(totalTokensMinted!=0){
+  //  for (var i = start; i <= end; i++) {
   
     
-    const cryptoBoy = await cryptoBoysContract.methods
-      .allCryptoBoys(i)
-      .call();
-      console.log(cryptoBoy)
-   setAllCryptoBoys(allCryptoBoys=>
-      [...allCryptoBoys, cryptoBoy]);
+  //   const cryptoBoy = await cryptoBoysContract.methods
+  //     .allCryptoBoys(i)
+  //     .call();
+  //     console.log(cryptoBoy)
+  //  setAllCryptoBoys(allCryptoBoys=>
+  //     [...allCryptoBoys, cryptoBoy]);
      
-    if(i===totalTokensMinted){
-      setEndOfDesigns(true)
-      break;
-    }}}
-  }
-  }
+  //   if(i===totalTokensMinted){
+  //     setEndOfDesigns(true)
+  //     break;
+  //   }}}
+  // }
+  // }
   
-  const scrollToEnd=()=>{
-    // this.setState({page:this.state.page+1});
-    if(end<=totalTokensMinted){
-     setStart(end+1);
-     setEnd(end+2);
-     //setLoading(true);
-     console.log(console.log("start",start))
+  // const scrollToEnd=()=>{
+  //   // this.setState({page:this.state.page+1});
+  //   if(end<=totalTokensMinted){
+  //    setStart(end+1);
+  //    setEnd(end+2);
+  //    //setLoading(true);
+  //    console.log(console.log("start",start))
      
-     loadDesigns(start,end);}}
+  //    loadDesigns(start,end);}}
      
      
    
 
-    // console.log(this.state.page);
+  //   // console.log(this.state.page);
    
  
-   window.onscroll=function(){
-     console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
-     if(
-       window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight -1
-     ){
-      if(!endOfDesigns){
-       scrollToEnd();}
-       console.log("here")
-     }
-   }
-  
+  //  window.onscroll=function(){
+  //    console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
+  //    if(
+  //      window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight -1
+  //    ){
+  //     if(!endOfDesigns){
+  //      scrollToEnd();}
+  //      console.log("here")
+  //    }
+  //  }
+   const gridStyles = useGridStyles();
   return (
     <div style={{padding:"0.5%"}}>
       <div className="card mt-1">
@@ -112,40 +142,14 @@ const AllCryptoBoys = ({
           </h5>
         </div>
       </div>
-      <div className="d-flex flex-wrap mb-2">
-        {allCryptoBoys.map((cryptoboy) => {
+      <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
+        <Grid classes={gridStyles} container spacing={4} >
+       
+        {cryptoBoys.map((cryptoboy) => {
           return (
-           <
-           
-          >
-            <div
-              key={cryptoboy.tokenId.toNumber()}
-              className="col-md-6 "
-              className="w-50 p-4 mt-1 border "
-              style={{display:"flex"}}
-              
-            >
-              {!loading ? (
-                <CryptoBoyNFTImage
-                cryptoboy={cryptoboy}
-                />
-              
-               
-              ) : (
-                <Loading />
-              )}</div>
-              {/* <CryptoBoyNFTDetails
-                cryptoboy={cryptoboy}
-                accountAddress={accountAddress}
-                changeTokenPrice={changeTokenPrice}
-                toggleForSale={toggleForSale}
-                buyCryptoBoy={buyCryptoBoy}
-                callbackFromParent={myCallback1}
-              /> */}
-              <div className="col-md-6 "
-              className="w-50 p-4 mt-1 border text-center"
-              >
-              <NFTHighlights
+            <>
+             <Grid item xs={4}>
+             <NFTHighlights
                 cryptoboy={cryptoboy}
                 accountAddress={accountAddress}
                 changeTokenPrice={changeTokenPrice}
@@ -155,15 +159,57 @@ const AllCryptoBoys = ({
                 cryptoBoysContract={cryptoBoysContract}
                 usersContract={usersContract}
               />
+             </Grid>
+           </> 
+
+            // {/* // <div
+            // //   key={cryptoboy.tokenId.toNumber()}
+            // //   className="col-md-6 "
+            // //   className="w-50 p-4 mt-1 border "
+            // //   style={{display:"flex"}}
+              
+            // // >
+            // //   {!loading ? (
+            // //     <CryptoBoyNFTImage
+            // //     cryptoboy={cryptoboy}
+            // //     />
+              
                
-              </div>
-              <hr/>
-            </>
+            // //   ) : (
+            // //     <Loading />
+            // //   )}</div>
+            // //   {/* <CryptoBoyNFTDetails
+            // //     cryptoboy={cryptoboy}
+            // //     accountAddress={accountAddress}
+            // //     changeTokenPrice={changeTokenPrice}
+            // //     toggleForSale={toggleForSale}
+            // //     buyCryptoBoy={buyCryptoBoy}
+            // //     callbackFromParent={myCallback1}
+            // //   /> */}
+            // //   <div className="col-md-6 "
+            // //   className="w-50 p-4 mt-1 border text-center"
+            // //   >
+            // //   <NFTHighlights
+            // //     cryptoboy={cryptoboy}
+            // //     accountAddress={accountAddress}
+            // //     changeTokenPrice={changeTokenPrice}
+            // //     toggleForSale={toggleForSale}
+            // //     buyCryptoBoy={buyCryptoBoy}
+            // //     callbackFromParent={myCallback1}
+            // //     cryptoBoysContract={cryptoBoysContract}
+            // //     usersContract={usersContract}
+            // //   />
+               
+            // //   </div>
+            // //   <hr/> */}
+        
             
           );
         })}
+        </Grid>
+             </div>
       </div>
-    </div>
+   
   );
 };
 

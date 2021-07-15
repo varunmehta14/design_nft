@@ -704,7 +704,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                 <AllCryptoBoys
                   accountAddress={this.state.accountAddress}
                   cryptoBoys={this.state.cryptoBoys}
-                 // allcryptoBoys={this.state.allcryptoBoys}
+                  //allcryptoBoys={this.state.allcryptoBoys}
                   totalTokensMinted={this.state.totalTokensMinted}
                   changeTokenPrice={this.changeTokenPrice}
                   toggleForSale={this.toggleForSale}
