@@ -12,7 +12,8 @@ import TheirAccountDetails from "../TheirAccountDetails/TheirAccountDetails";
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
-    width:"fit-content",
+    
+    width:"-webkit-fill-available",
     [breakpoints.up('md')]: {
      justifyContent: 'center',
     },

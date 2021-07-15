@@ -12,6 +12,7 @@ import CardActions from '@material-ui/core/CardActions';
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
 
 const useStyles = makeStyles((theme) => ({
   actionArea: {
@@ -90,6 +91,9 @@ const CreatorHighlights=(props)=>{
         </div>
         <hr style={{borderColor:"aliceblue",borderWidth:"thin"}}/>
         <Typography className={classes.subtitle}style={{color:"aliceblue"}}>{props.user.bio}</Typography>
+        <Typography className={classes.subtitle} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
+         <ContactMailIcon/>&nbsp;{props.user.email}
+        </Typography>
       </CardContent>
       <CardActions className={classes.content2}disableSpacing>
         <IconButton aria-label="instagram" onClick={handleClick} >

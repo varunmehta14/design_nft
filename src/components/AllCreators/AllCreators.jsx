@@ -5,7 +5,8 @@ import Grid from '@material-ui/core/Grid';
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
-    width:"fit-content",
+  
+    width:"-webkit-fill-available",
     [breakpoints.up('md')]: {
      justifyContent: 'center',
     },
