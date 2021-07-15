@@ -77,12 +77,13 @@ const AllCryptoBoys = ({
   
   const scrollToEnd=()=>{
     // this.setState({page:this.state.page+1});
+    if(end<=totalTokensMinted){
      setStart(end+1);
      setEnd(end+2);
      //setLoading(true);
      console.log(console.log("start",start))
      
-     loadDesigns(start,end);}
+     loadDesigns(start,end);}}
      
      
    
