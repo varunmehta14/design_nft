@@ -9,16 +9,17 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
+import StoreIcon from '@material-ui/icons/Store';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import BorderColorSharpIcon from '@material-ui/icons/BorderColorSharp';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import metamaskIcon from "./metamask.svg";
+import MuseumIcon from '@material-ui/icons/Museum';
 import Avatar from '@material-ui/core/Avatar';
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -128,116 +129,8 @@ const handleMobileMenuOpen = (event) => {
 
 const menuId = 'primary-search-account-menu';
 const renderMenu = (
-  <Menu
-    anchorEl={anchorEl}
-    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-    id={menuId}
-    keepMounted
-    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-    open={isMenuOpen}
-    onClose={handleMenuClose}
-  >
-    {console.log(currentUser)}
-    {!currentUser[1]?( <MenuItem onClick={handleMenuClose}><Link to="/profile" className="nav-link" >
-    Profile
-              </Link></MenuItem>):(   <MenuItem onClick={handleMenuClose}><Link to="/account" className="nav-link" >
-    My account
-              </Link></MenuItem>)}
-   
- 
-  </Menu>
-);
-
-const mobileMenuId = 'primary-search-account-menu-mobile';
-const renderMobileMenu = (
-  <Menu
-    anchorEl={mobileMoreAnchorEl}
-    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-    id={mobileMenuId}
-    keepMounted
-    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-    open={isMobileMenuOpen}
-    onClose={handleMobileMenuClose}
-  >
-    <MenuItem>
-      <IconButton aria-label="show 4 new mails" color="inherit">
-        <Badge badgeContent={4} color="secondary">
-          <MailIcon />
-        </Badge>
-      </IconButton>
-      <p>Messages</p>
-    </MenuItem>
-    <MenuItem>
-      <IconButton aria-label="show 11 new notifications" color="inherit">
-        <Badge badgeContent={11} color="secondary">
-          <NotificationsIcon />
-        </Badge>
-      </IconButton>
-      <p>Notifications</p>
-    </MenuItem>
-    <MenuItem onClick={handleProfileMenuOpen}>
-      <IconButton
-        aria-label="account of current user"
-        aria-controls="primary-search-account-menu"
-        aria-haspopup="true"
-        color="inherit"
-      >
-        <AccountCircle />
-      </IconButton>
-      <p>Profile</p>
-    </MenuItem>
-  </Menu>
-);
-  
-  return (
-    // <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-    //   <div className="container">
-    //     <img src={icon} alt="" />
-    //     <Link to="/" className="navbar-brand ml-2">
-    //       NFT's
-    //     </Link>
-    //     <button
-    //       className="navbar-toggler"
-    //       data-toggle="collapse"
-    //       data-target="#navbarNav"
-    //     >
-    //       <span className="navbar-toggler-icon"></span>
-    //     </button>
-    //     <div id="navbarNav" className="collapse navbar-collapse">
-    //       <ul
-    //         style={{ fontSize: "0.8rem", letterSpacing: "0.2rem" }}
-    //         className="navbar-nav ml-auto"
-    //       >
-            // <li className="nav-item">
-            //   <Link to="/" className="nav-link">
-            //     Home
-            //   </Link>
-            // </li>
-            // <li className="nav-item">
-            //   <Link to="/mint" className="nav-link">
-            //     Mint NFT
-            //   </Link>
-            // </li>
-            // <li className="nav-item">
-            //   <Link to="/marketplace" className="nav-link">
-            //     Marketplace
-            //   </Link>
-            // </li>
-            // <li className="nav-item">
-            //   <Link to="/my-tokens" className="nav-link">
-            //     My Tokens
-            //   </Link>
-            // </li>
-            // <li className="nav-item">
-            //   <Link to="/queries" className="nav-link">
-            //     Queries
-            //   </Link>
-            // </li>
-    //       </ul>
-    //     </div>
-    //   </div>
-    // </nav>
-    <div className={classes.grow}>
+      <>
+  <div className={classes.grow}>
       <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" }}>
         <Toolbar>
           <IconButton href="/">
@@ -340,8 +233,67 @@ const renderMobileMenu = (
             </IconButton>)}
              
           </div>
+       
+        </Toolbar>
+      </AppBar>
+      <Menu
+    anchorEl={anchorEl}
+    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    id={menuId}
+    keepMounted
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    open={isMenuOpen}
+    onClose={handleMenuClose}
+  >
+    {console.log(currentUser)}
+    {!currentUser[1]?( <MenuItem onClick={handleMenuClose}><Link to="/profile" className="nav-link" >
+    Profile
+              </Link></MenuItem>):(   <MenuItem onClick={handleMenuClose}><Link to="/account" className="nav-link" >
+    My account
+              </Link></MenuItem>)}
+   
+ 
+  </Menu>
+    </div>
+  
+  </>
+  
+);
+
+const mobileMenuId = 'primary-search-account-menu-mobile';
+const renderMobileMenu = (
+  <>
+  <div className={classes.grow}>
+      <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" }}>
+        <Toolbar>
+          <IconButton href="/">
+        <img src={icon} alt="" style={{width:"32px",height:"32px"}}/>
+        
+        </IconButton>
+         
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <form  onSubmit={handleSearchSubmit}>
+            {/* <Link to="/mint" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}> */}
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={(e)=>setSearch(e.target.value)}
+             
+            />
+            {/* </Link> */}
+            </form>
+          </div>
+          <div className={classes.grow} />
+       
           <div className={classes.sectionMobile}>
-          <li className="nav-item">
+          {/* <li className="nav-item">
               <Link to="/" className="nav-link">
                 Home
               </Link>
@@ -360,7 +312,7 @@ const renderMobileMenu = (
               <Link to="/my-tokens" className="nav-link">
                 My Tokens
               </Link>
-            </li>
+            </li> */}
             {/* <li className="nav-item">
               <Link to="/queries" className="nav-link">
                 Queries
@@ -388,12 +340,164 @@ const renderMobileMenu = (
               color="inherit"
             >
               <MoreIcon />
+
             </IconButton>
+            {!currentUser?( <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+             <AccountCircle />
+            </IconButton>):(<IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+               <Avatar alt={currentUser[1]} src={currentUser[6]}/>
+            </IconButton>)}
+            <Menu
+    anchorEl={mobileMoreAnchorEl}
+    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    id={mobileMenuId}
+    keepMounted
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    open={isMobileMenuOpen}
+    onClose={handleMobileMenuClose}
+  >
+    {console.log(currentUser)}
+    {!currentUser[1]?( <MenuItem onClick={handleMobileMenuClose}><Link to="/profile" className="nav-link" >
+    Profile
+              </Link></MenuItem>):(   <MenuItem onClick={handleMobileMenuClose}><Link to="/account" className="nav-link" >
+    My account
+              </Link></MenuItem>)}
+   
+ 
+  </Menu>
           </div>
         </Toolbar>
       </AppBar>
+     
+    </div>
+    <Menu
+    anchorEl={mobileMoreAnchorEl}
+    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    id={mobileMenuId}
+    keepMounted
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    open={isMobileMenuOpen}
+    onClose={handleMobileMenuClose}
+  >
+    <MenuItem onClick={handleMobileMenuClose}>
+    <Link to="/creators" style={{textDecorationLine:"none"}} >
+      <div style={{display:"flex",alignItems:"center" }}>
+      <IconButton  color="inherit">
+       
+      <PeopleAltIcon/>
+       
+      </IconButton>
+      <>Creators</>
+      </div>
+      </Link>
+    </MenuItem>
+    
+    <MenuItem onClick={handleMobileMenuClose}>
+    <Link to="/mint" style={{textDecorationLine:"none"}} >
+      <div style={{display:"flex",alignItems:"center" }}>
+      <IconButton  color="inherit">
+      <BorderColorSharpIcon/>
+      </IconButton>
+      <>Create</>
+      </div>
+      </Link>
+    </MenuItem>
+    
+    <MenuItem onClick={handleMobileMenuClose}>
+    <Link to="/marketplace" style={{textDecorationLine:"none"}} >
+      <div style={{display:"flex",alignItems:"center" }}>
+      <IconButton  color="inherit">
+      <StoreIcon/>
+      </IconButton>
+      <>Market place</>
+      </div>
+      </Link>
+    </MenuItem>
+    <MenuItem onClick={handleMobileMenuClose}>
+    <Link to="/my-tokens" style={{textDecorationLine:"none"}} >
+      <div style={{display:"flex",alignItems:"center" }}>
+      <IconButton  color="inherit">
+      <MuseumIcon/>
+      </IconButton>
+      <>My Items</>
+      </div>
+      </Link>
+    </MenuItem>
+  
+  </Menu>
+  </>
+ 
+);
+  
+  return (
+    // <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
+    //   <div className="container">
+    //     <img src={icon} alt="" />
+    //     <Link to="/" className="navbar-brand ml-2">
+    //       NFT's
+    //     </Link>
+    //     <button
+    //       className="navbar-toggler"
+    //       data-toggle="collapse"
+    //       data-target="#navbarNav"
+    //     >
+    //       <span className="navbar-toggler-icon"></span>
+    //     </button>
+    //     <div id="navbarNav" className="collapse navbar-collapse">
+    //       <ul
+    //         style={{ fontSize: "0.8rem", letterSpacing: "0.2rem" }}
+    //         className="navbar-nav ml-auto"
+    //       >
+            // <li className="nav-item">
+            //   <Link to="/" className="nav-link">
+            //     Home
+            //   </Link>
+            // </li>
+            // <li className="nav-item">
+            //   <Link to="/mint" className="nav-link">
+            //     Mint NFT
+            //   </Link>
+            // </li>
+            // <li className="nav-item">
+            //   <Link to="/marketplace" className="nav-link">
+            //     Marketplace
+            //   </Link>
+            // </li>
+            // <li className="nav-item">
+            //   <Link to="/my-tokens" className="nav-link">
+            //     My Tokens
+            //   </Link>
+            // </li>
+            // <li className="nav-item">
+            //   <Link to="/queries" className="nav-link">
+            //     Queries
+            //   </Link>
+            // </li>
+    //       </ul>
+    //     </div>
+    //   </div>
+    // </nav>
+    <div className={classes.grow}>
+     <div className={classes.sectionMobile}>
       {renderMobileMenu}
+      </div>
+      <div className={classes.sectionDesktop}>
       {renderMenu}
+    </div>
     </div>
   );
 };
