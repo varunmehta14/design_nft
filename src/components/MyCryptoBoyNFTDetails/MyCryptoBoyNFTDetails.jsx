@@ -103,6 +103,7 @@ const MyCryptoBoyNFTDetails = ({callback1,cryptoboy,accountAddress}) => {
          {tokenId.toNumber()}
       
         </div>
+        <hr/>
         <div className={classes.subtitle}>
           No. of Transfer:   
           {numberOfTransfers.toNumber()}

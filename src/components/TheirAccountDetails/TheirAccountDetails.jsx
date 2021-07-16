@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 
 
 const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,currentUser}) => {
@@ -54,29 +55,31 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,c
   return (
     <div style={{padding:"0.5%"}}>
       
-       
+      <Paper>
+      <div style={{padding:"0.5%"}}>
         <hr className="my-4" />
         <div style={{display:"flex",justifyContent:"center"}}>
         <Avatar alt={currentUser.userName} src={currentUser.avatarhash} className={useStyles().large}/>
         </div>
         
-        <p className="lead">Account address :</p>
-        <h4>{accountAddress}</h4>
-       
-        <p className="lead">User Name :</p>
-        <h4>{currentUser.userName}</h4>
-        <p className="lead">Email :</p>
-        <h4>{currentUser.email} </h4>
-        <p className="lead">Social Media</p>
-        <h4>{currentUser.social}</h4>
-        <p className="lead">Custom Url</p>
-        <h4>{currentUser.repo}</h4>
-        <p className="lead">Bio :</p>
-        <h4>{currentUser.bio}</h4>
+        <p >Account address :</p>
+       <p className="lead">{accountAddress}</p>
+      
+       <p >User Name :</p>
+       <p className="lead">{currentUser.userName}</p>
+       <p >Email :</p>
+       <p className="lead">{currentUser.email} </p>
+       <p >Social Media</p>
+       <p className="lead">{currentUser.social}</p>
+       <p >Custom Url</p>
+       <p className="lead">{currentUser.repo}</p>
+       <p >Bio :</p>
+       <p className="lead">{currentUser.bio}</p>
         
-        
-     
+        </div>
+       </Paper>
     </div>
+   
   );
 };
 

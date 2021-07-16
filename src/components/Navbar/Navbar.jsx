@@ -319,7 +319,7 @@ const renderMobileMenu = (
               </Link>
             </li> */}
             {!metamaskConnected ? (
-             <li  className="nav-item"> <Button
+             <Button
         onClick={connectToMetamask}
        // className="btn btn-primary d-flex align-items-center"
        // style={{ fontSize: "0.9rem", letterSpacing: "0.14rem" }}
@@ -330,19 +330,8 @@ const renderMobileMenu = (
           alt="metamask-icon"
           style={{ width: "2rem", marginLeft: "0.5rem" }}
         />
-      </Button></li>):null}
-             
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-
-            </IconButton>
-            {!currentUser?( <IconButton
+      </Button>):null}
+      {!currentUser?( <IconButton
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
@@ -361,6 +350,18 @@ const renderMobileMenu = (
             >
                <Avatar alt={currentUser[1]} src={currentUser[6]}/>
             </IconButton>)}
+             
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MenuIcon />
+
+            </IconButton>
+
             <Menu
     anchorEl={mobileMoreAnchorEl}
     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
