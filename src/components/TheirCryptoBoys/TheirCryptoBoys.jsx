@@ -12,8 +12,9 @@ import TheirAccountDetails from "../TheirAccountDetails/TheirAccountDetails";
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
-    
-    width:"-webkit-fill-available",
+    paddingLeft:"5%",
+    paddingRight:"5%",
+    //width:"-webkit-fill-available",
     [breakpoints.up('md')]: {
      justifyContent: 'center',
     },
@@ -164,7 +165,7 @@ const TheirCryptoBoys = ({
          {myMintedCryptoBoys.map((cryptoboy) => {
           return (
             <>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={6} lg={4} xl={3}>
             <MyCryptoBoyNFTDetails
                     callback1={myCallback1}
                     cryptoboy={cryptoboy}
@@ -213,7 +214,7 @@ const TheirCryptoBoys = ({
          {myBoughtCryptoBoys.map((cryptoboy) => {
           return (
             <>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={6} lg={4} xl={3}>
             <MyCryptoBoyNFTDetails
                     callback1={myCallback1}
                     cryptoboy={cryptoboy}

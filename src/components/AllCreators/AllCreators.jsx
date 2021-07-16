@@ -5,8 +5,9 @@ import Grid from '@material-ui/core/Grid';
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
-  
-    width:"-webkit-fill-available",
+    paddingLeft:"5%",
+    paddingRight:"5%",
+   // width:"-webkit-fill-available",
     [breakpoints.up('md')]: {
      justifyContent: 'center',
     },
@@ -52,7 +53,7 @@ const AllCreators=(props)=>{
              {props.users.map((user)=>{
                 return(
                     <> 
-                     <Grid item xs={4}>
+                     <Grid item xs={12} sm={6} lg={4} xl={3}>
                     <CreatorHighlights user={user}/>
                     </Grid>
                     </>

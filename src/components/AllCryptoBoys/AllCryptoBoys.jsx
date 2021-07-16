@@ -9,8 +9,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
-    
-    width:"-webkit-fill-available",
+    paddingLeft:"5%",
+    paddingRight:"5%",
+    //width:"-webkit-fill-available",
     [breakpoints.up('md')]: {
      justifyContent: 'center',
     },
@@ -54,9 +55,9 @@ const AllCryptoBoys = ({
   
   const [loading, setLoading] = useState(false);
   const [address,setAddress]=useState("");
-  const [start,setStart]=useState(4);
+  const [start,setStart]=useState(1);
   const [startState,setStartState]=useState(1);
-  const [end,setEnd]=useState(6);
+  const [end,setEnd]=useState(3);
   const [endState,setEndState]=useState(3);
   const [allCryptoBoys,setAllCryptoBoys]=useState([]);
   const [endOfDesigns,setEndOfDesigns]=useState(false);
@@ -71,7 +72,7 @@ const AllCryptoBoys = ({
       }
     }
    
-   loadDesigns(startState,endState)
+  // loadDesigns(start,end)
   }, [usersContract]);
   
   //console.log(cryptoBoysContract)
@@ -81,58 +82,58 @@ const AllCryptoBoys = ({
     callbackFromParent(dataFromChild1)
    // console.log(address)
   }
-  const loadDesigns=async(start,end)=>{
-    console.log("end",end)
-  //   const cryptoBoysCount = await cryptoBoysContract.methods
-  //   .cryptoBoyCounter()
-  //   .call();
-  // this.setState({ cryptoBoysCount }); 
-  if(cryptoBoysContract){
-    if(totalTokensMinted!=0){
-   for (var i = start; i <= end; i++) {
+  // const loadDesigns=async(start,end)=>{
+  //   console.log("end",end)
+  // //   const cryptoBoysCount = await cryptoBoysContract.methods
+  // //   .cryptoBoyCounter()
+  // //   .call();
+  // // this.setState({ cryptoBoysCount }); 
+  // if(cryptoBoysContract){
+  //   if(totalTokensMinted!=0){
+  //  for (var i = start; i <= end; i++) {
   
     
-    const cryptoBoy = await cryptoBoysContract.methods
-      .allCryptoBoys(i)
-      .call();
-      console.log(cryptoBoy)
-   setAllCryptoBoys(allCryptoBoys=>
-      [...allCryptoBoys, cryptoBoy]);
+  //   const cryptoBoy = await cryptoBoysContract.methods
+  //     .allCryptoBoys(i)
+  //     .call();
+  //     console.log(cryptoBoy)
+  //  setAllCryptoBoys(allCryptoBoys=>
+  //     [...allCryptoBoys, cryptoBoy]);
      
-    if(i===totalTokensMinted){
-      setEndOfDesigns(true)
-      break;
-    }}}
-  }
-  }
+  //   if(i===totalTokensMinted){
+  //     setEndOfDesigns(true)
+  //     break;
+  //   }}}
+  // }
+  // }
   
-  const scrollToEnd=()=>{
-    // this.setState({page:this.state.page+1});
-    if(end<=totalTokensMinted){
-     setStart(end+3);
-     setEnd(end+6);
-     //setLoading(true);
-     console.log(console.log("start",start))
+  // const scrollToEnd=()=>{
+  //   // this.setState({page:this.state.page+1});
+  //   if(end<=totalTokensMinted){
+  //    setStart(end+1);
+  //    setEnd(end+3);
+  //    //setLoading(true);
+  //    console.log(console.log("start",start))
      
-     loadDesigns(start,end);}}
+  //    loadDesigns(start,end);}}
      
      
    
 
-    // console.log(this.state.page);
+  //   // console.log(this.state.page);
    
  
-   window.onscroll=function(){
-     console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
-     if(
-       window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight 
-     ){
-      if(!endOfDesigns){
-       scrollToEnd();
-      }
-       console.log("here")
-     }
-   }
+  //  window.onscroll=function(){
+  //    console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
+  //    if(
+  //      window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight 
+  //    ){
+  //     if(!endOfDesigns){
+  //      scrollToEnd();
+  //     }
+  //      console.log("here")
+  //    }
+  //  }
    const gridStyles = useGridStyles();
   return (
     <div style={{padding:"0.5%"}}>
@@ -147,10 +148,10 @@ const AllCryptoBoys = ({
       <div style={{display:"flex",justifyContent:"center",padding:"1.5%"}}>
         <Grid classes={gridStyles} container spacing={4} >
        
-        {allCryptoBoys.map((cryptoboy) => {
+        {cryptoBoys.map((cryptoboy) => {
           return (
             <>
-             <Grid item xs={4}>
+             <Grid item xs={12} sm={6} lg={4} xl={3} >
              <NFTHighlights
                 cryptoboy={cryptoboy}
                 accountAddress={accountAddress}

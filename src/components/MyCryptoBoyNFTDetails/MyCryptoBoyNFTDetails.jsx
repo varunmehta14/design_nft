@@ -53,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Montserrat',
     color: 'black',
     opacity: 0.87,
-    marginTop: '2rem',
+    //marginTop: '2rem',
+    padding:"0.5%",
     fontWeight: 500,
     fontSize: 14,
   },
@@ -97,16 +98,16 @@ const MyCryptoBoyNFTDetails = ({callback1,cryptoboy,accountAddress}) => {
         </div>
         </CardActions>
       <CardContent className={classes.content2}>
-        <Typography className={classes.subtitle}>
+        <div className={classes.subtitle}>
           Token Id:   
          {tokenId.toNumber()}
       
-        </Typography>
-        <Typography className={classes.subtitle}>
+        </div>
+        <div className={classes.subtitle}>
           No. of Transfer:   
           {numberOfTransfers.toNumber()}
       
-        </Typography>
+        </div>
        
         <hr/>
         Price
