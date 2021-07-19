@@ -119,16 +119,14 @@ const TheirCryptoBoys = ({
     
     <div style={{padding:"0.5%"}}>
       {userExists?(<>
-        <div className="card mt-1">
-        <div className="card-body align-items-center d-flex justify-content-center">
+        
           <TheirAccountDetails 
           accountAddress={theirAccountAddress}
           cryptoBoysContract={cryptoBoysContract}
           usersContract={usersContract}
           currentUser={currentUser}
           />
-        </div>
-        </div>
+       
       <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
           {/* <h5>
