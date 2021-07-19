@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn,currentUser,searchTermfromApp,searchAllResultsFromApp,searchData}) => {
+const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn,currentUser,searchTermfromApp,searchAllResultsFromApp,searchData,cryptoBoys,searchNFTFromApp}) => {
   const classes = useStyles();
 const [anchorEl, setAnchorEl] = useState(null);
 //const [metamaskConnected,setMetamaskConnected]=useState(false);
@@ -127,6 +127,12 @@ searchTermfromApp(search)
 const searchTerm=(key)=>{
 searchAllResultsFromApp(key);
 }
+const handleSearchSubmit2=(e)=>{
+  e.preventDefault();
+  
+  console.log("form submitted", search)
+  searchNFTFromApp(search)
+  }
 // const connectToMetamask = async () => {
   
 //   await window.ethereum.enable();
@@ -155,6 +161,12 @@ const handleOnSelect = (item) => {
   
   console.log(item)
  setSearch(item.userName)
+}
+const handleOnSelect2 = (item) => {
+  // the item selected
+  
+  console.log(item)
+ setSearch(item.tokenName)
 }
 
 const handleOnFocus = () => {
@@ -212,6 +224,21 @@ const renderMenu = (
             onSelect={handleOnSelect}
             onFocus={handleOnFocus}
             resultStringKeyName="userName"
+            styling={{backgroundColor:"ghostwhite"}}
+            autoFocus
+          />
+          </form>
+        </div>
+        <div style={{ width: "10%",marginLeft:"2%" }}>
+                <form onSubmit={handleSearchSubmit2}>
+          <ReactSearchAutocomplete
+            items={cryptoBoys}
+            fuseOptions={{keys:["tokenName"]}}
+            onSearch={handleOnSearch}
+            onHover={handleOnHover}
+            onSelect={handleOnSelect2}
+            onFocus={handleOnFocus}
+            resultStringKeyName="tokenName"
             styling={{backgroundColor:"ghostwhite"}}
             autoFocus
           />
@@ -359,6 +386,21 @@ const renderMobileMenu = (
             onFocus={handleOnFocus}
             resultStringKeyName="userName"
             styling={{backgroundColor:"ghostwhite",active:false}}
+            autoFocus
+          />
+          </form>
+        </div>
+        <div style={{ width: "100%",marginLeft:"2%" }}>
+                <form onSubmit={handleSearchSubmit2}>
+          <ReactSearchAutocomplete
+            items={cryptoBoys}
+            fuseOptions={{keys:["tokenName"]}}
+            onSearch={handleOnSearch}
+            onHover={handleOnHover}
+            onSelect={handleOnSelect2}
+            onFocus={handleOnFocus}
+            resultStringKeyName="tokenName"
+            styling={{backgroundColor:"ghostwhite"}}
             autoFocus
           />
           </form>

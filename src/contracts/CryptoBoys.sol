@@ -46,7 +46,10 @@ contract CryptoBoys is ERC721 {
   mapping(string => bool) public tokenURIExists;
   //check if tokenId exists
   mapping(uint256=>bool)public tokenIdExists;
-  
+  //map tokenName to token
+  mapping(string=>CryptoBoy)public nameToCryptoBoy;
+  //map name to Id
+   mapping(string=>uint256)public nameToId;
 
   // initialize contract while deployment with contract's collection name and token
   constructor() ERC721("Crypto Boys Collection", "CB") {
@@ -109,6 +112,9 @@ contract CryptoBoys is ERC721 {
     true);
     // add the token id and it's crypto boy to all crypto boys mapping
     allCryptoBoys[cryptoBoyCounter] = newCryptoBoy;
+
+    nameToCryptoBoy[_name]=newCryptoBoy;
+    nameToId[_name]=cryptoBoyCounter;
   }
 
   // get owner of the token

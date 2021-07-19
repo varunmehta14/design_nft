@@ -586,7 +586,13 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
    this.setState({searchData:result})
    console.log(this.state.searchData)
  }
-  
+ searchNFTFromApp=async(val)=>{
+   const result=await this.state.cryptoBoysContract.methods.
+   nameToId(val).call();
+   this.setState({clickedAddress: result})
+                    
+   window.location.href=`/nftDetails/${result}`
+ }
   
   render() {
     // const scrollToEnd=()=>{
@@ -633,7 +639,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
       <> <Container maxWidth="false" style={{padding:"0%"}}> 
     <Router>
 
-    <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}searchTermfromApp={this.searchTermfromApp}searchAllResultsFromApp={this.searchAllResultsFromApp}searchData={this.state.users}/>
+    <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}searchTermfromApp={this.searchTermfromApp}searchAllResultsFromApp={this.searchAllResultsFromApp}searchData={this.state.users}cryptoBoys={this.state.cryptoBoys}searchNFTFromApp={this.searchNFTFromApp}/>
       <Switch>
       
       
