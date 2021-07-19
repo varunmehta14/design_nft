@@ -21,6 +21,9 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import metamaskIcon from "./metamask.svg";
 import MuseumIcon from '@material-ui/icons/Museum';
 import Avatar from '@material-ui/core/Avatar';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -88,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn,currentUser,searchTermfromApp}) => {
+const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn,currentUser,searchTermfromApp,searchAllResultsFromApp,searchData}) => {
   const classes = useStyles();
 const [anchorEl, setAnchorEl] = useState(null);
 //const [metamaskConnected,setMetamaskConnected]=useState(false);
@@ -97,6 +100,11 @@ const [search,setSearch]=useState("");
 const isMenuOpen = Boolean(anchorEl);
 const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+
+const userData={
+  options:searchData,
+  getOptionLabel:(option)=>option.userName,
+};
 const handleProfileMenuOpen = (event) => {
   setAnchorEl(event.currentTarget);
 };
@@ -116,6 +124,9 @@ e.preventDefault();
 console.log("form submitted", search)
 searchTermfromApp(search)
 }
+const searchTerm=(key)=>{
+searchAllResultsFromApp(key);
+}
 // const connectToMetamask = async () => {
   
 //   await window.ethereum.enable();
@@ -126,11 +137,34 @@ searchTermfromApp(search)
 const handleMobileMenuOpen = (event) => {
   setMobileMoreAnchorEl(event.currentTarget);
 };
+const handleOnSearch = (string, results) => {
+  // onSearch will have as the first callback parameter
+  // the string searched and for the second the results.
+  //setSearch(string)
+ //searchTermfromApp(search)
+  console.log(string, results)
+}
+
+const handleOnHover = (result) => {
+  // the item hovered
+  console.log(result)
+}
+
+const handleOnSelect = (item) => {
+  // the item selected
+  
+  console.log(item)
+ setSearch(item.userName)
+}
+
+const handleOnFocus = () => {
+  console.log('Focused')
+}
 
 const menuId = 'primary-search-account-menu';
 const renderMenu = (
       <>
-  <div className={classes.grow}>
+  <div className={classes.grow} style={{zIndex:"10"}}>
       <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" }}>
         <Toolbar>
           <IconButton href="/">
@@ -140,12 +174,12 @@ const renderMenu = (
           <Typography className={classes.title} variant="h6" noWrap style={{fontFamily:"cursive"}}>
             Digitart
           </Typography>
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <form  onSubmit={handleSearchSubmit}>
-            {/* <Link to="/mint" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}> */}
+            
             <InputBase
               placeholder="Search…"
               classes={{
@@ -153,12 +187,37 @@ const renderMenu = (
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
-              onChange={(e)=>setSearch(e.target.value)}
+              onChange={(e)=>{setSearch(e.target.value);searchTerm(e.target.value)}}
              
             />
-            {/* </Link> */}
+            
+            
             </form>
-          </div>
+          </div> */}
+          {/* <div className={classes.search}>
+          <Autocomplete
+        {...userData}
+        id="search"
+        
+        renderInput={(params) => <TextField style={{display:"flex"}}{...params} label="search" margin="normal" />}
+      />
+      </div> */}
+              <div style={{ width: "10%",marginLeft:"2%" }}>
+                <form onSubmit={handleSearchSubmit}>
+          <ReactSearchAutocomplete
+            items={searchData}
+            fuseOptions={{keys:["userName"]}}
+            onSearch={handleOnSearch}
+            onHover={handleOnHover}
+            onSelect={handleOnSelect}
+            onFocus={handleOnFocus}
+            resultStringKeyName="userName"
+            styling={{backgroundColor:"ghostwhite"}}
+            autoFocus
+          />
+          </form>
+        </div>
+
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {/* <IconButton aria-label="show 4 new mails" color="inherit">
@@ -263,7 +322,7 @@ const renderMenu = (
 const mobileMenuId = 'primary-search-account-menu-mobile';
 const renderMobileMenu = (
   <>
-  <div className={classes.grow}>
+  <div className={classes.grow} style={{zIndex:"10"}}>
       <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" }}>
         <Toolbar>
           <IconButton href="/">
@@ -271,12 +330,12 @@ const renderMobileMenu = (
         
         </IconButton>
          
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <form  onSubmit={handleSearchSubmit}>
-            {/* <Link to="/mint" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}> */}
+          
             <InputBase
               placeholder="Search…"
               classes={{
@@ -287,9 +346,23 @@ const renderMobileMenu = (
               onChange={(e)=>setSearch(e.target.value)}
              
             />
-            {/* </Link> */}
             </form>
-          </div>
+          </div> */}
+          <div style={{width:"100%", marginLeft:"2%" }}>
+                <form onSubmit={handleSearchSubmit}>
+          <ReactSearchAutocomplete
+            items={searchData}
+            fuseOptions={{keys:["userName"]}}
+            onSearch={handleOnSearch}
+            onHover={handleOnHover}
+            onSelect={handleOnSelect}
+            onFocus={handleOnFocus}
+            resultStringKeyName="userName"
+            styling={{backgroundColor:"ghostwhite",active:false}}
+            autoFocus
+          />
+          </form>
+        </div>
           <div className={classes.grow} />
        
           <div className={classes.sectionMobile}>

@@ -47,7 +47,7 @@ class App extends Component {
       cryptoBoysCount: 0,
       usersCount: 0,
       cryptoBoys: [],
-      
+      searchData:[],
       users:[],
       loading: true,
       metamaskConnected: false,
@@ -578,6 +578,14 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
     }
   }
  }
+ searchAllResultsFromApp=async(key)=>{
+  //  const nameToUser=await this.state.usersContract.methods.
+  //  nameToUser(key).call();
+  const result=await this.state.users.filter(user=>user.userName.includes(key))
+  console.log(result);
+   this.setState({searchData:result})
+   console.log(this.state.searchData)
+ }
   
   
   render() {
@@ -625,7 +633,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
       <> <Container maxWidth="false" style={{padding:"0%"}}> 
     <Router>
 
-    <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}searchTermfromApp={this.searchTermfromApp}/>
+    <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}searchTermfromApp={this.searchTermfromApp}searchAllResultsFromApp={this.searchAllResultsFromApp}searchData={this.state.users}/>
       <Switch>
       
       

@@ -50,6 +50,10 @@ contract("Crypto Boys", async (accounts) => {
           result=await users.nameToAddress("varunm14");
           assert.equal(result,"0x407457295C96810a95b4f11cf02D28772BED158A");
         });
+        // it("get User from name"),async()=>{
+        //   result=await users.nameToUser("varunm14");
+        //   assert.equal(result,User[0])
+        // }
        
     });        
 });
