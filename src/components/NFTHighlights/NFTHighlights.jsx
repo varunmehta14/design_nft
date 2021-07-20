@@ -102,6 +102,7 @@ console.log(mintedByName,ownedByName)
 //   };
   const handleClick=(address)=>{
     props.callbackFromParent(address)
+   
     console.log(address)
   }
 
@@ -129,7 +130,7 @@ console.log(mintedByName,ownedByName)
         
         <div style={{display:"flex",justifyContent:"left",alignItems:"center"}}>
         {/* <span className="font-weight-bold">Created By :&nbsp;</span> */}
-        <Link to={`/their-tokens/${props.cryptoboy.mintedBy}`} onClick={()=>{handleClick(props.cryptoboy.mintedBy)}}style={{textDecorationLine:"none"}}>
+        <Link to={`/their-tokens/${props.cryptoboy.mintedBy}`} onClick={()=>{handleClick(props.cryptoboy.mintedBy); window.location.href=`/their-tokens/${props.cryptoboy.mintedBy}`}}style={{textDecorationLine:"none"}}>
           
           {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center",fontWeight:"bolder"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;@{mintedByName}  <br/>
           <>&nbsp;Creator</></div>):(<>props.cryptoboy.mintedBy.substr(0, 5) +
@@ -146,7 +147,7 @@ console.log(mintedByName,ownedByName)
      
       <div style={{display:"flex",justifyContent:"left",alignItems:"center"}}>
         {/* <span className="font-weight-bold">Owned By :&nbsp;</span> */}
-        <Link to={`/their-tokens/${props.cryptoboy.currentOwner}`} onClick={()=>{handleClick(props.cryptoboy.currentOwner)}}style={{textDecorationLine:"none"}}> 
+        <Link to={`/their-tokens/${props.cryptoboy.currentOwner}`} onClick={()=>{handleClick(props.cryptoboy.currentOwner); window.location.href=`/their-tokens/${props.cryptoboy.currentOwner}`}}style={{textDecorationLine:"none"}}> 
         {/* {props.cryptoboy.currentOwner.substr(0, 5) +
           "..." +
           props.cryptoboy.currentOwner.slice(

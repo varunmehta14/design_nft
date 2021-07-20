@@ -238,7 +238,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         <div className="d-flex flex-wrap " style={{justifyContent:"space-evenly"}}>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
       <span className="font-weight-bold">Created By :&nbsp;</span>
-      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].mintedBy}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].mintedBy)}}>
+      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].mintedBy}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].mintedBy)}}style={{textDecorationLine:"none"}}>
          {/* {props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
         "..." +
         props.cryptoBoys[thistokenId].mintedBy.slice(
@@ -253,7 +253,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
       <span className="font-weight-bold">Owned By :&nbsp;</span>
-      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].currentOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].currentOwner)}}> 
+      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].currentOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].currentOwner)}}style={{textDecorationLine:"none"}}> 
       {/* {props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
         "..." +
         props.cryptoBoys[thistokenId].currentOwner.slice(
@@ -416,7 +416,7 @@ const [designMetadata,setDesignMetadata]=useState("");
      
       <div style={{display:"flex",alignItems:"center"}}>
       <span className="font-weight-bold">Previous Owner :&nbsp;</span>
-      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].previousOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].previousOwner)}}> 
+      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].previousOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].previousOwner)}}style={{textDecorationLine:"none"}}> 
       {/* {props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
         "..." +
         props.cryptoBoys[thistokenId].currentOwner.slice(

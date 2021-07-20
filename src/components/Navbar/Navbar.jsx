@@ -172,11 +172,14 @@ const handleOnSelect2 = (item) => {
 const handleOnFocus = () => {
   console.log('Focused')
 }
+const handleOnClear = () => {
+  console.log("Cleared");
+};
 
 const menuId = 'primary-search-account-menu';
 const renderMenu = (
       <>
-  <div className={classes.grow} style={{zIndex:"10"}}>
+  <div className={classes.grow} >
       <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" }}>
         <Toolbar>
           <IconButton href="/">
@@ -223,8 +226,10 @@ const renderMenu = (
             onHover={handleOnHover}
             onSelect={handleOnSelect}
             onFocus={handleOnFocus}
+            onClear={handleOnClear}
+            placeholder="UserName"
             resultStringKeyName="userName"
-            styling={{backgroundColor:"ghostwhite"}}
+            styling={{backgroundColor:"ghostwhite",zIndex:2,placeholderColor: "darkgreen",fontFamily: "Nunito Sans",searchIconMargin: '0 0 0 2px', borderRadius: "8px",clearIconMargin: "0 2px 0 0"}}
             autoFocus
           />
           </form>
@@ -238,8 +243,10 @@ const renderMenu = (
             onHover={handleOnHover}
             onSelect={handleOnSelect2}
             onFocus={handleOnFocus}
+            onClear={handleOnClear}
+            placeholder="DesignName"
             resultStringKeyName="tokenName"
-            styling={{backgroundColor:"ghostwhite"}}
+            styling={{backgroundColor:"ghostwhite",zIndex:2,placeholderColor: "darkgreen",fontFamily: "Nunito Sans",searchIconMargin: '0 0 0 2px',clearIconMargin: "0 2px 0 0", borderRadius: "8px"}}
             autoFocus
           />
           </form>
@@ -349,7 +356,7 @@ const renderMenu = (
 const mobileMenuId = 'primary-search-account-menu-mobile';
 const renderMobileMenu = (
   <>
-  <div className={classes.grow} style={{zIndex:"10"}}>
+  <div className={classes.grow} >
       <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" }}>
         <Toolbar>
           <IconButton href="/">
@@ -384,8 +391,10 @@ const renderMobileMenu = (
             onHover={handleOnHover}
             onSelect={handleOnSelect}
             onFocus={handleOnFocus}
+            showIcon={false}
+            placeholder="User"
             resultStringKeyName="userName"
-            styling={{backgroundColor:"ghostwhite",active:false}}
+            styling={{backgroundColor:"ghostwhite",zIndex:2,fontFamily: "Nunito Sans",clearIconMargin: "0 1px 0 0",borderRadius: "8px"}}
             autoFocus
           />
           </form>
@@ -399,8 +408,10 @@ const renderMobileMenu = (
             onHover={handleOnHover}
             onSelect={handleOnSelect2}
             onFocus={handleOnFocus}
+            placeholder="Design"
             resultStringKeyName="tokenName"
-            styling={{backgroundColor:"ghostwhite"}}
+            showIcon={false}
+            styling={{backgroundColor:"ghostwhite",zIndex:2,fontFamily: "Nunito Sans",clearIconMargin: "0 1px 0 0",borderRadius: "8px"}}
             autoFocus
           />
           </form>

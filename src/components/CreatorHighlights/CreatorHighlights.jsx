@@ -73,7 +73,7 @@ const CreatorHighlights=(props)=>{
   const mediaStyles = useFourThreeCardMediaStyles();
   return (
     <CardActionArea className={classes.actionArea}>
-        <Link to={`/their-tokens/${props.user.userAddress}`}style={{textDecorationLine:"none"}}>
+        <Link to={`/their-tokens/${props.user.userAddress}`}style={{textDecorationLine:"none"}} onClick={() => window.location.href=`/their-tokens/${props.user.userAddress}`}>
     <Card className={classes.card}>
       {/* <CardMedia  classes={mediaStyles} image={props.user.avatarhash} /> */}
     
