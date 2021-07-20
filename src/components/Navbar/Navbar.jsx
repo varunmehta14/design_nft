@@ -23,7 +23,9 @@ import MuseumIcon from '@material-ui/icons/Museum';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import { ReactSearchAutocomplete } from 'react-search-autocomplete';
+import PersonIcon from '@material-ui/icons/Person';
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -87,6 +89,41 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  expanded:{
+    width:"-webkit-fill-available",
+    marginLeft:"2%"
+  },
+  collapsed:{
+    width:"2%",
+    marginLeft:"4px",
+    display:"none"
+  },
+  expandedIcon:{
+    display:"none",
+    
+  },
+  collapsedIcon:{
+    marginLeft:"2px",
+    color:"aliceblue"
+  },
+  expanded1:{
+    width:"-webkit-fill-available",
+    marginLeft:"2%"
+  },
+  collapsed1:{
+    width:"2%",
+    marginLeft:"4px",
+    display:"none"
+  },
+  expandedIcon1:{
+    display:"none",
+    
+  },
+  collapsedIcon1:{
+    marginLeft:"2px",
+    color:"aliceblue"
+  }
+
 }));
 
 
@@ -99,6 +136,10 @@ const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =useState(null);
 const [search,setSearch]=useState("");
 const isMenuOpen = Boolean(anchorEl);
 const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+const [expanded,setExpanded]=useState(false);
+const [expanded1,setExpanded1]=useState(false);
+const [collapsed,setCollapsed]=useState(true);
+const [collapsed1,setCollapsed1]=useState(true);
 
 
 const userData={
@@ -171,9 +212,17 @@ const handleOnSelect2 = (item) => {
 
 const handleOnFocus = () => {
   console.log('Focused')
+  
 }
 const handleOnClear = () => {
   console.log("Cleared");
+  setExpanded(!expanded);
+  setCollapsed(!collapsed);
+};
+const handleOnClear1 = () => {
+  console.log("Cleared");
+  setExpanded1(!expanded1);
+  setCollapsed1(!collapsed1);
 };
 
 const menuId = 'primary-search-account-menu';
@@ -217,7 +266,10 @@ const renderMenu = (
         renderInput={(params) => <TextField style={{display:"flex"}}{...params} label="search" margin="normal" />}
       />
       </div> */}
-              <div style={{ width: "10%",marginLeft:"2%" }}>
+      <IconButton onClick={()=>{setExpanded(!expanded);setCollapsed(!collapsed)}} className={expanded?classes.expandedIcon:classes.collapsedIcon}>
+      <PersonIcon />
+        </IconButton>
+              <div className={expanded?classes.expanded:classes.collapsed}>
                 <form onSubmit={handleSearchSubmit}>
           <ReactSearchAutocomplete
             items={searchData}
@@ -234,7 +286,10 @@ const renderMenu = (
           />
           </form>
         </div>
-        <div style={{ width: "10%",marginLeft:"2%" }}>
+        <IconButton onClick={()=>{setExpanded1(!expanded1);setCollapsed1(!collapsed1)}} className={expanded1?classes.expandedIcon1:classes.collapsedIcon1}>
+      <ImageSearchIcon />
+        </IconButton>
+        <div className={expanded1?classes.expanded1:classes.collapsed1}>
                 <form onSubmit={handleSearchSubmit2}>
           <ReactSearchAutocomplete
             items={cryptoBoys}
@@ -243,7 +298,7 @@ const renderMenu = (
             onHover={handleOnHover}
             onSelect={handleOnSelect2}
             onFocus={handleOnFocus}
-            onClear={handleOnClear}
+            onClear={handleOnClear1}
             placeholder="DesignName"
             resultStringKeyName="tokenName"
             styling={{backgroundColor:"ghostwhite",zIndex:2,placeholderColor: "darkgreen",fontFamily: "Nunito Sans",searchIconMargin: '0 0 0 2px',clearIconMargin: "0 2px 0 0", borderRadius: "8px"}}
@@ -382,7 +437,10 @@ const renderMobileMenu = (
             />
             </form>
           </div> */}
-          <div style={{width:"100%", marginLeft:"2%" }}>
+         <IconButton onClick={()=>{setExpanded(!expanded);setCollapsed(!collapsed)}} className={expanded?classes.expandedIcon:classes.collapsedIcon}>
+      <PersonIcon />
+        </IconButton>
+              <div className={expanded?classes.expanded:classes.collapsed}>
                 <form onSubmit={handleSearchSubmit}>
           <ReactSearchAutocomplete
             items={searchData}
@@ -391,6 +449,7 @@ const renderMobileMenu = (
             onHover={handleOnHover}
             onSelect={handleOnSelect}
             onFocus={handleOnFocus}
+            onClear={handleOnClear}
             showIcon={false}
             placeholder="User"
             resultStringKeyName="userName"
@@ -399,7 +458,10 @@ const renderMobileMenu = (
           />
           </form>
         </div>
-        <div style={{ width: "100%",marginLeft:"2%" }}>
+        <IconButton onClick={()=>{setExpanded1(!expanded1);setCollapsed1(!collapsed1)}} className={expanded1?classes.expandedIcon1:classes.collapsedIcon1}>
+      <ImageSearchIcon />
+        </IconButton>
+        <div className={expanded1?classes.expanded1:classes.collapsed1}>
                 <form onSubmit={handleSearchSubmit2}>
           <ReactSearchAutocomplete
             items={cryptoBoys}
@@ -408,6 +470,7 @@ const renderMobileMenu = (
             onHover={handleOnHover}
             onSelect={handleOnSelect2}
             onFocus={handleOnFocus}
+            onClear={handleOnClear1}
             placeholder="Design"
             resultStringKeyName="tokenName"
             showIcon={false}
