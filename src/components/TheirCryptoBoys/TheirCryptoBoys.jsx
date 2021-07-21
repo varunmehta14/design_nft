@@ -59,7 +59,8 @@ const TheirCryptoBoys = ({
   callbackFromParent1,
   cryptoBoysContract,
   usersContract,
-  userExists
+  userExists,
+  users
 
 }) => {
   const [loading, setLoading] = useState(false);
@@ -75,11 +76,12 @@ const TheirCryptoBoys = ({
   const [checked, setChecked] = useState(false);
   
   const getCurrentUser=async()=>{
-    if(usersContract){
+    if(usersContract&&theirAccountAddress){
       console.log("here")
-    const current=await usersContract.methods
-    .allUsers(theirAccountAddress)
-    .call();
+      const current=await users.find((user)=>user.userAddress===theirAccountAddress);
+    // const current=await usersContract.methods
+    // .allUsers(theirAccountAddress)
+    // .call();
     setCurrentUser(current);
     console.log(currentUser);
     }

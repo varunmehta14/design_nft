@@ -2,13 +2,14 @@ import React,{useState} from "react";
 //import icon from "./favicon-32x32.png";
 import icon from "./digitartlogo.png";
 import { Link } from "react-router-dom";
-import { fade, makeStyles } from '@material-ui/core/styles';
+import {  makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
 import StoreIcon from '@material-ui/icons/Store';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -26,6 +27,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import PersonIcon from '@material-ui/icons/Person';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import "./Navbar.css"
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -43,15 +45,14 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
+    // backgroundColor: alpha(theme.palette.common.white, 0.15),
+    // '&:hover': {
+    //   backgroundColor: alpha(theme.palette.common.white, 0.25),
+    // },
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
+      marginLeft: theme.spacing(1),
       width: 'auto',
     },
   },
@@ -63,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    color:"black"
   },
   inputRoot: {
     color: 'inherit',
@@ -73,8 +75,11 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
     },
   },
   sectionDesktop: {
@@ -90,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   expanded:{
-    width:"-webkit-fill-available",
+    width:"75%",
     marginLeft:"2%"
   },
   collapsed:{
@@ -122,13 +127,36 @@ const useStyles = makeStyles((theme) => ({
   collapsedIcon1:{
     marginLeft:"2px",
     color:"aliceblue"
-  }
+  },
+  suggestions:{
+    borderLeft:"1px solid white ",
+    borderRight:"1px solid white",
+    borderBottom:"1px solid white",
+    //borderTop:"1px solid black",
+    //borderColor:"white",
+    '&:hover':{
+      backgroundColor:"ghostwhite" ,
+      color:"black"
+    }
+  },
+ searchbox:{
+   backgroundColor:"white",
+   color:"white",
+ },
+ searchText:{
+   color:"black",
+ }
 
 }));
 
 
 
 const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn,currentUser,searchTermfromApp,searchAllResultsFromApp,searchData,cryptoBoys,searchNFTFromApp}) => {
+  // const allData=[...cryptoBoys,...searchData];
+  // allData.forEach((item,i)=>{
+  //   item.id=i+1;
+  // });
+  // console.log(allData)
   const classes = useStyles();
 const [anchorEl, setAnchorEl] = useState(null);
 //const [metamaskConnected,setMetamaskConnected]=useState(false);
@@ -140,6 +168,10 @@ const [expanded,setExpanded]=useState(false);
 const [expanded1,setExpanded1]=useState(false);
 const [collapsed,setCollapsed]=useState(true);
 const [collapsed1,setCollapsed1]=useState(true);
+const [text,setText]=useState("");
+const [results,setResults]=useState([]);
+const [userSuggestions,setUserSuggestions]=useState([]);
+const [tokenSuggestions,setTokenSuggestions]=useState([]);
 
 
 const userData={
@@ -159,20 +191,20 @@ const handleMenuClose = () => {
   handleMobileMenuClose();
 };
 
-const handleSearchSubmit=(e)=>{
+const handleSearchSubmit=(e,val)=>{
 e.preventDefault();
 
-console.log("form submitted", search)
-searchTermfromApp(search)
+console.log("form submitted", val)
+searchTermfromApp(val)
 }
 const searchTerm=(key)=>{
 searchAllResultsFromApp(key);
 }
-const handleSearchSubmit2=(e)=>{
+const handleSearchSubmit2=(e,val)=>{
   e.preventDefault();
   
-  console.log("form submitted", search)
-  searchNFTFromApp(search)
+  console.log("form submitted", val)
+  searchNFTFromApp(val)
   }
 // const connectToMetamask = async () => {
   
@@ -190,6 +222,7 @@ const handleOnSearch = (string, results) => {
   //setSearch(string)
  //searchTermfromApp(search)
   console.log(string, results)
+  setResults(results)
 }
 
 const handleOnHover = (result) => {
@@ -218,6 +251,7 @@ const handleOnClear = () => {
   console.log("Cleared");
   setExpanded(!expanded);
   setCollapsed(!collapsed);
+  setResults([]);
 };
 const handleOnClear1 = () => {
   console.log("Cleared");
@@ -225,11 +259,42 @@ const handleOnClear1 = () => {
   setCollapsed1(!collapsed1);
 };
 
+const onChangeHandler=(text)=>{
+  let matchUserName=[];
+  let matchTokenName=[];
+  if(text.length>0){
+    matchUserName=searchData.filter(usr=>{
+      const regex=new RegExp(`${text}`,"gi");
+      return usr.userName.match(regex)
+    })
+    matchTokenName=cryptoBoys.filter(usr=>{
+      const regex=new RegExp(`${text}`,"gi");
+      return usr.tokenName.match(regex)
+    })
+    
+
+  }
+  
+  console.log("matchUserName",matchUserName)
+  console.log("matchTokenName",matchTokenName)
+  setUserSuggestions(matchUserName);
+  setTokenSuggestions(matchTokenName);
+  setText(text)
+}
+const resultString=()=>{
+  <div style={{position:"absolute",zIndex:2,backgroundColor:"aliceblue",color:"black"}}> 
+  {results&&results.map((result,i)=>
+   <div key={i} style={{cursor:"pointer",border:"1px"}}>
+    {result[1]}
+   </div>
+  )}
+</div>
+}
 const menuId = 'primary-search-account-menu';
 const renderMenu = (
       <>
   <div className={classes.grow} >
-      <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" }}>
+      <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" ,display:"flex"}}>
         <Toolbar>
           <IconButton href="/">
         <img src={icon} alt="" style={{width:"32px",height:"32px"}}/>
@@ -238,26 +303,74 @@ const renderMenu = (
           <Typography className={classes.title} variant="h6" noWrap style={{fontFamily:"cursive"}}>
             Digitart
           </Typography>
-          {/* <div className={classes.search}>
+          {/* <IconButton onClick={()=>{setExpanded(!expanded);setCollapsed(!collapsed)}} className={classes.collapsedIcon}>
+      <SearchIcon />
+        </IconButton> */}
+         
+          {/* <div className={expanded?null:classes.collapsed}>     
+            
+          <TextField label="Search By" type="search" onChange={(e)=>{onChangeHandler(e.target.value)}}style={{backgroundColor:"azure",borderRadius:"4px",width:"inherit",padding:"1%"}}
+             value={text}/>
+            
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.searchbox,
+                input: classes.searchText,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              // onBlur={()=>{
+              //  setTimeout(()=>{
+              //    setUserSuggestions([]);
+              //    setTokenSuggestions([]);
+              //  },100)
+              // }}
+              onChange={(e)=>{onChangeHandler(e.target.value)}}
+             value={text}
+            // classes={classes.searchbox}
+            /> */}
+             {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
-            <form  onSubmit={handleSearchSubmit}>
-            
             <InputBase
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
+              onChange={(e)=>{onChangeHandler(e.target.value)}}
+             value={text}
               inputProps={{ 'aria-label': 'search' }}
-              onChange={(e)=>{setSearch(e.target.value);searchTerm(e.target.value)}}
-             
-            />
-            
-            
-            </form>
-          </div> */}
+              style={{backgroundColor:"azure",borderRadius:"4px",color:"black"}}
+            /> */}
+            <div className="event__search__floater">
+              
+<div className="search__anchor">
+  <form id="event-search-form" action="get">
+        <input type="text" className="search__bar" placeholder="Search NFT or People" value={text} onChange={(e)=>{onChangeHandler(e.target.value)}}
+         onBlur={()=>{
+          setTimeout(()=>{
+            setUserSuggestions([]);
+            setTokenSuggestions([]);
+          },100)
+         }}/>
+    <input className="search__submit" type="submit"/>
+    
+    <div className="search__toggler">
+      
+    </div>
+  </form>
+  
+  </div>
+  
+</div>
+    
+        
+        
+           
+
+          {/* </div> */}
           {/* <div className={classes.search}>
           <Autocomplete
         {...userData}
@@ -266,14 +379,27 @@ const renderMenu = (
         renderInput={(params) => <TextField style={{display:"flex"}}{...params} label="search" margin="normal" />}
       />
       </div> */}
-      <IconButton onClick={()=>{setExpanded(!expanded);setCollapsed(!collapsed)}} className={expanded?classes.expandedIcon:classes.collapsedIcon}>
+
+      {/* <input type="text" className="col-md-12 input" style={{marginTop:10}}
+      onChange={e=>onChangeHandler(e.target.value)}
+      value={text}
+      onBlur={()=>{
+        setTimeout(()=>{
+          setSuggestions([])
+        },100); 
+      }}
+      />
+      {suggestions && suggestions.map((suggestion,i)=>
+        <div key={i}className="suggestion col-md-12 justify-content-md-center"
+        onClick={()=>onSuggestHandler(suggestion)} */}
+      {/* <IconButton onClick={()=>{setExpanded(!expanded);setCollapsed(!collapsed)}} className={expanded?classes.expandedIcon:classes.collapsedIcon}>
       <PersonIcon />
         </IconButton>
               <div className={expanded?classes.expanded:classes.collapsed}>
                 <form onSubmit={handleSearchSubmit}>
           <ReactSearchAutocomplete
-            items={searchData}
-            fuseOptions={{keys:["userName"]}}
+            items={allData}
+            fuseOptions={{keys:["userName","tokenName","id"]}}
             onSearch={handleOnSearch}
             onHover={handleOnHover}
             onSelect={handleOnSelect}
@@ -281,12 +407,15 @@ const renderMenu = (
             onClear={handleOnClear}
             placeholder="UserName"
             resultStringKeyName="userName"
-            styling={{backgroundColor:"ghostwhite",zIndex:2,placeholderColor: "darkgreen",fontFamily: "Nunito Sans",searchIconMargin: '0 0 0 2px', borderRadius: "8px",clearIconMargin: "0 2px 0 0"}}
+           // resultStringKeyName={allData[id]}
+            styling={{backgroundColor:"ghostwhite",zIndex:2,placeholderColor: "darkgreen",fontFamily: "Nunito Sans",searchIconMargin: '0 0 0 2px', borderRadius: "8px",clearIconMargin: "0 2px 0 0",display:"none"}}
             autoFocus
           />
-          </form>
-        </div>
-        <IconButton onClick={()=>{setExpanded1(!expanded1);setCollapsed1(!collapsed1)}} className={expanded1?classes.expandedIcon1:classes.collapsedIcon1}>
+          </form> */}
+
+
+        {/* </div> */}
+        {/* <IconButton onClick={()=>{setExpanded1(!expanded1);setCollapsed1(!collapsed1)}} className={expanded1?classes.expandedIcon1:classes.collapsedIcon1}>
       <ImageSearchIcon />
         </IconButton>
         <div className={expanded1?classes.expanded1:classes.collapsed1}>
@@ -305,7 +434,7 @@ const renderMenu = (
             autoFocus
           />
           </form>
-        </div>
+        </div> */}
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
@@ -319,7 +448,7 @@ const renderMenu = (
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
-
+            
               <Link to="/creators" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
                 Creators
               </Link>
@@ -384,6 +513,30 @@ const renderMenu = (
        
         </Toolbar>
       </AppBar>
+      {userSuggestions.length!=0 ||tokenSuggestions.length!=0?(<div  className="card mt-1" style={{position:"absolute",zIndex:2,backgroundColor:"aliceblue",color:"black",borderRadius:"15px",left:"33%",opacity:"0.9"}}> 
+        <div className="card-body">
+        {userSuggestions.length!=0?(
+           <div>
+         
+           <h4>Users</h4>
+           {userSuggestions&&userSuggestions.map((result,i)=>
+            <div key={i}className={classes.suggestions}onClick={(e)=>{setText(result[1]);handleSearchSubmit(e,result[1]);setUserSuggestions([]);setTokenSuggestions([])}} style={{cursor:"pointer",paddingTop:"1px",paddingBottom:"1px",borderRadius:"2px"}}>
+             {result[1]}
+            </div>
+           )}
+           </div>
+        ):(null)}
+        <hr/>
+         {tokenSuggestions.length!=0?( <div>
+          <h4>Designs</h4>
+           {tokenSuggestions&&tokenSuggestions.map((result,i)=>
+           <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result[1]);handleSearchSubmit2(e,result[1]);setUserSuggestions([]);setTokenSuggestions([])}} style={{cursor:"pointer",paddingTop:"1px",paddingBottom:"1px",borderRadius:"2px"}}>
+            {result[1]}
+           </div>
+          )}
+          </div>):(null)}
+         </div>
+        </div>):(null)}
       <Menu
     anchorEl={anchorEl}
     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -443,8 +596,8 @@ const renderMobileMenu = (
               <div className={expanded?classes.expanded:classes.collapsed}>
                 <form onSubmit={handleSearchSubmit}>
           <ReactSearchAutocomplete
-            items={searchData}
-            fuseOptions={{keys:["userName"]}}
+            items={[searchData,cryptoBoys]}
+            fuseOptions={{keys:["userName","tokenName"]}}
             onSearch={handleOnSearch}
             onHover={handleOnHover}
             onSelect={handleOnSelect}

@@ -206,6 +206,7 @@ class App extends Component {
         );
         this.setState({usersContract})
         //current user 
+        //const current=await this.state.users.find((user)=>user.userAddress===(this.state.accountAddress));
         const current=await usersContract.methods
         .allUsers(this.state.accountAddress)
         .call();
@@ -587,11 +588,12 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
    console.log(this.state.searchData)
  }
  searchNFTFromApp=async(val)=>{
-   const result=await this.state.cryptoBoysContract.methods.
-   nameToId(val).call();
-   this.setState({clickedAddress: result})
+  //  const result=await this.state.cryptoBoysContract.methods.
+  //  nameToId(val).call();
+   const result=await this.state.cryptoBoys.find( (cryptoboy) =>cryptoboy.tokenName===val);
+   this.setState({clickedAddress: result.tokenId.toNumber()})
                     
-   window.location.href=`/nftDetails/${result}`
+   window.location.href=`/nftDetails/${result.tokenId.toNumber()}`
  }
   
   render() {
@@ -626,7 +628,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
     return (
     
       <div className="fashion" style={{backgroundColor:"#f1f1ef"}}>
-      {/* {
+      {/* 
       !this.state.metamaskConnected ? (
           <ConnectToMetamask connectToMetamask={this.connectToMetamask} />
         ) : 
@@ -661,6 +663,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                 cryptoBoysContract={this.state.cryptoBoysContract}
                 usersContract={this.state.usersContract}
                 cryptoBoysCount={this.state.cryptoBoysCount}
+                users={this.state.users}
               />
               )}
             />
@@ -726,6 +729,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                   callbackFromParent={this.myCallback2}
                   cryptoBoysContract={this.state.cryptoBoysContract}
                   usersContract={this.state.usersContract}
+                  users={this.state.users}
                 />
               )}
             />
@@ -778,6 +782,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                   cryptoBoysContract={this.state.cryptoBoysContract}
                   usersContract={this.state.usersContract}
                   userExists={this.state.userExists}
+                  users={this.state.users}
                  // loading={this.state.loading}
                 />
                 
@@ -803,7 +808,9 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                usersContract={this.state.usersContract}
                cryptoBoys={this.state.cryptoBoys}
                loading={this.state.loading}
-               tokenExists={this.state.tokenExists}/>
+               tokenExists={this.state.tokenExists}
+               users={this.state.users}
+               />
               )}
              />
           

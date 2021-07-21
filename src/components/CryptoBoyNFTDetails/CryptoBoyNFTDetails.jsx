@@ -91,7 +91,7 @@ const CryptoBoyNFTDetails=(props)=> {
  if(!props.clickedAddress){thistokenId=window.location.href.split("/")[4]-1};
 console.log(props.cryptoBoys[thistokenId])
 //console.log(tokenNo)
-
+console.log(props.users)
 const [designMetadata,setDesignMetadata]=useState("");
 
 // if (props.cryptoBoys[window.location.href.split("/")[4]].metaData) {
@@ -106,22 +106,26 @@ const [designMetadata,setDesignMetadata]=useState("");
    
      
 
-    if(props.usersContract&&props.cryptoBoysContract){
-    const current1=await props.usersContract.methods
+    if(props.users&&props.usersContract&&props.cryptoBoysContract){
+     // const currentMinted=await props.users.find((user)=>user.userAddress.includes(props.cryptoBoys[thistokenId].mintedBy));
+   // console.log("Curent minted by array",currentMinted)
+      const currentMinted=await props.usersContract.methods
     .allUsers(props.cryptoBoys[thistokenId].mintedBy)
     .call();
-    setMintedByName(current1[1]);
-    setMintedAvatar(current1[6])
-    const current2=await props.usersContract.methods
+    setMintedByName(currentMinted[1]);
+    setMintedAvatar(currentMinted[6]);
+    //const currentOwned=await props.users.find((user)=>user.userAddress.includes(props.cryptoBoys[thistokenId].currentOwner));
+    const currentOwned=await props.usersContract.methods
     .allUsers(props.cryptoBoys[thistokenId].currentOwner)
     .call();
-    setOwnedByName(current2[1]);
-    setOwnedAvatar(current2[6]);
-    const current3=await props.usersContract.methods
+    setOwnedByName(currentOwned[1]);
+    setOwnedAvatar(currentOwned[6]);
+    //const previousOwner=await props.users.find((user)=>user.userAddress.includes(props.cryptoboy[thistokenId].previousOwner));
+    const previousOwner=await props.usersContract.methods
     .allUsers(props.cryptoBoys[thistokenId].previousOwner)
     .call();
-    setPrevByName(current3[1]);
-     setPrevAvatar(current3[6]);
+    setPrevByName(previousOwner[1]);
+     setPrevAvatar(previousOwner[6]);
      console.log(props.cryptoBoys[thistokenId].metaData)
     if(props.cryptoBoys[thistokenId].metaData!==undefined){
       console.log("undefined")
@@ -139,7 +143,7 @@ const [designMetadata,setDesignMetadata]=useState("");
   useEffect(()=>{
     getCurrentUser();
   
-  },[props.usersContract]);
+  },[props.usersContract,props.users]);
  
   // useEffect(()=>{
   // // setTokenNo(window.location.href.split("/")[4])

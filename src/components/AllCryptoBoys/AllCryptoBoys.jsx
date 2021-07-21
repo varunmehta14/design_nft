@@ -50,7 +50,8 @@ const AllCryptoBoys = ({
   callbackFromParent,
   cryptoBoysContract,
   usersContract,
-  cryptoBoysCount
+  cryptoBoysCount,
+  users
 }) => {
   
   const [loading, setLoading] = useState(false);
@@ -59,10 +60,12 @@ const AllCryptoBoys = ({
   const [startState,setStartState]=useState(1);
   const [end,setEnd]=useState(3);
   const [endState,setEndState]=useState(3);
-  const [allCryptoBoys,setAllCryptoBoys]=useState([]);
+  const [lastPosition,setLastPosition]=useState(perPage)
+  const [allCryptoBoys,setAllCryptoBoys]=useState(cryptoBoys.slice(0,perPage));
   const [endOfDesigns,setEndOfDesigns]=useState(false);
+  const perPage = 3;
 
- //console.log(cryptoBoys[0])
+ console.log(users)
   useEffect(() => {
     if (cryptoBoys.length !== 0) {
       if (cryptoBoys[0].metaData !== undefined) {
@@ -107,34 +110,43 @@ const AllCryptoBoys = ({
   // }
   // }
   
-  // const scrollToEnd=()=>{
-  //   // this.setState({page:this.state.page+1});
-  //   if(end<=totalTokensMinted){
-  //    setStart(end+1);
-  //    setEnd(end+3);
-  //    //setLoading(true);
-  //    console.log(console.log("start",start))
+  const scrollToEnd=()=>{
+    // this.setState({page:this.state.page+1});
+    if(allCryptoBoys.length==totalTokensMinted){
+      setEndOfDesigns(true);
+    return;}
+
+    setTimeout(() => {
+      setAllCryptoBoys((prev) => [...prev,...cryptoBoys.slice(lastPosition,lastPosition+perPage)]);
      
-  //    loadDesigns(start,end);}}
+   }, 2000);
+    
+     setLastPosition(lastPosition+perPage);
+     //setLoading(true);
+     //console.log(console.log("start",start))
+     
+     //loadDesigns(start,end);
+    }
      
      
    
 
-  //   // console.log(this.state.page);
+    // console.log(this.state.page);
    
  
-  //  window.onscroll=function(){
-  //    console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
-  //    if(
-  //      window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight 
-  //    ){
-  //     if(!endOfDesigns){
-  //      scrollToEnd();
-  //     }
-  //      console.log("here")
-  //    }
-  //  }
+   window.onscroll=function(){
+     console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
+     if(
+       window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight 
+     ){
+      if(!endOfDesigns){
+       scrollToEnd();
+      }
+       console.log("here")
+     }
+   }
    const gridStyles = useGridStyles();
+  
   return (
     <div style={{padding:"0.5%"}}>
       <div className="card mt-1">
@@ -161,6 +173,7 @@ const AllCryptoBoys = ({
                 callbackFromParent={myCallback1}
                 cryptoBoysContract={cryptoBoysContract}
                 usersContract={usersContract}
+                users={users}
               />
              </Grid>
            </> 

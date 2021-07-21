@@ -75,18 +75,21 @@ const NFTHighlights=(props)=> {
    
      
       const getCurrentUser=async()=>{
-       if(props.usersContract){
+       if(props.usersContract&&props.users){
+         const currentMinted=await props.users.find((user)=>user.userAddress===props.cryptoboy.mintedBy);
+         console.log("Current using array",currentMinted)
          console.log(props)
-          const current1=await props.usersContract.methods
-          .allUsers(props.cryptoboy.mintedBy)
-          .call();
-          setMintedByName(current1[1]);
-          setMintedAvatar(current1[6])
-          const current2=await props.usersContract.methods
-          .allUsers(props.cryptoboy.currentOwner)
-          .call();
-          setOwnedByName(current2[1]);
-          setOwnedAvatar(current2[6]);
+          // const current1=await props.usersContract.methods
+          // .allUsers(props.cryptoboy.mintedBy)
+          // .call();
+          setMintedByName(currentMinted[1]);
+          setMintedAvatar(currentMinted[6]);
+          const currentOwned=await props.users.find((user)=>user.userAddress===props.cryptoboy.currentOwner);
+          // const current2=await props.usersContract.methods
+          // .allUsers(props.cryptoboy.currentOwner)
+          // .call();
+          setOwnedByName(currentOwned[1]);
+          setOwnedAvatar(currentOwned[6]);
         }
         
        
@@ -94,7 +97,7 @@ const NFTHighlights=(props)=> {
       }
       useEffect(()=>{
         getCurrentUser();
-      },[props]);
+      },[props.cryptoboy]);
 console.log(mintedByName,ownedByName)
 
 //   callChangeTokenPriceFromApp = (tokenId, newPrice) => {
