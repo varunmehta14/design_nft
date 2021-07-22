@@ -2,7 +2,7 @@ import React,{useState} from "react";
 //import icon from "./favicon-32x32.png";
 import icon from "./digitartlogo.png";
 import { Link } from "react-router-dom";
-import {  makeStyles } from '@material-ui/core/styles';
+import {  alpha,makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -27,7 +27,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import PersonIcon from '@material-ui/icons/Person';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
-import "./Navbar.css"
+
+import CancelIcon from '@material-ui/icons/Cancel';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -45,12 +46,17 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    // backgroundColor: alpha(theme.palette.common.white, 0.15),
-    // '&:hover': {
-    //   backgroundColor: alpha(theme.palette.common.white, 0.25),
-    // },
+    backgroundColor: "aliceblue",
+    opacity:0.7,
+    zIndex:5,
+    '&:hover': {
+      backgroundColor: "aliceblue",
+      opacity:1,
+      zIndex:5
+    },
     marginLeft: 0,
     width: '100%',
+  
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(1),
       width: 'auto',
@@ -135,18 +141,36 @@ const useStyles = makeStyles((theme) => ({
     //borderTop:"1px solid black",
     //borderColor:"white",
     '&:hover':{
-      backgroundColor:"ghostwhite" ,
-      color:"black"
+      backgroundColor:"gray" ,
+      color:"white"
     }
   },
- searchbox:{
-   backgroundColor:"white",
-   color:"white",
- },
- searchText:{
-   color:"black",
- }
-
+//  searchbox:{
+//    backgroundColor:"white",
+//    color:"white",
+//  },
+//  searchText:{
+//    color:"black",
+//  }
+notBlurredCard:{
+  position:"absolute",zIndex:10,backgroundColor:"aliceblue",color:"black",borderRadius:"15px",top:"100%",
+  // [theme.breakpoints.down('sm')]: {
+  //   width: '70%',
+  // },
+  
+  // [theme.breakpoints.down('md')]: {
+  //   width: '50%',
+  // },
+  
+  // [theme.breakpoints.down('lg')]: {
+  //   width: '66%',
+  // },
+  width:"50%"
+  
+},
+BlurredCard:{
+  position:"absolute",zIndex:-1,backgroundColor:"aliceblue",color:"black",borderRadius:"15px",top:"100%"
+}
 }));
 
 
@@ -168,11 +192,12 @@ const [expanded,setExpanded]=useState(false);
 const [expanded1,setExpanded1]=useState(false);
 const [collapsed,setCollapsed]=useState(true);
 const [collapsed1,setCollapsed1]=useState(true);
-const [text,setText]=useState("");
+const [text,setText]=useState(null);
 const [results,setResults]=useState([]);
 const [userSuggestions,setUserSuggestions]=useState([]);
 const [tokenSuggestions,setTokenSuggestions]=useState([]);
-
+const [blurred,setBlurred]=useState(true);
+const [zindex,setZindex]=useState(10);
 
 const userData={
   options:searchData,
@@ -193,7 +218,7 @@ const handleMenuClose = () => {
 
 const handleSearchSubmit=(e,val)=>{
 e.preventDefault();
-
+setUserSuggestions([]);setTokenSuggestions([]);
 console.log("form submitted", val)
 searchTermfromApp(val)
 }
@@ -202,7 +227,7 @@ searchAllResultsFromApp(key);
 }
 const handleSearchSubmit2=(e,val)=>{
   e.preventDefault();
-  
+  setUserSuggestions([]);setTokenSuggestions([]);
   console.log("form submitted", val)
   searchNFTFromApp(val)
   }
@@ -319,52 +344,18 @@ const renderMenu = (
                 input: classes.searchText,
               }}
               inputProps={{ 'aria-label': 'search' }}
-              // onBlur={()=>{
-              //  setTimeout(()=>{
-              //    setUserSuggestions([]);
-              //    setTokenSuggestions([]);
-              //  },100)
-              // }}
+              onBlur={()=>{
+               setTimeout(()=>{
+                 setUserSuggestions([]);
+                 setTokenSuggestions([]);
+               },100)
+              }}
               onChange={(e)=>{onChangeHandler(e.target.value)}}
              value={text}
             // classes={classes.searchbox}
             /> */}
-             {/* <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              onChange={(e)=>{onChangeHandler(e.target.value)}}
-             value={text}
-              inputProps={{ 'aria-label': 'search' }}
-              style={{backgroundColor:"azure",borderRadius:"4px",color:"black"}}
-            /> */}
-            <div className="event__search__floater">
-              
-<div className="search__anchor">
-  <form id="event-search-form" action="get">
-        <input type="text" className="search__bar" placeholder="Search NFT or People" value={text} onChange={(e)=>{onChangeHandler(e.target.value)}}
-         onBlur={()=>{
-          setTimeout(()=>{
-            setUserSuggestions([]);
-            setTokenSuggestions([]);
-          },100)
-         }}/>
-    <input className="search__submit" type="submit"/>
-    
-    <div className="search__toggler">
-      
-    </div>
-  </form>
-  
-  </div>
-  
-</div>
+         
+          
     
         
         
@@ -437,17 +428,116 @@ const renderMenu = (
         </div> */}
 
           <div className={classes.grow} />
+          {/* <div className="event__search__floater">
+              
+              <div className="search__anchor">
+                <form id="event-search-form" action="get" style={{display:"flex"}}>
+                  
+                      <input type="text" className="search__bar"style={{width:"auto"}} placeholder="Search NFT or People" value={text} onChange={(e)=>{onChangeHandler(e.target.value)}}
+                    
+                       >
+                         
+
+                       </input>
+                  <input className="search__submit" type="submit"/>
+                 
+                
+                  
+                  
+                  <div className="search__toggler">
+                 
+                  </div>
+                 
+                </form>
+                
+                </div>
+                
+              </div> */}
+           
+           
+      
+  
+        {expanded1?(<div  style={{display:"flex",justifyContent:"flex-end",width:"50%"}}>
+        <IconButton onClick={()=>{setExpanded1(false);setText(null);setUserSuggestions([]);setTokenSuggestions([])}} className={classes.collapsedIcon1}>
+       <CancelIcon/> </IconButton>
+          <div style={{width:"100%"}}>
+          <input placeholder="Search NFT or people" type="search" className="col-md-12 input"  onChange={(e)=>{onChangeHandler(e.target.value)}} value={text}
+        style={{borderRadius:"40px",color:"black",backgroundColor:"azure",height:"45px"}}/>
+          
+          {userSuggestions.length!=0 ||tokenSuggestions.length!=0?(
+          <div   className="col-md-12 justify-content-md-center" className={classes.notBlurredCard}> 
+       
+          <div className="card-body" >
+          {userSuggestions.length!=0?(
+             <div style={{height:"25vh",overflow:"auto"}}>
+           
+             <h4>Users</h4>
+             {userSuggestions&&userSuggestions.map((result,i)=>
+              <div key={i}className={classes.suggestions}onClick={(e)=>{setText(result[1]);handleSearchSubmit(e,result[1])}} style={{cursor:"pointer",paddingTop:"1px",paddingBottom:"1px",padding:"4px",borderRadius:"2px",display:"flex",alignItems:"center",overflowWrap:"break-word"}}>
+               <Avatar alt={result[1]} src={result[6]}/><b>@{result[1]}</b>
+              </div>
+             )}
+             </div>
+          ):(null)}
+          <hr/>
+           {tokenSuggestions.length!=0?( 
+           <div style={{height:"25vh",overflow:"auto"}}>
+            <h4>Designs</h4>
+             {tokenSuggestions&&tokenSuggestions.map((result,i)=>
+             <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result[1]);handleSearchSubmit2(e,result[1])}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center",overflowWrap:"break-word"}}>
+               <img alt={result[1]} src={result[7]}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result[1]}</b>
+             </div>
+            )}
+            </div>
+             ):(null)}
+           </div>
+      
+       
+        </div>):(null)}
+          </div>
+        
+          {/* <TextField 
+          onChange={(e)=>{onChangeHandler(e.target.value)}}
+          value={text}
+          id="filled-search" label="Search NFT or People" type="search" variant="filled"fullWidth  style={{borderRadius:"40px",color:"black",backgroundColor:"azure"}}/> */}
+          
+          
+          </div>
+          
+        ):( 
+        <div style={{transition: "all ease-in-out 0.3s"}}>
+          <IconButton onClick={()=>{setExpanded1(true)}} className={classes.collapsedIcon1}>
+        <SearchIcon /> </IconButton>
+        </div>)}
+          {/* <div className={classes.search}  
+               >
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+
+            </div>
+            
+            <InputBase
+              placeholder="Search NFT or People"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              //id="outlined-search"
+              type="search"
+              //  onClick={()=>setBlurred(false)}
+              onChange={(e)=>{onChangeHandler(e.target.value)}}
+             value={text}
+              inputProps={{ 'aria-label': 'search' }}
+              style={{borderRadius:"4px",color:"black"}}
+            />
+            
+           
+           
+       
+            </div> */}
+           
           <div className={classes.sectionDesktop}>
-            {/* <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
+           
             
               <Link to="/creators" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
                 Creators
@@ -513,30 +603,7 @@ const renderMenu = (
        
         </Toolbar>
       </AppBar>
-      {userSuggestions.length!=0 ||tokenSuggestions.length!=0?(<div  className="card mt-1" style={{position:"absolute",zIndex:2,backgroundColor:"aliceblue",color:"black",borderRadius:"15px",left:"33%",opacity:"0.9"}}> 
-        <div className="card-body">
-        {userSuggestions.length!=0?(
-           <div>
-         
-           <h4>Users</h4>
-           {userSuggestions&&userSuggestions.map((result,i)=>
-            <div key={i}className={classes.suggestions}onClick={(e)=>{setText(result[1]);handleSearchSubmit(e,result[1]);setUserSuggestions([]);setTokenSuggestions([])}} style={{cursor:"pointer",paddingTop:"1px",paddingBottom:"1px",borderRadius:"2px"}}>
-             {result[1]}
-            </div>
-           )}
-           </div>
-        ):(null)}
-        <hr/>
-         {tokenSuggestions.length!=0?( <div>
-          <h4>Designs</h4>
-           {tokenSuggestions&&tokenSuggestions.map((result,i)=>
-           <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result[1]);handleSearchSubmit2(e,result[1]);setUserSuggestions([]);setTokenSuggestions([])}} style={{cursor:"pointer",paddingTop:"1px",paddingBottom:"1px",borderRadius:"2px"}}>
-            {result[1]}
-           </div>
-          )}
-          </div>):(null)}
-         </div>
-        </div>):(null)}
+      
       <Menu
     anchorEl={anchorEl}
     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -590,7 +657,7 @@ const renderMobileMenu = (
             />
             </form>
           </div> */}
-         <IconButton onClick={()=>{setExpanded(!expanded);setCollapsed(!collapsed)}} className={expanded?classes.expandedIcon:classes.collapsedIcon}>
+         {/* <IconButton onClick={()=>{setExpanded(!expanded);setCollapsed(!collapsed)}} className={expanded?classes.expandedIcon:classes.collapsedIcon}>
       <PersonIcon />
         </IconButton>
               <div className={expanded?classes.expanded:classes.collapsed}>
@@ -631,9 +698,60 @@ const renderMobileMenu = (
             autoFocus
           />
           </form>
-        </div>
+        </div> */}
           <div className={classes.grow} />
+          {expanded1?(<div  style={{display:"flex",justifyContent:"flex-end",width:"50%"}}>
+        <IconButton onClick={()=>{setExpanded1(false);setText(null);setUserSuggestions([]);setTokenSuggestions([])}} className={classes.collapsedIcon1}>
+       <CancelIcon/> </IconButton>
+          <div style={{width:"100%"}}>
+          <input placeholder="Search NFT or people" type="search" className="col-md-12 input"  onChange={(e)=>{onChangeHandler(e.target.value)}} value={text}
+        style={{borderRadius:"40px",color:"black",backgroundColor:"azure",height:"45px"}}/>
+          
+          {userSuggestions.length!=0 ||tokenSuggestions.length!=0?(
+          <div   className="col-md-12 justify-content-md-center" className={classes.notBlurredCard}> 
        
+          <div className="card-body" >
+          {userSuggestions.length!=0?(
+             <div style={{height:"25vh",overflow:"auto"}}>
+           
+             <h4>Users</h4>
+             {userSuggestions&&userSuggestions.map((result,i)=>
+              <div key={i}className={classes.suggestions}onClick={(e)=>{setText(result[1]);handleSearchSubmit(e,result[1])}} style={{cursor:"pointer",paddingTop:"1px",paddingBottom:"1px",padding:"4px",borderRadius:"2px",display:"flex",alignItems:"center"}}>
+               <Avatar alt={result[1]} src={result[6]}/><b>@{result[1]}</b>
+              </div>
+             )}
+             </div>
+          ):(null)}
+          <hr/>
+           {tokenSuggestions.length!=0?( 
+           <div style={{height:"25vh",overflow:"auto"}}>
+            <h4>Designs</h4>
+             {tokenSuggestions&&tokenSuggestions.map((result,i)=>
+             <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result[1]);handleSearchSubmit2(e,result[1]);setUserSuggestions([]);setTokenSuggestions([])}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center"}}>
+               <img alt={result[1]} src={result[7]}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result[1]}</b>
+             </div>
+            )}
+            </div>
+             ):(null)}
+           </div>
+      
+       
+        </div>):(null)}
+          </div>
+        
+          {/* <TextField 
+          onChange={(e)=>{onChangeHandler(e.target.value)}}
+          value={text}
+          id="filled-search" label="Search NFT or People" type="search" variant="filled"fullWidth  style={{borderRadius:"40px",color:"black",backgroundColor:"azure"}}/> */}
+          
+          
+          </div>
+          
+        ):( 
+        <div style={{transition: "all ease-in-out 0.3s"}}>
+          <IconButton onClick={()=>{setExpanded1(true)}} className={classes.collapsedIcon1}>
+        <SearchIcon /> </IconButton>
+        </div>)}
           <div className={classes.sectionMobile}>
           {/* <li className="nav-item">
               <Link to="/" className="nav-link">
