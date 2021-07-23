@@ -35,12 +35,12 @@ backgroundSize: "cover"
     transform: 'translateZ(0)',
   },
   img: {
-    height: '100%',
+   // height: '100%',
     maxHeight:400,
     display: 'block',
     maxWidth: 400,
     overflow: 'hidden',
-    width: '100%',
+   // width: '100%',
   },
   title: {
     fontFamily: 'fantasy',
