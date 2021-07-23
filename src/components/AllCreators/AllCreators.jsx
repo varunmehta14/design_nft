@@ -3,11 +3,14 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import CreatorHighlights from "../CreatorHighlights/CreatorHighlights"
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Alert from '@material-ui/lab/Alert';
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
     paddingLeft:"5%",
     paddingRight:"5%",
+    //width:"100vh",
+   
    // width:"-webkit-fill-available",
     [breakpoints.up('md')]: {
      justifyContent: 'center',
@@ -59,101 +62,152 @@ const AllCreators=(props)=>{
   //   fetchMoreListItems();
   // }, [isFetching]);
 
-  function fetchMoreListItems() {
-    setTimeout(() => {
-      console.log("last position",lastPosition)
-      setAllCreators((prev) => [...prev,...props.users.slice(lastPosition,lastPosition+3)]);
-      setIsFetching(false);
-    }, 2000);
-  }
-  function handleScroll() {
-    console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
-    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
-    console.log('Fetch more list items!');
-    fetchMoreListItems();
-    setIsFetching(true);
+  // function fetchMoreListItems() {
+  //   setTimeout(() => {
+  //     console.log("last position",lastPosition)
+  //     setAllCreators((prev) => [...prev,...props.users.slice(lastPosition,lastPosition+3)]);
+  //     setIsFetching(false);
+  //   }, 2000);
+  // }
+  // function handleScroll() {
+  //   console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
+  //   if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+  //   console.log('Fetch more list items!');
+  //  // fetchMoreListItems();
+  //  // setIsFetching(true);
     
-  }
+  // }
+  // useEffect(() => {
+  //   const loadUsers = async () => {
+  //     setLoading(true);
+     
+  //     setAllCreators((prev) => [...prev, ...props.users.slice(lastPosition,lastPosition+2)]);
+  //     setLoading(false);
+  //   };
+
+  //   loadUsers();
+  // }, [lastPosition]);
+  // const handleScroll = (event) => {
+  //   const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
+  // console.log("Scroll top",scrollTop);
+  // console.log("clientHeight" ,clientHeight);
+  // console.log("scrollHeight",scrollHeight);
+  //   if (scrollHeight - scrollTop === clientHeight) {
+  //     setLastPosition(prev => prev + 1);
+  //   }
+  // };
   const [height, setHeight] = useState(0)
   const ref = useRef(null)
-  useEffect(()=>{
-    setAllCreators(props.users.slice(0,perPage));
+  // useEffect(()=>{
+  //   setAllCreators(props.users.slice(0,5));
 
-  },[props.users,window.innerWidth]);
+  // },[props.users,window.innerWidth]);
   useEffect(() => {
     setHeight(ref.current.clientHeight)
   })
-  console.log("div height",height ,"window height",window.innerHeight)
-  let perPage;
-  console.log("window width",window.innerWidth)
+  //console.log("div height",height ,"window height",window.innerHeight)
+  // let perPage;
+  // console.log("window width",window.innerWidth)
   if(window.innerWidth>1280 && window.innerWidth<=1920 ){
     
-    perPage=4;
+    postsPerPage=4;
     if( height/window.innerHeight<1){
     
-      perPage=perPage+4;
+      postsPerPage=postsPerPage+4;
       
     }
   }
   else if(window.innerWidth>960 && window.innerWidth<=1280){
-    perPage=3;
+    postsPerPage=3;
     if( height/window.innerHeight<1){
     
-      perPage=perPage+3;
+      postsPerPage=postsPerPage+3;
       
     }
   }
   else if(window.innerWidth>600 && window.innerWidth<=960){
-    perPage=2;
+    postsPerPage=2;
     if( height/window.innerHeight<1){
     
-      perPage=perPage+2;
+      postsPerPage=postsPerPage+2;
       
     }
   }
  
   else if(window.innerWidth<="600"){
-    perPage=1;
+    postsPerPage=1;
     if( height/window.innerHeight<1){
     
-      perPage=perPage+1;
+      postsPerPage=postsPerPage+1;
       
     }
   }
-  console.log(window.innerHeight/height)
+  // console.log(window.innerHeight/height)
   
-  console.log(perPage)
-  const [allCreators, setAllCreators] = useState(props.users.slice(0,perPage));
-  const [isFetching, setIsFetching] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [lastPosition, setLastPosition] = useState(perPage);
+  // console.log(perPage)
+  // const [allCreators, setAllCreators] = useState(props.users.slice(0,1));
+  // const [isFetching, setIsFetching] = useState(false);
+  // const [hasMore, setHasMore] = useState(true);
+  // const [lastPosition, setLastPosition] = useState(1);
+  // const [loading,setLoading]=useState(true);
   
+  // const page=1;
   
   //console.log(props.users.slice(0,perPage))
   
 
-  const loadProducts =() => {
-    if(allCreators.length==props.users.length){
-      setHasMore(false);
-      return;
-    }
-    setTimeout(() => {
-      console.log("set timeout")
-      console.log("last Position",lastPosition)
-       setAllCreators((prev) => [...prev,...props.users.slice(lastPosition,lastPosition+perPage)]);
+  // const loadProducts =() => {
+  //   if(allCreators.length==props.users.length){
+  //     setHasMore(false);
+  //     return;
+  //   }
+  //   setTimeout(() => {
+  //     console.log("set timeout")
+  //     console.log("last Position",lastPosition)
+  //      setAllCreators((prev) => [...prev,...props.users.slice(lastPosition,lastPosition+perPage)]);
       
-    }, 2000);
+  //   }, 2000);
 
-    setLastPosition(lastPosition + perPage);
+  //   setLastPosition(lastPosition + perPage);
+  // };
+
+  let postsPerPage;
+  let arrayForHoldingPosts = [];
+   const [allCreators,setAllCreators]=useState([]);
+   const [next,setNext]=useState(postsPerPage);
+
+   const loopWithSlice = (start, end) => {
+   // const slicedPosts = props.users.slice(start, end);
+    // arrayForHoldingPosts = [...arrayForHoldingPosts, ...slicedPosts];
+    setAllCreators((prev)=>[...prev,...props.users.slice(start,end)]);
   };
+  // useEffect(() => {
+  //   loopWithSlice(0, postsPerPage);
+  // }, []);
+  useEffect(()=>{
+    setAllCreators(props.users.slice(0,postsPerPage))
+  },[props.users])
 
+  const handleShowMorePosts = () => {
+    loopWithSlice(next, next + postsPerPage);
+    setNext(next + postsPerPage);
+  };
   console.log("allCreators",allCreators);
   //  console.log(props.users)
     const gridStyles = useGridStyles();
     return(
       <>
       {props.users?( 
-      <InfiniteScroll
+     
+        <div style={{padding:"0.5%"}}>
+        <div className="card mt-1">
+          <div className="card-body align-items-center d-flex justify-content-center">
+            <h5>
+             Creators    
+            </h5>
+          </div>
+        </div>
+        {/* <InfiniteScroll
       dataLength={allCreators.length}
       next={loadProducts}
       hasMore={hasMore}
@@ -166,18 +220,11 @@ const AllCreators=(props)=>{
         </p>     
       }
      // height={window.InnerHeight}
-    >
-        <div style={{padding:"0.5%"}}>
-        <div className="card mt-1">
-          <div className="card-body align-items-center d-flex justify-content-center">
-            <h5>
-             Creators    
-            </h5>
-          </div>
-        </div>
-        <div  ref={ref} style={{display:"flex",justifyContent:"center",padding:"1%" }}>
+     
+    > */}
+        <div  ref={ref} style={{display:"flex",justifyContent:"center",padding:"1%",height:"100%" }}>
         <Grid classes={gridStyles} container spacing={4} >
-       
+           
              {allCreators.map((user)=>{
                 return(
                     <> 
@@ -189,10 +236,21 @@ const AllCreators=(props)=>{
              })}
              
              </Grid>
+            
              </div>
+             <div style={{display:"flex",justifyContent:"center"}}>
+               {allCreators.length===props.users.length?(<> <Alert severity="success" color="info">
+      You are all Caught Up
+      </Alert></>):
+               (
+                <button onClick={handleShowMorePosts}>Load more</button>
+             )}
+            
+             </div>
+             {/* </InfiniteScroll> */}
            
 </div>
- </InfiniteScroll>
+
  )
  :(<>Loading</>)}
      

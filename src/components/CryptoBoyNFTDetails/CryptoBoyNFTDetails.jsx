@@ -193,6 +193,10 @@ const [designMetadata,setDesignMetadata]=useState("");
     e.preventDefault();
     window.open(props.cryptoBoys[thistokenId].imageHash, "_blank") 
   }
+  const handleImage=(e,id)=>{
+    e.preventDefault();
+    window.open(props.cryptoBoys[thistokenId].metaData.images[id], "_blank") 
+  }
   const sendTokenID=(tokId)=>{
     props.callBack(tokId)
   }
@@ -220,17 +224,17 @@ const [designMetadata,setDesignMetadata]=useState("");
     <>
     {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.loading?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
      
-      (<div className="d-flex flex-wrap mb-2" style={{padding:"1%"}}>
+      (<div className="d-flex flex-wrap mb-2" style={{padding:"1%",height:"100%"}}>
       <div
               key={props.cryptoBoys[thistokenId].tokenId.toNumber()}
-              className="w-50 p-4 mt-1 border "
-              
+              className="w-50 h-50 p-4 mt-1 border "
+              style={{display:"flex",justifyContent:"center"}}
             >
-              <div className="col-md-6" style={{margin:"auto"}}>
+              
              
-              <img style={{width:"inherit"}} src={props.cryptoBoys[thistokenId].imageHash}/>
+              <img style={{objectFit:"scale-down"}} src={props.cryptoBoys[thistokenId].imageHash}/>
              
-                </div>
+               
         </div>
        <div className="col-md-6 w-50  mt-1 border">
         
@@ -521,7 +525,8 @@ const [designMetadata,setDesignMetadata]=useState("");
       {props.cryptoBoys[thistokenId].metaData.images.map((image,index) => (
         <div style={{display:"flex",justifyContent:"center"}}>
           {Math.abs(activeStep - index) <= 2 ? (
-            <img className={classes.img} src={image}  />
+            <img className={classes.img} src={image} onClick={(e)=>{handleImage(e,index)}} />
+           
           ) : null}
         </div>
       ))}
@@ -588,7 +593,7 @@ const [designMetadata,setDesignMetadata]=useState("");
      {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.loading?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
      
      (
-       <div style={{padding:"2%"}}>
+       <div style={{padding:"2%",height:"100%"}}>
         <div  style={{margin:"auto",padding:"2%",display:"flex",justifyContent:"center"}}>    
         <Paper>
              <img style={{width:"inherit"}} src={props.cryptoBoys[thistokenId].imageHash}/>       
@@ -864,7 +869,7 @@ const [designMetadata,setDesignMetadata]=useState("");
       {props.cryptoBoys[thistokenId].metaData.images.map((image,index) => (
         <div style={{display:"flex",justifyContent:"center"}}>
           {Math.abs(activeStep - index) <= 2 ? (
-            <img className={classes.img} src={image}  />
+            <img className={classes.img} src={image} onClick={(e)=>{handleImage(e,index)}} />
           ) : null}
         </div>
       ))}

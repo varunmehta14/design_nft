@@ -465,11 +465,11 @@ const renderMenu = (
         style={{borderRadius:"40px",color:"black",backgroundColor:"azure",height:"45px"}}/>
           
           {userSuggestions.length!=0 ||tokenSuggestions.length!=0?(
-          <div   className="col-md-12 justify-content-md-center" className={classes.notBlurredCard}> 
+          <div   className="card col-md-12 justify-content-md-center" className={classes.notBlurredCard} > 
        
           <div className="card-body" >
           {userSuggestions.length!=0?(
-             <div style={{height:"25vh",overflow:"auto"}}>
+             <div style={{maxHeight:"25vh",overflow:"auto"}}>
            
              <h4>Users</h4>
              {userSuggestions&&userSuggestions.map((result,i)=>
@@ -481,7 +481,7 @@ const renderMenu = (
           ):(null)}
           <hr/>
            {tokenSuggestions.length!=0?( 
-           <div style={{height:"25vh",overflow:"auto"}}>
+           <div style={{maxHeight:"25vh",overflow:"auto"}}>
             <h4>Designs</h4>
              {tokenSuggestions&&tokenSuggestions.map((result,i)=>
              <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result[1]);handleSearchSubmit2(e,result[1])}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center",overflowWrap:"break-word"}}>
@@ -712,7 +712,7 @@ const renderMobileMenu = (
        
           <div className="card-body" >
           {userSuggestions.length!=0?(
-             <div style={{height:"25vh",overflow:"auto"}}>
+             <div style={{maxHeight:"25vh",overflow:"auto"}}>
            
              <h4>Users</h4>
              {userSuggestions&&userSuggestions.map((result,i)=>
@@ -724,7 +724,7 @@ const renderMobileMenu = (
           ):(null)}
           <hr/>
            {tokenSuggestions.length!=0?( 
-           <div style={{height:"25vh",overflow:"auto"}}>
+           <div style={{maxHeight:"25vh",overflow:"auto"}}>
             <h4>Designs</h4>
              {tokenSuggestions&&tokenSuggestions.map((result,i)=>
              <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result[1]);handleSearchSubmit2(e,result[1]);setUserSuggestions([]);setTokenSuggestions([])}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center"}}>

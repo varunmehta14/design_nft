@@ -5,6 +5,7 @@ import NFTHighlights from "../NFTHighlights/NFTHighlights";
 import Loading from "../Loading/Loading";
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
 
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
@@ -60,10 +61,10 @@ const AllCryptoBoys = ({
   const [startState,setStartState]=useState(1);
   const [end,setEnd]=useState(3);
   const [endState,setEndState]=useState(3);
-  const [lastPosition,setLastPosition]=useState(perPage)
-  const [allCryptoBoys,setAllCryptoBoys]=useState(cryptoBoys.slice(0,perPage));
+  //const [lastPosition,setLastPosition]=useState(perPage)
+ // const [allCryptoBoys,setAllCryptoBoys]=useState(cryptoBoys.slice(0,perPage));
   const [endOfDesigns,setEndOfDesigns]=useState(false);
-  const perPage = 3;
+  
 
  console.log(users)
   useEffect(() => {
@@ -85,6 +86,62 @@ const AllCryptoBoys = ({
     callbackFromParent(dataFromChild1)
    // console.log(address)
   }
+
+  if(window.innerWidth>1280 && window.innerWidth<=1920 ){
+    
+    postsPerPage=4;
+    // if( height/window.innerHeight<1){
+    
+    //   perPage=perPage+4;
+      
+    // }
+  }
+  else if(window.innerWidth>960 && window.innerWidth<=1280){
+    postsPerPage=3;
+    // if( height/window.innerHeight<1){
+    
+    //   perPage=perPage+3;
+      
+    // }
+  }
+  else if(window.innerWidth>600 && window.innerWidth<=960){
+    postsPerPage=2;
+    // if( height/window.innerHeight<1){
+    
+    //   perPage=perPage+2;
+      
+    // }
+  }
+ 
+  else if(window.innerWidth<="600"){
+    postsPerPage=1;
+    // if( height/window.innerHeight<1){
+    
+    //   perPage=perPage+1;
+      
+    // }
+  }
+  let postsPerPage;
+  let arrayForHoldingPosts = [];
+   const [allDesigns,setAllDesigns]=useState([]);
+   const [next,setNext]=useState(postsPerPage);
+
+   const loopWithSlice = (start, end) => {
+   // const slicedPosts = props.users.slice(start, end);
+    // arrayForHoldingPosts = [...arrayForHoldingPosts, ...slicedPosts];
+    setAllDesigns((prev)=>[...prev,...cryptoBoys.slice(start,end)]);
+  };
+  // useEffect(() => {
+  //   loopWithSlice(0, postsPerPage);
+  // }, []);
+  useEffect(()=>{
+    setAllDesigns(cryptoBoys.slice(0,postsPerPage))
+  },[cryptoBoys])
+
+  const handleShowMorePosts = () => {
+    loopWithSlice(next, next + postsPerPage);
+    setNext(next + postsPerPage);
+  };
   // const loadDesigns=async(start,end)=>{
   //   console.log("end",end)
   // //   const cryptoBoysCount = await cryptoBoysContract.methods
@@ -110,23 +167,23 @@ const AllCryptoBoys = ({
   // }
   // }
   
-  const scrollToEnd=()=>{
-    // this.setState({page:this.state.page+1});
-    if(allCryptoBoys.length==totalTokensMinted){
-      setEndOfDesigns(true);
-    return;}
+  // const scrollToEnd=()=>{
+  //   // this.setState({page:this.state.page+1});
+  //   if(allCryptoBoys.length==totalTokensMinted){
+  //     setEndOfDesigns(true);
+  //   return;}
 
-    setTimeout(() => {
-      setAllCryptoBoys((prev) => [...prev,...cryptoBoys.slice(lastPosition,lastPosition+perPage)]);
+  //   setTimeout(() => {
+  //     setAllCryptoBoys((prev) => [...prev,...cryptoBoys.slice(lastPosition,lastPosition+perPage)]);
      
-   }, 2000);
+  //  }, 2000);
     
-     setLastPosition(lastPosition+perPage);
-     //setLoading(true);
-     //console.log(console.log("start",start))
+  //    setLastPosition(lastPosition+perPage);
+  //    //setLoading(true);
+  //    //console.log(console.log("start",start))
      
-     //loadDesigns(start,end);
-    }
+  //    //loadDesigns(start,end);
+  //   }
      
      
    
@@ -134,17 +191,17 @@ const AllCryptoBoys = ({
     // console.log(this.state.page);
    
  
-   window.onscroll=function(){
-     console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
-     if(
-       window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight 
-     ){
-      if(!endOfDesigns){
-       scrollToEnd();
-      }
-       console.log("here")
-     }
-   }
+  //  window.onscroll=function(){
+  //    console.log(window.innerHeight,document.documentElement.scrollTop,document.documentElement.offsetHeight)
+  //    if(
+  //      window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight 
+  //    ){
+  //     if(!endOfDesigns){
+  //      scrollToEnd();
+  //     }
+  //      console.log("here")
+  //    }
+  //  }
    const gridStyles = useGridStyles();
   
   return (
@@ -157,10 +214,10 @@ const AllCryptoBoys = ({
           </h5>
         </div>
       </div>
-      <div style={{display:"flex",justifyContent:"center",padding:"1.5%"}}>
+      <div style={{display:"flex",justifyContent:"center",padding:"1.5%",height:"100%"}}>
         <Grid classes={gridStyles} container spacing={4} >
        
-        {cryptoBoys.map((cryptoboy) => {
+        {allDesigns.map((cryptoboy) => {
           return (
             <>
              <Grid item xs={12} sm={6} lg={4} xl={3} >
@@ -223,6 +280,15 @@ const AllCryptoBoys = ({
           );
         })}
         </Grid>
+             </div>
+             <div style={{display:"flex",justifyContent:"center"}}>
+               {allDesigns.length===cryptoBoys.length?(<> <Alert severity="success" color="info">
+      You are all Caught Up
+      </Alert></>):
+               (
+                <button onClick={handleShowMorePosts}>Load more</button>
+             )}
+            
              </div>
       </div>
    
