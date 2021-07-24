@@ -133,40 +133,43 @@ const MyCryptoBoys = ({
         </div>
       </div>
       <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
-      <Grid classes={gridStyles} container spacing={4} >
-         {myMintedCryptoBoys.map((cryptoboy) => {
-          return (
-            <>
-            <Grid item xs={12} sm={6} lg={4} xl={3}>
-            <MyCryptoBoyNFTDetails
-                    callback1={myCallback1}
-                    cryptoboy={cryptoboy}
-                    accountAddress={accountAddress}
-               
-                  />
-                  {/* {!loading ? (
-                    <CryptoBoyNFTImage
-                     cryptoboy={cryptoboy}
+        {myMintedCryptoBoys?(
+           <Grid classes={gridStyles} container spacing={4} >
+           {myMintedCryptoBoys.map((cryptoboy) => {
+            return (
+              <>
+              <Grid item xs={12} sm={6} lg={4} xl={3}>
+              <MyCryptoBoyNFTDetails
+                      callback1={myCallback1}
+                      cryptoboy={cryptoboy}
+                      accountAddress={accountAddress}
+                 
                     />
-                  ) : (
-                    <Loading />
-                  )}
-                </div>
-                <div className="col-md-6 text-center"
-                className="w-50 p-4 mt-1 border text-center">
-                  <MyCryptoBoyNFTDetails
-                    callback1={myCallback1}
-                    cryptoboy={cryptoboy}
-                    accountAddress={accountAddress}
-                    
-                  />
-                </div> */}
-                </Grid>
-              </>
-            
-          );
-
-        })}</Grid>
+                    {/* {!loading ? (
+                      <CryptoBoyNFTImage
+                       cryptoboy={cryptoboy}
+                      />
+                    ) : (
+                      <Loading />
+                    )}
+                  </div>
+                  <div className="col-md-6 text-center"
+                  className="w-50 p-4 mt-1 border text-center">
+                    <MyCryptoBoyNFTDetails
+                      callback1={myCallback1}
+                      cryptoboy={cryptoboy}
+                      accountAddress={accountAddress}
+                      
+                    />
+                  </div> */}
+                  </Grid>
+                </>
+              
+            );
+  
+          })}</Grid>
+        ):(<Loading/>)}
+     
         </div>
         </>):(
           <>
@@ -178,37 +181,39 @@ const MyCryptoBoys = ({
         </div>
       </div>
       <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
-      <Grid classes={gridStyles} container spacing={4} >
-         {myBoughtCryptoBoys.map((cryptoboy) => {
-          return (
-            <>
-            <Grid item xs={12} sm={6} lg={4} xl={3}>
-            <MyCryptoBoyNFTDetails
-                    callback1={myCallback1}
-                    cryptoboy={cryptoboy}
-                    accountAddress={accountAddress}
-               
-                  />
-                  {/* {!loading ? (
-                    <CryptoBoyNFTImage
-                     cryptoboy={cryptoboy}
-                    />
-                  ) : (
-                    <Loading />
-                  )}
-                </div>
-                <div className="col-md-6 text-center"
-                className="w-50 p-4 mt-1 border text-center">
-                  <MyCryptoBoyNFTDetails
-                    callback1={myCallback1}
-                    cryptoboy={cryptoboy}
-                    accountAddress={accountAddress}
-                    
-                  />
-                </div> */}
-                </Grid>
-              </>
-          )})}</Grid></div></>
+        {myBoughtCryptoBoys?(<Grid classes={gridStyles} container spacing={4} >
+
+{myBoughtCryptoBoys.map((cryptoboy) => {
+ return (
+   <>
+   <Grid item xs={12} sm={6} lg={4} xl={3}>
+   <MyCryptoBoyNFTDetails
+           callback1={myCallback1}
+           cryptoboy={cryptoboy}
+           accountAddress={accountAddress}
+      
+         />
+         {/* {!loading ? (
+           <CryptoBoyNFTImage
+            cryptoboy={cryptoboy}
+           />
+         ) : (
+           <Loading />
+         )}
+       </div>
+       <div className="col-md-6 text-center"
+       className="w-50 p-4 mt-1 border text-center">
+         <MyCryptoBoyNFTDetails
+           callback1={myCallback1}
+           cryptoboy={cryptoboy}
+           accountAddress={accountAddress}
+           
+         />
+       </div> */}
+       </Grid>
+     </>
+ )})}</Grid>):(<Loading/>)}
+      </div></>
         )}
        
     </div>

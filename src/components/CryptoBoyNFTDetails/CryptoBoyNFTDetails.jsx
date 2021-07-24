@@ -582,7 +582,7 @@ const [designMetadata,setDesignMetadata]=useState("");
        <Queries cryptoBoysContract={props.cryptoBoysContract} token={props.cryptoBoys[thistokenId].tokenId.toNumber()} imageUrl={props.cryptoBoys[thistokenId].imageHash} />
        </div>
        </Grid>
-      </div>):(<><Loading/>{props.loading?(<> <h1 style={{textAlign:"center"}}>Select a nft</h1></>):(null)}</>
+      </div>):(<><Loading/></>
      )
     }
    </>

@@ -2,6 +2,7 @@ import React,{useState,useEffect} from "react";
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Loading from "../Loading/Loading";
 
 
 const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,currentUser}) => {
@@ -127,9 +128,12 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,c
   return (
     < >
     <div className={useStyles().sectionMobile}>
-     {renderMobile}
+      {/* {currentUser?(renderMobile):(<Loading/>)} */}
+      {renderMobile}
+     
      </div>
      <div className={useStyles().sectionDesktop}>
+     {/* {currentUser?(renderDesktop):(<Loading/>)} */}
      {renderDesktop}
    </div>
    </>

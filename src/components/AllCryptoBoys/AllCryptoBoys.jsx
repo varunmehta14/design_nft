@@ -55,7 +55,7 @@ const AllCryptoBoys = ({
   users
 }) => {
   
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [address,setAddress]=useState("");
   const [start,setStart]=useState(1);
   const [startState,setStartState]=useState(1);
@@ -70,9 +70,9 @@ const AllCryptoBoys = ({
   useEffect(() => {
     if (cryptoBoys.length !== 0) {
       if (cryptoBoys[0].metaData !== undefined) {
-        setLoading(loading);
+        //setLoading(false);
       } else {
-        setLoading(false);
+       // setLoading(true);
       }
     }
    
@@ -214,7 +214,10 @@ const AllCryptoBoys = ({
           </h5>
         </div>
       </div>
-      <div style={{display:"flex",justifyContent:"center",padding:"1.5%",height:"100%"}}>
+      {cryptoBoys?(
+        <>
+        <div style={{display:"flex",justifyContent:"center",padding:"1.5%",height:"100%"}}>
+       
         <Grid classes={gridStyles} container spacing={4} >
        
         {allDesigns.map((cryptoboy) => {
@@ -289,7 +292,9 @@ const AllCryptoBoys = ({
                 <button onClick={handleShowMorePosts}>Load more</button>
              )}
             
-             </div>
+             </div></>
+      ):(<Loading/>)}
+      
       </div>
    
   );

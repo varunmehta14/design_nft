@@ -329,7 +329,7 @@ class App extends Component {
              localStorage.setItem(this.state.accountAddress, new Date().getTime());
              this.setState({ loading: false });
              window.location.href=`/account`
-             window.location.reload();
+             
             
            })
            this.setState({userLoggedIn:true});
@@ -371,7 +371,8 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
          .on("confirmation", () => {
            localStorage.setItem(this.state.accountAddress, new Date().getTime());
            this.setState({ loading: false });
-           window.location.reload();
+           window.location.href="/account"
+          // window.location.reload();
 
          })
  }
@@ -410,7 +411,8 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
           .on("confirmation", () => {
             localStorage.setItem(this.state.accountAddress, new Date().getTime());
             this.setState({ loading: false });
-            window.location.reload();
+            window.location.href="/account"
+           // window.location.reload();
           })
   }
   else {

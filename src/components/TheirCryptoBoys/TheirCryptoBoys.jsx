@@ -10,6 +10,7 @@ import TheirAccountDetails from "../TheirAccountDetails/TheirAccountDetails";
 
 
 
+
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
     paddingLeft:"5%",
@@ -121,13 +122,15 @@ const TheirCryptoBoys = ({
     
     <div style={{padding:"0.5%"}}>
       {userExists?(<>
-        
-          <TheirAccountDetails 
-          accountAddress={theirAccountAddress}
-          cryptoBoysContract={cryptoBoysContract}
-          usersContract={usersContract}
-          currentUser={currentUser}
-          />
+        {currentUser?(
+           <TheirAccountDetails 
+           accountAddress={theirAccountAddress}
+           cryptoBoysContract={cryptoBoysContract}
+           usersContract={usersContract}
+           currentUser={currentUser}
+           />
+        ):(<Loading/>)}
+         
        
       <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
@@ -161,41 +164,44 @@ const TheirCryptoBoys = ({
         </div>
       </div>
       <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
-      <Grid classes={gridStyles} container spacing={4} >
-         {myMintedCryptoBoys.map((cryptoboy) => {
-          return (
-            <>
-            <Grid item xs={12} sm={6} lg={4} xl={3}>
-            <MyCryptoBoyNFTDetails
-                    callback1={myCallback1}
-                    cryptoboy={cryptoboy}
-                    accountAddress={theirAccountAddress}
-               
-                  />
-                  {/* {!loading ? (
-                    <CryptoBoyNFTImage
-                     cryptoboy={cryptoboy}
+        {myMintedCryptoBoys?(
+           <Grid classes={gridStyles} container spacing={4} >
+           {myMintedCryptoBoys.map((cryptoboy) => {
+            return (
+              <>
+              <Grid item xs={12} sm={6} lg={4} xl={3}>
+              <MyCryptoBoyNFTDetails
+                      callback1={myCallback1}
+                      cryptoboy={cryptoboy}
+                      accountAddress={theirAccountAddress}
+                 
                     />
-                  ) : (
-                    <Loading />
-                  )}
-                </div>
-                <div className="col-md-6 text-center"
-                className="w-50 p-4 mt-1 border text-center">
-                  <MyCryptoBoyNFTDetails
-                    callback1={myCallback1}
-                    cryptoboy={cryptoboy}
-                    accountAddress={accountAddress}
-                    
-                  />
-                </div> */}
-                </Grid>
-              </>
-            
-          );
-
-        })}</Grid>
-        </div>
+                    {/* {!loading ? (
+                      <CryptoBoyNFTImage
+                       cryptoboy={cryptoboy}
+                      />
+                    ) : (
+                      <Loading />
+                    )}
+                  </div>
+                  <div className="col-md-6 text-center"
+                  className="w-50 p-4 mt-1 border text-center">
+                    <MyCryptoBoyNFTDetails
+                      callback1={myCallback1}
+                      cryptoboy={cryptoboy}
+                      accountAddress={accountAddress}
+                      
+                    />
+                  </div> */}
+                  </Grid>
+                </>
+              
+            );
+  
+          })}</Grid>
+  
+        ):(<Loading/>)}
+             </div>
               </>
             
           )
@@ -210,37 +216,40 @@ const TheirCryptoBoys = ({
         </div>
       </div>
       <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
-      <Grid classes={gridStyles} container spacing={4} >
-         {myBoughtCryptoBoys.map((cryptoboy) => {
-          return (
-            <>
-            <Grid item xs={12} sm={6} lg={4} xl={3}>
-            <MyCryptoBoyNFTDetails
-                    callback1={myCallback1}
-                    cryptoboy={cryptoboy}
-                    accountAddress={accountAddress}
-               
-                  />
-                  {/* {!loading ? (
-                    <CryptoBoyNFTImage
-                     cryptoboy={cryptoboy}
+        {myBoughtCryptoBoys?(
+           <Grid classes={gridStyles} container spacing={4} >
+           {myBoughtCryptoBoys.map((cryptoboy) => {
+            return (
+              <>
+              <Grid item xs={12} sm={6} lg={4} xl={3}>
+              <MyCryptoBoyNFTDetails
+                      callback1={myCallback1}
+                      cryptoboy={cryptoboy}
+                      accountAddress={accountAddress}
+                 
                     />
-                  ) : (
-                    <Loading />
-                  )}
-                </div>
-                <div className="col-md-6 text-center"
-                className="w-50 p-4 mt-1 border text-center">
-                  <MyCryptoBoyNFTDetails
-                    callback1={myCallback1}
-                    cryptoboy={cryptoboy}
-                    accountAddress={accountAddress}
-                    
-                  />
-                </div> */}
-                </Grid>
-              </>
-          )})}</Grid></div>
+                    {/* {!loading ? (
+                      <CryptoBoyNFTImage
+                       cryptoboy={cryptoboy}
+                      />
+                    ) : (
+                      <Loading />
+                    )}
+                  </div>
+                  <div className="col-md-6 text-center"
+                  className="w-50 p-4 mt-1 border text-center">
+                    <MyCryptoBoyNFTDetails
+                      callback1={myCallback1}
+                      cryptoboy={cryptoboy}
+                      accountAddress={accountAddress}
+                      
+                    />
+                  </div> */}
+                  </Grid>
+                </>
+            )})}</Grid>
+        ):(<Loading/>)}
+     </div>
           </>
         )}</>):(<><h3>User name does not exist</h3></>)}
      

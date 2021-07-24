@@ -114,7 +114,7 @@ console.log(mintedByName,ownedByName)
     //console.log(props.toggleForSale)
     return (
       <>
-       {props.cryptoboy?(
+       {props.cryptoboy&&ownedByName?(
          <>
          <CardActionArea className={classes.actionArea}>
       <Link to={`/nftDetails/${props.cryptoboy.tokenId.toNumber()}`} onClick={()=>handleClick(props.cryptoboy.tokenId.toNumber())}style={{textDecorationLine:"none"}}>
