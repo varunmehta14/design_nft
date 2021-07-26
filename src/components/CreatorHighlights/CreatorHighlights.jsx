@@ -81,7 +81,7 @@ const CreatorHighlights=(props)=>{
       <CardContent className={classes.content}>
         {/* <div style={{backgroundColor:"black"}}> */}
         <div style={{display:"flex",justifyContent:"center"}}>
-      <Avatar alt={props.user.userName} src={props.user.avatarhash} className={classes.large}/>
+      <Avatar alt={props.user.userName} src={props.user[6]} className={classes.large}/>
       </div>
         {/* </div> */}
         <div style={{display:"flex",justifyContent:"center"}}>

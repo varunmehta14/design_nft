@@ -36,6 +36,8 @@ contract Users{
   mapping(string=>address)public nameToAddress;
   //map name to user
   mapping(string=>User) public nameToUser;
+  //map id to address
+  mapping(uint=>address) public idToAddress;
   
   constructor(){
    // userAddressExists[msg.sender]=true;
@@ -77,6 +79,7 @@ contract Users{
     allUsers[msg.sender] = newUser;
     allUsersById[userCounter] =newUser;
     nameToUser[_userName]=newUser;
+    idToAddress[userCounter]=msg.sender;
     nameToAddress[_userName]=msg.sender;
 
   }
@@ -130,6 +133,7 @@ contract Users{
     );
      // add the address and it's user to all users mapping
     allUsers[msg.sender] = newUser;
+     
     allUsersById[addressToId[msg.sender]] =newUser;
     nameToUser[_userName]=newUser;
     }

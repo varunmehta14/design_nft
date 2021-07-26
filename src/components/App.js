@@ -71,6 +71,7 @@ class App extends Component {
       searchedDesign:null,
       tokenExists:true,
       userExists:true,
+      usAdd:""
      
     };
   }
@@ -219,9 +220,14 @@ class App extends Component {
          this.setState({ usersCount });
        //get all the designs
        for (var i = 1; i <= usersCount; i++) {
+         const usAdd=await usersContract.methods.idToAddress(i).call();
+         console.log(usAdd);
+        // this.setState({usAdd})
+        // console.log(this.state.usAdd)
          const user = await usersContract.methods
-           .allUsersById(i)
+           .allUsers(usAdd)
            .call();
+           console.log(user)
          this.setState({
            users: [...this.state.users, user],
          });
@@ -352,6 +358,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
  
   const getUserEmail=await this.state.usersContract.methods.allUsers(account).call();
   console.log(avatar instanceof Blob)
+  //email not changed hence no need to check it already exists or not 
  if(getUserEmail[2]==email){
 
   if (avatar instanceof Blob){
@@ -380,8 +387,8 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
   const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
   const emailIsUsed=await this.state.usersContract.methods.userEmailExists(email).call();
   console.log(nameIsUsed);
-  if(!nameIsUsed && !emailIsUsed){
-    this.setState({ nameIsUsed: false });
+  if(!emailIsUsed){
+    this.setState({ emailIsUsed: false });
    //previousUserId=await this.state.cryptoBoysContract.methods.userCounter().call();
   // previousUserId=previousUserId.toNumber();
 //const userId=previousUserId+1;
@@ -739,7 +746,9 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
               path="/creators"
               render={()=>(
                 <AllCreators
-                users={this.state.users}/>
+                allusers={this.state.users}
+                usersContract={this.state.usersContract}
+                usersCount={this.state.usersCount}/>
               )}/>
             <Route
               path="/mint"

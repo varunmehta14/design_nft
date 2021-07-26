@@ -96,6 +96,8 @@ const AllCreators=(props)=>{
   //     setLastPosition(prev => prev + 1);
   //   }
   // };
+
+
   const [height, setHeight] = useState(0)
   const ref = useRef(null)
   // useEffect(()=>{
@@ -103,7 +105,9 @@ const AllCreators=(props)=>{
 
   // },[props.users,window.innerWidth]);
   useEffect(() => {
+    if(ref.current){
     setHeight(ref.current.clientHeight)
+    }
   })
   //console.log("div height",height ,"window height",window.innerHeight)
   // let perPage;
@@ -170,7 +174,7 @@ const AllCreators=(props)=>{
 
   //   setLastPosition(lastPosition + perPage);
   // };
-
+ 
   let postsPerPage;
   let arrayForHoldingPosts = [];
    const [allCreators,setAllCreators]=useState([]);
@@ -179,25 +183,26 @@ const AllCreators=(props)=>{
    const loopWithSlice = (start, end) => {
    // const slicedPosts = props.users.slice(start, end);
     // arrayForHoldingPosts = [...arrayForHoldingPosts, ...slicedPosts];
-    setAllCreators((prev)=>[...prev,...props.users.slice(start,end)]);
+    setAllCreators((prev)=>[...prev,...props.allusers.slice(start,end)]);
   };
   // useEffect(() => {
   //   loopWithSlice(0, postsPerPage);
   // }, []);
   useEffect(()=>{
-    setAllCreators(props.users.slice(0,postsPerPage))
-  },[props.users])
+    setAllCreators(props.allusers.slice(0,postsPerPage))
+  },[props.allusers])
 
   const handleShowMorePosts = () => {
     loopWithSlice(next, next + postsPerPage);
     setNext(next + postsPerPage);
   };
   console.log("allCreators",allCreators);
+  //console.log("allusers",users);
   //  console.log(props.users)
     const gridStyles = useGridStyles();
     return(
       <>
-      {props.users?( 
+      {props.allusers?( 
      
         <div style={{padding:"0.5%"}}>
         <div className="card mt-1">
@@ -239,7 +244,7 @@ const AllCreators=(props)=>{
             
              </div>
              <div style={{display:"flex",justifyContent:"center"}}>
-               {allCreators.length===props.users.length?(<> <Alert severity="success" color="info">
+               {allCreators.length===props.allusers.length?(<> <Alert severity="success" color="info">
       You are all Caught Up
       </Alert></>):
                (

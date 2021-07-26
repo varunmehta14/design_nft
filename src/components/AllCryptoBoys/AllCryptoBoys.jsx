@@ -77,7 +77,7 @@ const AllCryptoBoys = ({
     }
    
   // loadDesigns(start,end)
-  }, [usersContract]);
+  }, [usersContract,users]);
   
   //console.log(cryptoBoysContract)
   const myCallback1=(dataFromChild1)=>{

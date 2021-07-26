@@ -79,7 +79,7 @@ const TheirCryptoBoys = ({
   const getCurrentUser=async()=>{
     if(usersContract&&theirAccountAddress){
       console.log("here")
-      const current=await users.find((user)=>user.userAddress===theirAccountAddress);
+     const current=await users.find((user)=>user.userAddress===theirAccountAddress);
     // const current=await usersContract.methods
     // .allUsers(theirAccountAddress)
     // .call();
