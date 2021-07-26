@@ -79,9 +79,9 @@ npm start
 ![Profile](screenshots/1createProfile.png )
 -View account Details
 ![Account](screenshots/2accountDetails.png )
--Update Profile
+-View Your Details in all Creators
 ![Update](screenshots/3viewYourselfInAllCreators.png )
--Details Changed
+-Update Profile
 ![Details changed](screenshots/4updateProfile.png )
 -Create a design
 ![Create](screenshots/5createDesign.png )
@@ -93,7 +93,7 @@ npm start
 ![Change price](screenshots/8changeprice.png )
 -Price changed
 ![Price changed](screenshots/9pricechanged.png )
--Swap account and create new design
+-Swap account and view your design from other's view
 ![Swap acc and create new](screenshots/10swapAccountandViewyourdesignFromothersview.png )
 -Removed from sale
 ![Removed from sale](screenshots/11gobacktoyouraccountandremoveitfromsale.png )
@@ -101,50 +101,50 @@ npm start
 ![Not for sale](screenshots/12currentlynotforsale.png )
 -Bought by other account
 ![Bought by other account](screenshots/13buyOtherDesign.png )
--My collection
+-Owner Details Changed
 ![My collection](screenshots/14ownerDetailsChanged.png )
--My bought
+-My Collections
 ![My bought](screenshots/15myCollections.png )
--Marketplace
+-My Bought
 ![Marketplace](screenshots/16myBought.png )
--View others account and their collection
+-Create one more account and design
 ![View other account and collection](screenshots/17createdonemoreaccountanddesign.png )
--View others account and their bought
+-Load more data on clicking
 ![View other account and bought](screenshots/18loadMoreDataOnClicking.png )
--Marketplace
+-All Designs
 ![Marketplace](screenshots/19AllDesigns.png )
--Marketplace
+-Load more creators on clicking
 ![Marketplace](screenshots/20LoadMoreCreators.png )
--Marketplace
+-All Creators
 ![Marketplace](screenshots/21AllCreators.png )
--Marketplace
+-Search field based on user name and design name
 ![Marketplace](screenshots/22Search.png )
--Marketplace
+-View other account details and their collections
 ![Marketplace](screenshots/23ViewOtherAccountCollection.png )
--Marketplace
+-View other's collections
 ![Marketplace](screenshots/24ViewOtherAccountBought.png )
--Marketplace
+-Responsive all creations
 ![Marketplace](screenshots/25ResponsiveAllCreations.png )
--Marketplace
+-responsive all creators
 ![Marketplace](screenshots/26ResponsiveAllCreators.png )
--Marketplace
+-Responsive all links
 ![Marketplace](screenshots/27ResponsiveLinks.png )
--Marketplace
+-Responsive Create
 ![Marketplace](screenshots/28ResponsiveCreate.png )
--Marketplace
+-Responsive Account Details
 ![Marketplace](screenshots/29ResponsiveAccountDetails.png )
--Marketplace
+-Responsive Update Profile
 ![Marketplace](screenshots/30ResponsiveUpdateProfile.png )
--Marketplace
+-Responsive Design Details
 ![Marketplace](screenshots/31ResponsiveDesignDetails.png )
--Marketplace
+-Responsive My Token Details
 ![Marketplace](screenshots/32ResponsiveMytokenDetails.png )
--Marketplace
+-Responsive my Collections
 ![Marketplace](screenshots/33ResponsiveMyCollection.png )
--Marketplace
+-Responsive my Bought
 ![Marketplace](screenshots/34ResponsiveMYbought.png )
--Marketplace
+-Responsive Search
 ![Marketplace](screenshots/35ResponsiveSearch.png )
--Marketplace
+-Responsive view other accounts collection and bought
 ![Marketplace](screenshots/36ViewOtherAccountCollection.png )
 
