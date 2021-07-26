@@ -76,38 +76,75 @@ npm start
 
 ### Screenshots
 -Create Profile
-![Profile](screenshots/1profile.png )
+![Profile](screenshots/1createProfile.png )
 -View account Details
-![Account](screenshots/2account.png )
+![Account](screenshots/2accountDetails.png )
 -Update Profile
-![Update](screenshots/3updateProfile.png )
+![Update](screenshots/3viewYourselfInAllCreators.png )
 -Details Changed
-![Details changed](screenshots/4detailschanged.png )
+![Details changed](screenshots/4updateProfile.png )
 -Create a design
-![Create](screenshots/5create.png )
+![Create](screenshots/5createDesign.png )
 -View created design on our marketplace
-![View](screenshots/6view.png )
+![View](screenshots/6viewDesignListedOnMarketplace.png)
 -View all details of the design
-![View all details](screenshots/7viewalldetails.png )
+![View all details](screenshots/7viewAllDetailsOnClicking.png )
 -Change Price
 ![Change price](screenshots/8changeprice.png )
 -Price changed
 ![Price changed](screenshots/9pricechanged.png )
 -Swap account and create new design
-![Swap acc and create new](screenshots/10swapaccountandcreatenew.png )
+![Swap acc and create new](screenshots/10swapAccountandViewyourdesignFromothersview.png )
 -Removed from sale
-![Removed from sale](screenshots/11removedfromsale.png )
+![Removed from sale](screenshots/11gobacktoyouraccountandremoveitfromsale.png )
 -Not for sale
-![Not for sale](screenshots/12notforsale.png )
+![Not for sale](screenshots/12currentlynotforsale.png )
 -Bought by other account
-![Bought by other account](screenshots/13boughtbyotheraccount.png )
+![Bought by other account](screenshots/13buyOtherDesign.png )
 -My collection
-![My collection](screenshots/14mycollection.png )
+![My collection](screenshots/14ownerDetailsChanged.png )
 -My bought
-![My bought](screenshots/15mybought.png )
+![My bought](screenshots/15myCollections.png )
 -Marketplace
-![Marketplace](screenshots/16marketplace.png )
+![Marketplace](screenshots/16myBought.png )
 -View others account and their collection
-![View other account and collection](screenshots/17viewotheraccount.png )
+![View other account and collection](screenshots/17createdonemoreaccountanddesign.png )
 -View others account and their bought
-![View other account and bought](screenshots/18viewotherbought.png )
+![View other account and bought](screenshots/18loadMoreDataOnClicking.png )
+-Marketplace
+![Marketplace](screenshots/19AllDesigns.png )
+-Marketplace
+![Marketplace](screenshots/20LoadMoreCreators.png )
+-Marketplace
+![Marketplace](screenshots/21AllCreators.png )
+-Marketplace
+![Marketplace](screenshots/22Search.png )
+-Marketplace
+![Marketplace](screenshots/23ViewOtherAccountCollection.png )
+-Marketplace
+![Marketplace](screenshots/24ViewOtherAccountBought.png )
+-Marketplace
+![Marketplace](screenshots/25ResponsiveAllCreations.png )
+-Marketplace
+![Marketplace](screenshots/26ResponsiveAllCreators.png )
+-Marketplace
+![Marketplace](screenshots/27ResponsiveLinks.png )
+-Marketplace
+![Marketplace](screenshots/28ResponsiveCreate.png )
+-Marketplace
+![Marketplace](screenshots/29ResponsiveAccountDetails.png )
+-Marketplace
+![Marketplace](screenshots/30ResponsiveUpdateProfile.png )
+-Marketplace
+![Marketplace](screenshots/31ResponsiveDesignDetails.png )
+-Marketplace
+![Marketplace](screenshots/32ResponsiveMytokenDetails.png )
+-Marketplace
+![Marketplace](screenshots/33ResponsiveMyCollection.png )
+-Marketplace
+![Marketplace](screenshots/34ResponsiveMYbought.png )
+-Marketplace
+![Marketplace](screenshots/35ResponsiveSearch.png )
+-Marketplace
+![Marketplace](screenshots/36ViewOtherAccountCollection.png )
+
