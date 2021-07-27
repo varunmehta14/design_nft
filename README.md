@@ -76,38 +76,75 @@ npm start
 
 ### Screenshots
 -Create Profile
-![Profile](screenshots/1profile.png )
+![Profile](screenshots/1createProfile.png )
 -View account Details
-![Account](screenshots/2account.png )
+![Account](screenshots/2accountDetails.png )
+-View Your Details in all Creators
+![Update](screenshots/3viewYourselfInAllCreators.png )
 -Update Profile
-![Update](screenshots/3updateProfile.png )
--Details Changed
-![Details changed](screenshots/4detailschanged.png )
+![Details changed](screenshots/4updateProfile.png )
 -Create a design
-![Create](screenshots/5create.png )
+![Create](screenshots/5createDesign.png )
 -View created design on our marketplace
-![View](screenshots/6view.png )
+![View](screenshots/6viewDesignListedOnMarketplace.png)
 -View all details of the design
-![View all details](screenshots/7viewalldetails.png )
+![View all details](screenshots/7viewAllDetailsOnClicking.png )
 -Change Price
 ![Change price](screenshots/8changeprice.png )
 -Price changed
 ![Price changed](screenshots/9pricechanged.png )
--Swap account and create new design
-![Swap acc and create new](screenshots/10swapaccountandcreatenew.png )
+-Swap account and view your design from other's view
+![Swap acc and create new](screenshots/10swapAccountandViewyourdesignFromothersview.png )
 -Removed from sale
-![Removed from sale](screenshots/11removedfromsale.png )
+![Removed from sale](screenshots/11gobacktoyouraccountandremoveitfromsale.png )
 -Not for sale
-![Not for sale](screenshots/12notforsale.png )
+![Not for sale](screenshots/12currentlynotforsale.png )
 -Bought by other account
-![Bought by other account](screenshots/13boughtbyotheraccount.png )
--My collection
-![My collection](screenshots/14mycollection.png )
--My bought
-![My bought](screenshots/15mybought.png )
--Marketplace
-![Marketplace](screenshots/16marketplace.png )
--View others account and their collection
-![View other account and collection](screenshots/17viewotheraccount.png )
--View others account and their bought
-![View other account and bought](screenshots/18viewotherbought.png )
+![Bought by other account](screenshots/13buyOtherDesign.png )
+-Owner Details Changed
+![My collection](screenshots/14ownerDetailsChanged.png )
+-My Collections
+![My bought](screenshots/15myCollections.png )
+-My Bought
+![Marketplace](screenshots/16myBought.png )
+-Create one more account and design
+![View other account and collection](screenshots/17createdonemoreaccountanddesign.png )
+-Load more data on clicking
+![View other account and bought](screenshots/18loadMoreDataOnClicking.png )
+-All Designs
+![Marketplace](screenshots/19AllDesigns.png )
+-Load more creators on clicking
+![Marketplace](screenshots/20LoadMoreCreators.png )
+-All Creators
+![Marketplace](screenshots/21AllCreators.png )
+-Search field based on user name and design name
+![Marketplace](screenshots/22Search.png )
+-View other account details and their collections
+![Marketplace](screenshots/23ViewOtherAccountCollection.png )
+-View other's collections
+![Marketplace](screenshots/24ViewOtherAccountBought.png )
+-Responsive all creations
+![Marketplace](screenshots/25ResponsiveAllCreations.png )
+-responsive all creators
+![Marketplace](screenshots/26ResponsiveAllCreators.png )
+-Responsive all links
+![Marketplace](screenshots/27ResponsiveLinks.png )
+-Responsive Create
+![Marketplace](screenshots/28ResponsiveCreate.png )
+-Responsive Account Details
+![Marketplace](screenshots/29ResponsiveAccountDetails.png )
+-Responsive Update Profile
+![Marketplace](screenshots/30ResponsiveUpdateProfile.png )
+-Responsive Design Details
+![Marketplace](screenshots/31ResponsiveDesignDetails.png )
+-Responsive My Token Details
+![Marketplace](screenshots/32ResponsiveMytokenDetails.png )
+-Responsive my Collections
+![Marketplace](screenshots/33ResponsiveMyCollection.png )
+-Responsive my Bought
+![Marketplace](screenshots/34ResponsiveMYbought.png )
+-Responsive Search
+![Marketplace](screenshots/35ResponsiveSearch.png )
+-Responsive view other accounts collection and bought
+![Marketplace](screenshots/36ViewOtherAccountCollection.png )
+
