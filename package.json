@@ -22,6 +22,7 @@
     "chai-bignumber": "3.0.0",
     "dayjs": "^1.10.4",
     "doka": "^0.1.0",
+    "fuse.js": "^6.4.6",
     "ipfs-http-client": "^49.0.2",
     "peer-id": "0.14.8",
     "query-string": "^7.0.1",

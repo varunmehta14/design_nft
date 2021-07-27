@@ -27,6 +27,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import PersonIcon from '@material-ui/icons/Person';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import Fuse from 'fuse.js';
 
 import CancelIcon from '@material-ui/icons/Cancel';
 const useStyles = makeStyles((theme) => ({
@@ -181,6 +182,19 @@ const Navbar = ({connectToMetamask,metamaskConnected,userLoggedIn,currentUser,se
   //   item.id=i+1;
   // });
   // console.log(allData)
+ const fuse1=new Fuse(searchData,{
+   keys:[
+     "userName"
+   ],
+   includeScore:true
+ })
+ const fuse2=new Fuse(cryptoBoys,{
+  keys:[
+    "tokenName"
+  ],
+  includeScore:true
+})
+
   const classes = useStyles();
 const [anchorEl, setAnchorEl] = useState(null);
 //const [metamaskConnected,setMetamaskConnected]=useState(false);
@@ -284,19 +298,50 @@ const handleOnClear1 = () => {
   setCollapsed1(!collapsed1);
 };
 
+// function escapeRegExp(string) {
+//   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+// }
 const onChangeHandler=(text)=>{
+  
+// var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+// let canUse;
+// if(format.test(text)){
+//   console.log( "true");
+//   canUse=false;
+//   alert("Cannot use special Character");
+//   setText(" ");
+// } else {
+//   console.log( "false");
+//   canUse=true;
+// }
   let matchUserName=[];
   let matchTokenName=[];
+  //escapeRegExp(text);
   if(text.length>0){
-    matchUserName=searchData.filter(usr=>{
-      const regex=new RegExp(`${text}`,"gi");
-      return usr.userName.match(regex)
-    })
-    matchTokenName=cryptoBoys.filter(usr=>{
-      const regex=new RegExp(`${text}`,"gi");
-      return usr.tokenName.match(regex)
-    })
-    
+  
+      // text = new RegExp("\\\\", "g");
+      // text=text.replace(text,"\\")
+  
+   // let text=String.raw`${text}`
+    // matchUserName=searchData.filter(usr=>{
+      
+    //   const regex=new RegExp(`${text}`,"gi");
+      
+    //   return usr.userName.match(regex)
+    // })
+    // matchTokenName=cryptoBoys.filter(usr=>{
+    //   // if(text=="\\"){
+    //   //   text = text.replace(new RegExp("\\", "g"), "\\");
+    //   // }
+    //   const regex=new RegExp(`${text}`,"gi");
+      
+    //   return usr.tokenName.match(regex)
+    // })
+    const resultsUser=fuse1.search(text);
+    console.log(resultsUser)
+    matchUserName=resultsUser.map(result=>result.item);
+    const resultsDesign=fuse2.search(text);
+    matchTokenName=resultsDesign.map(result=>result.item);
 
   }
   

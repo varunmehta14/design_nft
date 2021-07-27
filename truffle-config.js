@@ -10,6 +10,11 @@ module.exports = {
       port: 7545,
       network_id: "*", // Match any network id
     },
+    binanceTestnet:{
+      provider:()=>provider,
+      network_id:"97",
+      gas:1000000
+    }
   },
   contracts_directory: "./src/contracts/",
   contracts_build_directory: "./src/abis/",
