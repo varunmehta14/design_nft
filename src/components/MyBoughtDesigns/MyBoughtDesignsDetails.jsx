@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(10),
   },
 }));
-const MyCryptoBoyNFTDetails = ({callback1,cryptoboy,accountAddress}) => {
+const MyBoughtDesignsDetails= ({callback1,cryptoboy,accountAddress}) => {
   const classes = useStyles();
   const mediaStyles = useFourThreeCardMediaStyles();
   const handleClick=(tokID)=>{
@@ -96,7 +96,7 @@ console.log(cryptoboy)
    <Link to={`/nftDetails/${tokenId.toNumber()}`} onClick={()=>{handleClick(tokenId.toNumber())}}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
     <CardMedia  classes={mediaStyles} image={cryptoboy.imageHash}style={{backgroundSize:"contain"}} /> 
-      {cryptoboy.currentOwner===cryptoboy.mintedBy?(
+     
           <CardActions className={classes.contentNotSold}disableSpacing>
           <div style={{display:"flex"}}>
             <Typography className={classes.title} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
@@ -104,20 +104,7 @@ console.log(cryptoboy)
             </Typography>
             </div>
             </CardActions>
-      ):(
-        <CardActions className={classes.contentSold}disableSpacing  style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        
-          <Typography className={classes.title} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
-          {cryptoboy.tokenName} 
-          </Typography>
-         
-          <div style={{color:"cornsilk"}}>
-          sold
-          </div>
-          
-          
-          </CardActions>
-      )}
+     
       
     
       <CardContent className={classes.content2}>
@@ -177,4 +164,4 @@ console.log(cryptoboy)
   );
 };
 
-export default MyCryptoBoyNFTDetails;
+export default MyBoughtDesignsDetails;

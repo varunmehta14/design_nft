@@ -93,6 +93,7 @@ export default function FormAndPreview(props) {
   
     const [cryptoBoyName,setCryptoBoyName] = useState("");
     const [cryptoBoyPrice,setCryptoBoyPrice] = useState("");
+    const [cryptoBoyDressPrice,setCryptoBoyDressPrice] = useState("");
     const [cryptoBoyDescription,setCryptoBoyDescription] = useState("");
     const [buffer,setBuffer] = useState(null);
     const [finalbuffer,setFinalbuffer] = useState([]);
@@ -708,16 +709,33 @@ Unlimited Auction
 <hr/>
 
 <br/>
+<div style={{display:"flex",justifyContent:"space-evenly"}}>
+<div>
 <TextField
  label="Price"
  id="standard-start-adornment"
  placeholder="Enter price for one piece"
-// className={clsx(classes.margin, classes.textField)}
+ className={clsx(classes.margin, classes.textField)}
  onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
  }}
 /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+</div>
+<div>
+<TextField
+ label="Price with Dress"
+ id="standard-start-adornment"
+ placeholder="Enter price for one piece with dress"
+// className={clsx(classes.margin, classes.textField)}
+ onChange={(e)=>{setCryptoBoyDressPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ InputProps={{
+   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+ }}
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+</div>
+</div>
+
 <br/>
 <hr/>
 <h2>Upload Image</h2>

@@ -25,8 +25,8 @@ import Profile from "./Profile/Profile";
 import UpdateProfile from "./UpdateProfile/UpdateProfile";
 import MyCryptoBoys from "./MyCryptoBoys/MyCryptoBoys";
 import TheirCryptoBoys from "./TheirCryptoBoys/TheirCryptoBoys";
-import Queries from "./Queries/Queries";
-import {Container} from '@material-ui/core'
+import Footer from "./Footer/Footer";
+import {Container,Box} from '@material-ui/core'
 
 const ipfsClient = require("ipfs-http-client");
 const ipfs = ipfsClient({
@@ -828,6 +828,9 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         
           </Switch>
     </Router>
+    <Box mt={8}>
+        <Footer />
+      </Box>
       </Container></>
       {/* ) } */}
        

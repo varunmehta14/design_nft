@@ -17,18 +17,7 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 import AvatarImageCropper from 'react-avatar-image-cropper';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -291,9 +280,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
              null}
          </div>
       </form>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
+    
    </div>
   );
 }

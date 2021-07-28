@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch'; 
-
+import MyBoughtDesignsDetails from "../MyBoughtDesigns/MyBoughtDesignsDetails";
 
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
@@ -187,7 +187,7 @@ const MyCryptoBoys = ({
  return (
    <>
    <Grid item xs={12} sm={6} lg={4} xl={3}>
-   <MyCryptoBoyNFTDetails
+   < MyBoughtDesignsDetails
            callback1={myCallback1}
            cryptoboy={cryptoboy}
            accountAddress={accountAddress}

@@ -151,8 +151,8 @@ const AllCreators=(props)=>{
   // console.log(perPage)
   // const [allCreators, setAllCreators] = useState(props.users.slice(0,1));
   // const [isFetching, setIsFetching] = useState(false);
-  // const [hasMore, setHasMore] = useState(true);
-  // const [lastPosition, setLastPosition] = useState(1);
+   const [hasMore, setHasMore] = useState(true);
+   const [lastPosition, setLastPosition] = useState(postsPerPage+1);
   // const [loading,setLoading]=useState(true);
   
   // const page=1;
@@ -161,18 +161,18 @@ const AllCreators=(props)=>{
   
 
   // const loadProducts =() => {
-  //   if(allCreators.length==props.users.length){
+  //   if(allCreators.length==props.allusers.length){
   //     setHasMore(false);
   //     return;
   //   }
   //   setTimeout(() => {
   //     console.log("set timeout")
   //     console.log("last Position",lastPosition)
-  //      setAllCreators((prev) => [...prev,...props.users.slice(lastPosition,lastPosition+perPage)]);
+  //      setAllCreators((prev) => [...prev,...props.allusers.slice(lastPosition,lastPosition+postsPerPage)]);
       
   //   }, 2000);
 
-  //   setLastPosition(lastPosition + perPage);
+  //   setLastPosition(lastPosition +postsPerPage);
   // };
  
   let postsPerPage;

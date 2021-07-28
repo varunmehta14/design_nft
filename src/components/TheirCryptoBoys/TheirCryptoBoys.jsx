@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch'; 
 import TheirAccountDetails from "../TheirAccountDetails/TheirAccountDetails";
+import MyBoughtDesignsDetails from "../MyBoughtDesigns/MyBoughtDesignsDetails";
 
 
 
@@ -222,12 +223,12 @@ const TheirCryptoBoys = ({
             return (
               <>
               <Grid item xs={12} sm={6} lg={4} xl={3}>
-              <MyCryptoBoyNFTDetails
-                      callback1={myCallback1}
-                      cryptoboy={cryptoboy}
-                      accountAddress={accountAddress}
-                 
-                    />
+              < MyBoughtDesignsDetails
+           callback1={myCallback1}
+           cryptoboy={cryptoboy}
+           accountAddress={accountAddress}
+      
+         />
                     {/* {!loading ? (
                       <CryptoBoyNFTImage
                        cryptoboy={cryptoboy}
