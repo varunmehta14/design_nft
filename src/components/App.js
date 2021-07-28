@@ -26,6 +26,7 @@ import UpdateProfile from "./UpdateProfile/UpdateProfile";
 import MyCryptoBoys from "./MyCryptoBoys/MyCryptoBoys";
 import TheirCryptoBoys from "./TheirCryptoBoys/TheirCryptoBoys";
 import Footer from "./Footer/Footer";
+import SizeDetails from "./SizeDetails/SizeDetails";
 import {Container,Box} from '@material-ui/core'
 
 const ipfsClient = require("ipfs-http-client");
@@ -71,7 +72,9 @@ class App extends Component {
       searchedDesign:null,
       tokenExists:true,
       userExists:true,
-      usAdd:""
+      usAdd:"",
+      dressTokenId:"",
+      dressPrice:""
      
     };
   }
@@ -433,7 +436,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         
 };
 
-  mintMyNFT = async (name,description,buffer,tokenPrice,finalbuffer) => {
+  mintMyNFT = async (name,description,buffer,tokenPrice,tokenDressPrice,finalbuffer) => {
     this.setState({ loading: true });
    console.log("buffer2",finalbuffer)
    
@@ -477,6 +480,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         name:name,
         description:description,
         price:tokenPrice,
+        dressPrice:tokenDressPrice,
         images:imageHashes
         // metaData:{
           
@@ -491,11 +495,12 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         //setting the token uri as the path of token object
         let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
      const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
+     const dressPrice = window.web3.utils.toWei(tokenDressPrice.toString(), "Ether");
     //  for(let i=0;i<cryptoBoyCopies;i++){
         
     //  }
      this.state.cryptoBoysContract.methods
-        .mintCryptoBoy(name,tokenURI,price,imageHash)
+        .mintCryptoBoy(name,tokenURI,price,dressPrice,imageHash)
         .send({ from: this.state.accountAddress })
         .on("confirmation", () => {
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
@@ -539,6 +544,18 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         window.location.reload();
       });
   };
+//Change the price of tokenDress 
+changeTokenDressPrice = (tokenId, newPrice) => {
+  this.setState({ loading: true });
+  const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
+  this.state.cryptoBoysContract.methods
+    .changeTokenDressPrice(tokenId, newTokenPrice)
+    .send({ from: this.state.accountAddress })
+    .on("confirmation", () => {
+      this.setState({ loading: false });
+      window.location.reload();
+    });
+};  
 
 //Buy a token  
   buyCryptoBoy = (tokenId, price) => {
@@ -551,7 +568,27 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         window.location.reload();
       });
   };
-   
+//Buy a token with dress
+buyCryptoBoyWithDress = (tokenId, price) => {
+  console.log(price)
+  this.setState({ loading: true });
+  this.state.cryptoBoysContract.methods
+    .buyToken(tokenId)
+    .send({ from: this.state.accountAddress, value: price })
+    .on("confirmation", () => {
+      this.setState({ loading: false });
+      
+      window.location.reload();
+    });
+};  
+  tokenIdAndPrice=(tokenIdOfDress,priceOfDress)=>{
+    console.log("tokenId",tokenIdOfDress)
+    console.log("Price of dress",priceOfDress)
+    this.setState({dressTokenId:tokenIdOfDress});
+    this.setState({dressPrice:priceOfDress});
+   // window.location.href=`/sizeDetails/${tokenIdOfDress}/${priceOfDress}`
+    
+  } 
  searchTermfromApp=async(search)=>{
   if(!isNaN(search)){
     const tokenExist=await this.state.cryptoBoysContract.methods.
@@ -810,8 +847,10 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                //cryptoboy={this.state.cryptoBoys[this.state.clickedAddress-1]}
                totalTokensMinted={this.state.totalTokensMinted}
                changeTokenPrice={this.changeTokenPrice}
+               changeTokenDressPrice={this.changeTokenDressPrice}
                toggleForSale={this.toggleForSale}
                buyCryptoBoy={this.buyCryptoBoy}
+               buyCryptoBoyWithDress={this.buyCryptoBoyWithDress}
                clickedAddress={this.state.clickedAddress}
                callbackFromParent={this.myCallback2}
                callBack={this.tokenIDfun}
@@ -821,9 +860,21 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
                loading={this.state.loading}
                tokenExists={this.state.tokenExists}
                users={this.state.users}
+               tokenIdAndPrice={this.tokenIdAndPrice}
                />
               )}
              />
+             <Route
+              path={`/sizeDetails`}
+              
+              render={() => (
+                <SizeDetails
+                  tokenNoOfDress={this.state.dressTokenId}
+                  priceOfDress={this.state.dressPrice}
+                  buyCryptoBoyWithDress={this.buyCryptoBoyWithDress}
+                />
+              )}
+            />
           
         
           </Switch>

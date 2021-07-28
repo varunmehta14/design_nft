@@ -25,6 +25,7 @@ contract CryptoBoys is ERC721 {
     address payable currentOwner;
     address payable previousOwner;
     uint256 price;
+    uint256 dressPrice;
     string imageHash;
     
     uint256 numberOfTransfers;
@@ -61,7 +62,7 @@ contract CryptoBoys is ERC721 {
   
 
   // mint a new crypto boy
-  function mintCryptoBoy(string memory _name, string memory _tokenURI, uint256 _price,string memory _imageHash) external {
+  function mintCryptoBoy(string memory _name, string memory _tokenURI, uint256 _price,uint256 _dressPrice,string memory _imageHash) external {
     // check if thic fucntion caller is not an zero address account
     require(msg.sender != address(0));
     // increment counter
@@ -107,6 +108,7 @@ contract CryptoBoys is ERC721 {
     msg.sender,
     address(0),
     _price,
+    _dressPrice,
     _imageHash,
     0,
     true);
@@ -194,6 +196,23 @@ contract CryptoBoys is ERC721 {
     CryptoBoy memory cryptoboy = allCryptoBoys[_tokenId];
     // update token's price with new price
    cryptoboy.price = _newPrice;
+    // set and update that token in the mapping
+    allCryptoBoys[_tokenId] = cryptoboy;
+  }
+
+  function changeTokenDressPrice(uint256 _tokenId, uint256 _newPrice) public {
+    // require caller of the function is not an empty address
+    require(msg.sender != address(0));
+    // require that token should exist
+    require(_exists(_tokenId));
+    // get the token's owner
+    address tokenOwner = ownerOf(_tokenId);
+    // check that token's owner should be equal to the caller of the function
+    require(tokenOwner == msg.sender);
+    // get that token from all crypto boys mapping and create a memory of it defined as (struct => CryptoBoy)
+    CryptoBoy memory cryptoboy = allCryptoBoys[_tokenId];
+    // update token's price with new price
+   cryptoboy.dressPrice = _newPrice;
     // set and update that token in the mapping
     allCryptoBoys[_tokenId] = cryptoboy;
   }

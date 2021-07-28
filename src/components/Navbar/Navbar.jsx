@@ -530,7 +530,7 @@ const renderMenu = (
             <h4>Designs</h4>
              {tokenSuggestions&&tokenSuggestions.map((result,i)=>
              <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result[1]);handleSearchSubmit2(e,result[1])}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center",overflowWrap:"break-word"}}>
-               <img alt={result[1]} src={result[7]}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result[1]}</b>
+               <img alt={result[1]} src={result[8]}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result[1]}</b>
              </div>
             )}
             </div>

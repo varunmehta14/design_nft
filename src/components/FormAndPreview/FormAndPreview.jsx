@@ -177,12 +177,13 @@ useEffect(()=>{
   const callMintMyNFTFromApp  = (e) => {
     e.preventDefault();
     
-    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,finalbuffer)
+    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,cryptoBoyDressPrice,finalbuffer)
     props.mintMyNFT(
       cryptoBoyName,
       cryptoBoyDescription,
       buffer,
       cryptoBoyPrice,
+      cryptoBoyDressPrice,
       finalbuffer,
      // cryptoBoyCopies
     );
@@ -732,7 +733,7 @@ Unlimited Auction
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
  }}
-/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyDressPrice-receivePrice} ETH</b></FormHelperText>
 </div>
 </div>
 
