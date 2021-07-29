@@ -80,6 +80,7 @@ const CryptoBoyNFTDetails=(props)=> {
   const [ isHidden,setIsHidden]=useState(true);
   const [mintedByName,setMintedByName]=useState("") 
   const [ownedByName,setOwnedByName]=useState("") 
+  const [ownedByEmail,setOwnedByEmail]=useState("") 
   const [prevByName,setPrevByName]=useState("") 
   const [mintedAvatar,setMintedAvatar]=useState(null) 
   const [ownedAvatar,setOwnedAvatar]=useState(null) 
@@ -121,6 +122,7 @@ const [designMetadata,setDesignMetadata]=useState("");
     .allUsers(props.cryptoBoys[thistokenId].currentOwner)
     .call();
     setOwnedByName(currentOwned[1]);
+    setOwnedByEmail(currentOwned[2])
     setOwnedAvatar(currentOwned[6]);
     //const previousOwner=await props.users.find((user)=>user.userAddress.includes(props.cryptoboy[thistokenId].previousOwner));
     const previousOwner=await props.usersContract.methods
@@ -455,7 +457,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].dressPrice)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}

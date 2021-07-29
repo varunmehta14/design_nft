@@ -74,7 +74,9 @@ class App extends Component {
       userExists:true,
       usAdd:"",
       dressTokenId:"",
-      dressPrice:""
+      dressPrice:"",
+      sendEmailTo:"",
+      sendName:""
      
     };
   }
@@ -581,11 +583,15 @@ buyCryptoBoyWithDress = (tokenId, price) => {
       window.location.reload();
     });
 };  
-  tokenIdAndPrice=(tokenIdOfDress,priceOfDress)=>{
+  tokenIdAndPrice=(tokenIdOfDress,priceOfDress,ownedEmail,ownedName)=>{
     console.log("tokenId",tokenIdOfDress)
     console.log("Price of dress",priceOfDress)
+    console.log("Send Email To",ownedEmail)
+    console.log("Send Name",ownedName)
     this.setState({dressTokenId:tokenIdOfDress});
     this.setState({dressPrice:priceOfDress});
+    this.setState({sendEmailTo:ownedEmail});
+    this.setState({sendName:ownedName});
    // window.location.href=`/sizeDetails/${tokenIdOfDress}/${priceOfDress}`
     
   } 
@@ -871,6 +877,8 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                 <SizeDetails
                   tokenNoOfDress={this.state.dressTokenId}
                   priceOfDress={this.state.dressPrice}
+                  sendEmailTo={this.state.sendEmailTo}
+                  sendName={this.state.sendName}
                   buyCryptoBoyWithDress={this.buyCryptoBoyWithDress}
                 />
               )}
