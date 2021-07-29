@@ -27,14 +27,15 @@ import MyCryptoBoys from "./MyCryptoBoys/MyCryptoBoys";
 import TheirCryptoBoys from "./TheirCryptoBoys/TheirCryptoBoys";
 import Footer from "./Footer/Footer";
 import SizeDetails from "./SizeDetails/SizeDetails";
-import {Container,Box} from '@material-ui/core'
+import {Container,Box} from '@material-ui/core';
+import ipfs from './ipfs';
 
-const ipfsClient = require("ipfs-http-client");
-const ipfs = ipfsClient({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https",
-});
+// const ipfsClient = require("ipfs-http-client");
+// const ipfs = ipfsClient({
+//   host: "ipfs.infura.io",
+//   port: 5001,
+//   protocol: "https",
+// });
 const PAGE_NUMBER=1;
 
 class App extends Component {

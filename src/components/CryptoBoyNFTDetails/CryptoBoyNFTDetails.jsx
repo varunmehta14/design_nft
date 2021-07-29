@@ -294,6 +294,7 @@ const [designMetadata,setDesignMetadata]=useState("");
           Ξ
           </b>
         </p>
+        {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(
         <p>
           <span className="font-weight-bold">Price with dress</span> :{" "}
           <b style={{fontSize:"xx-large",color:"black"}}>
@@ -303,7 +304,7 @@ const [designMetadata,setDesignMetadata]=useState("");
           )}{" "}
           Ξ
           </b>
-        </p>
+        </p>):(null)}
         </div>
       
         <hr/>
@@ -350,7 +351,7 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               </div>
             </form>
-            
+            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(
             <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -388,7 +389,7 @@ const [designMetadata,setDesignMetadata]=useState("");
               change price
             </button>
             </div>
-          </form>
+          </form>):(null)}
           </div>
           ) : null}
         </div>
@@ -446,8 +447,8 @@ const [designMetadata,setDesignMetadata]=useState("");
                 Ξ
               </button>
               {"   "}
-             
-              <Link to={`/sizeDetails`}
+             {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(
+                <Link to={`/sizeDetails`}
                 className="btn btn-outline-primary mt-3 "
                 value={props.cryptoBoys[thistokenId].dressPrice}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
@@ -467,6 +468,8 @@ const [designMetadata,setDesignMetadata]=useState("");
                 )}{" "}
                 Ξ
               </Link>
+             ):(null)}
+             
               
               
               </div>
@@ -744,6 +747,7 @@ const [designMetadata,setDesignMetadata]=useState("");
           Ξ
          
         </Typography>
+        {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
         <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
         Price with Dress:
         <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
@@ -754,7 +758,7 @@ const [designMetadata,setDesignMetadata]=useState("");
           )}{" "}
           Ξ
          
-        </Typography>
+        </Typography></>):(null)}
         </div>
        
     </div>
@@ -808,7 +812,7 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               </div>
             </form>
-            
+            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(
             <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -846,7 +850,7 @@ const [designMetadata,setDesignMetadata]=useState("");
               change price
             </button>
             </div>
-          </form>
+          </form>):(null)}
           </div>
           ) : null}
         </div>
@@ -904,27 +908,30 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               
               </div>
+              {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(
               <div style={{display:"flex",justifyContent:"center",alignItems:"baseline"}}>
-              <button
-                className="btn btn-outline-primary mt-3 w-50"
+             <Link to={`/sizeDetails`}
+                className="btn btn-outline-primary mt-3 "
                 value={props.cryptoBoys[thistokenId].dressPrice}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
-                onClick={(e) =>
-                  props.buyCryptoBoy(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber(),
-                    e.target.value
-                  )
-                }
+                // onClick={(e) =>
+                //   props.buyCryptoBoyWithDress(
+                //     props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                //     e.target.value
+                //   )
+                // }
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName)}}
+               //onClick={handleOpen}
               >
-                Buy With Dress For{" "}
+                Buy with Dress For{" "}
                 {window.web3.utils.fromWei(
                   props.cryptoBoys[thistokenId].dressPrice.toString(),
                   "Ether"
                 )}{" "}
                 Ξ
-              </button>
+              </Link>
               
-              </div>
+              </div>):(null)}
               </>
             ) : (
               <>

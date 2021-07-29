@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import emailjs from 'emailjs-com';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import ipfs from '../ipfs';
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -36,6 +37,8 @@ const SizeDetails=(props)=>{
   const [buyerEmail,setBuyerEmail]=useState(" ");
   const [feedBack,setFeedBack]=useState(" ");
   const [formDetails,setFormDetails]=useState("");
+  
+  const [bufferFinal,setBufferFinal]=useState(null);
     console.log(props)
     let tokenNo=props.tokenNoOfDress;
     let price=props.priceOfDress;
@@ -46,14 +49,40 @@ const SizeDetails=(props)=>{
     //     tokenNo=window.location.href.split("/")[4];
     //     price=window.location.href.split("/")[5];
     // }
+    
+    const captureFile=(event)=> {
+      event.preventDefault()
+      
+      const file = event.target.files[0]   
+      const reader = new window.FileReader()
+      reader.readAsArrayBuffer(file)
+      reader.onloadend = () => {
+       // console.log('buffer', buffer2)
+       console.log(Buffer(reader.result))
+     
+       //console.log(formDetails)
+       setBufferFinal(Buffer(reader.result))
+      
+      }
+      
+      
+      
 
+    }
+    
     const sendEmail=(e)=>{
       e.preventDefault();
+     
+      
       console.log(e.target);
       emailjs.sendForm("service_gwuibpe","template_7ny68h9",e.target,"user_dgGHyFgE2zDusdESWMGLF").then(res=>{
         console.log(res)
       }).catch(err=>console.log(err));
       console.log("form submitted")
+      props.buyCryptoBoyWithDress(
+        props.tokenNoOfDress,
+        props.priceOfDress
+      )
     }
     console.log(props.sendEmailTo)
 
@@ -63,15 +92,25 @@ const SizeDetails=(props)=>{
         head: [['Name', 'Email', 'Message']],
         body: [
           [buyerName,buyerEmail ,feedBack ],
-         
+           
           
         ],
       })
+      
       //doc.output('dataurlnewwindow')
        var docu=doc.output('datauristring')
        console.log(docu)
       // setFormDetails(docu)
        doc.save(`${sendName}.pdf`)
+    }
+
+    const generatePdfLink=async(e)=>{
+      e.preventDefault();
+      console.log(bufferFinal);
+      const  file= await ipfs.add(bufferFinal);
+      const pdfHash = `https://ipfs.infura.io/ipfs/${file.path}`;
+      setFormDetails(pdfHash);
+      console.log(pdfHash)
     }
     const classes=useStyles();
     
@@ -418,8 +457,10 @@ const SizeDetails=(props)=>{
         </Grid>
         <Grid item xs={12} sm={6} lg={4} xl={3}>
         <label>Send To Name</label>
+       
         <input type="text" name="user_name" value={props.sendName} className="form-control" />
         </Grid>
+       
         </Grid>
         </div>
         {/* <TextField
@@ -434,9 +475,26 @@ const SizeDetails=(props)=>{
                      autoFocus
                     /// disabled={true}
                /> */}
-                <div style={{display:"flex",justifyContent:"space-evenly"}}>
+               <Grid container spacing={1} alignItems="flex-end">
+               <Grid item xs={12} sm={6} lg={4} xl={3}>
                <button type="button" onClick={jsPdfGenerator}>Generate Pdf</button>
-               </div>
+               </Grid>
+               <Grid item xs={12} sm={6} lg={4} xl={3}>
+               <label>Upload Pdf</label>
+               <input type="file"  className="form-control" onChange={captureFile}/>
+               </Grid>
+               <Grid item xs={12} sm={6} lg={4} xl={3}>
+               <button type="button" onClick={generatePdfLink} >Generate Pdf Link</button>
+               <input type="text" name="pdflink" value={formDetails} className="form-control" />
+               </Grid>
+               </Grid>
+              
+
+              
+               
+              
+              
+               
                <div style={{display:"flex",justifyContent:"space-evenly"}}>
         <input
           type="submit"

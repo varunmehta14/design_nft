@@ -116,7 +116,7 @@ export default function FormAndPreview(props) {
           reader.readAsArrayBuffer(file)
           reader.onloadend = () => {
         setBuffer( Buffer(reader.result) )
-        //console.log('buffer', buffer)
+        console.log('buffer', buffer)
       }})
 
       }
