@@ -37,7 +37,13 @@ const SizeDetails=(props)=>{
   const [buyerEmail,setBuyerEmail]=useState(" ");
   const [feedBack,setFeedBack]=useState(" ");
   const [formDetails,setFormDetails]=useState("");
+  const [file,setFile]=useState(null);
   
+  // const [mailerState, setMailerState] = useState({
+  //   buyerName: "",
+  //   buyerEmail: "",
+  //   feedBack: "",
+  // });
   const [bufferFinal,setBufferFinal]=useState(null);
     console.log(props)
     let tokenNo=props.tokenNoOfDress;
@@ -52,38 +58,95 @@ const SizeDetails=(props)=>{
     
     const captureFile=(event)=> {
       event.preventDefault()
-      
+      console.log(event.target.files)
       const file = event.target.files[0]   
-      const reader = new window.FileReader()
-      reader.readAsArrayBuffer(file)
-      reader.onloadend = () => {
-       // console.log('buffer', buffer2)
-       console.log(Buffer(reader.result))
+      setFile(file);
+      // const reader = new window.FileReader()
+      // reader.readAsArrayBuffer(file)
+      // reader.onloadend = () => {
+      //  // console.log('buffer', buffer2)
+      //  console.log(Buffer(reader.result))
      
-       //console.log(formDetails)
-       setBufferFinal(Buffer(reader.result))
+      //  //console.log(formDetails)
+      //  setBufferFinal(Buffer(reader.result))
       
-      }
+      //}
       
       
       
 
     }
-    
-    const sendEmail=(e)=>{
+     
+    // function handleStateChange(e) {
+    //   setMailerState((prevState) => ({
+    //     ...prevState,
+    //     [e.target.name]: e.target.value,
+    //   }));
+    // }
+    const sendEmail = async (e) => {
       e.preventDefault();
+     // console.log({ mailerState });
+      const response = await fetch("http://localhost:8000/send", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ buyerName,buyerEmail,feedBack,sendName,sendEmailTo,formDetails }),
+      })
+        .then((res) => res.json())
+        .then(async (res) => {
+          const resData = await res;
+          console.log(resData);
+          if (resData.status === "success") {
+            alert("Message Sent");
+          } else if (resData.status === "fail") {
+            alert("Message failed to send");
+          }
+        })
+        .then(() => {
+         
+            setBuyerEmail(" ");
+            setBuyerName(" ");
+            setFeedBack(" ");
+            setFormDetails(" ");
+          });
+
+          props.buyCryptoBoyWithDress(
+            props.tokenNoOfDress,
+            props.priceOfDress
+          )  
+        };
+    
+    
+    // const sendEmail=(e)=>{
+    //   e.preventDefault();
      
       
-      console.log(e.target);
-      emailjs.sendForm("service_gwuibpe","template_7ny68h9",e.target,"user_dgGHyFgE2zDusdESWMGLF").then(res=>{
-        console.log(res)
-      }).catch(err=>console.log(err));
-      console.log("form submitted")
-      props.buyCryptoBoyWithDress(
-        props.tokenNoOfDress,
-        props.priceOfDress
-      )
-    }
+    //   console.log(e.target);
+    //   emailjs.sendForm("service_gwuibpe","template_7ny68h9",e.target,"user_dgGHyFgE2zDusdESWMGLF").then(res=>{
+    //     console.log(res)
+    //   }).catch(err=>console.log(err));
+    //   console.log("form submitted")
+    //   props.buyCryptoBoyWithDress(
+    //     props.tokenNoOfDress,
+    //     props.priceOfDress
+    //   )
+    // }
+    
+    // const sendEmail=(e)=>{
+    //   e.preventDefault()
+    //   window.Email.send({
+    //     Host : "smtp.gmail.com",
+    //     Username : "mehtavarunj@gmail.com",
+    //     Password : "varunjmehta14082001",
+    //     To : 'mehtaharshj@gmail.com',
+    //     From : "mehtavarunj@gmail.com",
+    //     Subject : "This is the subject",
+    //     Body : "And this is the body"
+    // }).then(
+    //   message => alert(message)
+    // );
+    // }
     console.log(props.sendEmailTo)
 
     const jsPdfGenerator=()=>{
@@ -100,18 +163,18 @@ const SizeDetails=(props)=>{
       //doc.output('dataurlnewwindow')
        var docu=doc.output('datauristring')
        console.log(docu)
-      // setFormDetails(docu)
-       doc.save(`${sendName}.pdf`)
+       setFormDetails(docu)
+      // doc.save(`${sendName}.pdf`)
     }
 
-    const generatePdfLink=async(e)=>{
-      e.preventDefault();
-      console.log(bufferFinal);
-      const  file= await ipfs.add(bufferFinal);
-      const pdfHash = `https://ipfs.infura.io/ipfs/${file.path}`;
-      setFormDetails(pdfHash);
-      console.log(pdfHash)
-    }
+    // const generatePdfLink=async(e)=>{
+    //   e.preventDefault();
+    //   console.log(bufferFinal);
+    //   const  file= await ipfs.add(bufferFinal);
+    //   const pdfHash = `https://ipfs.infura.io/ipfs/${file.path}`;
+    //   setFormDetails(pdfHash);
+    //   console.log(pdfHash)
+    // }
     const classes=useStyles();
     
     return(
@@ -436,6 +499,7 @@ const SizeDetails=(props)=>{
         
         style={{ margin: "25px 85px 75px 100px" }}
         onSubmit={sendEmail}
+        enctype="multipart/form-data"
       >
          <div style={{display:"flex",justifyContent:"space-evenly"}}>
        <Grid container spacing={1} alignItems="flex-end" >
@@ -463,30 +527,19 @@ const SizeDetails=(props)=>{
        
         </Grid>
         </div>
-        {/* <TextField
-                     //autoComplete="username"
-                     name="user_email"
-                     variant="outlined"
-                     required
-                     value={props.sendEmailTo}
-                     //onChange={(e)=>{setUserName(e.target.value)}}
-                     id="userName"
-                     label="Send Email"
-                     autoFocus
-                    /// disabled={true}
-               /> */}
+
                <Grid container spacing={1} alignItems="flex-end">
                <Grid item xs={12} sm={6} lg={4} xl={3}>
                <button type="button" onClick={jsPdfGenerator}>Generate Pdf</button>
                </Grid>
                <Grid item xs={12} sm={6} lg={4} xl={3}>
                <label>Upload Pdf</label>
-               <input type="file"  className="form-control" onChange={captureFile}/>
+               <input type="file"  className="form-control" name="file"onChange={captureFile}/>
                </Grid>
-               <Grid item xs={12} sm={6} lg={4} xl={3}>
+               {/* <Grid item xs={12} sm={6} lg={4} xl={3}>
                <button type="button" onClick={generatePdfLink} >Generate Pdf Link</button>
                <input type="text" name="pdflink" value={formDetails} className="form-control" />
-               </Grid>
+               </Grid> */}
                </Grid>
               
 
@@ -504,6 +557,46 @@ const SizeDetails=(props)=>{
         />
         </div>
       </form>
+       {/* <form
+       style={{
+         display: "flex",
+         height: "100vh",
+         justifyContent: "center",
+         alignItems: "center",
+       }}
+       onSubmit={submitEmail}
+     >
+       <fieldset
+         style={{
+           display: "flex",
+           flexDirection: "column",
+           justifyContent: "center",
+           width: "50%",
+         }}
+       >
+         <legend>React NodeMailer Contact Form</legend>
+         <input
+           placeholder="Name"
+           onChange={(e)=>{setBuyerName(e.target.value)}}
+           name="buyerName"
+           value={buyerName}
+         />
+         <input
+           placeholder="Email"
+           onChange={(e)=>{setBuyerEmail(e.target.value)}}
+           name="buyerEmail"
+           value={buyerEmail}
+         />
+         <textarea
+           style={{ minHeight: "200px" }}
+           placeholder="Message"
+           onChange={(e)=>{setFeedBack(e.target.value)}}
+           name="feedBack"
+           value={feedBack}
+         />
+         <button>Send Message</button>
+       </fieldset>
+     </form> */}
      </div>
     );
 }
