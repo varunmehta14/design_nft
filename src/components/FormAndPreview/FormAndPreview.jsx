@@ -98,10 +98,11 @@ export default function FormAndPreview(props) {
     const [buffer,setBuffer] = useState(null);
     const [finalbuffer,setFinalbuffer] = useState([]);
     const [receivePrice, setReceivePrice] = useState("");
+    const [receivePrice2, setReceivePrice2] = useState("");
     const [cryptoBoyCopies,setCryptoBoyCopies] = useState(0);
     const [files, setFiles] = useState([]);
     const [fileName,setFileName]=useState("");
-    const [single,setSingle]=useState(false);
+    const [single,setSingle]=useState(true);
     const [multiple,setMultiple]=useState(false);
     const [show,setShow]=useState(true);
     //const [preview,setPreview]=useState([]);
@@ -191,7 +192,7 @@ useEffect(()=>{
 
   const renderMobile=(
     <div style={{padding:"0.5%"}}>
-   {show?(<> <div className="card mt-1">
+   {/* {show?(<> <div className="card mt-1">
       <div className="card-body  
       
       ">
@@ -216,7 +217,7 @@ useEffect(()=>{
        </button>
        
      
-     </div></div>):(null)}
+     </div></div>):(null)} */}
 
      {single?
      (<>
@@ -228,10 +229,10 @@ useEffect(()=>{
         {/* <Button variant="contained"color="default" style={{float:"left"}}onClick={()=>{setSingle(false);setShow(true)}}>
         ← Back
        </Button> */}
-      
+{/*       
        <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setSingle(false);setShow(true)}}>
       <ArrowBackIosSharpIcon fontSize="small"/>
-    </IconButton> 
+    </IconButton>  */}
   
       
         <h3 style={{justifyContent:"center"}}>Create Single Collectible</h3>
@@ -284,7 +285,7 @@ useEffect(()=>{
  onChange={(e)=>setCryptoBoyDescription(e.target.value)}
 />
 <br/><br/>
-<div style={{display:"flex",justifyContent:"space-evenly"}}> 
+{/* <div style={{display:"flex",justifyContent:"space-evenly"}}> 
 
 <Button
 variant="contained"
@@ -297,7 +298,7 @@ style={{borderRadius:20,display:"flow-root"}}
 <LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>
 Fixed Price
 </Button>
-  {/* <IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>  Fixed Price </IconButton></div> */}
+
 
   <Button
 variant="contained"
@@ -311,7 +312,7 @@ disabled
 <AccessTimeSharpIcon  fontSize="large"/>
 Timed Auction
 </Button>
-{/* <IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:"larger"}}>  Timed Auction </div></IconButton> */}
+
 
 <Button
 variant="contained"
@@ -325,13 +326,14 @@ disabled
 <AllInclusiveSharpIcon  fontSize="large"/>
 Unlimited Auction
 </Button>
-{/* <IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:"larger"}}>  Unlimited Auction</div> </IconButton> */}
 
-</div> 
+
+</div>  */}
 
 <hr/>
 
 <br/>
+<div>
 <TextField
  label="Price"
  id="standard-start-adornment"
@@ -343,6 +345,19 @@ Unlimited Auction
  }}
 /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
 <br/>
+</div>
+<div>
+<TextField
+ label="Price with Dress"
+ id="standard-start-adornment"
+ placeholder="Enter price for one piece with dress"
+// className={clsx(classes.margin, classes.textField)}
+ onChange={(e)=>{setCryptoBoyDressPrice(e.target.value);setReceivePrice2((e.target.value)*2.5/100)}}
+ InputProps={{
+   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+ }}
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyDressPrice-receivePrice2} ETH</b></FormHelperText>
+</div>
 <hr/>
 <h2>Upload Image</h2>
           
@@ -571,7 +586,7 @@ Create Item
  
   const renderDesktop=(
     <div style={{padding:"0.5%"}}>
-    {show?(<> <div className="card mt-1">
+    {/* {show?(<> <div className="card mt-1">
       <div className="card-body  
       
       ">
@@ -580,9 +595,9 @@ Create Item
         Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times
         
       </div>
-    </div></>):null}
+    </div></>):null} */}
    
-   {show ?(<div style={{padding:"0.5%"}}> <div className="p-4 mt-1 border" style={{display:"flex",justifyContent:"space-evenly"}}>
+   {/* {show ?(<div style={{padding:"0.5%"}}> <div className="p-4 mt-1 border" style={{display:"flex",justifyContent:"space-evenly"}}>
    
   
      
@@ -596,7 +611,7 @@ Create Item
        </button>
        
      
-     </div></div>):(null)}
+     </div></div>):(null)} */}
    
     
      {single?
@@ -610,9 +625,9 @@ Create Item
         ← Back
        </Button> */}
       
-       <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setSingle(false);setShow(true)}}>
+       {/* <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setSingle(false);setShow(true)}}>
       <ArrowBackIosSharpIcon />
-    </IconButton> 
+    </IconButton>  */}
   
       
         <h3 style={{justifyContent:"center"}}>Create Single Collectible</h3>
@@ -662,7 +677,7 @@ Create Item
 />
 <br/><br/>
 <hr/>
-<div style={{display:"flex",justifyContent:"space-evenly"}}> 
+{/* <div style={{display:"flex",justifyContent:"space-evenly"}}> 
 
 <Button
 variant="contained"
@@ -675,7 +690,7 @@ style={{borderRadius:20}}
 <LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>
 Fixed Price
 </Button>
-  {/* <IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>  Fixed Price </IconButton></div> */}
+
 
   <Button
 variant="contained"
@@ -689,7 +704,7 @@ disabled
 <AccessTimeSharpIcon  fontSize="large"/>
 Timed Auction
 </Button>
-{/* <IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:"larger"}}>  Timed Auction </div></IconButton> */}
+
 
 <Button
 variant="contained"
@@ -703,9 +718,9 @@ disabled
 <AllInclusiveSharpIcon  fontSize="large"/>
 Unlimited Auction
 </Button>
-{/* <IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:"larger"}}>  Unlimited Auction</div> </IconButton> */}
 
-</div> 
+
+</div>  */}
 
 <hr/>
 
@@ -729,11 +744,11 @@ Unlimited Auction
  id="standard-start-adornment"
  placeholder="Enter price for one piece with dress"
 // className={clsx(classes.margin, classes.textField)}
- onChange={(e)=>{setCryptoBoyDressPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ onChange={(e)=>{setCryptoBoyDressPrice(e.target.value);setReceivePrice2((e.target.value)*2.5/100)}}
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
  }}
-/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyDressPrice-receivePrice} ETH</b></FormHelperText>
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyDressPrice-receivePrice2} ETH</b></FormHelperText>
 </div>
 </div>
 

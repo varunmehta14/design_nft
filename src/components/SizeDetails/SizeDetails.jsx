@@ -85,6 +85,7 @@ const SizeDetails=(props)=>{
     // }
     const sendEmail = async (e) => {
       e.preventDefault();
+      
      // console.log({ mailerState });
       const response = await fetch("http://localhost:8000/send", {
         method: "POST",
@@ -99,6 +100,10 @@ const SizeDetails=(props)=>{
           console.log(resData);
           if (resData.status === "success") {
             alert("Message Sent");
+            props.buyCryptoBoyWithDress(
+              props.tokenNoOfDress,
+              props.priceOfDress
+            )
           } else if (resData.status === "fail") {
             alert("Message failed to send");
           }
@@ -110,11 +115,7 @@ const SizeDetails=(props)=>{
             setFeedBack(" ");
             setFormDetails(" ");
           });
-
-          props.buyCryptoBoyWithDress(
-            props.tokenNoOfDress,
-            props.priceOfDress
-          )  
+         
         };
     
     
@@ -199,9 +200,9 @@ const SizeDetails=(props)=>{
 
       </div>
     </div>
-    <div style={{display:"flex",justifyContent:"space-around"}}>
+    {/* <div style={{display:"flex",justifyContent:"space-around"}}>
       <img src={womensizeChart} style={{width:"50%",height:"50%"}}/>
-      </div>
+      </div> */}
     {/* <form validate style={{padding:"1%"}}onSubmit={sendEmail}>
          
       <div className={classes.paper}>
@@ -532,10 +533,10 @@ const SizeDetails=(props)=>{
                <Grid item xs={12} sm={6} lg={4} xl={3}>
                <button type="button" onClick={jsPdfGenerator}>Generate Pdf</button>
                </Grid>
-               <Grid item xs={12} sm={6} lg={4} xl={3}>
+               {/* <Grid item xs={12} sm={6} lg={4} xl={3}>
                <label>Upload Pdf</label>
                <input type="file"  className="form-control" name="file"onChange={captureFile}/>
-               </Grid>
+               </Grid> */}
                {/* <Grid item xs={12} sm={6} lg={4} xl={3}>
                <button type="button" onClick={generatePdfLink} >Generate Pdf Link</button>
                <input type="text" name="pdflink" value={formDetails} className="form-control" />
