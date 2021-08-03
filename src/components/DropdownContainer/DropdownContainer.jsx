@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import isEqual from 'lodash/isEqual'
 import data from '../data.json'
-
-export default class Container extends Component {
+import './styles.css'
+export default class DropdownContainer extends Component {
   constructor(props){
     super(props)
     //this.state = { data: props.data }
@@ -22,7 +22,7 @@ export default class Container extends Component {
   render() {
     const { ...rest } = this.props
     return (
-      <DropdownTreeSelect data={data} {...rest} />
+      <DropdownTreeSelect data={data} {...rest} className="mdl-demo" />
     )
   }
 }

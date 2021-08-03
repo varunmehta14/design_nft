@@ -63,7 +63,7 @@ const AllCryptoBoys = ({
   const [address,setAddress]=useState("");
   const [start,setStart]=useState(1);
   const [startState,setStartState]=useState(1);
-  const [end,setEnd]=useState(3);
+  const [end,setEnd]=useState(cryptoBoys.length);
   const [endState,setEndState]=useState(3);
   const [showCategory,setShowCategory]=useState(false);
   const [filters,setFilters]=useState([]);
@@ -143,6 +143,7 @@ const AllCryptoBoys = ({
   // }, []);
   useEffect(()=>{
     setAllDesigns(cryptoBoys.slice(0,postsPerPage))
+    setEnd(cryptoBoys.length);
   },[cryptoBoys])
 
   const handleShowMorePosts = () => {
@@ -237,6 +238,7 @@ const AllCryptoBoys = ({
      
     })
     setAllDesigns(searchedResults)
+    setEnd(searchedResults.length)
     // const filteredArray = _.cloneDeep(cryptoBoys);
     // filteredArray.map(obj => Object.keys(obj).forEach((key) => {
     //   if (!categories.includes(key)) {
@@ -260,15 +262,17 @@ const AllCryptoBoys = ({
 
       {cryptoBoys?(
         <>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
-          <button className="mt-3 btn btn-outline-primary" onClick={()=>setShowCategory(!showCategory)} style={{borderRadius:"20px"}}>
+        <div style={{display:"flex",justifyContent:"flex-end",alignItems:"flex-end"}}>
+          {/* <button className="mt-3 btn btn-outline-primary" onClick={()=>{setShowCategory(!showCategory)}} style={{borderRadius:"20px"}}>
                 Filters
-              </button>
-              {showCategory?(<div style={{display:"flex",alignItems:"flex-end"}}> <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} /> 
+              </button> */}
+              {/* {showCategory?( */}
+              <div style={{display:"flex",alignItems:"flex-end"}}> <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} /> 
               <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
               Search
               </button>
-              </div>):null}
+              </div>
+              {/* ):null} */}
               </div>      
         <div style={{display:"flex",justifyContent:"center",padding:"1.5%",height:"100%"}}>
       
@@ -339,7 +343,7 @@ const AllCryptoBoys = ({
         </Grid>
              </div>
              <div style={{display:"flex",justifyContent:"center"}}>
-               {allDesigns.length===cryptoBoys.length?(<> <Alert severity="success" color="info">
+               {allDesigns.length===end?(<> <Alert severity="success" color="info">
       You are all Caught Up
       </Alert></>):
                (
