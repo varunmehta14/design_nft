@@ -10,6 +10,12 @@ import AllInclusiveSharpIcon from '@material-ui/icons/AllInclusiveSharp';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles'
 import ArrowBackIosSharpIcon from '@material-ui/icons/ArrowBackIosSharp';
+import DropdownTreeSelect from 'react-dropdown-tree-select';
+import 'react-dropdown-tree-select/dist/styles.css';
+import data from '../data.json'
+import CategoryContainer from '../DropdownContainer/DropdownContainer';
+
+
 
 
 
@@ -105,6 +111,8 @@ export default function FormAndPreview(props) {
     const [single,setSingle]=useState(true);
     const [multiple,setMultiple]=useState(false);
     const [show,setShow]=useState(true);
+    const [categories,setCategories]=useState([]);
+    const [test,setTest]=useState("hello")
     //const [preview,setPreview]=useState([]);
     const {getRootProps, getInputProps} = useDropzone({
       accept: 'image/*',
@@ -174,11 +182,35 @@ useEffect(()=>{
   },
   [files]
 );
-
+//let selectedCategories=[];
+// const onChange = (currentNode, selectedNodes) => {
+//   console.log('onChange::', currentNode, selectedNodes)
+//   //selectedCategories.push(currentNode.value);
+  // const loc=selectedNodes.map(x=>x.value).join(",");
+  // console.log(loc);
+  // setCategories(loc);
+//   //selectedCategories=selectedNodes;
+//   //console.log(selectedCategories)
+// }
+const onChange = (currentNode, selectedNodes) => {
+  const loc=selectedNodes.map(x=>x.value);
+  console.log(loc);
+  setCategories(loc);
+  
+  console.log('onChange::', currentNode, selectedNodes)
+}
+//console.log(selectedCategories)
+const onAction = (node, action) => {
+  console.log('onAction::', action, node)
+}
+const onNodeToggle = currentNode => {
+  console.log('onNodeToggle::', currentNode)
+}
   const callMintMyNFTFromApp  = (e) => {
+    //setCategories(selectedCategories)
     e.preventDefault();
     
-    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,cryptoBoyDressPrice,finalbuffer)
+    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,cryptoBoyDressPrice,finalbuffer,categories)
     props.mintMyNFT(
       cryptoBoyName,
       cryptoBoyDescription,
@@ -186,7 +218,7 @@ useEffect(()=>{
       cryptoBoyPrice,
       cryptoBoyDressPrice,
       finalbuffer,
-     // cryptoBoyCopies
+      categories
     );
   };
 
@@ -363,7 +395,11 @@ Unlimited Auction
           
 <input type='file' multiple={true} onChange={captureFile} />
       <hr/>      
-          
+      <div >
+     <span>Choose Category</span>
+   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />     
+   </div>   
+   <hr/>          
 <div style={{textAlign:"center"}}>
 <Button
 variant="contained"
@@ -758,7 +794,12 @@ Unlimited Auction
           
 <input type='file' multiple={true} onChange={captureFile} />
             
-   <hr/>       
+   <hr/>  
+   <div >
+     <span>Choose Category</span>
+   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />     
+   </div>   
+   <hr/>
 <div style={{textAlign:"center"}}>
 <Button
 variant="contained"
@@ -773,6 +814,7 @@ Create Item
 <br/> ERC 721
 </Button>
 </div>
+
 </div>
 
        </Paper>
@@ -782,6 +824,7 @@ Create Item
          
      <span>Upload file to view preview</span>    
 <aside style={thumbsContainer}>{thumbs}</aside></Paper></Grid>
+
        </Grid>
        </div>
         

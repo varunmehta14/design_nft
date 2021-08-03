@@ -6,8 +6,12 @@ import Loading from "../Loading/Loading";
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
+import DropdownTreeSelect from 'react-dropdown-tree-select';
+import 'react-dropdown-tree-select/dist/styles.css';
+import data from '../data.json'
+import CategoryContainer from '../DropdownContainer/DropdownContainer';
 
-
+const _ = require('lodash');
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
     paddingLeft:"5%",
@@ -61,6 +65,9 @@ const AllCryptoBoys = ({
   const [startState,setStartState]=useState(1);
   const [end,setEnd]=useState(3);
   const [endState,setEndState]=useState(3);
+  const [showCategory,setShowCategory]=useState(false);
+  const [filters,setFilters]=useState([]);
+  const [categories,setCategories]=useState([]);
   //const [lastPosition,setLastPosition]=useState(perPage)
  // const [allCryptoBoys,setAllCryptoBoys]=useState(cryptoBoys.slice(0,perPage));
   const [endOfDesigns,setEndOfDesigns]=useState(false);
@@ -204,6 +211,42 @@ const AllCryptoBoys = ({
   //  }
    const gridStyles = useGridStyles();
   
+   const onChange = (currentNode, selectedNodes) => {
+    const loc=selectedNodes.map(x=>x.value)
+    console.log(loc);
+    setCategories(loc);
+    
+    console.log('onChange::', currentNode, selectedNodes)
+  } 
+
+  const searchFilters=()=>{
+    console.log(categories[0])
+    var flatArray = Array.prototype.concat.apply([], categories);
+    console.log(flatArray)
+    let searchedResults=[];
+    cryptoBoys.filter((cryptoBoy)=>{
+      // categories.some((newItem)=>{
+      //   cryptoBoy[newItem.push]
+      // })
+      const found = cryptoBoy.metaData.categories.some(r=> flatArray.indexOf(r) >= 0)
+      if(found){
+        searchedResults.push(cryptoBoy);
+      }
+     // console.log( cryptoBoy.metaData.categories)
+     // cryptoBoy.metaData.categories.filter((obj)=>obj.includes(categories))
+     
+    })
+    setAllDesigns(searchedResults)
+    // const filteredArray = _.cloneDeep(cryptoBoys);
+    // filteredArray.map(obj => Object.keys(obj).forEach((key) => {
+    //   if (!categories.includes(key)) {
+    //     delete obj[key];
+    //   }
+    // }))
+    // console.log(filteredArray);
+    //console.log(cryptoBoys.filter((cryptoBoy)=>cryptoBoy.metaData.categories,{categories}));
+    console.log(searchedResults)
+  }
   return (
     <div style={{padding:"0.5%"}}>
       <div className="card mt-1">
@@ -214,10 +257,21 @@ const AllCryptoBoys = ({
           </h5>
         </div>
       </div>
+
       {cryptoBoys?(
         <>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+          <button className="mt-3 btn btn-outline-primary" onClick={()=>setShowCategory(!showCategory)} style={{borderRadius:"20px"}}>
+                Filters
+              </button>
+              {showCategory?(<div style={{display:"flex",alignItems:"flex-end"}}> <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} /> 
+              <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
+              Search
+              </button>
+              </div>):null}
+              </div>      
         <div style={{display:"flex",justifyContent:"center",padding:"1.5%",height:"100%"}}>
-       
+      
         <Grid classes={gridStyles} container spacing={4} >
        
         {allDesigns.map((cryptoboy) => {

@@ -231,7 +231,7 @@ const [designMetadata,setDesignMetadata]=useState("");
     <>
     {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.loading?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
      
-      (<div className="d-flex flex-wrap mb-2" style={{padding:"1%",height:"100%"}}>
+      (<div className="d-flex flex-wrap mb-2" style={{padding:"1%",height:"100%",alignItems:"center"}}>
       <div
               key={props.cryptoBoys[thistokenId].tokenId.toNumber()}
               className="w-50 h-50 p-4 mt-1 border "

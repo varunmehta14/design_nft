@@ -439,9 +439,10 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         
 };
 
-  mintMyNFT = async (name,description,buffer,tokenPrice,tokenDressPrice,finalbuffer) => {
+  mintMyNFT = async (name,description,buffer,tokenPrice,tokenDressPrice,finalbuffer,categories) => {
     this.setState({ loading: true });
    console.log("buffer2",finalbuffer)
+   console.log("categories",categories)
    
   //   const nameIsUsed = await this.state.cryptoBoysContract.methods
   //     .tokenNameExists(name)
@@ -449,6 +450,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
   //  if ( !nameIsUsed) {
     console.log(this.state.cryptoBoysContract)
       let imageHashes=[];
+      //let allCategories=[];
       let previousTokenId;
       previousTokenId = await this.state.cryptoBoysContract.methods
         .cryptoBoyCounter()
@@ -484,7 +486,8 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         description:description,
         price:tokenPrice,
         dressPrice:tokenDressPrice,
-        images:imageHashes
+        images:imageHashes,
+        categories:categories
         // metaData:{
           
         //   images:{
