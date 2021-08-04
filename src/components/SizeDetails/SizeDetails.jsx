@@ -203,7 +203,7 @@ const SizeDetails=(props)=>{
     {/* <div style={{display:"flex",justifyContent:"space-around"}}>
       <img src={womensizeChart} style={{width:"50%",height:"50%"}}/>
       </div> */}
-    {/* <form validate style={{padding:"1%"}}onSubmit={sendEmail}>
+    <form validate style={{padding:"1%"}}onSubmit={sendEmail}>
          
       <div className={classes.paper}>
      
@@ -212,8 +212,33 @@ const SizeDetails=(props)=>{
         
        <div style={{display:"flex",justifyContent:"space-evenly"}}>
        <Grid container spacing={1} alignItems="flex-end" >
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
+         
+            {props.sizeInputField?(
+              <>
+             {props.sizeInputField.map((inputField)=>{
+                return (
+                  <Grid item xs={12} sm={6} lg={4} xl={3}>
+                    <label style={{display:"flex",alignItems:"center"}}>
+          {inputField}
+          <TextField
+                autoComplete="username"
+                name="userName"
+                variant="outlined"
+                required
+               // value={userName}
+               // onChange={(e)=>{setUserName(e.target.value)}}
+               // error={nameIsUsed}
+                id="userName"
+                label={inputField}
+                autoFocus
+          />
+
+        </label>
+                    </Grid>
+                )
+             })}</>
+            ):null}
+          {/* <label style={{display:"flex",alignItems:"center"}}>
           Essay:
           <TextField
                 autoComplete="username"
@@ -373,8 +398,8 @@ const SizeDetails=(props)=>{
           />
 
         </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
+          </Grid> */}
+          {/* <Grid item xs={12} sm={6} lg={4} xl={3}>
           <label style={{display:"flex",alignItems:"center"}}>
           Essay:
           <TextField
@@ -445,8 +470,8 @@ const SizeDetails=(props)=>{
           />
 
         </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
+          </Grid> */}
+          {/* <Grid item xs={12} sm={6} lg={4} xl={3}>
           <label style={{display:"flex",alignItems:"center"}}>
           Essay:
           <TextField
@@ -463,7 +488,7 @@ const SizeDetails=(props)=>{
           />
 
         </label>
-          </Grid>
+          </Grid> */}
         </Grid>
          
         </div>
@@ -495,7 +520,7 @@ const SizeDetails=(props)=>{
         </div>
       </div>
      
-      </form> */}
+      </form>
         <form
         
         style={{ margin: "25px 85px 75px 100px" }}

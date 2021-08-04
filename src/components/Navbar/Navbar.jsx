@@ -29,6 +29,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import Fuse from 'fuse.js';
 
+
 import CancelIcon from '@material-ui/icons/Cancel';
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -502,7 +503,7 @@ const renderMenu = (
            
       
   
-        {expanded1?(<div  style={{display:"flex",justifyContent:"flex-end",width:"50%"}}>
+        {expanded1?(<div  style={{display:"flex",justifyContent:"flex-end",width:"50%" }} >
         <IconButton onClick={()=>{setExpanded1(false);setText(null);setUserSuggestions([]);setTokenSuggestions([])}} className={classes.collapsedIcon1}>
        <CancelIcon/> </IconButton>
           <div style={{width:"100%"}}>
@@ -550,10 +551,12 @@ const renderMenu = (
           </div>
           
         ):( 
-        <div style={{transition: "all ease-in-out 0.3s"}}>
+        <div >
           <IconButton onClick={()=>{setExpanded1(true)}} className={classes.collapsedIcon1}>
         <SearchIcon /> </IconButton>
-        </div>)}
+        </div>
+      
+        )}
           {/* <div className={classes.search}  
                >
             <div className={classes.searchIcon}>

@@ -2,7 +2,7 @@ import React, { Component,useEffect,useState } from "react";
 import clsx from 'clsx';
 //import {create} from 'doka';
 import {useDropzone} from 'react-dropzone';
-
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {Paper,FormControl,InputLabel,Input,TextField,Grid,IconButton,InputAdornment,FormHelperText,Button} from '@material-ui/core';
 import LocalOfferOutlinedIcon from '@material-ui/icons/LocalOfferOutlined';
 import AccessTimeSharpIcon from '@material-ui/icons/AccessTimeSharp';
@@ -12,8 +12,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import ArrowBackIosSharpIcon from '@material-ui/icons/ArrowBackIosSharp';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
-import data from '../data.json'
+import data from '../data.json';
+import sizeData from '../sizeData.json'
 import CategoryContainer from '../DropdownContainer/DropdownContainer';
+import SizeContainer from '../DropdownContainer2/DropdownContainer2';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+
 
 
 
@@ -72,6 +78,16 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
+  paper2: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    maxHeight:"100%",
+    overflow:"auto",
+    height:"80%",
+    width:"70%"
+  },
   button: {
     margin: theme.spacing(1),
   },
@@ -89,7 +105,14 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
 }));
+
 
 export default function FormAndPreview(props) {
  //console.log(props.imageIsUsed)
@@ -112,6 +135,7 @@ export default function FormAndPreview(props) {
     const [multiple,setMultiple]=useState(false);
     const [show,setShow]=useState(true);
     const [categories,setCategories]=useState([]);
+    const [sizeChart,setSizeChart]=useState([]);
     const [test,setTest]=useState("hello")
     //const [preview,setPreview]=useState([]);
     const {getRootProps, getInputProps} = useDropzone({
@@ -199,6 +223,23 @@ const onChange = (currentNode, selectedNodes) => {
   
   console.log('onChange::', currentNode, selectedNodes)
 }
+const onChangeSize = (currentNode, selectedNodes) => {
+  let loc=[];
+  selectedNodes.map(x=>{
+    if(Array.isArray(x.value)){
+      loc.push(Array.prototype.concat.apply([], x.value));
+      
+    }
+    else{
+      loc.push(x.value);
+    }
+  })
+  var flatArray = Array.prototype.concat.apply([], loc);
+  console.log(flatArray);
+  setSizeChart(flatArray);
+  
+  console.log('onChange::', currentNode, selectedNodes)
+}
 //console.log(selectedCategories)
 const onAction = (node, action) => {
   console.log('onAction::', action, node)
@@ -210,7 +251,7 @@ const onNodeToggle = currentNode => {
     //setCategories(selectedCategories)
     e.preventDefault();
     
-    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,cryptoBoyDressPrice,finalbuffer,categories)
+    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,cryptoBoyDressPrice,finalbuffer,categories,sizeChart)
     props.mintMyNFT(
       cryptoBoyName,
       cryptoBoyDescription,
@@ -218,8 +259,18 @@ const onNodeToggle = currentNode => {
       cryptoBoyPrice,
       cryptoBoyDressPrice,
       finalbuffer,
-      categories
+      categories,
+      sizeChart
     );
+  };
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const renderMobile=(
@@ -302,7 +353,7 @@ const onNodeToggle = currentNode => {
  label="Title"
  
  
- 
+ required
  value={cryptoBoyName}
  onChange={(e)=>setCryptoBoyName(e.target.value)}
 />
@@ -315,6 +366,7 @@ const onNodeToggle = currentNode => {
  rowsMax={4}
  value={cryptoBoyDescription}
  onChange={(e)=>setCryptoBoyDescription(e.target.value)}
+ required
 />
 <br/><br/>
 {/* <div style={{display:"flex",justifyContent:"space-evenly"}}> 
@@ -375,6 +427,7 @@ Unlimited Auction
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
  }}
+ required
 /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
 <br/>
 </div>
@@ -388,12 +441,13 @@ Unlimited Auction
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
  }}
+ required
 /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyDressPrice-receivePrice2} ETH</b></FormHelperText>
 </div>
 <hr/>
 <h2>Upload Image</h2>
           
-<input type='file' multiple={true} onChange={captureFile} />
+<input type='file' multiple={true} onChange={captureFile}  required/>
       <hr/>      
       <div >
      <span>Choose Category</span>
@@ -795,9 +849,49 @@ Unlimited Auction
 <input type='file' multiple={true} onChange={captureFile} />
             
    <hr/>  
+   <div style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
    <div >
      <span>Choose Category</span>
    <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />     
+   </div>
+   <div>
+   <Button variant="contained" color="primary" onClick={handleOpen}>
+       Create size chart
+      </Button>
+      <Modal
+        aria-labelledby="spring-modal-title"
+        aria-describedby="spring-modal-description"
+        className={classes.modal}
+        open={open}
+        //onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper2}>
+           
+          <IconButton color="primary"  component="span" style={{float:"right",color:"#173e43"}}onClick={handleClose}>
+          <HighlightOffIcon />
+        </IconButton>
+        <br/>
+        <div  style={{textAlign:"center"}}>
+            <h2 id="spring-modal-title">Size Chart</h2>
+            </div>
+            <p id="spring-modal-description">Add Values from the tree which you want to insert in your form</p>
+            <hr/>
+            <div >
+     <span>Choose Category</span>
+   <SizeContainer data={sizeData} onChange={onChangeSize}  texts={{placeholder:"Category"}} />     
+   </div>
+
+          </div>
+         
+        </Fade>
+      </Modal>
+   </div>
    </div>   
    <hr/>
 <div style={{textAlign:"center"}}>

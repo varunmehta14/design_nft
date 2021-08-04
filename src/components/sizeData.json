@@ -1,0 +1,271 @@
+[
+  {
+     "label": "Gender",
+     "value": ["male","female"],
+     "children": [
+       {
+         "label": "Male",
+         "value": "male",
+         "children":[
+           {
+            "label": "Shirt",
+            "value": ["size","neck","chest","waist","sleeves"],
+            "children":[
+              {
+               "label": "Size",
+               "value": "size"
+              },
+              {
+                "label": "Neck",
+                "value": "neck"
+               },
+               {
+                "label": "Chest",
+                "value": "chest"
+               },
+               {
+                "label": "Waist",
+                "value": "waist"
+               },
+               {
+                "label": "Sleeves",
+                "value": "sleeves"
+               }
+              
+
+            ]
+           },
+           {
+             "label":"T-Shirt",
+             "value":["size","chest","length","shoulder","sleeveLength","sleeveOpen"],
+             "children":[
+              {
+                "label": "Size",
+                "value": "size"
+               },
+              {
+                "label": "Chest",
+                "value": "chest"
+               },
+               {
+                "label": "Length",
+                "value": "length"
+               },
+              {
+                "label": "Shoulder",
+                "value": "shoulder"
+               },
+               {
+                "label": "Sleeve Length",
+                "value": "sleeveLength"
+               },
+               {
+                "label": "Sleeve Open",
+                "value": "sleeveOpen"
+               }
+             ]
+           },
+           {
+            "label":"Suit",
+            "value":["pantSize","shirtSize","neck","chest","shoulder","waist","shortSleeveLength","longSleeveLength","inseam","outseam","footwidth"],
+            "children":[
+             {
+               "label": "Pants",
+               "value": "pantSize"
+              },
+             {
+               "label": "Shirt",
+               "value": "shirtSize"
+              },
+              {
+               "label": "Neck",
+               "value": "neck"
+              },
+              {
+                "label": "Chest",
+                "value": "chest"
+               },
+              {
+               "label": "Shoulder",
+               "value": "shoulder"
+              },
+              {
+                "label": "Waist",
+                "value": "waist"
+               },
+              {
+               "label": "Short Sleeve Length",
+               "value": "shortSleeveLength"
+              },
+              {
+               "label": "Long Sleeve Length",
+               "value": "longSleeveLength"
+              },
+              {
+                "label": "Inseam",
+                "value": "inseam"
+               },
+               {
+                "label": "Outseam",
+                "value": "outseam"
+               },
+               {
+                "label": "FootWidth",
+                "value": "footwidth"
+               }
+            ]
+          }
+           
+         ]
+       },  
+        
+       {  
+         "label": "Female",
+         "value": "female",
+         "children":[
+          {
+            "label": "Dress",
+            "value": ["size","bust","waist","hips","length"],
+            "children":[
+              {
+                "label": "Size",
+                "value": "size"
+               },
+              {
+                "label": "Bust",
+                "value": "bust"
+               },
+               {
+                "label": "Waist",
+                "value": "waist"
+               },
+              {
+                "label": "Hips",
+                "value": "hips"
+               },
+               
+               {
+                "label": "Length",
+                "value": "length"
+               }
+              
+            ]
+          },
+          {
+            "label": "Saree",
+            "value": ["size","aroundBust","belowBust","shoulder","sleeveLength","sleeveLoose","aroundArmHole","frontNeckDepth","backNeckDepth","blouseLength","waist","hip","length"],
+            "children":[
+              {
+                "label": "Size",
+                "value": "size"
+               },
+              {
+                "label": "Blouse",
+                "value": ["aroundBust","belowBust","shoulder","sleeveLength","sleeveLoose","aroundArmHole","frontNeckDepth","backNeckDepth","blouseLength"],
+                "children":[
+                  {
+                    "label": "Around Bust",
+                    "value": "aroundBust"
+                   },
+                  {
+                    "label": "Below Bust",
+                    "value": "belowBust"
+                   },
+                   {
+                    "label": "Shoulder",
+                    "value": "shoulder"
+                   },
+                  {
+                    "label": "Sleeve Length",
+                    "value": "sleeveLength"
+                   },
+                   {
+                    "label": "Sleeve Loose",
+                    "value": "sleeveLoose"
+                   },
+                   {
+                    "label": "Around Arm Hole",
+                    "value": "aroundArmHole"
+                   },
+                   {
+                    "label": "Front Neck Depth",
+                    "value": "frontNeckDepth"
+                   },
+                   {
+                    "label": "Back Neck Depth",
+                    "value": "backNeckDepth"
+                   },
+                   {
+                    "label": "Length",
+                    "value": "blouseLength"
+                   }
+
+                ]
+               },
+               {
+                "label": "Waist",
+                "value": "waist"
+               },
+              {
+                "label": "Hip",
+                "value": "hip"
+               },
+               {
+                "label": "Length",
+                "value": "length"
+               }
+              
+            ]
+          },
+          {
+            "label": "Kurti",
+            "value": ["size","bust","waist","hips","length","bottomLength","fullSleeveLength","shoulderLength","armHole"],
+            "children":[
+              {
+                "label": "Size",
+                "value": "size"
+               },
+              {
+                "label": "Bust",
+                "value": "bust"
+               },
+               {
+                "label": "Waist",
+                "value": "waist"
+               },
+              {
+                "label": "Hips",
+                "value": "hips"
+               },
+               
+               {
+                "label": "Length",
+                "value": "length"
+               },
+               {
+                "label": "Bottom Length",
+                "value": "bottomLength"
+               },
+               {
+                "label": "Full Sleeve Length",
+                "value": "fullSleeveLength"
+               },
+               {
+                "label": "Shoulder Length",
+                "value": "shoulderLength"
+               },
+               {
+                "label": "ArmHole",
+                "value": "armHole"
+               }
+              
+            ]
+          }
+        ]
+       } 
+ 
+     
+       
+     ] 
+   }
+ ]

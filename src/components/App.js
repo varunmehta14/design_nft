@@ -77,7 +77,8 @@ class App extends Component {
       dressTokenId:"",
       dressPrice:"",
       sendEmailTo:"",
-      sendName:""
+      sendName:"",
+      inputFields:[]
      
     };
   }
@@ -439,10 +440,11 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         
 };
 
-  mintMyNFT = async (name,description,buffer,tokenPrice,tokenDressPrice,finalbuffer,categories) => {
+  mintMyNFT = async (name,description,buffer,tokenPrice,tokenDressPrice,finalbuffer,categories,sizeChart) => {
     this.setState({ loading: true });
    console.log("buffer2",finalbuffer)
    console.log("categories",categories)
+   console.log("sizechart",sizeChart)
    
   //   const nameIsUsed = await this.state.cryptoBoysContract.methods
   //     .tokenNameExists(name)
@@ -487,7 +489,8 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
         price:tokenPrice,
         dressPrice:tokenDressPrice,
         images:imageHashes,
-        categories:categories
+        categories:categories,
+        sizeChart:sizeChart
         // metaData:{
           
         //   images:{
@@ -587,7 +590,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
       window.location.reload();
     });
 };  
-  tokenIdAndPrice=(tokenIdOfDress,priceOfDress,ownedEmail,ownedName)=>{
+  tokenIdAndPrice=(tokenIdOfDress,priceOfDress,ownedEmail,ownedName,sizeDetails)=>{
     console.log("tokenId",tokenIdOfDress)
     console.log("Price of dress",priceOfDress)
     console.log("Send Email To",ownedEmail)
@@ -596,6 +599,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
     this.setState({dressPrice:priceOfDress});
     this.setState({sendEmailTo:ownedEmail});
     this.setState({sendName:ownedName});
+    this.setState({inputFields:sizeDetails})
    // window.location.href=`/sizeDetails/${tokenIdOfDress}/${priceOfDress}`
     
   } 
@@ -880,6 +884,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
               render={() => (
                 <SizeDetails
                   tokenNoOfDress={this.state.dressTokenId}
+                  sizeInputField={this.state.inputFields}
                   priceOfDress={this.state.dressPrice}
                   sendEmailTo={this.state.sendEmailTo}
                   sendName={this.state.sendName}

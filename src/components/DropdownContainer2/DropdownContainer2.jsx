@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import isEqual from 'lodash/isEqual'
-import data from '../data.json'
+import data from '../sizeData.json'
 
-import './styles.css'
-export default class DropdownContainer extends Component {
+import '../DropdownContainer/styles.css'
+export default class DropdownContainer2 extends Component {
   constructor(props){
     super(props)
     //this.state = { data: props.data }
