@@ -38,6 +38,21 @@ const SizeDetails=(props)=>{
   const [feedBack,setFeedBack]=useState(" ");
   const [formDetails,setFormDetails]=useState("");
   const [file,setFile]=useState(null);
+  const [sizeFields,setSizeFields]=useState([]);
+  // props.sizeInputField.map((fields,index)=>{
+  //   let fi=fields;
+  //   let setFi=fields+index;
+  //   [fi,setFi]=useState("");
+  // })
+
+  const [inputs, setInputs] = useState(Array(props.sizeInputField.length).fill(''));
+  const setInput = (i, v) => {
+    setInputs(Object.assign([...inputs], { [i]: v }));
+    console.log(inputs)
+  };
+
+
+  
   
   // const [mailerState, setMailerState] = useState({
   //   buyerName: "",
@@ -160,12 +175,101 @@ const SizeDetails=(props)=>{
           
         ],
       })
-      
+
+            doc
+              .setFontSize(14);
+      doc
+              .setTextColor(
+                      46, 116, 181);
+      doc
+              .text(
+                      "About",
+                      40,
+                      100);
+
+      var generateUid = function() {
+
+          var delim = "-";
+
+          function S4() {
+              return (((1 + Math
+                      .random()) * 0x10000) | 0)
+                      .toString(
+                              16)
+                      .substring(
+                              1);
+          }
+
+          return ("RPT"
+                  + delim + (S4() + S4()));
+      };
+
+      var repid = generateUid();
+      var columns = [
+              {
+                  title : "Field",
+                  key : "field"
+              },
+              {
+                  title : "Size in Inches",
+                  key : "size"
+              } ];
+
+      var d = new Date();
+      var curdate = d
+              .toString()
+              .slice(
+                      0,
+                      -14);
+
+      // var data = [ {
+      //     "field" : "Report Id",
+      //     "size" : repid,
+
+      // }
+      // ];
+      var data = [];
+
+for(var x = 0; x < inputs.length; x++){
+ data.push({"field":props.sizeInputField[x]  , "size": inputs[x]});
+}
+
+JSON.stringify({array: data});
+
+      doc
+              .autoTable(
+                      columns,
+                      data,
+                      {
+                          theme:'grid',
+                          startY : 120,
+                          tableWidth: 300,
+
+
+                          styles : {
+                              overflow : 'linebreak',
+                              cellPadding : 2,
+                              rowHeight : 15,
+                              fontSize : 10,
+                              textcolor:0
+                          },
+
+                          drawHeaderRow: function() {
+                                  // Don't draw header row
+                                  return false;
+                              },
+                              // columnStyles: {
+                              //   rid:{fillColor: [166, 166, 166]}
+                              // }
+
+
+                      });
+
       //doc.output('dataurlnewwindow')
        var docu=doc.output('datauristring')
        console.log(docu)
        setFormDetails(docu)
-      // doc.save(`${sendName}.pdf`)
+       doc.save(`${sendName}.pdf`)
     }
 
     // const generatePdfLink=async(e)=>{
@@ -200,10 +304,8 @@ const SizeDetails=(props)=>{
 
       </div>
     </div>
-    {/* <div style={{display:"flex",justifyContent:"space-around"}}>
-      <img src={womensizeChart} style={{width:"50%",height:"50%"}}/>
-      </div> */}
-    <form validate style={{padding:"1%"}}onSubmit={sendEmail}>
+   
+    <form validate style={{padding:"1%"}}onSubmit={sendEmail} enctype="multipart/form-data">
          
       <div className={classes.paper}>
      
@@ -212,283 +314,98 @@ const SizeDetails=(props)=>{
         
        <div style={{display:"flex",justifyContent:"space-evenly"}}>
        <Grid container spacing={1} alignItems="flex-end" >
-         
+       <Grid item xs={12} sm={6} lg={4} xl={3}>
+                  
+                  <TextField
+                        autoComplete="username"
+                        name="name"
+                        variant="outlined"
+                        required
+                       value={props.sendName} 
+                       
+                       // error={nameIsUsed}
+                        id="sendName"
+                        label="sendName"
+                        autoFocus
+                  />
+        </Grid>
+        <Grid item xs={12} sm={6} lg={4} xl={3}>
+                  
+                  <TextField
+                        autoComplete="username"
+                        name="email"
+                        variant="outlined"
+                        required
+                       value={props.sendEmailTo} 
+                       
+                       // error={nameIsUsed}
+                        id="sendName"
+                        label="Seller Email"
+                        autoFocus
+                  />
+        </Grid>
+        <Grid item xs={12} sm={6} lg={4} xl={3}>
+                  
+                  <TextField
+                        autoComplete="username"
+                        name="email"
+                        variant="outlined"
+                        required
+                       value={buyerName} 
+                       onChange={(e)=>{setBuyerName(e.target.value)}}
+                       // error={nameIsUsed}
+                        id="sendName"
+                        label="BuyerName"
+                        autoFocus
+                  />
+        </Grid>
+        <Grid item xs={12} sm={6} lg={4} xl={3}>
+                  
+                  <TextField
+                        autoComplete="username"
+                        name="your_email"
+                        variant="outlined"
+                        required
+                       value={buyerEmail} 
+                       onChange={(e)=>{setBuyerEmail(e.target.value)}}
+                       // error={nameIsUsed}
+                        id="sendEmail"
+                        label="BuyerEmail"
+                        autoFocus
+                  />
+        </Grid>
             {props.sizeInputField?(
               <>
-             {props.sizeInputField.map((inputField)=>{
+             {props.sizeInputField.map((v,i)=>{
                 return (
                   <Grid item xs={12} sm={6} lg={4} xl={3}>
-                    <label style={{display:"flex",alignItems:"center"}}>
-          {inputField}
+                  
           <TextField
                 autoComplete="username"
-                name="userName"
+                name="name"
                 variant="outlined"
                 required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
+                
+                onChange={(e)=>{setInput(i,e.target.value)}}
                // error={nameIsUsed}
                 id="userName"
-                label={inputField}
+                label={v}
                 autoFocus
           />
 
-        </label>
+        
                     </Grid>
+                    
                 )
-             })}</>
+                
+             })}
+              <Grid item xs={12} sm={6} lg={4} xl={3}>
+               <Button style={{backgroundColor:"#173e43"}}
+                 variant="contained"
+                 color="primary" onClick={jsPdfGenerator}>Generate Pdf</Button>
+               </Grid></>
             ):null}
-          {/* <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid> */}
-          {/* <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid> */}
-          {/* <Grid item xs={12} sm={6} lg={4} xl={3}>
-          <label style={{display:"flex",alignItems:"center"}}>
-          Essay:
-          <TextField
-                autoComplete="username"
-                name="userName"
-                variant="outlined"
-                required
-               // value={userName}
-               // onChange={(e)=>{setUserName(e.target.value)}}
-               // error={nameIsUsed}
-                id="userName"
-                label="User Name"
-                autoFocus
-          />
-
-        </label>
-          </Grid> */}
+          
         </Grid>
          
         </div>
