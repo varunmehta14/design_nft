@@ -187,24 +187,7 @@ const SizeDetails=(props)=>{
                       40,
                       100);
 
-      var generateUid = function() {
 
-          var delim = "-";
-
-          function S4() {
-              return (((1 + Math
-                      .random()) * 0x10000) | 0)
-                      .toString(
-                              16)
-                      .substring(
-                              1);
-          }
-
-          return ("RPT"
-                  + delim + (S4() + S4()));
-      };
-
-      var repid = generateUid();
       var columns = [
               {
                   title : "Field",
@@ -215,19 +198,8 @@ const SizeDetails=(props)=>{
                   key : "size"
               } ];
 
-      var d = new Date();
-      var curdate = d
-              .toString()
-              .slice(
-                      0,
-                      -14);
-
-      // var data = [ {
-      //     "field" : "Report Id",
-      //     "size" : repid,
-
-      // }
-      // ];
+     
+     
       var data = [];
 
 for(var x = 0; x < inputs.length; x++){
@@ -371,6 +343,22 @@ JSON.stringify({array: data});
                        // error={nameIsUsed}
                         id="sendEmail"
                         label="BuyerEmail"
+                        autoFocus
+                  />
+        </Grid>
+        <Grid item xs={12} sm={6} lg={4} xl={3}>
+                  
+                  <TextField
+                        autoComplete="username"
+                        name="message"
+                        variant="outlined"
+                        required
+                        multiline
+                       value={feedBack}
+                       onChange={(e)=>{setFeedBack(e.target.value)}}
+                       // error={nameIsUsed}
+                        id="sendFeedback"
+                        label="Message"
                         autoFocus
                   />
         </Grid>

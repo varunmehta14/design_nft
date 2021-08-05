@@ -587,7 +587,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
     .on("confirmation", () => {
       this.setState({ loading: false });
       
-      window.location.reload();
+      window.location.href="/my-tokens";
     });
 };  
   tokenIdAndPrice=(tokenIdOfDress,priceOfDress,ownedEmail,ownedName,sizeDetails)=>{
