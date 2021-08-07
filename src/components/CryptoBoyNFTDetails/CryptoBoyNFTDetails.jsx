@@ -458,7 +458,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}
@@ -920,7 +920,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}

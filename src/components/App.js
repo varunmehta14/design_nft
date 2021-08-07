@@ -78,7 +78,8 @@ class App extends Component {
       dressPrice:"",
       sendEmailTo:"",
       sendName:"",
-      inputFields:[]
+      inputFields:[],
+      designName:""
      
     };
   }
@@ -590,12 +591,14 @@ buyCryptoBoyWithDress = (tokenId, price) => {
       window.location.href="/my-tokens";
     });
 };  
-  tokenIdAndPrice=(tokenIdOfDress,priceOfDress,ownedEmail,ownedName,sizeDetails)=>{
+  tokenIdAndPrice=(tokenIdOfDress,tokenName,priceOfDress,ownedEmail,ownedName,sizeDetails)=>{
     console.log("tokenId",tokenIdOfDress)
+    console.log("tokenName",tokenName)
     console.log("Price of dress",priceOfDress)
     console.log("Send Email To",ownedEmail)
     console.log("Send Name",ownedName)
     this.setState({dressTokenId:tokenIdOfDress});
+    this.setState({designName:tokenName});
     this.setState({dressPrice:priceOfDress});
     this.setState({sendEmailTo:ownedEmail});
     this.setState({sendName:ownedName});
@@ -884,6 +887,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
               render={() => (
                 <SizeDetails
                   tokenNoOfDress={this.state.dressTokenId}
+                  designName={this.state.designName}
                   sizeInputField={this.state.inputFields}
                   priceOfDress={this.state.dressPrice}
                   sendEmailTo={this.state.sendEmailTo}

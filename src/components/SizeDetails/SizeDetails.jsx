@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +9,7 @@ import emailjs from 'emailjs-com';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import ipfs from '../ipfs';
+import imgData from './imagebase64';
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -37,6 +38,9 @@ const SizeDetails=(props)=>{
   const [buyerEmail,setBuyerEmail]=useState(" ");
   const [feedBack,setFeedBack]=useState(" ");
   const [formDetails,setFormDetails]=useState("");
+  const [tokenNo,setTokenNo]=useState(" ");
+  const [tokenName,setTokenName]=useState(" ");
+  const [price,setPrice]=useState(" ");
   const [file,setFile]=useState(null);
   const [sizeFields,setSizeFields]=useState([]);
   // props.sizeInputField.map((fields,index)=>{
@@ -50,7 +54,13 @@ const SizeDetails=(props)=>{
     setInputs(Object.assign([...inputs], { [i]: v }));
     console.log(inputs)
   };
-
+// useEffect(()=>{
+//   if(props.tokenNo){
+//     setTokenNo(props.tokenNoOfDress);
+//     setTokenName(props.designName);
+//     setPrice(props.priceOfDress);
+//   }
+// },[props]);
 
   
   
@@ -61,11 +71,12 @@ const SizeDetails=(props)=>{
   // });
   const [bufferFinal,setBufferFinal]=useState(null);
     console.log(props)
-    let tokenNo=props.tokenNoOfDress;
-    let price=props.priceOfDress;
+    //  let tokenNo=props.tokenNoOfDress;
+    //  let tokenName=props.designName;
+    //  let price=props.priceOfDress;
     let sendEmailTo=props.sendEmailTo;
     let sendName=props.sendName;
-    console.log(window.location.href.split("/"))
+    
     // if(!props.tokenNo){
     //     tokenNo=window.location.href.split("/")[4];
     //     price=window.location.href.split("/")[5];
@@ -98,6 +109,7 @@ const SizeDetails=(props)=>{
     //     [e.target.name]: e.target.value,
     //   }));
     // }
+    
     const sendEmail = async (e) => {
       e.preventDefault();
       
@@ -167,30 +179,92 @@ const SizeDetails=(props)=>{
 
     const jsPdfGenerator=()=>{
       var doc=new jsPDF('p','pt');
-      doc.autoTable({
-        head: [['Name', 'Email', 'Message']],
-        body: [
-          [buyerName,buyerEmail ,feedBack ],
-           
-          
-        ],
-      })
+     
+   
+      doc.text("Digitart",460,30)
+      doc.addImage(imgData,"PNG",525 ,5,30,30)
+      
 
-            doc
-              .setFontSize(14);
+      doc
+      .setFontSize(14);
       doc
               .setTextColor(
                       46, 116, 181);
+      doc.text("Design details",250,50)
+      // doc
+      // .setTextColor(
+      //         0, 0, 0);
+      // doc
+      // .setFontSize(10);
+      // doc.text("Token No:",40,60)
+      // console.log(typeof(props.tokenNoOfDress.toString()))
+      // doc.text(props.tokenNoOfDress.toString(),90,60)
+      // doc.text("Token Name:",200,60)
+      // doc.text(props.designName.toString(),280,60)
+      // doc.text("Price:",370,60)
+      // doc.text(window.web3.utils.fromWei(props.priceOfDress.toString(),"Ether"),420,60)
+
+     
+      doc.autoTable({
+        head: [['Id', 'Name','Price']],
+        body: [
+          [props.tokenNoOfDress.toString(),props.designName.toString(),window.web3.utils.fromWei(props.priceOfDress.toString(),"Ether") ],
+           
+          
+        ],
+        startY:65
+      })
+      
       doc
-              .text(
-                      "About",
-                      40,
-                      100);
+      .setFontSize(14);
+      doc
+              .setTextColor(
+                      46, 116, 181);
+      doc.text("Buyer Details",250,135)
+      doc.autoTable({
+        head: [['Buyer Name', 'Buyer Email']],
+        body: [
+          [buyerName,buyerEmail ],
+           
+          
+        ],
+        startY:150
+      })
+
+      doc.setFontSize(14);
+      doc.setTextColor(46, 116, 181);
+      doc.text("Seller Details",250,220)
+      doc.autoTable({
+        head: [['Seller Name', 'Seller Email']],
+        body: [
+          [props.sendName.toString(),props.sendEmailTo.toString() ],  
+        ],
+        startY:235
+      })
+      doc.setFontSize(14);
+                      doc.setTextColor(46, 116, 181);
+                      doc.text("Comments:",40,305)
+                      doc
+                      .setTextColor(0, 0, 0);
+                      doc.setFontSize(10);
+                      doc.text(feedBack,40,320)
+     
+      
+      
+
+    
+           doc.setFontSize(14);
+      doc.setTextColor(
+                      46, 116, 181);
+      doc.text(
+                      "Size Chart",
+                      250,
+                      380);
 
 
       var columns = [
               {
-                  title : "Field",
+                  title : "",
                   key : "field"
               },
               {
@@ -214,8 +288,9 @@ JSON.stringify({array: data});
                       data,
                       {
                           theme:'grid',
-                          startY : 120,
-                          tableWidth: 300,
+                         
+                          startY : 395,
+                          //tableWidth: 300,
 
 
                           styles : {
@@ -223,12 +298,13 @@ JSON.stringify({array: data});
                               cellPadding : 2,
                               rowHeight : 15,
                               fontSize : 10,
-                              textcolor:0
+                              textcolor:0,
+                              textAlign:'center'
                           },
 
                           drawHeaderRow: function() {
-                                  // Don't draw header row
-                                  return false;
+                                  
+                                  return true;
                               },
                               // columnStyles: {
                               //   rid:{fillColor: [166, 166, 166]}
@@ -236,12 +312,16 @@ JSON.stringify({array: data});
 
 
                       });
+                      
+   
 
-      //doc.output('dataurlnewwindow')
+
        var docu=doc.output('datauristring')
        console.log(docu)
+
        setFormDetails(docu)
-       doc.save(`${sendName}.pdf`)
+       
+       doc.save(`${props.designName.toString()}.pdf`)
     }
 
     // const generatePdfLink=async(e)=>{
@@ -286,6 +366,7 @@ JSON.stringify({array: data});
         
        <div style={{display:"flex",justifyContent:"space-evenly"}}>
        <Grid container spacing={1} alignItems="flex-end" >
+
        <Grid item xs={12} sm={6} lg={4} xl={3}>
                   
                   <TextField
@@ -415,7 +496,7 @@ JSON.stringify({array: data});
               >
                Buy with Dress For{" "}
                 {window.web3.utils.fromWei(
-                  price.toString(),
+                  props.priceOfDress.toString(),
                   "Ether"
                 )}{" "}
                 Ξ
