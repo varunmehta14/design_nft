@@ -75,7 +75,7 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,c
     <div style={{padding:"0.5%"}}>
       <hr className="my-4" />
       <div style={{display:"flex",justifyContent:"center"}}>
-      <Avatar alt={currentUser.userName} src={currentUser.avatarhash} className={useStyles().large}/>
+      <Avatar alt={currentUser.userName} src={currentUser.userAvatarHash} className={useStyles().large}/>
       </div>
       
       <p >Account address </p>
@@ -84,13 +84,13 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,c
      <p >User Name </p>
      <p className="lead" style={{fontStyle:"italic"}}>{currentUser.userName}</p>
      <p >Email </p>
-     <p className="lead" style={{fontStyle:"italic"}}>{currentUser.email} </p>
+     <p className="lead" style={{fontStyle:"italic"}}>{currentUser.userEmail} </p>
      <p >Social Media</p>
-     <p className="lead"style={{fontStyle:"italic"}}>{currentUser.social}</p>
+     <p className="lead"style={{fontStyle:"italic"}}>{currentUser.userSocial}</p>
      <p >Custom Url</p>
-     <p className="lead"style={{fontStyle:"italic",overflowWrap:"break-word"}}>{currentUser.repo}</p>
+     <p className="lead"style={{fontStyle:"italic",overflowWrap:"break-word"}}>{currentUser.userRepo}</p>
      <p >Bio </p>
-     <p className="lead"style={{fontStyle:"italic",overflowWrap:"break-word"}}>{currentUser.bio}</p>
+     <p className="lead"style={{fontStyle:"italic",overflowWrap:"break-word"}}>{currentUser.userBio}</p>
       
       </div>
      </Paper>
@@ -104,7 +104,7 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,c
     <div style={{padding:"0.5%"}}>
       <hr className="my-4" />
       <div style={{display:"flex",justifyContent:"center"}}>
-      <Avatar alt={currentUser.userName} src={currentUser.avatarhash} className={useStyles().large}/>
+      <Avatar alt={currentUser.userName} src={currentUser.userAvatarHash} className={useStyles().large}/>
       </div>
       
       <p >Account address </p>
@@ -113,13 +113,13 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,c
      <p >User Name </p>
      <p className="lead" style={{fontStyle:"italic"}}>{currentUser.userName}</p>
      <p >Email </p>
-     <p className="lead" style={{fontStyle:"italic"}}>{currentUser.email} </p>
+     <p className="lead" style={{fontStyle:"italic"}}>{currentUser.userEmail} </p>
      <p >Social Media</p>
-     <p className="lead"style={{fontStyle:"italic"}}>{currentUser.social}</p>
+     <p className="lead"style={{fontStyle:"italic"}}>{currentUser.userSocial}</p>
      <p >Custom Url</p>
-     <p className="lead"style={{fontStyle:"italic",overflowY:"scroll"}}>{currentUser.repo}</p>
+     <p className="lead"style={{fontStyle:"italic",overflowY:"scroll"}}>{currentUser.userRepo}</p>
      <p >Bio </p>
-     <p className="lead"style={{fontStyle:"italic",overflowY:"scroll"}}>{currentUser.bio}</p>
+     <p className="lead"style={{fontStyle:"italic",overflowY:"scroll"}}>{currentUser.userBio}</p>
       
       </div>
      </Paper>

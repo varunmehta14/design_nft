@@ -857,7 +857,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
       <> <Container maxWidth="false" style={{padding:"0%"}}> 
     <Router>
 
-    <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}searchTermfromApp={this.searchTermfromApp}searchAllResultsFromApp={this.searchAllResultsFromApp}searchData={this.state.users}cryptoBoys={this.state.cryptoBoys}searchNFTFromApp={this.searchNFTFromApp}/>
+    <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}searchTermfromApp={this.searchTermfromApp}searchAllResultsFromApp={this.searchAllResultsFromApp}searchData={this.state.allUsers}cryptoBoys={this.state.cryptoBoys}searchNFTFromApp={this.searchNFTFromApp}/>
       <Switch>
       
       
@@ -1001,7 +1001,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                   cryptoBoysContract={this.state.cryptoBoysContract}
                   usersContract={this.state.usersContract}
                   userExists={this.state.userExists}
-                  users={this.state.users}
+                  users={this.state.allUsers}
                  // loading={this.state.loading}
                 />
                 
