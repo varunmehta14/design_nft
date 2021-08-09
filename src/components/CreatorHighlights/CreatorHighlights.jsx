@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CreatorHighlights=(props)=>{
   const handleClick=()=>{
-    window.open(`https://www.instagram.com/${props.user.social}/`,"_blank")
+    window.open(`https://www.instagram.com/${props.user.userSocial}/`,"_blank")
   }
   const classes = useStyles();
   const mediaStyles = useFourThreeCardMediaStyles();
@@ -81,7 +81,7 @@ const CreatorHighlights=(props)=>{
       <CardContent className={classes.content}>
         {/* <div style={{backgroundColor:"black"}}> */}
         <div style={{display:"flex",justifyContent:"center"}}>
-      <Avatar alt={props.user.userName} src={props.user[6]} className={classes.large}/>
+      <Avatar alt={props.user.userName} src={props.user.userAvatarHash} className={classes.large}/>
       </div>
         {/* </div> */}
         <div style={{display:"flex",justifyContent:"center"}}>
@@ -90,9 +90,9 @@ const CreatorHighlights=(props)=>{
         </Typography>
         </div>
         <hr style={{borderColor:"aliceblue",borderWidth:"thin"}}/>
-        <Typography className={classes.subtitle}style={{color:"aliceblue"}}>{props.user.bio}</Typography>
+        <Typography className={classes.subtitle}style={{color:"aliceblue"}}>{props.user.userBio}</Typography>
         <Typography className={classes.subtitle} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
-         <ContactMailIcon/>&nbsp;{props.user.email}
+         <ContactMailIcon/>&nbsp;{props.user.userEmail}
         </Typography>
       </CardContent>
       <CardActions className={classes.content2}disableSpacing>

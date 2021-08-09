@@ -12,7 +12,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles'
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
-
+//import UserDataService from ".../services/UserService";
+import UserDataService from "../../services/UserService";
 const useStyles = makeStyles((theme) => ({
   actionArea: {
     borderRadius: 16,
@@ -92,7 +93,39 @@ const NFTHighlights=(props)=> {
           setOwnedAvatar(currentOwned[6]);
         }
         
-       
+        UserDataService.getByAddress(props.cryptoboy.mintedBy)
+        .then(response => 
+          { 
+            console.log(response);
+            setMintedByName(response.data[0].userName)
+            setMintedAvatar(response.data[0].userAvatarHash)
+
+          
+          
+          //  setSubmitted(true);
+         // console.log(response.data);
+         
+        
+        })
+        .catch(e => {
+          console.log(e);
+        });
+        UserDataService.getByAddress(props.cryptoboy.currentOwner)
+        .then(response => 
+          { 
+            console.log(response);
+            setOwnedByName(response.data[0].userName)
+            setOwnedAvatar(response.data[0].userAvatarHash)
+
+          
+          })
+          //  setSubmitted(true);
+         // console.log(response.data);
+        
+        
+        .catch(e => {
+          console.log(e);
+        });
         
       }
       useEffect(()=>{

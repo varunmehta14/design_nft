@@ -39,7 +39,7 @@ const renderDesktop=(
     <div style={{padding:"0.5%"}}> <h1 className="display-5">Account Details</h1>
     
     <hr className="my-4" />
-     <img src={currentUser.avatarhash} alt="Avatar"/>
+     <img src={currentUser.userAvatarHash} alt="Avatar"/>
      <hr/>
     <p >Account address :</p>
     <p className="lead" style={{fontStyle:"italic",overflowWrap:"break-word"}}>{accountAddress}</p>
@@ -48,13 +48,13 @@ const renderDesktop=(
     <p >User Name :</p>
     <p className="lead"style={{fontStyle:"italic"}}>{currentUser.userName}</p>
     <p >Email :</p>
-    <p className="lead"style={{fontStyle:"italic"}}>{currentUser.email} </p>
+    <p className="lead"style={{fontStyle:"italic"}}>{currentUser.userEmail} </p>
     <p >Social Media</p>
-    <p className="lead"style={{fontStyle:"italic"}}>{currentUser.social}</p>
+    <p className="lead"style={{fontStyle:"italic"}}>{currentUser.userSocial}</p>
     <p >Custom Url</p>
-    <p className="lead" style={{fontStyle:"italic",overflowWrap:"break-word"}}>{currentUser.repo}</p>
+    <p className="lead" style={{fontStyle:"italic",overflowWrap:"break-word"}}>{currentUser.userRepo}</p>
     <p >Bio :</p>
-    <p className="lead"style={{fontStyle:"italic",overflowWrap:"break-word"}}>{currentUser.bio}</p>
+    <p className="lead"style={{fontStyle:"italic",overflowWrap:"break-word"}}>{currentUser.userBio}</p>
     <hr/>
     <Button
         
@@ -81,7 +81,7 @@ const renderMobile=(
        <div style={{padding:"0.5%"}}> <h1 className="display-5">Account Details</h1>
        
        <hr className="my-4" />
-        <img src={currentUser.avatarhash} alt="Avatar"/>
+        <img src={currentUser.userAvatarhash} alt="Avatar"/>
         <hr/>
        <p >Account address :</p>
        <p className="lead" style={{fontStyle:"italic",overflowY:"scroll"}}>{accountAddress}</p>
@@ -90,13 +90,13 @@ const renderMobile=(
        <p >User Name :</p>
        <p className="lead" style={{fontStyle:"italic"}}>{currentUser.userName}</p>
        <p >Email :</p>
-       <p className="lead"style={{fontStyle:"italic"}}>{currentUser.email} </p>
+       <p className="lead"style={{fontStyle:"italic"}}>{currentUser.userEmail} </p>
        <p >Social Media</p>
-       <p className="lead"style={{fontStyle:"italic"}}>{currentUser.social}</p>
+       <p className="lead"style={{fontStyle:"italic"}}>{currentUser.userSocial}</p>
        <p >Custom Url</p>
-       <p className="lead" style={{fontStyle:"italic",overflowY:"scroll"}}>{currentUser.repo}</p>
+       <p className="lead" style={{fontStyle:"italic",overflowY:"scroll"}}>{currentUser.userRepo}</p>
        <p >Bio :</p>
-       <p className="lead"style={{fontStyle:"italic",overflowY:"scroll"}}>{currentUser.bio}</p>
+       <p className="lead"style={{fontStyle:"italic",overflowY:"scroll"}}>{currentUser.userBio}</p>
        <hr/>
        <Button
            

@@ -29,6 +29,7 @@ import Footer from "./Footer/Footer";
 import SizeDetails from "./SizeDetails/SizeDetails";
 import {Container,Box} from '@material-ui/core';
 import ipfs from './ipfs';
+import UserDataService from "../services/UserService";
 
 // const ipfsClient = require("ipfs-http-client");
 // const ipfs = ipfsClient({
@@ -37,6 +38,17 @@ import ipfs from './ipfs';
 //   protocol: "https",
 // });
 const PAGE_NUMBER=1;
+const initialUserState = {
+  userId: null,
+  userName: "",
+  userEmail: "",
+  userSocial: "",
+  userRepo: "",
+  userBio: "",
+  userAvatarHash: "https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX",
+  userAddress: "",
+
+};
 
 class App extends Component {
   constructor(props) {
@@ -63,7 +75,7 @@ class App extends Component {
       tokenID:"",
       lastMintTime: null,
       userLoggedIn:false,
-      currentUser:"",
+      currentUser:initialUserState,
       page:PAGE_NUMBER,
       start:1,
       startState:1,
@@ -79,7 +91,9 @@ class App extends Component {
       sendEmailTo:"",
       sendName:"",
       inputFields:[],
-      designName:""
+      designName:"",
+      user:initialUserState,
+      allUsers:[]
      
     };
   }
@@ -87,6 +101,8 @@ class App extends Component {
   componentWillMount = async () => {
     await this.loadWeb3();
     await this.loadBlockchainData();
+    await this.loadAllUsers();
+    await this.loadCurrentUser();
   //  await this.loadDesigns(this.state.startState,this.state.endState);
     await this.setMetaData();
     await this.setMintBtnTimer();
@@ -244,6 +260,46 @@ class App extends Component {
     }}
   };
 
+loadAllUsers=()=>{
+  UserDataService.getAll()
+  .then(response=>{
+    console.log(response.data);
+    this.setState({
+      allUsers:response.data
+    });
+    console.log(this.state.allUsers)
+  })
+  .catch(e => {
+    console.log(e);
+  });
+
+  
+}  
+loadCurrentUser=()=>{
+  UserDataService.getByAddress(this.state.accountAddress)
+      .then(response => 
+        { 
+          console.log(response);
+        this.setState({currentUser:{
+          userId: response.data[0].userId,
+          userName: response.data[0].userName,
+          userEmail: response.data[0].userEmail,
+          userSocial: response.data[0].userSocial,
+          userRepo: response.data[0].userRepo,
+          userBio: response.data[0].userBio,
+          userAvatarHash: response.data[0].userAvatarHash,
+          userAddress: response.data[0].userAddress
+        }
+        });
+        //  setSubmitted(true);
+       // console.log(response.data);
+       console.log(this.state.currentUser)
+      
+      })
+      .catch(e => {
+        console.log(e);
+      });
+}
 //   loadDesigns=async(start,end)=>{
 //     console.log("end",end)
 //     const cryptoBoysCount = await this.state.cryptoBoysContract.methods
@@ -313,42 +369,92 @@ class App extends Component {
    let previousUserId;
    let avatarHash;
    
-   const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
-   const emailIsUsed=await this.state.usersContract.methods.userEmailExists(email).call();
-   console.log(nameIsUsed);
-   if(!nameIsUsed && !emailIsUsed){
-    previousUserId=await this.state.usersContract.methods.userCounter().call();
-    previousUserId=previousUserId.toNumber();
-    const userId=previousUserId+1;
-   //  const userObject={
-   //    userId:userId,
-   //    userName:userName,
-   //    email:email,
-   //    social:social,
-   //    repo:repo,
-   //    bio:bio,
-   //    avatar:avatar
-   //  }
-   if(avatar instanceof Blob){
+//const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
+  // const emailIsUsed=await this.state.usersContract.methods.userEmailExists(email).call();
+  // console.log(nameIsUsed);
+//    if(!nameIsUsed && !emailIsUsed){
+//     previousUserId=await this.state.usersContract.methods.userCounter().call();
+//     previousUserId=previousUserId.toNumber();
+//     //const userId=previousUserId+1;
+    
+    
+//    if(avatar instanceof Blob){
+//     const  cid2= await ipfs.add(avatar);
+//     console.log(cid2.path);
+//      avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+//  }else{
+//    avatarHash=avatar
+//   }
+//   const userObject={
+//     //userId:userId,
+//     userName:userName,
+//     email:email,
+//     social:social,
+//     repo:repo,
+//     bio:bio,
+//     avatar:avatarHash,
+//     userAddress:this.state.accountAddress
+//   }
+//   console.log(userObject)
+//     this.state.usersContract.methods
+//            .createUser(userName,email,social,repo,bio,avatarHash)
+//            .send({ from: this.state.accountAddress })
+//            .on("confirmation", () => {
+//              localStorage.setItem(this.state.accountAddress, new Date().getTime());
+//              this.setState({ loading: false });
+//              window.location.href=`/account`
+             
+            
+//            })
+//            this.setState({userLoggedIn:true});
+          
+//    }
+const nameIsUsed=false;
+if(!nameIsUsed){
+  if(avatar instanceof Blob){
     const  cid2= await ipfs.add(avatar);
     console.log(cid2.path);
      avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
  }else{
    avatarHash=avatar
   }
-    this.state.usersContract.methods
-           .createUser(userName,email,social,repo,bio,avatarHash)
-           .send({ from: this.state.accountAddress })
-           .on("confirmation", () => {
-             localStorage.setItem(this.state.accountAddress, new Date().getTime());
-             this.setState({ loading: false });
-             window.location.href=`/account`
-             
-            
-           })
-           this.setState({userLoggedIn:true});
-          
-   }
+  const data={
+    //userId:userId,
+    userName:userName,
+    userEmail:email,
+    userSocial:social,
+    userRepo:repo,
+    userBio:bio,
+    userAvatarHash:avatarHash,
+    userAddress:this.state.accountAddress
+  }
+
+  //console.log(data)
+  UserDataService.create(data)
+      .then(response => {
+        this.setState({user:{
+          userId: response.data.userId,
+          userName: response.data.userName,
+          userEmail: response.data.userEmail,
+          userSocial: response.data.userSocial,
+          userRepo: response.data.userRepo,
+          userBio: response.data.userBio,
+          userAvatarHash: response.data.userAvatarHash,
+          userAddress: response.data.userAddress
+        }
+        });
+        //  setSubmitted(true);
+       // console.log(response.data);
+       console.log(this.state.user)
+       window.location.href=`/account`
+       this.setState({userLoggedIn:true});
+      })
+      .catch(e => {
+        console.log(e);
+      });
+
+}
+
    else {
     {
      this.setState({ nameIsUsed: true });
@@ -364,11 +470,74 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
   console.log(userName,oldemail,email,social,repo,bio,avatar,this.state.accountAddress)
   let avatarHash;
  
-  const getUserEmail=await this.state.usersContract.methods.allUsers(account).call();
-  console.log(avatar instanceof Blob)
-  //email not changed hence no need to check it already exists or not 
- if(getUserEmail[2]==email){
+//   const getUserEmail=await this.state.usersContract.methods.allUsers(account).call();
+//   console.log(avatar instanceof Blob)
+//   //email not changed hence no need to check it already exists or not 
+//  if(getUserEmail[2]==email){
 
+  // if (avatar instanceof Blob){
+  //   console.log("name is  used and avatar is blob")
+  // const  cid2= await ipfs.add(avatar);
+  // console.log(cid2.path);
+  
+  //  avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+  // }
+  // else{
+  //   console.log("name is  used and avatar is link")
+  //   avatarHash=avatar;
+  // }
+//   this.state.usersContract.methods
+//          .updateUser(userName,oldemail,email,social,repo,bio,avatarHash)
+//          .send({ from: this.state.accountAddress })
+//          .on("confirmation", () => {
+//            localStorage.setItem(this.state.accountAddress, new Date().getTime());
+//            this.setState({ loading: false });
+//            window.location.href="/account"
+//           // window.location.reload();
+
+//          })
+//  }
+//  else{
+//   const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
+//   const emailIsUsed=await this.state.usersContract.methods.userEmailExists(email).call();
+//   console.log(nameIsUsed);
+//   if(!emailIsUsed){
+//     this.setState({ emailIsUsed: false });
+//    //previousUserId=await this.state.cryptoBoysContract.methods.userCounter().call();
+//   // previousUserId=previousUserId.toNumber();
+// //const userId=previousUserId+1;
+//   //  const userObject={
+//   //    userId:userId,
+//   //    userName:userName,
+//   //    email:email,
+//   //    social:social,
+//   //    repo:repo,
+//   //    bio:bio,
+//   //    avatar:avatar
+//   //  }
+  
+//   if(avatar instanceof Blob){
+//     console.log("name is not used and avatar is blob")
+//     const  cid2= await ipfs.add(avatar);
+//     console.log(cid2.path);
+//      avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+//   }
+//   else {
+//     console.log("name is not used and avatar is link")
+//      avatarHash=avatar;
+//   }
+//    this.state.usersContract.methods
+//           .updateUser(userName,oldemail,email,social,repo,bio,avatarHash)
+//           .send({ from: this.state.accountAddress })
+//           .on("confirmation", () => {
+//             localStorage.setItem(this.state.accountAddress, new Date().getTime());
+//             this.setState({ loading: false });
+//             window.location.href="/account"
+//            // window.location.reload();
+//           })
+//   }
+const nameIsUsed=false;
+if(!nameIsUsed){
   if (avatar instanceof Blob){
     console.log("name is  used and avatar is blob")
   const  cid2= await ipfs.add(avatar);
@@ -380,63 +549,47 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
     console.log("name is  used and avatar is link")
     avatarHash=avatar;
   }
-  this.state.usersContract.methods
-         .updateUser(userName,oldemail,email,social,repo,bio,avatarHash)
-         .send({ from: this.state.accountAddress })
-         .on("confirmation", () => {
-           localStorage.setItem(this.state.accountAddress, new Date().getTime());
-           this.setState({ loading: false });
-           window.location.href="/account"
-          // window.location.reload();
+  const data={
+    //userId:userId,
+    userName:userName,
+    userEmail:email,
+    userSocial:social,
+    userRepo:repo,
+    userBio:bio,
+    userAvatarHash:avatarHash,
+    userAddress:this.state.accountAddress
+  }
 
-         })
- }
- else{
-  const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
-  const emailIsUsed=await this.state.usersContract.methods.userEmailExists(email).call();
-  console.log(nameIsUsed);
-  if(!emailIsUsed){
-    this.setState({ emailIsUsed: false });
-   //previousUserId=await this.state.cryptoBoysContract.methods.userCounter().call();
-  // previousUserId=previousUserId.toNumber();
-//const userId=previousUserId+1;
-  //  const userObject={
-  //    userId:userId,
-  //    userName:userName,
-  //    email:email,
-  //    social:social,
-  //    repo:repo,
-  //    bio:bio,
-  //    avatar:avatar
-  //  }
-  
-  if(avatar instanceof Blob){
-    console.log("name is not used and avatar is blob")
-    const  cid2= await ipfs.add(avatar);
-    console.log(cid2.path);
-     avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
-  }
-  else {
-    console.log("name is not used and avatar is link")
-     avatarHash=avatar;
-  }
-   this.state.usersContract.methods
-          .updateUser(userName,oldemail,email,social,repo,bio,avatarHash)
-          .send({ from: this.state.accountAddress })
-          .on("confirmation", () => {
-            localStorage.setItem(this.state.accountAddress, new Date().getTime());
-            this.setState({ loading: false });
-            window.location.href="/account"
-           // window.location.reload();
-          })
-  }
+  //console.log(data)
+  UserDataService.update(this.state.accountAddress,data)
+      .then(response => {
+        this.setState({user:{
+          userId: response.data.userId,
+          userName: response.data.userName,
+          userEmail: response.data.userEmail,
+          userSocial: response.data.userSocial,
+          userRepo: response.data.userRepo,
+          userBio: response.data.userBio,
+          userAvatarHash: response.data.userAvatarHash,
+          userAddress: response.data.userAddress
+        }
+        });
+        //  setSubmitted(true);
+       // console.log(response.data);
+       console.log(this.state.user)
+       window.location.href=`/account`
+      })
+      .catch(e => {
+        console.log(e);
+      });
+}
   else {
    {
     this.setState({ nameIsUsed: true });
     this.setState({ emailIsUsed: true });
     this.setState({ loading: false });
   }
-}}
+}
   
         
 };
@@ -800,9 +953,10 @@ buyCryptoBoyWithDress = (tokenId, price) => {
               path="/creators"
               render={()=>(
                 <AllCreators
-                allusers={this.state.users}
+                allusers={this.state.allUsers}
                 usersContract={this.state.usersContract}
-                usersCount={this.state.usersCount}/>
+                usersCount={this.state.usersCount}
+                allCreators={this.state.allUsers}/>
               )}/>
             <Route
               path="/mint"

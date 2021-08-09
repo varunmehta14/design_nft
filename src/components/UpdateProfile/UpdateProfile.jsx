@@ -32,29 +32,29 @@ const classes=useStyles();
   console.log(currentUser)
   useEffect(()=>{
     setUserName(currentUser.userName);
-    setBio(currentUser.bio);
-    setSocial(currentUser.social);
-    setRepo(currentUser.repo);
-    setEmail(currentUser.email);
-    setSrc(currentUser.avatarhash);
-    setBuffer(currentUser.avatarhash);
+    setBio(currentUser.userBio);
+    setSocial(currentUser.userSocial);
+    setRepo(currentUser.userRepo);
+    setEmail(currentUser.userEmail);
+    setSrc(currentUser.userAvatarHash);
+    setBuffer(currentUser.userAvatarHash);
 
   },[currentUser]);
   //const[preview,setPreview]=useState(currentUser.avatarHash);
   
   const[userName,setUserName]=useState(currentUser.userName);
   //const[olduserName,setOlduserName]=useState(currentUser.userName);
-  const[bio,setBio]=useState(currentUser.bio);
-  const[social,setSocial]=useState(currentUser.social);
-  const[repo,setRepo]=useState(currentUser.repo);
-  const[email,setEmail]=useState(currentUser.email);
+  const[bio,setBio]=useState(currentUser.userBio);
+  const[social,setSocial]=useState(currentUser.userSocial);
+  const[repo,setRepo]=useState(currentUser.userRepo);
+  const[email,setEmail]=useState(currentUser.userEmail);
 
-  const[src,setSrc]=useState(currentUser.avatarhash);
-  const[buffer,setBuffer]=useState(currentUser.avatarhash);
+  const[src,setSrc]=useState(currentUser.userAvatarHash);
+  const[buffer,setBuffer]=useState(currentUser.userAvatarHash);
   const [emailError, setEmailError] = useState(false);
   const [clickedChange,setClickedChange]=useState(false);
 
-  const oldemail=currentUser.email;
+  const oldemail=currentUser.userEmail;
   console.log(oldemail)
   
   const validateEmail = (e) => {

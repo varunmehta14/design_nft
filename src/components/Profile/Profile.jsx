@@ -16,13 +16,14 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 
 import AvatarImageCropper from 'react-avatar-image-cropper';
+//import UserDataService from ".../services/UserService";
 
 
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
+   display: 'flex',
     flexDirection: 'column',
     //alignItems: 'center',
   },
@@ -56,6 +57,63 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
   const[src,setSrc]=useState("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");
   const [emailError, setEmailError] = useState(false);
   const [clickedChange,setClickedChange]=useState(false);
+
+  const initialUserState = {
+    userId: null,
+    userName: "",
+    userEmail: "",
+    userSocial: "",
+    userRepo: "",
+    userBio: "",
+    userAvatarHash: "https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX",
+    userAddress: "",
+
+  };
+  const [user, setUser] = useState(initialUserState);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setUser({ ...user, [name]: value });
+    console.log(user)
+  };
+  const saveUser = () => {
+    var data = {
+      
+    userName: user.userName,
+    userEmail: user.userEmail,
+    userSocial: user.userSocial,
+    userRepo: user.userRepo,
+    userBio: user.userBio,
+    userAvatarHash: user.userAvatarHash,
+    userAddress: user.userAddress,
+    };
+  //   UserDataService.create(data)
+  //     .then(response => {
+  //       setUser({
+          // userId: response.data.userId,
+          // userName: response.data.userName,
+          // userEmail: response.data.userEmail,
+          // userSocial: response.data.userSocial,
+          // userRepo: response.data.userRepo,
+          // userBio: response.data.userBio,
+          // userAvatarHash: response.data.userAvatarHash,
+          // userAddress: response.data.userAddress,
+  //         description: response.data.description,
+  //         published: response.data.published
+  //       });
+  //       setSubmitted(true);
+  //       console.log(response.data);
+  //     })
+  //     .catch(e => {
+  //       console.log(e);
+  //     });
+   };
+
+  // const newUser = () => {
+  //   setUser(initialUserState);
+  //   setSubmitted(false);
+  // };
 
   const validateEmail = (e) => {
     var email = e;
@@ -132,7 +190,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
         
           </div> 
           </form>  ):( <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
-         <img src={src} alt="Preview" />
+         <img src={src} alt="Preview" name="userAvatarHash"/>
           </div> )}
        
           
@@ -173,6 +231,8 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
                 required
                 value={userName}
                 onChange={(e)=>{setUserName(e.target.value)}}
+                //value={user.userName}
+                //onChange={handleInputChange}
                 error={nameIsUsed}
                 id="userName"
                 label="User Name"
@@ -185,9 +245,11 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
             required
             value={email}
             onChange={(e)=>{setEmail(e.target.value)}}
-            id="email"
+            //value={user.userEmail}
+            //onChange={handleInputChange}
+            id="userEmail"
             label="Email Address"
-            name="email"
+            name="userEmail"
             error={emailError}
             autoComplete="email"
             autoFocus
@@ -201,23 +263,27 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
         <div style={{display:"flex",justifyContent:"space-evenly"}}>
         <TextField
                 
-                name="Social Media"
+                name="userSocial"
                 variant="outlined"
                 required
                 value={social}
                 onChange={(e)=>{setSocial(e.target.value)}}
-                id="socialMedia"
+                //value={user.userSocial}
+                //onChange={handleInputChange}
+                id="userSocial"
                 label="Social Media Link"
                 autoFocus
           />
 
           <TextField
             variant="outlined"
-            id="customUrl"
+            id="userRepo"
             value={repo}
             onChange={(e)=>{setRepo(e.target.value)}}
+            //value={user.userRepo}
+            //onChange={handleInputChange}
             label="Custom URL"
-            name="customUrl" 
+            name="userRepo" 
             autoFocus
           />
         </div>
@@ -229,6 +295,9 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
           multiline
           value={bio}
           onChange={(e)=>{setBio(e.target.value)}}
+          //value={user.userBio}
+          //onChange={handleInputChange}
+          name="userBio"
           rowsMax={4}
           variant="outlined"
         

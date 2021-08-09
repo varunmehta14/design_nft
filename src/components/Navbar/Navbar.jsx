@@ -644,7 +644,7 @@ const renderMenu = (
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-               <Avatar alt={currentUser[1]} src={currentUser[6]}/>
+               <Avatar alt={currentUser.userName} src={currentUser.userAvatarHash}/>
             </IconButton>)}
              
           </div>
@@ -662,7 +662,7 @@ const renderMenu = (
     onClose={handleMenuClose}
   >
     {console.log(currentUser)}
-    {!currentUser[1]?( <MenuItem onClick={handleMenuClose}><Link to="/profile" className="nav-link" >
+    {!currentUser?( <MenuItem onClick={handleMenuClose}><Link to="/profile" className="nav-link" >
     Profile
               </Link></MenuItem>):(   <MenuItem onClick={handleMenuClose}><Link to="/account" className="nav-link" >
     My account
@@ -856,7 +856,7 @@ const renderMobileMenu = (
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-               <Avatar alt={currentUser[1]} src={currentUser[6]}/>
+               <Avatar alt={currentUser.userName} src={currentUser.userAvatarHash}/>
             </IconButton>)}
              
             <IconButton
