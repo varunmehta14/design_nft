@@ -19,7 +19,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import Typography from '@material-ui/core/Typography';
-
+import UserDataService from "../../services/UserService";
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const useStyles = makeStyles((theme) => ({
@@ -140,9 +140,61 @@ const [designMetadata,setDesignMetadata]=useState("");
       console.log(designMetadata)
     }   
    }
-     
+  if(props.cryptoBoys[thistokenId]){
     
-    })
+   UserDataService.getByAddress(props.cryptoBoys[thistokenId].mintedBy)
+   .then(response => 
+     { 
+       console.log(response);
+       setMintedByName(response.data[0].userName)
+       setMintedAvatar(response.data[0].userAvatarHash)
+
+     
+     
+     //  setSubmitted(true);
+    // console.log(response.data);
+    
+   
+   })
+   .catch(e => {
+     console.log(e);
+   });
+   UserDataService.getByAddress(props.cryptoBoys[thistokenId].currentOwner)
+   .then(response => 
+     { 
+       console.log(response);
+       setOwnedByName(response.data[0].userName)
+       setOwnedAvatar(response.data[0].userAvatarHash)
+
+     
+     })
+     //  setSubmitted(true);
+    // console.log(response.data);
+   
+   
+   .catch(e => {
+     console.log(e);
+   });
+   UserDataService.getByAddress(props.cryptoBoys[thistokenId].previousOwner)
+   .then(response => 
+     { 
+       console.log(response);
+       setPrevByName(response.data[0].userName)
+       setPrevAvatar(response.data[0].userAvatarHash)
+
+     
+     
+     //  setSubmitted(true);
+    // console.log(response.data);
+    
+   
+   })
+   .catch(e => {
+     console.log(e);
+   });
+    
+    }
+  })
 
   useEffect(()=>{
     getCurrentUser();
