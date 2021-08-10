@@ -1,13 +1,16 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
+const {google}=require("googleapis")
 const app = express();
 const cors = require("cors");
-const fs = require('fs').promises
-const multer = require('multer')
-require("dotenv").config();
 
+require("dotenv").config();
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 // middleware
 app.use(express.json());
+
 app.use(cors());
 
 // var Storage = multer.diskStorage({
@@ -21,6 +24,18 @@ app.use(cors());
 // var upload = multer({
 //     storage: Storage
 // }).single("file"); 
+const oAuth2Client=new google.auth.OAuth2(process.env.OAUTH_CLIENTID,process.env.OAUTH_CLIENT_SECRET,process.env.REDIRECT_URI)
+oAuth2Client.setCredentials({refresh_token:process.env.OAUTH_REFRESH_TOKEN})
+
+  //  transporter.verify((err, success) => {
+  //   err
+  //     ? console.log(err)
+  //     : console.log(`=== Server is ready to take messages: ${success} ===`);
+  //  });
+
+   app.post("/send", function (req, res) {
+  
+      const accessToken= oAuth2Client.getAccessToken();
 let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -30,21 +45,9 @@ let transporter = nodemailer.createTransport({
       clientId: process.env.OAUTH_CLIENTID,
       clientSecret: process.env.OAUTH_CLIENT_SECRET,
       refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+      accessToken:accessToken
     },
    });
-   transporter.verify((err, success) => {
-    err
-      ? console.log(err)
-      : console.log(`=== Server is ready to take messages: ${success} ===`);
-   });
-
-   app.post("/send", function (req, res) {
-    // upload(req,res,function(err){
-    //     if(err){
-    //         console.log(err)
-    //         return res.end("Something went wrong!");
-    //     }else{
-      // var file=req.body.file;
     let mailOptions = {
       from: `${req.body.buyerEmail}`,
       to: `${req.body.sendEmailTo}`,
@@ -52,12 +55,7 @@ let transporter = nodemailer.createTransport({
       text: `${req.body.feedBack}`,
       html: '<b>Hey there! </b><br> This is our first message sent with Nodemailer',
       replyTo:`${req.body.buyerEmail}`,
-    //   attachments:[
-    //       {
-    //           filename:`file1.pdf`,
-    //           path:'./uploadedFile'
-    //       }
-    //   ]
+   
        attachments:[
            {
                path:`${req.body.formDetails}`
