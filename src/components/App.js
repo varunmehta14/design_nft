@@ -760,40 +760,53 @@ buyCryptoBoyWithDress = (tokenId, price) => {
     
   } 
  searchTermfromApp=async(search)=>{
-  if(!isNaN(search)){
-    const tokenExist=await this.state.cryptoBoysContract.methods.
-                    getTokenExists(search).call();
-                    if(tokenExist){
-                      this.setState({tokenExists:true});
-                      // const searchedDesign=await this.state.cryptoBoysContract.methods.
-                      // allCryptoBoys(search).call();
-                      // this.setState({searchedDesign})
-                     // console.log(this.state.searchedDesign)
+  // if(!isNaN(search)){
+  //   const tokenExist=await this.state.cryptoBoysContract.methods.
+  //                   getTokenExists(search).call();
+  //                   if(tokenExist){
+  //                     this.setState({tokenExists:true});
+  //                     // const searchedDesign=await this.state.cryptoBoysContract.methods.
+  //                     // allCryptoBoys(search).call();
+  //                     // this.setState({searchedDesign})
+  //                    // console.log(this.state.searchedDesign)
                   
-                    this.setState({clickedAddress: search})
+  //                   this.setState({clickedAddress: search})
                     
-                    window.location.href=`/nftDetails/${search}`
-                    }
-                    else{
-                      this.setState({tokenExists:false});
-                      console.log("Token doesnt exist")
-                    }
+  //                   window.location.href=`/nftDetails/${search}`
+  //                   }
+  //                   else{
+  //                     this.setState({tokenExists:false});
+  //                     console.log("Token doesnt exist")
+  //                   }
   
-  }else{
-    const userNameExists=await this.state.usersContract.methods.
-    userNameExists(search).call();
-    if(userNameExists){
-      this.setState({userExists:true});
-    const addressFromName=await this.state.usersContract.methods.
-    nameToAddress(search).call();
-    this.setState({clickedAddress:addressFromName})
-    window.location.href=`/their-tokens/${addressFromName}`
-    }
-    else{
-      this.setState({userExists:false});
-      console.log("username doesnt exist")
-    }
-  }
+  // }else{
+   //const userNameExists=await this.state.usersContract.methods.
+  //  userNameExists(search).call();
+   // if(userNameExists){
+     // this.setState({userExists:true});
+   // const addressFromName=await this.state.usersContract.methods.
+   // nameToAddress(search).call();
+   UserDataService.getByName(search)
+   .then(response => 
+     { 
+       console.log(response);
+       this.setState({clickedAddress:response.data[0].userAddress})
+     //  setSubmitted(true);
+    // console.log(response.data);
+   window.location.href=`/their-tokens/${this.state.clickedAddress}`
+   
+   })
+   .catch(e => {
+     console.log(e);
+   });
+   // this.setState({clickedAddress:addressFromName})
+    
+   // }
+    // else{
+    //   this.setState({userExists:false});
+    //   console.log("username doesnt exist")
+    // }
+  //}
  }
  searchAllResultsFromApp=async(key)=>{
   //  const nameToUser=await this.state.usersContract.methods.

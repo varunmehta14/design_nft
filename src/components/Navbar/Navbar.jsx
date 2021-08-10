@@ -519,7 +519,7 @@ const renderMenu = (
            
              <h4>Creators</h4>
              {userSuggestions&&userSuggestions.map((result,i)=>
-              <div key={i}className={classes.suggestions}onClick={(e)=>{setText(result[1]);handleSearchSubmit(e,result[1])}} style={{cursor:"pointer",paddingTop:"1px",paddingBottom:"1px",padding:"4px",borderRadius:"2px",display:"flex",alignItems:"center",overflowWrap:"break-word"}}>
+              <div key={i}className={classes.suggestions}onClick={(e)=>{setText(result.userName);handleSearchSubmit(e,result.userName)}} style={{cursor:"pointer",paddingTop:"1px",paddingBottom:"1px",padding:"4px",borderRadius:"2px",display:"flex",alignItems:"center",overflowWrap:"break-word"}}>
                <Avatar alt={result.userName} src={result.userAvatarHash}/><b>@{result.userName}</b>
               </div>
              )}
