@@ -331,6 +331,7 @@ loadCurrentUser=()=>{
       window.web3 = new Web3(window.web3.currentProvider);
       window.ethereum.on('accountsChanged', function () {
        document.location.reload()
+       
        })
     } else {
       window.alert(
@@ -409,8 +410,47 @@ loadCurrentUser=()=>{
 //            this.setState({userLoggedIn:true});
           
 //    }
-const nameIsUsed=false;
-if(!nameIsUsed){
+
+const emailUsed=await UserDataService.getByEmail(email)
+      .then(response => 
+        { 
+          //console.log(response);
+          if(response.data[0]){
+            return true;
+          }
+          else{
+            return false;
+          }
+        //  setSubmitted(true);
+       // console.log(response.data);
+       
+      
+      })
+      .catch(e => {
+        console.log(e);
+        return false;
+      });
+const nameUsed=await UserDataService.getByName(userName)
+.then(response => 
+  { 
+    if(response.data[0]){
+      return true;
+    }
+    else{
+      return false;
+    }
+  //  setSubmitted(true);
+  // console.log(response.data);
+  
+
+})
+.catch(e => {
+  console.log(e);
+  return false;
+});
+console.log("NameUsed",nameUsed)
+console.log("EmailUsed",emailUsed)
+if(!emailUsed && !nameUsed){
   if(avatar instanceof Blob){
     const  cid2= await ipfs.add(avatar);
     console.log(cid2.path);
@@ -457,8 +497,9 @@ if(!nameIsUsed){
 
    else {
     {
-     this.setState({ nameIsUsed: true });
-     this.setState({ emailIsUsed: true });
+    this.setState({nameIsUsed:nameUsed});
+    this.setState({emailIsUsed:emailUsed});
+    
      this.setState({ loading: false });
    }
  }
@@ -536,8 +577,78 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
 //            // window.location.reload();
 //           })
 //   }
-const nameIsUsed=false;
-if(!nameIsUsed){
+
+//check is email changed or not 
+if(this.state.currentUser.userEmail==email){
+  if (avatar instanceof Blob){
+    console.log("email not changed and avatar is blob")
+  const  cid2= await ipfs.add(avatar);
+  console.log(cid2.path);
+  
+   avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
+  }
+  else{
+    console.log("email not changed and avatar is link")
+    avatarHash=avatar;
+  }
+  const data={
+    //userId:userId,
+    userName:userName,
+    userEmail:email,
+    userSocial:social,
+    userRepo:repo,
+    userBio:bio,
+    userAvatarHash:avatarHash,
+    userAddress:this.state.accountAddress
+  }
+
+  //console.log(data)
+  UserDataService.update(this.state.accountAddress,data)
+      .then(response => {
+        this.setState({user:{
+          userId: response.data.userId,
+          userName: response.data.userName,
+          userEmail: response.data.userEmail,
+          userSocial: response.data.userSocial,
+          userRepo: response.data.userRepo,
+          userBio: response.data.userBio,
+          userAvatarHash: response.data.userAvatarHash,
+          userAddress: response.data.userAddress
+        }
+        });
+        //  setSubmitted(true);
+       // console.log(response.data);
+       console.log(this.state.user)
+       window.location.href=`/account`
+      })
+      .catch(e => {
+        console.log(e);
+      });
+      this.setState({emailIsUsed:false})
+}
+else{
+
+ const emailUsed=await UserDataService.getByEmail(email)
+      .then(response => 
+        { 
+          console.log(response);
+          if(response.data[0]){
+            return true;
+          }
+          else{
+            return false;
+          }
+        //  setSubmitted(true);
+       // console.log(response.data);
+       
+      
+      })
+      .catch(e => {
+        console.log(e);
+        return false;
+      });
+
+if(!emailUsed){
   if (avatar instanceof Blob){
     console.log("name is  used and avatar is blob")
   const  cid2= await ipfs.add(avatar);
@@ -585,11 +696,14 @@ if(!nameIsUsed){
 }
   else {
    {
-    this.setState({ nameIsUsed: true });
+    
     this.setState({ emailIsUsed: true });
     this.setState({ loading: false });
   }
 }
+}
+
+
   
         
 };

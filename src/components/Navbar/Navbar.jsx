@@ -627,7 +627,7 @@ const renderMenu = (
           style={{ width: "2rem", marginLeft: "0.5rem" }}
         />
       </Button>):null}
-      {!currentUser?( <IconButton
+      {!currentUser.userName?( <IconButton
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
@@ -662,7 +662,7 @@ const renderMenu = (
     onClose={handleMenuClose}
   >
     {console.log(currentUser)}
-    {!currentUser?( <MenuItem onClick={handleMenuClose}><Link to="/profile" className="nav-link" >
+    {!currentUser.userName?( <MenuItem onClick={handleMenuClose}><Link to="/profile" className="nav-link" >
     Profile
               </Link></MenuItem>):(   <MenuItem onClick={handleMenuClose}><Link to="/account" className="nav-link" >
     My account
@@ -839,7 +839,7 @@ const renderMobileMenu = (
           style={{ width: "2rem", marginLeft: "0.5rem" }}
         />
       </Button>):null}
-      {!currentUser?( <IconButton
+      {!currentUser.userName?( <IconButton
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
@@ -880,7 +880,7 @@ const renderMobileMenu = (
     onClose={handleMobileMenuClose}
   >
     {console.log(currentUser)}
-    {!currentUser[1]?( <MenuItem onClick={handleMobileMenuClose}><Link to="/profile" className="nav-link" >
+    {!currentUser.userName?( <MenuItem onClick={handleMobileMenuClose}><Link to="/profile" className="nav-link" >
     Profile
               </Link></MenuItem>):(   <MenuItem onClick={handleMobileMenuClose}><Link to="/account" className="nav-link" >
     My account

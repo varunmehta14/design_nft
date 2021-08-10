@@ -250,7 +250,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
             id="userEmail"
             label="Email Address"
             name="userEmail"
-            error={emailError}
+            error={emailError||emailIsUsed}
             autoComplete="email"
             autoFocus
           />

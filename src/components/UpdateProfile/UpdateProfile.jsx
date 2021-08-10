@@ -216,7 +216,7 @@ const classes=useStyles();
              name="email"
              autoComplete="email"
              autoFocus
-             error={emailError}
+             error={emailError||emailIsUsed}
            />
          </div>
          <br/>
@@ -380,7 +380,7 @@ const classes=useStyles();
                  name="email"
                  autoComplete="email"
                  autoFocus
-                 error={emailError}
+                 error={emailError||emailIsUsed}
                />
              </div>
              <br/>

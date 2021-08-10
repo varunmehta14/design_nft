@@ -99,15 +99,15 @@ exports.update = (req, res) => {
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.userName;
+    const id = req.params.id;
 
     User.destroy({
-      where: { userName: id }
+      where: { userAddress: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Tutorial was deleted successfully!"
+            message: "User was deleted successfully!"
           });
         } else {
           res.send({
@@ -144,4 +144,22 @@ exports.findByAddress = (req, res) => {
           message: "Error retrieving Tutorial with id=" + userName
         });
       });
+};
+
+exports.findByEmail = (req, res) => {
+  //console.log(req.params)
+  //const userAddress = req.query.userName;
+  
+  const userEmail = req.params.id;
+  console.log(userEmail)
+  var condition = userEmail ? { userEmail: { [Op.like]: `%${userEmail}%` } } : null;
+  User.findAll({where:condition})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving Tutorial with id=" + userName
+      });
+    });
 };

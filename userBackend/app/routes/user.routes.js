@@ -8,6 +8,8 @@ module.exports = app => {
   
     // Retrieve a single user with id
     router.get("/address/:id", users.findByAddress);
+
+    router.get("/email/:id", users.findByEmail);
     // Retrieve all users
     router.get("/", users.findAll);
   
@@ -23,10 +25,10 @@ module.exports = app => {
     router.put("/address/:id", users.update);
   
     // Delete a user with id
-    router.delete("/:id", users.delete);
+    router.delete("/address/:id", users.delete);
   
     // Delete all users
-    router.delete("/", users.deleteAll);
+    //router.delete("/", users.deleteAll);
   
     app.use('/api/users', router);
   };

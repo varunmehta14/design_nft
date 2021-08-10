@@ -9,6 +9,11 @@ const getByAddress = id => {
   return http.get(`/users/address/${id}`);
 };
 
+const getByEmail = id => {
+  
+  return http.get(`/users/email/${id}`);
+};
+
 const getByName = id => {
   return http.get(`/users/name/${id}`);
 };
@@ -22,24 +27,23 @@ const update = (id, data) => {
 };
 
 const remove = id => {
-  return http.delete(`/users/${id}`);
+  return http.delete(`/users/address/${id}`);
 };
 
 const removeAll = () => {
   return http.delete(`/users`);
 };
 
-const findByAddress = title => {
-  return http.get(`/users?userAddress=${title}`);
-};
+
 
 export default {
   getAll,
   getByAddress,
+  getByEmail,
   getByName,
   create,
   update,
   remove,
   removeAll,
-  findByAddress
+  
 } ;
