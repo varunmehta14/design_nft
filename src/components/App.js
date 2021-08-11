@@ -222,42 +222,8 @@ class App extends Component {
       } else {
         this.setState({ contractDetected: false });
       }
-      const networkData2 = Users.networks[networkId];
-      if (networkData2) {
-        this.setState({ loading: true });
-        const usersContract = web3.eth.Contract(
-          Users.abi,
-          networkData2.address
-        );
-        this.setState({usersContract})
-        //current user 
-        //const current=await this.state.users.find((user)=>user.userAddress===(this.state.accountAddress));
-        const current=await usersContract.methods
-        .allUsers(this.state.accountAddress)
-        .call();
-        this.setState({currentUser:current});
-        this.setState({loading:false});
-         //grt number of user
-         const usersCount = await usersContract.methods
-         .userCounter()
-         .call();
-         this.setState({ usersCount });
-       //get all the designs
-       for (var i = 1; i <= usersCount; i++) {
-         const usAdd=await usersContract.methods.idToAddress(i).call();
-         console.log(usAdd);
-        // this.setState({usAdd})
-        // console.log(this.state.usAdd)
-         const user = await usersContract.methods
-           .allUsers(usAdd)
-           .call();
-           console.log(user)
-         this.setState({
-           users: [...this.state.users, user],
-         });
-       }
-       console.log(this.state.users)
-    }}
+   
+  }
   };
 
 loadAllUsers=()=>{
@@ -300,27 +266,7 @@ loadCurrentUser=()=>{
         console.log(e);
       });
 }
-//   loadDesigns=async(start,end)=>{
-//     console.log("end",end)
-//     const cryptoBoysCount = await this.state.cryptoBoysContract.methods
-//     .cryptoBoyCounter()
-//     .call();
-//  // this.setState({ cryptoBoysCount }); 
-//    for (var i = start; i <= end; i++) {
-     
-    
-//     const cryptoBoy = await this.state.cryptoBoysContract.methods
-//       .allCryptoBoys(i)
-//       .call();
-//     this.setState({
-//       allcryptoBoys: [...this.state.allcryptoBoys, cryptoBoy],
-//     });
-//     if(i==cryptoBoysCount){
-//       this.setState({endOfDesigns:true})
-//       break;
-//     }
-//   }
-//   }
+
   loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -370,46 +316,7 @@ loadCurrentUser=()=>{
    let previousUserId;
    let avatarHash;
    
-//const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
-  // const emailIsUsed=await this.state.usersContract.methods.userEmailExists(email).call();
-  // console.log(nameIsUsed);
-//    if(!nameIsUsed && !emailIsUsed){
-//     previousUserId=await this.state.usersContract.methods.userCounter().call();
-//     previousUserId=previousUserId.toNumber();
-//     //const userId=previousUserId+1;
-    
-    
-//    if(avatar instanceof Blob){
-//     const  cid2= await ipfs.add(avatar);
-//     console.log(cid2.path);
-//      avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
-//  }else{
-//    avatarHash=avatar
-//   }
-//   const userObject={
-//     //userId:userId,
-//     userName:userName,
-//     email:email,
-//     social:social,
-//     repo:repo,
-//     bio:bio,
-//     avatar:avatarHash,
-//     userAddress:this.state.accountAddress
-//   }
-//   console.log(userObject)
-//     this.state.usersContract.methods
-//            .createUser(userName,email,social,repo,bio,avatarHash)
-//            .send({ from: this.state.accountAddress })
-//            .on("confirmation", () => {
-//              localStorage.setItem(this.state.accountAddress, new Date().getTime());
-//              this.setState({ loading: false });
-//              window.location.href=`/account`
-             
-            
-//            })
-//            this.setState({userLoggedIn:true});
-          
-//    }
+
 
 const emailUsed=await UserDataService.getByEmail(email)
       .then(response => 
@@ -439,8 +346,7 @@ const nameUsed=await UserDataService.getByName(userName)
     else{
       return false;
     }
-  //  setSubmitted(true);
-  // console.log(response.data);
+  
   
 
 })
@@ -459,7 +365,7 @@ if(!emailUsed && !nameUsed){
    avatarHash=avatar
   }
   const data={
-    //userId:userId,
+    
     userName:userName,
     userEmail:email,
     userSocial:social,
@@ -483,8 +389,7 @@ if(!emailUsed && !nameUsed){
           userAddress: response.data.userAddress
         }
         });
-        //  setSubmitted(true);
-       // console.log(response.data);
+       
        console.log(this.state.user)
        window.location.href=`/account`
        this.setState({userLoggedIn:true});
@@ -511,72 +416,7 @@ updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=
   console.log(userName,oldemail,email,social,repo,bio,avatar,this.state.accountAddress)
   let avatarHash;
  
-//   const getUserEmail=await this.state.usersContract.methods.allUsers(account).call();
-//   console.log(avatar instanceof Blob)
-//   //email not changed hence no need to check it already exists or not 
-//  if(getUserEmail[2]==email){
 
-  // if (avatar instanceof Blob){
-  //   console.log("name is  used and avatar is blob")
-  // const  cid2= await ipfs.add(avatar);
-  // console.log(cid2.path);
-  
-  //  avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
-  // }
-  // else{
-  //   console.log("name is  used and avatar is link")
-  //   avatarHash=avatar;
-  // }
-//   this.state.usersContract.methods
-//          .updateUser(userName,oldemail,email,social,repo,bio,avatarHash)
-//          .send({ from: this.state.accountAddress })
-//          .on("confirmation", () => {
-//            localStorage.setItem(this.state.accountAddress, new Date().getTime());
-//            this.setState({ loading: false });
-//            window.location.href="/account"
-//           // window.location.reload();
-
-//          })
-//  }
-//  else{
-//   const nameIsUsed=await this.state.usersContract.methods.userNameExists(userName).call();
-//   const emailIsUsed=await this.state.usersContract.methods.userEmailExists(email).call();
-//   console.log(nameIsUsed);
-//   if(!emailIsUsed){
-//     this.setState({ emailIsUsed: false });
-//    //previousUserId=await this.state.cryptoBoysContract.methods.userCounter().call();
-//   // previousUserId=previousUserId.toNumber();
-// //const userId=previousUserId+1;
-//   //  const userObject={
-//   //    userId:userId,
-//   //    userName:userName,
-//   //    email:email,
-//   //    social:social,
-//   //    repo:repo,
-//   //    bio:bio,
-//   //    avatar:avatar
-//   //  }
-  
-//   if(avatar instanceof Blob){
-//     console.log("name is not used and avatar is blob")
-//     const  cid2= await ipfs.add(avatar);
-//     console.log(cid2.path);
-//      avatarHash = `https://ipfs.infura.io/ipfs/${cid2.path}`;
-//   }
-//   else {
-//     console.log("name is not used and avatar is link")
-//      avatarHash=avatar;
-//   }
-//    this.state.usersContract.methods
-//           .updateUser(userName,oldemail,email,social,repo,bio,avatarHash)
-//           .send({ from: this.state.accountAddress })
-//           .on("confirmation", () => {
-//             localStorage.setItem(this.state.accountAddress, new Date().getTime());
-//             this.setState({ loading: false });
-//             window.location.href="/account"
-//            // window.location.reload();
-//           })
-//   }
 
 //check is email changed or not 
 if(this.state.currentUser.userEmail==email){
@@ -592,7 +432,7 @@ if(this.state.currentUser.userEmail==email){
     avatarHash=avatar;
   }
   const data={
-    //userId:userId,
+    
     userName:userName,
     userEmail:email,
     userSocial:social,
@@ -616,8 +456,7 @@ if(this.state.currentUser.userEmail==email){
           userAddress: response.data.userAddress
         }
         });
-        //  setSubmitted(true);
-       // console.log(response.data);
+       
        console.log(this.state.user)
        window.location.href=`/account`
       })
@@ -638,8 +477,7 @@ else{
           else{
             return false;
           }
-        //  setSubmitted(true);
-       // console.log(response.data);
+        
        
       
       })
@@ -661,7 +499,6 @@ if(!emailUsed){
     avatarHash=avatar;
   }
   const data={
-    //userId:userId,
     userName:userName,
     userEmail:email,
     userSocial:social,
@@ -685,8 +522,7 @@ if(!emailUsed){
           userAddress: response.data.userAddress
         }
         });
-        //  setSubmitted(true);
-       // console.log(response.data);
+        
        console.log(this.state.user)
        window.location.href=`/account`
       })
@@ -713,11 +549,12 @@ if(!emailUsed){
    console.log("buffer2",finalbuffer)
    console.log("categories",categories)
    console.log("sizechart",sizeChart)
-   
-  //   const nameIsUsed = await this.state.cryptoBoysContract.methods
-  //     .tokenNameExists(name)
-  //     .call();
-  //  if ( !nameIsUsed) {
+   console.log("name",name)
+    const nameIsUsed = await this.state.cryptoBoysContract.methods
+      .tokenNameExists(name)
+      .call();
+      console.log("nameisused",nameIsUsed)
+    if ( !nameIsUsed) {
     console.log(this.state.cryptoBoysContract)
       let imageHashes=[];
       //let allCategories=[];
@@ -773,9 +610,7 @@ if(!emailUsed){
         let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
      const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
      const dressPrice = window.web3.utils.toWei(tokenDressPrice.toString(), "Ether");
-    //  for(let i=0;i<cryptoBoyCopies;i++){
-        
-    //  }
+   
      this.state.cryptoBoysContract.methods
         .mintCryptoBoy(name,tokenURI,price,dressPrice,imageHash)
         .send({ from: this.state.accountAddress })
@@ -789,14 +624,14 @@ if(!emailUsed){
             this.setState({ imageIsUsed: true });
             this.setState({ loading: false });
           }
-        }
+        }}
      
-    // else {
-    //   if (nameIsUsed) {
-    //     this.setState({ nameIsUsed: true });
-    //     this.setState({ loading: false });
-    //   }
-    // }
+    else {
+     
+        this.setState({ nameIsUsed: true });
+        this.setState({ loading: false });
+      
+    }
   };
 // Put or remove from sale on the marketplace
   toggleForSale = (tokenId) => {
@@ -1093,7 +928,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
               render={() => (
                 <FormAndPreview
                   mintMyNFT={this.mintMyNFT}
-                  //nameIsUsed={this.state.nameIsUsed}
+                  nameIsUsed={this.state.nameIsUsed}
                   imageIsUsed={this.state.imageIsUsed}
                  
                   setMintBtnTimer={this.setMintBtnTimer}

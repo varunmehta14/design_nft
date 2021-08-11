@@ -359,6 +359,7 @@ const onNodeToggle = currentNode => {
  required
  value={cryptoBoyName}
  onChange={(e)=>setCryptoBoyName(e.target.value)}
+ error={props.nameIsUsed}
 />
 <br/>
 <TextField
@@ -370,6 +371,7 @@ const onNodeToggle = currentNode => {
  value={cryptoBoyDescription}
  onChange={(e)=>setCryptoBoyDescription(e.target.value)}
  required
+ 
 />
 <br/><br/>
 <div >
@@ -556,6 +558,21 @@ Create Item
        ) :     
          null}
      </div>
+     <div className="mt-4">
+       {props.nameIsUsed ? (
+         <div className="alert alert-danger alert-dissmissible">
+           <button
+             type="button"
+             className="close"
+             data-dismiss="alert"
+           >
+             <span>&times;</span>
+           </button>
+           <strong>This name is taken!</strong>
+         </div>
+       ) :     
+         null}
+     </div>
 </form>
      </>)
      :multiple?
@@ -604,6 +621,7 @@ Create Item
  //rowsMax={4}
  value={cryptoBoyName}
  onChange={(e)=>setCryptoBoyName(e.target.value)}
+ error={props.nameIsUsed}
 />
 <br/>
 <TextField
@@ -818,6 +836,7 @@ Create Item
  //rowsMax={4}
  value={cryptoBoyName}
  onChange={(e)=>setCryptoBoyName(e.target.value)}
+ error={props.nameIsUsed}
 />
 
 <br/>
@@ -1020,6 +1039,22 @@ Create Item
              <span>&times;</span>
            </button>
            <strong>This image is taken!</strong>
+         </div>
+         
+       ) :     
+         null}
+     </div>
+     <div className="mt-4">
+       {props.nameIsUsed ? (
+         <div className="alert alert-danger alert-dissmissible">
+           <button
+             type="button"
+             className="close"
+             data-dismiss="alert"
+           >
+             <span>&times;</span>
+           </button>
+           <strong>This name is taken!</strong>
          </div>
          
        ) :     
