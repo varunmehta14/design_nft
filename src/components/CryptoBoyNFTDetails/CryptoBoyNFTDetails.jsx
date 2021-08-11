@@ -109,37 +109,11 @@ const [designMetadata,setDesignMetadata]=useState("");
    
      
 
-    if(props.users&&props.usersContract&&props.cryptoBoysContract){
      // const currentMinted=await props.users.find((user)=>user.userAddress.includes(props.cryptoBoys[thistokenId].mintedBy));
    // console.log("Curent minted by array",currentMinted)
-      const currentMinted=await props.usersContract.methods
-    .allUsers(props.cryptoBoys[thistokenId].mintedBy)
-    .call();
-    setMintedByName(currentMinted[1]);
-    setMintedAvatar(currentMinted[6]);
-    //const currentOwned=await props.users.find((user)=>user.userAddress.includes(props.cryptoBoys[thistokenId].currentOwner));
-    const currentOwned=await props.usersContract.methods
-    .allUsers(props.cryptoBoys[thistokenId].currentOwner)
-    .call();
-    setOwnedByName(currentOwned[1]);
-    setOwnedByEmail(currentOwned[2])
-    setOwnedAvatar(currentOwned[6]);
-    //const previousOwner=await props.users.find((user)=>user.userAddress.includes(props.cryptoboy[thistokenId].previousOwner));
-    const previousOwner=await props.usersContract.methods
-    .allUsers(props.cryptoBoys[thistokenId].previousOwner)
-    .call();
-    setPrevByName(previousOwner[1]);
-     setPrevAvatar(previousOwner[6]);
-     console.log(props.cryptoBoys[thistokenId].metaData)
-    if(props.cryptoBoys[thistokenId].metaData!==undefined){
-      console.log("undefined")
-     const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
-     const metaData = await result.json();
-    // props.cryptoBoys[thistokenId]
-     setDesignMetadata(metaData)
-      console.log(designMetadata)
-    }   
-   }
+    
+    
+   
   if(props.cryptoBoys[thistokenId]){
     
    UserDataService.getByAddress(props.cryptoBoys[thistokenId].mintedBy)
@@ -164,6 +138,7 @@ const [designMetadata,setDesignMetadata]=useState("");
      { 
        console.log(response);
        setOwnedByName(response.data[0].userName)
+       setOwnedByEmail(response.data[0].userEmail)
        setOwnedAvatar(response.data[0].userAvatarHash)
 
      
@@ -192,14 +167,21 @@ const [designMetadata,setDesignMetadata]=useState("");
    .catch(e => {
      console.log(e);
    });
-    
+   if(props.cryptoBoys[thistokenId].metaData==undefined){
+    console.log("undefined")
+   const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
+   const metaData = await result.json();
+  // props.cryptoBoys[thistokenId]
+   setDesignMetadata(metaData)
+    console.log(designMetadata)
+  }   
     }
   })
 
   useEffect(()=>{
     getCurrentUser();
   
-  },[props.usersContract,props.users]);
+  },[props.usersContract,props.users,props.cryptoBoys[thistokenId]]);
  
   // useEffect(()=>{
   // // setTokenNo(window.location.href.split("/")[4])
@@ -283,15 +265,15 @@ const [designMetadata,setDesignMetadata]=useState("");
     <>
     {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.loading?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
      
-      (<div className="d-flex flex-wrap mb-2" style={{padding:"1%",height:"100%",alignItems:"center"}}>
+      (<div className="d-flex flex-wrap mb-2" style={{padding:"1%",alignItems:"center"}}>
       <div
               key={props.cryptoBoys[thistokenId].tokenId.toNumber()}
-              className="w-50 h-50 p-4 mt-1 border "
+              className="col-md-6 w-50 p-4 mt-1 border "
               style={{display:"flex",justifyContent:"center"}}
             >
               
              
-              <img style={{objectFit:"scale-down"}} src={props.cryptoBoys[thistokenId].imageHash}/>
+              <img style={{height:"inherit",width:"inherit"}}src={props.cryptoBoys[thistokenId].imageHash}/>
              
                
         </div>
@@ -311,10 +293,10 @@ const [designMetadata,setDesignMetadata]=useState("");
         props.cryptoBoys[thistokenId].mintedBy.slice(
           props.cryptoBoys[thistokenId].mintedBy.length - 5
         )} */}
-        {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{mintedByName}</b></div>):(props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
+        {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{mintedByName}</b></div>):(<>{props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].mintedBy.slice(
-              props.cryptoBoys[thistokenId].mintedBy.length - 5))}
+              props.cryptoBoys[thistokenId].mintedBy.length - 5)}</>)}
         </Link>
     </div>
         <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
@@ -326,11 +308,11 @@ const [designMetadata,setDesignMetadata]=useState("");
         props.cryptoBoys[thistokenId].currentOwner.slice(
           props.cryptoBoys[thistokenId].currentOwner.length - 5
         )} */}
-        {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{ownedByName}</b></div>):(props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
+        {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{ownedByName}</b></div>):(<>{props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].currentOwner.slice(
               props.cryptoBoys[thistokenId].currentOwner.length - 5
-            ))}
+            )}</>)}
         </Link>
     </div>
         </div>
@@ -346,8 +328,10 @@ const [designMetadata,setDesignMetadata]=useState("");
           Ξ
           </b>
         </p>
-        {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(
-        <p>
+        {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0 ?(<>
+          {!props.cryptoBoys[thistokenId].metaData?(<>
+          {designMetadata.categories=="fashionDesign"?(<>
+            <p>
           <span className="font-weight-bold">Price with dress</span> :{" "}
           <b style={{fontSize:"xx-large",color:"black"}}>
           {window.web3.utils.fromWei(
@@ -356,7 +340,19 @@ const [designMetadata,setDesignMetadata]=useState("");
           )}{" "}
           Ξ
           </b>
-        </p>):(null)}
+        </p>
+          </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+            <p>
+          <span className="font-weight-bold">Price with dress</span> :{" "}
+          <b style={{fontSize:"xx-large",color:"black"}}>
+          {window.web3.utils.fromWei(
+            props.cryptoBoys[thistokenId].dressPrice.toString(),
+            "Ether"
+          )}{" "}
+          Ξ
+          </b>
+        </p></>):null}</>)}
+        </>):(null)}
         </div>
       
         <hr/>
@@ -403,8 +399,10 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               </div>
             </form>
-            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(
-            <form
+            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0 ?(<>
+              {!props.cryptoBoys[thistokenId].metaData ?( <>
+              {designMetadata.categories=="fashionDesign"?(<>
+                <form
             onSubmit={(e) => {
               e.preventDefault();
               callChangeTokenDressPriceFromApp(
@@ -441,7 +439,47 @@ const [designMetadata,setDesignMetadata]=useState("");
               change price
             </button>
             </div>
-          </form>):(null)}
+          </form>
+              </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+                <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              callChangeTokenDressPriceFromApp(
+                props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                newCryptoBoyDressPrice
+              );
+              
+            }}
+           
+          >
+            <div className="form-group mt-4 " >
+              <label htmlFor="newCryptoBoyDressPrice">
+                <span className="font-weight-bold">Change Token Price with Dress</span> :
+              </label>{" "}
+              <input
+                required
+                type="number"
+                name="newCryptoBoyDressPrice"
+                id="newCryptoBoyDressPrice"
+                value={newCryptoBoyDressPrice}
+                className="form-control "
+                placeholder="Enter new price with dress"
+                onChange={(e) =>
+                  setNewCryptoBoyDressPrice(e.target.value)
+                }
+              />
+            </div>
+            <div style={{display:"flex",justifyContent:"center",padding:"0 2% 0 2%"}}>
+            <button
+              type="submit"
+              style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
+              className="btn btn-outline-info mt-0 "
+            >
+              change price
+            </button>
+            </div>
+          </form></>):null}</>)}
+           </>):(null)}
           </div>
           ) : null}
         </div>
@@ -499,8 +537,10 @@ const [designMetadata,setDesignMetadata]=useState("");
                 Ξ
               </button>
               {"   "}
-             {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(
-                <Link to={`/sizeDetails`}
+             {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
+              {!props.cryptoBoys[thistokenId].metaData?(<>
+                {designMetadata.categories=="fashionDesign"?(<>
+                  <Link to={`/sizeDetails`}
                 className="btn btn-outline-primary mt-3 "
                 value={props.cryptoBoys[thistokenId].dressPrice}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
@@ -520,6 +560,28 @@ const [designMetadata,setDesignMetadata]=useState("");
                 )}{" "}
                 Ξ
               </Link>
+                </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+                <Link to={`/sizeDetails`}
+                className="btn btn-outline-primary mt-3 "
+                value={props.cryptoBoys[thistokenId].dressPrice}
+                style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
+                // onClick={(e) =>
+                //   props.buyCryptoBoyWithDress(
+                //     props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                //     e.target.value
+                //   )
+                // }
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               //onClick={handleOpen}
+              >
+                Buy with Dress For{" "}
+                {window.web3.utils.fromWei(
+                  props.cryptoBoys[thistokenId].dressPrice.toString(),
+                  "Ether"
+                )}{" "}
+                Ξ
+              </Link></>):null}</>)}
+                </>
              ):(null)}
              
               
@@ -574,11 +636,11 @@ const [designMetadata,setDesignMetadata]=useState("");
         props.cryptoBoys[thistokenId].currentOwner.slice(
           props.cryptoBoys[thistokenId].currentOwner.length - 5
         )} */}
-        {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
+        {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(<>{props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].previousOwner.slice(
               props.cryptoBoys[thistokenId].previousOwner.length - 5
-            ))}
+            )}</>)}
         </Link>
     </div>
     <hr/>
@@ -625,7 +687,10 @@ const [designMetadata,setDesignMetadata]=useState("");
   <div>
     {!props.cryptoBoys[thistokenId].metaData?(
       <>
-      {/* <AutoPlaySwipeableViews
+      {console.log("Metadata undefined",designMetadata.images.length)}
+      
+      {designMetadata.images.length!=0 ?(<>
+        <AutoPlaySwipeableViews
       axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
       index={activeStep}
       onChangeIndex={handleStepChange}
@@ -657,10 +722,12 @@ const [designMetadata,setDesignMetadata]=useState("");
          
         </Button>
       }
-    /> */}
+    /></>):null}
+      
     </>
     ):(<>
-    <AutoPlaySwipeableViews
+    {props.cryptoBoys[thistokenId].metaData.images.length!=0?(<>
+      <AutoPlaySwipeableViews
       axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
       index={activeStep}
       onChangeIndex={handleStepChange}
@@ -693,7 +760,8 @@ const [designMetadata,setDesignMetadata]=useState("");
          
         </Button>
       }
-    /></>)}
+    /></>):null}
+    </>)}
   
     </div>
   {/* <div>
@@ -740,7 +808,7 @@ const [designMetadata,setDesignMetadata]=useState("");
        <div style={{padding:"2%",height:"100%"}}>
         <div  style={{margin:"auto",padding:"2%",display:"flex",justifyContent:"center"}}>    
         <Paper>
-             <img style={{width:"inherit"}} src={props.cryptoBoys[thistokenId].imageHash}/>       
+             <img style={{width:"100%",height:"100%"}} src={props.cryptoBoys[thistokenId].imageHash}/>       
              </Paper>
         </div>
 
@@ -763,10 +831,10 @@ const [designMetadata,setDesignMetadata]=useState("");
         props.cryptoBoys[thistokenId].mintedBy.slice(
           props.cryptoBoys[thistokenId].mintedBy.length - 5
         )} */}
-        {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;@{mintedByName}<br/>   <>&nbsp;Creator</></div>):(<>props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
+        {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;@{mintedByName}<br/>   <>&nbsp;Creator</></div>):(<>{props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].mintedBy.slice(
-              props.cryptoBoys[thistokenId].mintedBy.length - 5)<br/>  <>&nbsp;Creator</></>)}
+              props.cryptoBoys[thistokenId].mintedBy.length - 5)}<br/>  <>&nbsp;Creator</></>)}
         </Link>
     </div>
         <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
@@ -777,11 +845,11 @@ const [designMetadata,setDesignMetadata]=useState("");
         props.cryptoBoys[thistokenId].currentOwner.slice(
           props.cryptoBoys[thistokenId].currentOwner.length - 5
         )} */}
-        {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;@{ownedByName} <br/> <>&nbsp;Owner</></div>):(<>props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
+        {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;@{ownedByName} <br/> <>&nbsp;Owner</></div>):(<>{props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].currentOwner.slice(
               props.cryptoBoys[thistokenId].currentOwner.length - 5
-            )<br/> <>&nbsp;Owner</></>)}
+            )}<br/> <>&nbsp;Owner</></>)}
         </Link>
     </div>
     
@@ -789,6 +857,7 @@ const [designMetadata,setDesignMetadata]=useState("");
     <hr style={{borderWidth:"medium",borderColor:"revert"}}/>
     <div style={{display:"flex",justifyContent:"space-between"}}>
     <div style={{marginLeft:"2%",display:"contents",justifyContent:"space-between"}}>
+      <div>
     Price:
         <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
        
@@ -799,7 +868,11 @@ const [designMetadata,setDesignMetadata]=useState("");
           Ξ
          
         </Typography>
+        </div>
         {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
+          {!props.cryptoBoys[thistokenId].metaData?(<>
+                {designMetadata.categories=="fashionDesign"?(<>
+                  <div>
         <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
         Price with Dress:
         <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
@@ -810,7 +883,24 @@ const [designMetadata,setDesignMetadata]=useState("");
           )}{" "}
           Ξ
          
-        </Typography></>):(null)}
+        </Typography></div>
+                </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+                 
+        <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
+        <div>
+        Price with Dress:
+        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
+       
+          {window.web3.utils.fromWei(
+            props.cryptoBoys[thistokenId].dressPrice.toString(),
+            "Ether"
+          )}{" "}
+          Ξ
+         
+        </Typography></div></>):null}</>)}
+
+        
+        </>):(null)}
         </div>
        
     </div>
@@ -864,8 +954,10 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               </div>
             </form>
-            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(
-            <form
+            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
+               {!props.cryptoBoys[thistokenId].metaData?(<>
+                {designMetadata.categories=="fashionDesign"?(<>
+                  <form
             onSubmit={(e) => {
               e.preventDefault();
               callChangeTokenDressPriceFromApp(
@@ -902,7 +994,49 @@ const [designMetadata,setDesignMetadata]=useState("");
               change price
             </button>
             </div>
-          </form>):(null)}
+          </form>
+
+                </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+                
+                  <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              callChangeTokenDressPriceFromApp(
+                props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                newCryptoBoyDressPrice
+              );
+              
+            }}
+           
+          >
+            <div className="form-group mt-4 " >
+              <label htmlFor="newCryptoBoyDressPrice">
+                <span className="font-weight-bold">Change Token Price with Dress</span> :
+              </label>{" "}
+              <input
+                required
+                type="number"
+                name="newCryptoBoyDressPrice"
+                id="newCryptoBoyDressPrice"
+                value={newCryptoBoyDressPrice}
+                className="form-control "
+                placeholder="Enter new price with dress"
+                onChange={(e) =>
+                  setNewCryptoBoyDressPrice(e.target.value)
+                }
+              />
+            </div>
+            <div style={{display:"flex",justifyContent:"center",padding:"0 2% 0 2%"}}>
+            <button
+              type="submit"
+              style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
+              className="btn btn-outline-info mt-0 "
+            >
+              change price
+            </button>
+            </div>
+          </form></>):null}</>)}
+            </>):(null)}
           </div>
           ) : null}
         </div>
@@ -960,8 +1094,11 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               
               </div>
-              {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(
-              <div style={{display:"flex",justifyContent:"center",alignItems:"baseline"}}>
+              {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
+
+                {!props.cryptoBoys[thistokenId].metaData?(<>
+                {designMetadata.categories=="fashionDesign"?(<>
+                  <div style={{display:"flex",justifyContent:"center",alignItems:"baseline"}}>
              <Link to={`/sizeDetails`}
                 className="btn btn-outline-primary mt-3 "
                 value={props.cryptoBoys[thistokenId].dressPrice}
@@ -983,7 +1120,32 @@ const [designMetadata,setDesignMetadata]=useState("");
                 Ξ
               </Link>
               
-              </div>):(null)}
+              </div>
+                </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+                  <div style={{display:"flex",justifyContent:"center",alignItems:"baseline"}}>
+             <Link to={`/sizeDetails`}
+                className="btn btn-outline-primary mt-3 "
+                value={props.cryptoBoys[thistokenId].dressPrice}
+                style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
+                // onClick={(e) =>
+                //   props.buyCryptoBoyWithDress(
+                //     props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                //     e.target.value
+                //   )
+                // }
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               //onClick={handleOpen}
+              >
+                Buy with Dress For{" "}
+                {window.web3.utils.fromWei(
+                  props.cryptoBoys[thistokenId].dressPrice.toString(),
+                  "Ether"
+                )}{" "}
+                Ξ
+              </Link>
+              
+              </div></>):null}</>)}
+             </>):(null)}
               </>
             ) : (
               <>
@@ -1029,11 +1191,11 @@ const [designMetadata,setDesignMetadata]=useState("");
         props.cryptoBoys[thistokenId].currentOwner.slice(
           props.cryptoBoys[thistokenId].currentOwner.length - 5
         )} */}
-        {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
+        {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(<>{props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].previousOwner.slice(
               props.cryptoBoys[thistokenId].previousOwner.length - 5
-            ))}
+            )}</>)}
         </Link>
     </div>
     <hr/>
@@ -1050,7 +1212,8 @@ const [designMetadata,setDesignMetadata]=useState("");
            <div style={{padding:"2%"}}>
     {!props.cryptoBoys[thistokenId].metaData?(
       <>
-      {/* <AutoPlaySwipeableViews
+      {designMetadata.images.length!=0 ?(<>
+        <AutoPlaySwipeableViews
       axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
       index={activeStep}
       onChangeIndex={handleStepChange}
@@ -1082,10 +1245,12 @@ const [designMetadata,setDesignMetadata]=useState("");
          
         </Button>
       }
-    /> */}
+    /></>):null}
+      
     </>
     ):(<>
-    <AutoPlaySwipeableViews
+    {props.cryptoBoys[thistokenId].metaData.images.length!=0?(<>
+      <AutoPlaySwipeableViews
       axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
       index={activeStep}
       onChangeIndex={handleStepChange}
@@ -1117,7 +1282,8 @@ const [designMetadata,setDesignMetadata]=useState("");
          
         </Button>
       }
-    /></>)}
+    /></>):null}
+    </>)}
   
     </div>
    

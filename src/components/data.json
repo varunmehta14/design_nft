@@ -1,8 +1,6 @@
  [
- {
-    "label": "Category",
-    "value": ["art","fashionDesign"],
-    "children": [
+ 
+   
       {
         "label": "Art",
         "value": "art"
@@ -11,10 +9,14 @@
       {  
         "label": "Fashion Design",
         "value": "fashionDesign"
+      },
+      
+      {  
+        "label": "Photo Graph",
+        "value": "photoGraph"
       } 
 
     
       
-    ] 
-  }
-]
+] 
+  

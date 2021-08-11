@@ -912,6 +912,8 @@ buyCryptoBoyWithDress = (tokenId, price) => {
    })
    .catch(e => {
      console.log(e);
+     this.setState({userExists:false});
+       console.log("username doesnt exist")
    });
    // this.setState({clickedAddress:addressFromName})
     
@@ -922,14 +924,14 @@ buyCryptoBoyWithDress = (tokenId, price) => {
     // }
   //}
  }
- searchAllResultsFromApp=async(key)=>{
-  //  const nameToUser=await this.state.usersContract.methods.
-  //  nameToUser(key).call();
-  const result=await this.state.users.filter(user=>user.userName.includes(key))
-  console.log(result);
-   this.setState({searchData:result})
-   console.log(this.state.searchData)
- }
+//  searchAllResultsFromApp=async(key)=>{
+//   //  const nameToUser=await this.state.usersContract.methods.
+//   //  nameToUser(key).call();
+//   const result=await this.state.users.filter(user=>user.userName.includes(key))
+//   console.log(result);
+//    this.setState({searchData:result})
+//    console.log(this.state.searchData)
+//  }
  searchNFTFromApp=async(val)=>{
   //  const result=await this.state.cryptoBoysContract.methods.
   //  nameToId(val).call();
@@ -984,7 +986,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
       <> <Container maxWidth="false" style={{padding:"0%"}}> 
     <Router>
 
-    <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}searchTermfromApp={this.searchTermfromApp}searchAllResultsFromApp={this.searchAllResultsFromApp}searchData={this.state.allUsers}cryptoBoys={this.state.cryptoBoys}searchNFTFromApp={this.searchNFTFromApp}/>
+    <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}searchTermfromApp={this.searchTermfromApp}searchData={this.state.allUsers}cryptoBoys={this.state.cryptoBoys}searchNFTFromApp={this.searchNFTFromApp}/>
       <Switch>
       
       
@@ -1173,6 +1175,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                   priceOfDress={this.state.dressPrice}
                   sendEmailTo={this.state.sendEmailTo}
                   sendName={this.state.sendName}
+                  currentUser={this.state.currentUser}
                   buyCryptoBoyWithDress={this.buyCryptoBoyWithDress}
                 />
               )}

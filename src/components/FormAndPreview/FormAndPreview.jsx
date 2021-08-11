@@ -122,13 +122,13 @@ export default function FormAndPreview(props) {
   
     const [cryptoBoyName,setCryptoBoyName] = useState("");
     const [cryptoBoyPrice,setCryptoBoyPrice] = useState("");
-    const [cryptoBoyDressPrice,setCryptoBoyDressPrice] = useState("");
+    const [cryptoBoyDressPrice,setCryptoBoyDressPrice] = useState(0);
     const [cryptoBoyDescription,setCryptoBoyDescription] = useState("");
     const [buffer,setBuffer] = useState(null);
     const [finalbuffer,setFinalbuffer] = useState([]);
     const [receivePrice, setReceivePrice] = useState("");
     const [receivePrice2, setReceivePrice2] = useState("");
-    const [cryptoBoyCopies,setCryptoBoyCopies] = useState(0);
+    const [cryptoBoyCopies,setCryptoBoyCopies] = useState("0");
     const [files, setFiles] = useState([]);
     const [fileName,setFileName]=useState("");
     const [single,setSingle]=useState(true);
@@ -250,7 +250,10 @@ const onNodeToggle = currentNode => {
   const callMintMyNFTFromApp  = (e) => {
     //setCategories(selectedCategories)
     e.preventDefault();
-    
+    if(cryptoBoyDressPrice==" "){
+      console.log("price 0")
+      setCryptoBoyDressPrice("0");
+    }
     console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,cryptoBoyDressPrice,finalbuffer,categories,sizeChart)
     props.mintMyNFT(
       cryptoBoyName,
@@ -369,6 +372,10 @@ const onNodeToggle = currentNode => {
  required
 />
 <br/><br/>
+<div >
+     <span>Choose Category</span>
+   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />     
+   </div>   
 {/* <div style={{display:"flex",justifyContent:"space-evenly"}}> 
 
 <Button
@@ -417,7 +424,9 @@ Unlimited Auction
 <hr/>
 
 <br/>
-<div>
+{categories=="fashionDesign"?(<>
+
+  <div>
 <TextField
  label="Price"
  id="standard-start-adornment"
@@ -448,11 +457,68 @@ Unlimited Auction
 <h2>Upload Image</h2>
           
 <input type='file' multiple={true} onChange={captureFile}  required/>
-      <hr/>      
-      <div >
+      <hr/>
+      <div style={{display:"flex",justifyContent:"center"}}>
+   <Button variant="contained" color="primary" onClick={handleOpen}>
+       Create size chart
+      </Button>
+      <Modal
+        aria-labelledby="spring-modal-title"
+        aria-describedby="spring-modal-description"
+        className={classes.modal}
+        open={open}
+        //onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper2}>
+           
+          <IconButton color="primary"  component="span" style={{float:"right",color:"#173e43"}}onClick={handleClose}>
+          <HighlightOffIcon />
+        </IconButton>
+        <br/>
+        <div  style={{textAlign:"center"}}>
+            <h2 id="spring-modal-title">Size Chart</h2>
+            </div>
+            <p id="spring-modal-description">Add Values from the tree which you want to insert in your form</p>
+            <hr/>
+            <div >
      <span>Choose Category</span>
-   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />     
-   </div>   
+   <SizeContainer data={sizeData} onChange={onChangeSize}  texts={{placeholder:"Category"}} />     
+   </div>
+
+          </div>
+         
+        </Fade>
+      </Modal>
+   </div></>):(<>
+        <div>
+<TextField
+ label="Price"
+ id="standard-start-adornment"
+ placeholder="Enter price for one piece"
+// className={clsx(classes.margin, classes.textField)}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ InputProps={{
+   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+ }}
+ required
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+<br/>
+</div>
+{categories=="art"?(<>
+  <h2>Upload Image</h2>
+          
+          <input type='file' multiple={true} onChange={captureFile}  required/>
+                
+</>):null}
+</>)}
+      
+      
    <hr/>          
 <div style={{textAlign:"center"}}>
 <Button
@@ -465,7 +531,6 @@ style={{borderRadius:20,backgroundColor:"#173e43",color:"ghostwhite"}}
 type="submit"
 >
 Create Item
-<br/> ERC 721
 </Button>
 </div>
 </div>
@@ -767,6 +832,12 @@ Create Item
 />
 <br/><br/>
 <hr/>
+<div style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
+   <div >
+     <span>Choose Category</span>
+   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />     
+   </div>
+   </div>
 {/* <div style={{display:"flex",justifyContent:"space-evenly"}}> 
 
 <Button
@@ -815,7 +886,8 @@ Unlimited Auction
 <hr/>
 
 <br/>
-<div style={{display:"flex",justifyContent:"space-evenly"}}>
+{categories=="fashionDesign"?(<>
+  <div style={{display:"flex",justifyContent:"space-evenly"}}>
 <div>
 <TextField
  label="Price"
@@ -849,12 +921,8 @@ Unlimited Auction
 <input type='file' multiple={true} onChange={captureFile} />
             
    <hr/>  
-   <div style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
-   <div >
-     <span>Choose Category</span>
-   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />     
-   </div>
-   <div>
+   
+   <div style={{display:"flex",justifyContent:"center"}}>
    <Button variant="contained" color="primary" onClick={handleOpen}>
        Create size chart
       </Button>
@@ -891,8 +959,27 @@ Unlimited Auction
          
         </Fade>
       </Modal>
-   </div>
-   </div>   
+   </div></>):<>
+   <div style={{display:"flex",justifyContent:"space-evenly"}}>
+<div>
+<TextField
+ label="Price"
+ id="standard-start-adornment"
+ placeholder="Enter price for one piece"
+ className={clsx(classes.margin, classes.textField)}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ InputProps={{
+   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+ }}
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+</div></div>
+{categories=="art"?(<><h2>Upload Image</h2>
+          
+          <input type='file' multiple={true} onChange={captureFile} />
+                      
+             <hr/> </> ):null}
+  </>}
+     
    <hr/>
 <div style={{textAlign:"center"}}>
 <Button
@@ -905,7 +992,7 @@ style={{borderRadius:20,backgroundColor:"#173e43",color:"ghostwhite"}}
 type="submit"
 >
 Create Item
-<br/> ERC 721
+
 </Button>
 </div>
 

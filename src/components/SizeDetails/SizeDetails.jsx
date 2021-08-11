@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
 
 const SizeDetails=(props)=>{
 
-  const [buyerName,setBuyerName]=useState("");
-  const [buyerEmail,setBuyerEmail]=useState(" ");
+  //const [buyerName,setBuyerName]=useState("");
+  //const [buyerEmail,setBuyerEmail]=useState(" ");
   const [feedBack,setFeedBack]=useState(" ");
   const [formDetails,setFormDetails]=useState("");
   const [tokenNo,setTokenNo]=useState(" ");
@@ -76,7 +76,8 @@ const SizeDetails=(props)=>{
     //  let price=props.priceOfDress;
     let sendEmailTo=props.sendEmailTo;
     let sendName=props.sendName;
-    
+    let buyerName=props.currentUser.userName;
+    let buyerEmail=props.currentUser.userEmail;
     // if(!props.tokenNo){
     //     tokenNo=window.location.href.split("/")[4];
     //     price=window.location.href.split("/")[5];
@@ -114,7 +115,7 @@ const SizeDetails=(props)=>{
       e.preventDefault();
       
      // console.log({ mailerState });
-      const response = await fetch("http://localhost:8000/send", {
+      const response = await fetch("http://localhost:8080/send", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -137,8 +138,8 @@ const SizeDetails=(props)=>{
         })
         .then(() => {
          
-            setBuyerEmail(" ");
-            setBuyerName(" ");
+            //setBuyerEmail(" ");
+           // setBuyerName(" ");
             setFeedBack(" ");
             setFormDetails(" ");
           });
@@ -224,7 +225,7 @@ const SizeDetails=(props)=>{
       doc.autoTable({
         head: [['Buyer Name', 'Buyer Email']],
         body: [
-          [buyerName,buyerEmail ],
+          [props.currentUser.userName,props.currentUser.userEmail ],
            
           
         ],
@@ -404,8 +405,8 @@ JSON.stringify({array: data});
                         name="email"
                         variant="outlined"
                         required
-                       value={buyerName} 
-                       onChange={(e)=>{setBuyerName(e.target.value)}}
+                       value={props.currentUser.userName} 
+                       //onChange={(e)=>{setBuyerName(e.target.value)}}
                        // error={nameIsUsed}
                         id="sendName"
                         label="BuyerName"
@@ -419,8 +420,8 @@ JSON.stringify({array: data});
                         name="your_email"
                         variant="outlined"
                         required
-                       value={buyerEmail} 
-                       onChange={(e)=>{setBuyerEmail(e.target.value)}}
+                       value={props.currentUser.userEmail} 
+                      // onChange={(e)=>{setBuyerEmail(e.target.value)}}
                        // error={nameIsUsed}
                         id="sendEmail"
                         label="BuyerEmail"
@@ -507,7 +508,7 @@ JSON.stringify({array: data});
       </div>
      
       </form>
-        <form
+        {/* <form
         
         style={{ margin: "25px 85px 75px 100px" }}
         onSubmit={sendEmail}
@@ -551,7 +552,7 @@ JSON.stringify({array: data});
                {/* <Grid item xs={12} sm={6} lg={4} xl={3}>
                <button type="button" onClick={generatePdfLink} >Generate Pdf Link</button>
                <input type="text" name="pdflink" value={formDetails} className="form-control" />
-               </Grid> */}
+               </Grid>
                </Grid>
               
 
@@ -560,7 +561,7 @@ JSON.stringify({array: data});
               
               
                
-               <div style={{display:"flex",justifyContent:"space-evenly"}}>
+             {/*  <div style={{display:"flex",justifyContent:"space-evenly"}}>
         <input
           type="submit"
           value="Send"
@@ -568,7 +569,7 @@ JSON.stringify({array: data});
           style={{ marginTop: "30px" }}
         />
         </div>
-      </form>
+      </form> */}
        {/* <form
        style={{
          display: "flex",
