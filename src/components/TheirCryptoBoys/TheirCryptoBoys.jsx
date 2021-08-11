@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch'; 
 import TheirAccountDetails from "../TheirAccountDetails/TheirAccountDetails";
 import MyBoughtDesignsDetails from "../MyBoughtDesigns/MyBoughtDesignsDetails";
-
+import UserDataService from "../../services/UserService";
 
 
 
@@ -54,6 +54,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const initialUserState = {
+  userId: null,
+  userName: "",
+  userEmail: "",
+  userSocial: "",
+  userRepo: "",
+  userBio: "",
+  userAvatarHash: "https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX",
+  userAddress: "",
+
+};
+
 const TheirCryptoBoys = ({
   accountAddress,
   cryptoBoys,
@@ -69,7 +81,7 @@ const TheirCryptoBoys = ({
   const [myBoughtCryptoBoys, setMyBoughtCryptoBoys] = useState([]);
   const [myMintedCryptoBoys, setMyMintedCryptoBoys] = useState([]);
   const [myAllCryptoBoys, setMyAllCryptoBoys] = useState([]);
-  const[currentUser,setCurrentUser]=useState("");
+  const[currentUser,setCurrentUser]=useState(initialUserState);
   //const [theirAccountAddress,setTheirAccountAddress]=useState("")
   //console.log(theirAccountAddress);
   let theirAccountAddress=accountAddress;
@@ -78,26 +90,44 @@ const TheirCryptoBoys = ({
   const [checked, setChecked] = useState(false);
   
   const getCurrentUser=async()=>{
-    if(usersContract&&theirAccountAddress){
+    if(theirAccountAddress){
       console.log("here")
-     const current=await users.find((user)=>user.userAddress===theirAccountAddress);
+      
+     //const current=await users.find((user)=>user.userAddress===theirAccountAddress);
+     await UserDataService.getByAddress(theirAccountAddress)
+      .then(response => 
+        { 
+          console.log(response);
+        setCurrentUser({
+          userId: response.data[0].userId,
+          userName: response.data[0].userName,
+          userEmail: response.data[0].userEmail,
+          userSocial: response.data[0].userSocial,
+          userRepo: response.data[0].userRepo,
+          userBio: response.data[0].userBio,
+          userAvatarHash: response.data[0].userAvatarHash,
+          userAddress: response.data[0].userAddress
+        }
+        );
+        //  setSubmitted(true);
+       // console.log(response.data);
+       console.log(currentUser)
+      
+      })
+      .catch(e => {
+        console.log(e);
+      });
     // const current=await usersContract.methods
     // .allUsers(theirAccountAddress)
     // .call();
-    setCurrentUser(current);
-    console.log(currentUser);
+   
+   
     }
   }
 
   useEffect(() => {
     getCurrentUser();
-    if (cryptoBoys.length !== 0) {
-      if (cryptoBoys[0].metaData !== undefined) {
-        setLoading(loading);
-      } else {
-        setLoading(false);
-      }
-    }
+    
     const my_bought_crypto_boys = cryptoBoys.filter(
       (cryptoboy) => cryptoboy.currentOwner === theirAccountAddress && !(cryptoboy.mintedBy === theirAccountAddress)
     );
@@ -165,7 +195,8 @@ const TheirCryptoBoys = ({
         </div>
       </div>
       <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
-        {myMintedCryptoBoys?(
+        {myMintedCryptoBoys?(<>
+          {myMintedCryptoBoys.length !=0 ? (<>
            <Grid classes={gridStyles} container spacing={4} >
            {myMintedCryptoBoys.map((cryptoboy) => {
             return (
@@ -201,9 +232,13 @@ const TheirCryptoBoys = ({
   
           })}</Grid>
   
-        ):(<Loading/>)}
-             </div>
-              </>
+         </>):(<>
+          No Items Created</>)}
+           
+        </>):(<Loading/>)}
+     
+        </div>
+        </>
             
           )
 
@@ -217,39 +252,43 @@ const TheirCryptoBoys = ({
         </div>
       </div>
       <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
-        {myBoughtCryptoBoys?(
-           <Grid classes={gridStyles} container spacing={4} >
-           {myBoughtCryptoBoys.map((cryptoboy) => {
-            return (
-              <>
-              <Grid item xs={12} sm={6} lg={4} xl={3}>
-              < MyBoughtDesignsDetails
+      {myBoughtCryptoBoys?(<>
+        {myBoughtCryptoBoys.length!=0?(<>
+        
+          <Grid classes={gridStyles} container spacing={4} >
+
+{myBoughtCryptoBoys.map((cryptoboy) => {
+ return (
+   <>
+   <Grid item xs={12} sm={6} lg={4} xl={3}>
+   < MyBoughtDesignsDetails
            callback1={myCallback1}
            cryptoboy={cryptoboy}
            accountAddress={accountAddress}
       
          />
-                    {/* {!loading ? (
-                      <CryptoBoyNFTImage
-                       cryptoboy={cryptoboy}
-                      />
-                    ) : (
-                      <Loading />
-                    )}
-                  </div>
-                  <div className="col-md-6 text-center"
-                  className="w-50 p-4 mt-1 border text-center">
-                    <MyCryptoBoyNFTDetails
-                      callback1={myCallback1}
-                      cryptoboy={cryptoboy}
-                      accountAddress={accountAddress}
-                      
-                    />
-                  </div> */}
-                  </Grid>
-                </>
-            )})}</Grid>
-        ):(<Loading/>)}
+         {/* {!loading ? (
+           <CryptoBoyNFTImage
+            cryptoboy={cryptoboy}
+           />
+         ) : (
+           <Loading />
+         )}
+       </div>
+       <div className="col-md-6 text-center"
+       className="w-50 p-4 mt-1 border text-center">
+         <MyCryptoBoyNFTDetails
+           callback1={myCallback1}
+           cryptoboy={cryptoboy}
+           accountAddress={accountAddress}
+           
+         />
+       </div> */}
+       </Grid>
+     </>
+ )})}</Grid></>):(<>
+ No Designs Bought</>)}
+       </>):(<Loading/>)}
      </div>
           </>
         )}</>):(<><h3>User name does not exist</h3></>)}

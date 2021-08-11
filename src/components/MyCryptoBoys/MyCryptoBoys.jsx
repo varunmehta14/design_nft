@@ -133,8 +133,10 @@ const MyCryptoBoys = ({
         </div>
       </div>
       <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
-        {myMintedCryptoBoys?(
-           <Grid classes={gridStyles} container spacing={4} >
+        {myMintedCryptoBoys?(<>
+          {myMintedCryptoBoys.length !=0 ? (<>
+
+            <Grid classes={gridStyles} container spacing={4} >
            {myMintedCryptoBoys.map((cryptoboy) => {
             return (
               <>
@@ -168,7 +170,10 @@ const MyCryptoBoys = ({
             );
   
           })}</Grid>
-        ):(<Loading/>)}
+          </>):(<>
+          No Items Created</>)}
+           
+        </>):(<Loading/>)}
      
         </div>
         </>):(
@@ -181,7 +186,10 @@ const MyCryptoBoys = ({
         </div>
       </div>
       <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
-        {myBoughtCryptoBoys?(<Grid classes={gridStyles} container spacing={4} >
+        {myBoughtCryptoBoys?(<>
+        {myBoughtCryptoBoys.length!=0?(<>
+        
+          <Grid classes={gridStyles} container spacing={4} >
 
 {myBoughtCryptoBoys.map((cryptoboy) => {
  return (
@@ -212,7 +220,9 @@ const MyCryptoBoys = ({
        </div> */}
        </Grid>
      </>
- )})}</Grid>):(<Loading/>)}
+ )})}</Grid></>):(<>
+ No Designs Bought</>)}
+       </>):(<Loading/>)}
       </div></>
         )}
        
