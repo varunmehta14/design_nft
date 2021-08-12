@@ -70,26 +70,20 @@ contract CryptoBoys is ERC721 {
     // check if a token exists with the above token id => incremented counter
     require(!_exists(cryptoBoyCounter));
 
-    // loop through the colors passed and check if each colors already exists or not
-    // for(uint i=0; i<_colors.length; i++) {
-    //   require(!colorExists[_colors[i]]);
-    // }
+    // check if the token name already exists or not
+    require(!tokenNameExists[_name]);
     // check if the image already exists or not
     require(!imageExists[_imageHash]);
     // check if the token URI already exists or not
     require(!tokenURIExists[_tokenURI]);
-    // check if the token name already exists or not
-    require(!tokenNameExists[_name]);
+    
 
     // mint the token
     _mint(msg.sender, cryptoBoyCounter);
     // set token URI (bind token id with the passed in token URI)
     _setTokenURI(cryptoBoyCounter, _tokenURI);
 
-    // loop through the colors passed and make each of the colors as exists since the token is already minted
-    // for (uint i=0; i<_colors.length; i++) {
-    //   colorExists[_colors[i]] = true;
-    // }
+    
     // make passed token URI as exists
     tokenURIExists[_tokenURI] = true;
     // make token name passed as exists

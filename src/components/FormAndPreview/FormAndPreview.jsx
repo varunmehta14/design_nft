@@ -19,9 +19,9 @@ import SizeContainer from '../DropdownContainer2/DropdownContainer2';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-
-
-
+import { Alert, AlertTitle } from '@material-ui/lab';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
 
 
 
@@ -137,6 +137,8 @@ export default function FormAndPreview(props) {
     const [categories,setCategories]=useState([]);
     const [sizeChart,setSizeChart]=useState([]);
     const [test,setTest]=useState("hello")
+    const [aler,setAler]=useState(props.imageIsUsed);
+    const [imageUsed,setImageUsed]=useState(props.imageIsUsed)
     //const [preview,setPreview]=useState([]);
     const {getRootProps, getInputProps} = useDropzone({
       accept: 'image/*',
@@ -196,9 +198,7 @@ export default function FormAndPreview(props) {
   setFinalbuffer(buffer2);
   
 }
-useEffect(()=>{
- funA();
- },[]);
+
  useEffect( 
   () => () => {
     // Make sure to revoke the data uris to avoid memory leaks
@@ -336,7 +336,7 @@ const onNodeToggle = currentNode => {
     <Grid container spacing={3}>
     <Grid item xs={12}><Paper  style={{height:"fitContent",padding:"2%",backgroundColor:"ghostwhite"}}>
      <span>Upload file to view preview</span>    
-<aside style={thumbsContainer}>{thumbs}</aside></Paper></Grid>
+     {buffer?(<><aside style={thumbsContainer}>{thumbs}</aside></>):null} </Paper></Grid>
     <Grid item xs={12}>
      <Paper variant="outlined" style={{padding:"inherit",backgroundColor:"ghostwhite"}}>
      
@@ -550,6 +550,7 @@ Create Item
              type="button"
              className="close"
              data-dismiss="alert"
+             onClick={(e)=>{setBuffer(null)}}
            >
              <span>&times;</span>
            </button>
@@ -565,6 +566,7 @@ Create Item
              type="button"
              className="close"
              data-dismiss="alert"
+             onClick={e=>{setCryptoBoyName("")}}
            >
              <span>&times;</span>
            </button>
@@ -745,6 +747,7 @@ Create Item
              type="button"
              className="close"
              data-dismiss="alert"
+             
            >
              <span>&times;</span>
            </button>
@@ -832,8 +835,9 @@ Create Item
 <TextField
  id="standard-multiline-flexible"
  label="Title"
- 
+ autoComplete='off'
  //rowsMax={4}
+ required
  value={cryptoBoyName}
  onChange={(e)=>setCryptoBoyName(e.target.value)}
  error={props.nameIsUsed}
@@ -847,6 +851,7 @@ Create Item
  fullWidth
  rowsMax={4}
  value={cryptoBoyDescription}
+ required
  onChange={(e)=>setCryptoBoyDescription(e.target.value)}
 />
 <br/><br/>
@@ -1022,8 +1027,9 @@ Create Item
        </Grid>
        <Grid item xs={3}><Paper  style={{height:"fitContent",padding:"2%",backgroundColor:"ghostwhite"}}>
          
-     <span>Upload file to view preview</span>    
-<aside style={thumbsContainer}>{thumbs}</aside></Paper></Grid>
+     <span>Upload file to view preview</span>  
+     {buffer?(<><aside style={thumbsContainer}>{thumbs}</aside></>):null}  
+</Paper></Grid>
 
        </Grid>
        </div>
@@ -1035,12 +1041,34 @@ Create Item
              type="button"
              className="close"
              data-dismiss="alert"
+             onClick={(e)=>{setBuffer(null)}}
            >
              <span>&times;</span>
            </button>
            <strong>This image is taken!</strong>
          </div>
-         
+      //   <>
+      
+        
+      //     <Alert
+      //     action={
+      //       <IconButton
+      //         aria-label="close"
+      //         color="inherit"
+      //         size="small"
+      //         onClick={()=>{setBuffer(null)}}
+      //       >
+      //         <CloseIcon fontSize="inherit" />
+      //       </IconButton>
+      //     }
+      //     variant="filled" severity="error"
+      //   >
+      //     This image is already used !
+      //   </Alert>
+        
+        
+       
+      //  </>  
        ) :     
          null}
      </div>
@@ -1051,6 +1079,7 @@ Create Item
              type="button"
              className="close"
              data-dismiss="alert"
+             onClick={e=>{setCryptoBoyName("")}}
            >
              <span>&times;</span>
            </button>
@@ -1226,16 +1255,21 @@ Create Item
         
      <div className="mt-4">
        {props.imageIsUsed ? (
-         <div className="alert alert-danger alert-dissmissible">
-           <button
-             type="button"
-             className="close"
-             data-dismiss="alert"
-           >
-             <span>&times;</span>
-           </button>
-           <strong>This image is taken!</strong>
-         </div>
+        //  <div className="alert alert-danger alert-dissmissible">
+        //    <button
+        //      type="button"
+        //      className="close"
+        //      data-dismiss="alert"
+        //    >
+        //      <span>&times;</span>
+        //    </button>
+        //    <strong>This image is taken!</strong>
+        //  </div>
+        <>
+        <Alert variant="filled" severity="error">
+        This image is already used !
+      </Alert>
+      </>
        ) :     
          null}
      </div>

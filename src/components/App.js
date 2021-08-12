@@ -582,6 +582,7 @@ if(!emailUsed){
       const imageHash = `https://ipfs.infura.io/ipfs/${file.path}`;
       
       const imageIsUsed=await this.state.cryptoBoysContract.methods.imageExists(imageHash).call();
+      //this.setState({ imageIsUsed: imageIsUsed });
       console.log(imageIsUsed);
       if(!imageIsUsed){
       const tokenObject = {
@@ -617,7 +618,7 @@ if(!emailUsed){
         .on("confirmation", () => {
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
           this.setState({ loading: false });
-          window.location.reload();
+          window.location.href="/marketplace";
         });}
         else {
            {
