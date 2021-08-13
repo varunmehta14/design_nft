@@ -6,7 +6,7 @@ import {
   Route,
   
 } from "react-router-dom";
-
+import { useHistory } from 'react-router';
 import "./App.css";
 
 import Web3 from "web3";
@@ -29,7 +29,7 @@ import SizeDetails from "./SizeDetails/SizeDetails";
 import {Container,Box} from '@material-ui/core';
 import ipfs from './ipfs';
 import UserDataService from "../services/UserService";
-
+import Swal from 'sweetalert2'
 // const ipfsClient = require("ipfs-http-client");
 // const ipfs = ipfsClient({
 //   host: "ipfs.infura.io",
@@ -48,6 +48,7 @@ const initialUserState = {
   userAddress: "",
 
 };
+
 
 class App extends Component {
   constructor(props) {
@@ -386,7 +387,25 @@ if(!emailUsed && !nameUsed){
         });
        
        console.log(this.state.user)
-       window.location.href=`/account`
+       Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        title: `Creator Created`,
+        confirmButtonText: 'Okay',
+        icon: 'success',
+        backdrop: false,
+        customClass: {
+          container: 'my-swal'
+        }
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href=`/account`
+       
+        } 
+        
+      })
+       
        this.setState({userLoggedIn:true});
       })
       .catch(e => {
@@ -453,7 +472,25 @@ if(this.state.currentUser.userEmail==email){
         });
        
        console.log(this.state.user)
-       window.location.href=`/account`
+       Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        title: `Creator Updated`,
+        confirmButtonText: 'Okay',
+        icon: 'success',
+        backdrop: false,
+        customClass: {
+          container: 'my-swal'
+        }
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href=`/account`
+       
+        } 
+        
+      })
+       
       })
       .catch(e => {
         console.log(e);
@@ -519,7 +556,25 @@ if(!emailUsed){
         });
         
        console.log(this.state.user)
-       window.location.href=`/account`
+       Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        title: `Creator Updated`,
+        confirmButtonText: 'Okay',
+        icon: 'success',
+        backdrop: false,
+        customClass: {
+          container: 'my-swal'
+        }
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href=`/account`
+       
+        } 
+        
+      })
+      
       })
       .catch(e => {
         console.log(e);
@@ -606,7 +661,25 @@ if(!emailUsed){
         .on("confirmation", () => {
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
           this.setState({ loading: false });
-          window.location.href="/marketplace";
+          Swal.fire({
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            title: `Item Created`,
+            confirmButtonText: 'Okay',
+            icon: 'success',
+            backdrop: false,
+            customClass: {
+              container: 'my-swal'
+            }
+            
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href="/marketplace";
+           
+            } 
+            
+          })
+         
         });}
         else {
            {
@@ -630,7 +703,25 @@ if(!emailUsed){
       .send({ from: this.state.accountAddress })
       .on("confirmation", () => {
         this.setState({ loading: false });
-        window.location.reload();
+        Swal.fire({
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          title: `Sale status changed`,
+          confirmButtonText: 'Okay',
+          icon: 'success',
+          backdrop: false,
+          customClass: {
+            container: 'my-swal'
+          }
+          
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+         
+          } 
+          
+        })
+        
       });
   };
 //Change the price of token 
@@ -642,7 +733,25 @@ if(!emailUsed){
       .send({ from: this.state.accountAddress })
       .on("confirmation", () => {
         this.setState({ loading: false });
-        window.location.reload();
+        Swal.fire({
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          title: `Price Changed`,
+          confirmButtonText: 'Okay',
+          icon: 'success',
+          backdrop: false,
+          customClass: {
+            container: 'my-swal'
+          }
+          
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+         
+          } 
+          
+        })
+       
       });
   };
 //Change the price of tokenDress 
@@ -654,7 +763,25 @@ changeTokenDressPrice = (tokenId, newPrice) => {
     .send({ from: this.state.accountAddress })
     .on("confirmation", () => {
       this.setState({ loading: false });
-      window.location.reload();
+      Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        title:  `Price Changed`,
+        confirmButtonText: 'Okay',
+        icon: 'success',
+        backdrop: false,
+        customClass: {
+          container: 'my-swal'
+        }
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+       
+        } 
+        
+      })
+      
     });
 };  
 
@@ -666,7 +793,25 @@ changeTokenDressPrice = (tokenId, newPrice) => {
       .send({ from: this.state.accountAddress, value: price })
       .on("confirmation", () => {
         this.setState({ loading: false });
-        window.location.reload();
+        Swal.fire({
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          title: `Item Bought`,
+          confirmButtonText: 'Okay',
+          icon: 'success',
+          backdrop: false,
+          customClass: {
+            container: 'my-swal'
+          }
+          
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+         
+          } 
+          
+        })
+       
       });
   };
 //Buy a token with dress
@@ -678,8 +823,26 @@ buyCryptoBoyWithDress = (tokenId, price) => {
     .send({ from: this.state.accountAddress, value: price })
     .on("confirmation", () => {
       this.setState({ loading: false });
+      Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        title: `Item Bought`,
+        confirmButtonText: 'Okay',
+        icon: 'success',
+        backdrop: false,
+        customClass: {
+          container: 'my-swal'
+        }
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href="/my-tokens";
+       
+        } 
+        
+      })
       
-      window.location.href="/my-tokens";
+     
     });
 };  
   tokenIdAndPrice=(tokenIdOfDress,tokenName,priceOfDress,ownedEmail,ownedName,sizeDetails)=>{
@@ -743,7 +906,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
       this.state.loading ? (
         <Loading />
       ) :( */}
-      <> <Container maxWidth="false" style={{padding:"0%"}}> 
+      <> <Container maxWidth="false" style={{padding:"0%",minHeight:"100vh"}}> 
     <Router>
 
     <Navbar connectToMetamask={this.connectToMetamask}
