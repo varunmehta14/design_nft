@@ -5,10 +5,10 @@ import Paper from '@material-ui/core/Paper';
 import Loading from "../Loading/Loading";
 
 
-const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,currentUser}) => {
+const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) => {
  // if(!accountAddress){accountAddress=window.location.href.split("/")[4]};
  //const[currentUser,setCurrentUser]=useState("");
-  console.log(usersContract)
+  
 //  const getCurrentUser=async()=>{
 //   if(usersContract){
 //     console.log("here")
@@ -22,25 +22,25 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,usersContract,c
 // }
 // }
  
- useEffect(()=>{
-  setUserName(currentUser.userName);
-  setBio(currentUser.bio);
-  setSocial(currentUser.social);
-  setRepo(currentUser.repo);
-  setEmail(currentUser.email);
-  setSrc(currentUser.avatarhash);
+//  useEffect(()=>{
+//   setUserName(currentUser.userName);
+//   setBio(currentUser.bio);
+//   setSocial(currentUser.social);
+//   setRepo(currentUser.repo);
+//   setEmail(currentUser.email);
+//   setSrc(currentUser.avatarhash);
 
   
   
-  },[currentUser]);
-  const[userName,setUserName]=useState(currentUser.userName);
-  //const[olduserName,setOlduserName]=useState(currentUser.userName);
-  const[bio,setBio]=useState(currentUser.bio);
-  const[social,setSocial]=useState(currentUser.social);
-  const[repo,setRepo]=useState(currentUser.repo);
-  const[email,setEmail]=useState(currentUser.email);
+//   },[currentUser]);
+//   const[userName,setUserName]=useState(currentUser.userName);
+//   //const[olduserName,setOlduserName]=useState(currentUser.userName);
+//   const[bio,setBio]=useState(currentUser.bio);
+//   const[social,setSocial]=useState(currentUser.social);
+//   const[repo,setRepo]=useState(currentUser.repo);
+//   const[email,setEmail]=useState(currentUser.email);
 
-  const[src,setSrc]=useState(currentUser.avatarhash);
+//   const[src,setSrc]=useState(currentUser.avatarhash);
  
   console.log(cryptoBoysContract)
   console.log(accountAddress);

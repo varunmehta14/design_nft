@@ -21,26 +21,7 @@ const useGridStyles = makeStyles(({ breakpoints }) => ({
      justifyContent: 'center',
     },
   },
-  // parent:{
-  //   display: "grid",// activate grid
-  //   gridTemplateColumns: "repeat(4, 1fr)", //make 4 cols with size 1fr
-  //   gridGap: "20px", //gap between the rows
-  // },
-  // child:{
-  //   '&:nthChild(3n+1)' :{
-  //     gridColumn: 1,
-  //   },
-  //  ' &:nthChild(3n+2)' :{
-  //     gridColumn: 2,
-  //   },
-  //   '&:nthChild(3n+3)' :{
-  //     gridColumn: 3,
-  //   },
-  //   '&:nthChild(3n+4)' :{
-  //     gridColumn: 1, //put the fourth item in a new row
-  //   },
-    
-  // },
+ 
   
 }));
 const AllCryptoBoys = ({
@@ -54,9 +35,9 @@ const AllCryptoBoys = ({
   buyCryptoBoy,
   callbackFromParent,
   cryptoBoysContract,
-  usersContract,
-  cryptoBoysCount,
-  users
+ // usersContract,
+ 
+  //users
 }) => {
   
   const [loading, setLoading] = useState(true);
@@ -73,18 +54,18 @@ const AllCryptoBoys = ({
   const [endOfDesigns,setEndOfDesigns]=useState(false);
   
 
- console.log(users)
+ 
   useEffect(() => {
     if (cryptoBoys.length !== 0) {
       if (cryptoBoys[0].metaData !== undefined) {
-        //setLoading(false);
+        setLoading(false);
       } else {
-       // setLoading(true);
+       setLoading(true);
       }
     }
    
   // loadDesigns(start,end)
-  }, [usersContract,users]);
+  }, []);
   
   //console.log(cryptoBoysContract)
   const myCallback1=(dataFromChild1)=>{
@@ -290,8 +271,8 @@ const AllCryptoBoys = ({
                 buyCryptoBoy={buyCryptoBoy}
                 callbackFromParent={myCallback1}
                 cryptoBoysContract={cryptoBoysContract}
-                usersContract={usersContract}
-                users={users}
+                //usersContract={usersContract}
+                //users={users}
               />
              </Grid>
            </> 

@@ -1,24 +1,23 @@
 import React, { Component } from "react";
-//import { HashRouter,Route,withRouter } from "react-router-dom";
+
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,withRouter 
+  
 } from "react-router-dom";
 
 import "./App.css";
-import defaultProfile from "./Profile/blank-profile-picture-973460_640.png"
+
 import Web3 from "web3";
 import CryptoBoys from "../abis/CryptoBoys.json";
-import Users from "../abis/Users.json";
+
 import CryptoBoyNFTDetails from "./CryptoBoyNFTDetails/CryptoBoyNFTDetails";
 import FormAndPreview from "../components/FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
 import AllCreators from "./AllCreators/AllCreators";
 import AccountDetails from "./AccountDetails/AccountDetails";
-import ContractNotDeployed from "./ContractNotDeployed/ContractNotDeployed";
-import ConnectToMetamask from "./ConnectMetamask/ConnectToMetamask";
+
 import Loading from "./Loading/Loading";
 import Navbar from "./Navbar/Navbar";
 import Profile from "./Profile/Profile";
@@ -257,8 +256,7 @@ loadCurrentUser=()=>{
           userAddress: response.data[0].userAddress
         }
         });
-        //  setSubmitted(true);
-       // console.log(response.data);
+      
        console.log(this.state.currentUser)
       
       })
@@ -313,7 +311,7 @@ loadCurrentUser=()=>{
 
   createUserFromApp=async(userName,email,social,repo,bio,avatar)=>{
    console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
-   let previousUserId;
+   
    let avatarHash;
    
 
@@ -327,10 +325,7 @@ const emailUsed=await UserDataService.getByEmail(email)
           }
           else{
             return false;
-          }
-        //  setSubmitted(true);
-       // console.log(response.data);
-       
+          } 
       
       })
       .catch(e => {
@@ -412,8 +407,8 @@ if(!emailUsed && !nameUsed){
          
 };
 
-updateUserFromApp=async(userName,oldemail,email,social,repo,bio,avatar,account)=>{
-  console.log(userName,oldemail,email,social,repo,bio,avatar,this.state.accountAddress)
+updateUserFromApp=async(userName,email,social,repo,bio,avatar,account)=>{
+  console.log(userName,email,social,repo,bio,avatar,this.state.accountAddress)
   let avatarHash;
  
 
@@ -575,9 +570,7 @@ if(!emailUsed){
       console.log(filesI.path)
       imageHashes.push(`https://ipfs.infura.io/ipfs/${filesI.path}`);
       }
-     // const files3=await ipfs.add(buffer2)
-     // console.log(files3.path)
-   // const imageHash3 = `https://ipfs.infura.io/ipfs/${files3.path}`;
+    
       //creating  a image hash to store on blockchain
       const imageHash = `https://ipfs.infura.io/ipfs/${file.path}`;
       
@@ -597,12 +590,7 @@ if(!emailUsed){
         images:imageHashes,
         categories:categories,
         sizeChart:sizeChart
-        // metaData:{
-          
-        //   images:{
-        //     imageHash3
-        //   }
-        // }
+        
         }
         //storing the token object on ipfs
         const  cid= await ipfs.add(JSON.stringify(tokenObject))
@@ -710,32 +698,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
     
   } 
  searchTermfromApp=async(search)=>{
-  // if(!isNaN(search)){
-  //   const tokenExist=await this.state.cryptoBoysContract.methods.
-  //                   getTokenExists(search).call();
-  //                   if(tokenExist){
-  //                     this.setState({tokenExists:true});
-  //                     // const searchedDesign=await this.state.cryptoBoysContract.methods.
-  //                     // allCryptoBoys(search).call();
-  //                     // this.setState({searchedDesign})
-  //                    // console.log(this.state.searchedDesign)
-                  
-  //                   this.setState({clickedAddress: search})
-                    
-  //                   window.location.href=`/nftDetails/${search}`
-  //                   }
-  //                   else{
-  //                     this.setState({tokenExists:false});
-  //                     console.log("Token doesnt exist")
-  //                   }
   
-  // }else{
-   //const userNameExists=await this.state.usersContract.methods.
-  //  userNameExists(search).call();
-   // if(userNameExists){
-     // this.setState({userExists:true});
-   // const addressFromName=await this.state.usersContract.methods.
-   // nameToAddress(search).call();
    UserDataService.getByName(search)
    .then(response => 
      { 
@@ -751,23 +714,9 @@ buyCryptoBoyWithDress = (tokenId, price) => {
      this.setState({userExists:false});
        console.log("username doesnt exist")
    });
-   // this.setState({clickedAddress:addressFromName})
-    
-   // }
-    // else{
-    //   this.setState({userExists:false});
-    //   console.log("username doesnt exist")
-    // }
-  //}
+   
  }
-//  searchAllResultsFromApp=async(key)=>{
-//   //  const nameToUser=await this.state.usersContract.methods.
-//   //  nameToUser(key).call();
-//   const result=await this.state.users.filter(user=>user.userName.includes(key))
-//   console.log(result);
-//    this.setState({searchData:result})
-//    console.log(this.state.searchData)
-//  }
+
  searchNFTFromApp=async(val)=>{
   //  const result=await this.state.cryptoBoysContract.methods.
   //  nameToId(val).call();
@@ -778,32 +727,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
  }
   
   render() {
-    // const scrollToEnd=()=>{
-    //  // this.setState({page:this.state.page+1});
-    //   this.setState({start:this.state.end+1});
-    //   this.setState({end:this.state.end+2});
-    //   this.setState({loading:true});
-    //   console.log(console.log("start",this.state.start))
-    //   if(!this.state.endOfDesigns){
-    //   this.loadDesigns(this.state.start,this.state.end);}
-    //   else{
-    //     return;
-    //   }
     
-
-    //  // console.log(this.state.page);
-    // }
-  
-    // window.onscroll=function(){
-    //   //console.log(window,document.documentElement.scrollTop,document.documentElement.offsetHeight)
-    //   if(
-    //     window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight 
-    //   ){
-        
-    //     scrollToEnd()
-    //     console.log("here")
-    //   }
-    // }
     console.log(this.state.cryptoBoysContract)
     console.log(this.state.cryptoBoys)
     return (
@@ -822,7 +746,14 @@ buyCryptoBoyWithDress = (tokenId, price) => {
       <> <Container maxWidth="false" style={{padding:"0%"}}> 
     <Router>
 
-    <Navbar connectToMetamask={this.connectToMetamask} metamaskConnected={this.state.metamaskConnected} userLoggedIn={this.state.userLoggedIn}currentUser={this.state.currentUser}searchTermfromApp={this.searchTermfromApp}searchData={this.state.allUsers}cryptoBoys={this.state.cryptoBoys}searchNFTFromApp={this.searchNFTFromApp}/>
+    <Navbar connectToMetamask={this.connectToMetamask}
+     metamaskConnected={this.state.metamaskConnected} 
+     userLoggedIn={this.state.userLoggedIn}
+     currentUser={this.state.currentUser}
+     searchTermfromApp={this.searchTermfromApp}
+     searchData={this.state.allUsers}
+     cryptoBoys={this.state.cryptoBoys}
+     searchNFTFromApp={this.searchNFTFromApp}/>
       <Switch>
       
       
@@ -842,9 +773,9 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                 buyCryptoBoy={this.buyCryptoBoy}
                 callbackFromParent={this.myCallback2}
                 cryptoBoysContract={this.state.cryptoBoysContract}
-                usersContract={this.state.usersContract}
-                cryptoBoysCount={this.state.cryptoBoysCount}
-                users={this.state.users}
+                // usersContract={this.state.usersContract}
+               
+                //users={this.state.users}
               />
               )}
             />
@@ -853,13 +784,11 @@ buyCryptoBoyWithDress = (tokenId, price) => {
       
               render={() => (
                 <AccountDetails
-                  updateUserFromApp={this.updateUserFromApp}
+                  
                   accountAddress={this.state.accountAddress}
                   accountBalance={this.state.accountBalance}
                   currentUser={this.state.currentUser}
-                  cryptoBoysContract={this.state.cryptoBoysContract}
-                  nameIsUsed={this.state.nameIsUsed}
-                  emailIsUsed={this.state.emailIsUsed}
+                  
                 />
               )}
             />
@@ -872,8 +801,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                   accountAddress={this.state.accountAddress}
                   accountBalance={this.state.accountBalance}
                   currentUser={this.state.currentUser}
-                  cryptoBoysContract={this.state.cryptoBoysContract}
-                  nameIsUsed={this.state.nameIsUsed}
+                 
                   emailIsUsed={this.state.emailIsUsed}
                   loading={this.state.loading}
                 />
@@ -885,13 +813,11 @@ buyCryptoBoyWithDress = (tokenId, price) => {
               render={() => (
                 <Profile
                   createUserFromApp={this.createUserFromApp}
-                  //currentUser={this.state.currentUser}
-                 // users={this.state.users}
                   accountAddress={this.state.accountAddress}
                   accountBalance={this.state.accountBalance}
                   nameIsUsed={this.state.nameIsUsed}
                   emailIsUsed={this.state.emailIsUsed}
-                 usersContract={this.state.usersContract}
+                 
                 />
               )}
             />
@@ -900,18 +826,19 @@ buyCryptoBoyWithDress = (tokenId, price) => {
               
               render={() => (
                 <AllCryptoBoys
-                  accountAddress={this.state.accountAddress}
-                  cryptoBoys={this.state.cryptoBoys}
-                  //allcryptoBoys={this.state.allcryptoBoys}
-                  totalTokensMinted={this.state.totalTokensMinted}
-                  changeTokenPrice={this.changeTokenPrice}
-                  toggleForSale={this.toggleForSale}
-                  buyCryptoBoy={this.buyCryptoBoy}
-                  callbackFromParent={this.myCallback2}
-                  cryptoBoysContract={this.state.cryptoBoysContract}
-                  usersContract={this.state.usersContract}
-                  users={this.state.users}
-                />
+                accountAddress={this.state.accountAddress}
+               // allcryptoBoys={this.state.allcryptoBoys}
+                cryptoBoys={this.state.cryptoBoys}
+                totalTokensMinted={this.state.totalTokensMinted}
+                changeTokenPrice={this.changeTokenPrice}
+                toggleForSale={this.toggleForSale}
+                buyCryptoBoy={this.buyCryptoBoy}
+                callbackFromParent={this.myCallback2}
+                cryptoBoysContract={this.state.cryptoBoysContract}
+                // usersContract={this.state.usersContract}
+                
+                //users={this.state.users}
+              />
               )}
             />
             <Route 
@@ -921,7 +848,8 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                 allusers={this.state.allUsers}
                 usersContract={this.state.usersContract}
                 usersCount={this.state.usersCount}
-                allCreators={this.state.allUsers}/>
+               // allCreators={this.state.allUsers}
+               />
               )}/>
             <Route
               path="/mint"
@@ -944,11 +872,9 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                 <MyCryptoBoys
                   accountAddress={this.state.accountAddress}
                   cryptoBoys={this.state.cryptoBoys}
-                  totalTokensOwnedByAccount={
-                    this.state.totalTokensOwnedByAccount
-                  }
+                  
                  callbackFromParent1={this.myCallback2}
-                 loading={this.state.loading}
+                 
                 />
               )}
             />
@@ -959,14 +885,12 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                 <TheirCryptoBoys
                   accountAddress={this.state.clickedAddress}
                   cryptoBoys={this.state.cryptoBoys}
-                  totalTokensOwnedByAccount={
-                    this.state.totalTokensOwnedByAccount
-                  }
+                  
                   callbackFromParent1={this.myCallback2}
                   cryptoBoysContract={this.state.cryptoBoysContract}
-                  usersContract={this.state.usersContract}
+                  
                   userExists={this.state.userExists}
-                  users={this.state.allUsers}
+                  
                  // loading={this.state.loading}
                 />
                 
@@ -975,7 +899,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
             
              <Route
                 path={`/nftDetails/${this.state.clickedAddress}`}
-             //path="/nftDetails"
+             
               
               render={() => (
               <CryptoBoyNFTDetails
@@ -991,11 +915,11 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                callbackFromParent={this.myCallback2}
                callBack={this.tokenIDfun}
                cryptoBoysContract={this.state.cryptoBoysContract}
-               usersContract={this.state.usersContract}
+               
                cryptoBoys={this.state.cryptoBoys}
                loading={this.state.loading}
                tokenExists={this.state.tokenExists}
-               users={this.state.users}
+              
                tokenIdAndPrice={this.tokenIdAndPrice}
                />
               )}

@@ -18,26 +18,7 @@ const useGridStyles = makeStyles(({ breakpoints }) => ({
      justifyContent: 'center',
     },
   },
-  // parent:{
-  //   display: "grid",// activate grid
-  //   gridTemplateColumns: "repeat(4, 1fr)", //make 4 cols with size 1fr
-  //   gridGap: "20px", //gap between the rows
-  // },
-  // child:{
-  //   '&:nthChild(3n+1)' :{
-  //     gridColumn: 1,
-  //   },
-  //  ' &:nthChild(3n+2)' :{
-  //     gridColumn: 2,
-  //   },
-  //   '&:nthChild(3n+3)' :{
-  //     gridColumn: 3,
-  //   },
-  //   '&:nthChild(3n+4)' :{
-  //     gridColumn: 1, //put the fourth item in a new row
-  //   },
-    
-  // },
+  
   
 }));
 
@@ -55,13 +36,13 @@ const useStyles = makeStyles((theme) => ({
 const MyCryptoBoys = ({
   accountAddress,
   cryptoBoys,
-  totalTokensOwnedByAccount,
+ 
   callbackFromParent1
 }) => {
   const [loading, setLoading] = useState(false);
   const [myBoughtCryptoBoys, setMyBoughtCryptoBoys] = useState([]);
   const [myMintedCryptoBoys, setMyMintedCryptoBoys] = useState([]);
-  const [myAllCryptoBoys, setMyAllCryptoBoys] = useState([]);
+  
 
   const [checked, setChecked] = useState(false);
   
@@ -83,10 +64,10 @@ const MyCryptoBoys = ({
       (cryptoboy) => cryptoboy.mintedBy === accountAddress
     );
     setMyMintedCryptoBoys(my_minted_crypto_boys);
-    const my_all_crypto_boys = cryptoBoys.filter(
-      (cryptoboy) => cryptoboy.currentOwner === accountAddress
-    );
-    setMyAllCryptoBoys(my_all_crypto_boys);
+    // const my_all_crypto_boys = cryptoBoys.filter(
+    //   (cryptoboy) => cryptoboy.currentOwner === accountAddress
+    // );
+    // setMyAllCryptoBoys(my_all_crypto_boys);
   }, [cryptoBoys]);
   const classes=useStyles();
   // myCallBack=(address)=>{

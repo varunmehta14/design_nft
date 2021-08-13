@@ -2,13 +2,7 @@ import React,{useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-
-
-import Link from '@material-ui/core/Link';
-
-import Box from '@material-ui/core/Box';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import validator from 'validator';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,7 +10,7 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 
 import AvatarImageCropper from 'react-avatar-image-cropper';
-//import UserDataService from ".../services/UserService";
+
 
 
 
@@ -46,8 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile( { createUserFromApp,accountAddress, accountBalance,nameIsUsed ,emailIsUsed}) {
   const classes = useStyles();
-  const[preview,setPreview]=useState(null);
-  const[uploaded,setUploaded]=useState(false);
+
   const[userName,setUserName]=useState("");
   const[bio,setBio]=useState("");
   const[social,setSocial]=useState("");
@@ -57,63 +50,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
   const[src,setSrc]=useState("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");
   const [emailError, setEmailError] = useState(false);
   const [clickedChange,setClickedChange]=useState(false);
-
-  const initialUserState = {
-    userId: null,
-    userName: "",
-    userEmail: "",
-    userSocial: "",
-    userRepo: "",
-    userBio: "",
-    userAvatarHash: "https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX",
-    userAddress: "",
-
-  };
-  const [user, setUser] = useState(initialUserState);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setUser({ ...user, [name]: value });
-    console.log(user)
-  };
-  const saveUser = () => {
-    var data = {
-      
-    userName: user.userName,
-    userEmail: user.userEmail,
-    userSocial: user.userSocial,
-    userRepo: user.userRepo,
-    userBio: user.userBio,
-    userAvatarHash: user.userAvatarHash,
-    userAddress: user.userAddress,
-    };
-  //   UserDataService.create(data)
-  //     .then(response => {
-  //       setUser({
-          // userId: response.data.userId,
-          // userName: response.data.userName,
-          // userEmail: response.data.userEmail,
-          // userSocial: response.data.userSocial,
-          // userRepo: response.data.userRepo,
-          // userBio: response.data.userBio,
-          // userAvatarHash: response.data.userAvatarHash,
-          // userAddress: response.data.userAddress,
-  //         description: response.data.description,
-  //         published: response.data.published
-  //       });
-  //       setSubmitted(true);
-  //       console.log(response.data);
-  //     })
-  //     .catch(e => {
-  //       console.log(e);
-  //     });
-   };
-
-  // const newUser = () => {
-  //   setUser(initialUserState);
-  //   setSubmitted(false);
-  // };
+  
 
   const validateEmail = (e) => {
     var email = e;
@@ -136,16 +73,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
   }
   const handleSubmit=(e)=>{
     e.preventDefault();
-    // if(buffer==null){
-    //   // console.log(defaultProfile)
-    //   // setBuffer(defaultProfile)
-    //   // const reader =new window.FileReader();
-    //   // reader.readAsArrayBuffer(defaultProfile);
-    //   // reader.onloadEnd=()=>{
-    //   //   setBuffer(Buffer(reader.result));
-    //   //   console.log("buffer null",buffer)
-    //   // }
-    // }
+    
     const em=validateEmail(email);
     console.log(em)
     if(em){
@@ -163,7 +91,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
     // handle the blob file you want
     // such as get the image src
     console.log(file);
-    setUploaded(true);
+    
     setBuffer(file);
      var src = window.URL.createObjectURL(file);
      setSrc(src);
@@ -174,14 +102,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
   
   return (
     <div style={{padding:"1%"}}>
-    {/* <div className="card mt-1">
-        <div className="card-body align-items-center d-flex justify-content-center">
-    
-           <h5>
-           Profile
-          </h5>
-        </div>
-        </div>   */}
+   
         <div style={{display:"flex",justifyContent:"center"}}>
      {clickedChange?( <form onSubmit={handleSubmit2} style={{display:"contents"}}>
         <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
@@ -197,15 +118,11 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
          
         </div>
         <div style={{display:"flex",justifyContent:"space-around"}}>
-        {/* <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
-            Remove Dp
-           </Button> */}
+        
            <IconButton color="primary"  style={{float:"left"}}component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
           <HighlightOffIcon style={{fontSize:"-webkit-xxx-large"}}/>
         </IconButton>
-           {/* <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setClickedChange(true)}}>
-            Change Dp
-           </Button>  */}
+           
            <IconButton color="primary" aria-label="upload picture" component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setClickedChange(true)}}>
           <PhotoCamera style={{fontSize:"-webkit-xxx-large"}}/>
         </IconButton>
@@ -231,8 +148,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
                 required
                 value={userName}
                 onChange={(e)=>{setUserName(e.target.value)}}
-                //value={user.userName}
-                //onChange={handleInputChange}
+               
                 error={nameIsUsed}
                 id="userName"
                 label="User Name"
@@ -245,8 +161,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
             required
             value={email}
             onChange={(e)=>{setEmail(e.target.value)}}
-            //value={user.userEmail}
-            //onChange={handleInputChange}
+            
             id="userEmail"
             label="Email Address"
             name="userEmail"
@@ -254,10 +169,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
             autoComplete="email"
             autoFocus
           />
-            {/* <span style={{
-          fontWeight: 'bold',
-          color: 'red',
-        }}>{emailError}</span> */}
+            
         </div>
         <br/>
         <div style={{display:"flex",justifyContent:"space-evenly"}}>
@@ -268,8 +180,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
                 required
                 value={social}
                 onChange={(e)=>{setSocial(e.target.value)}}
-                //value={user.userSocial}
-                //onChange={handleInputChange}
+                
                 id="userSocial"
                 label="Social Media Link"
                 autoFocus
@@ -280,8 +191,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
             id="userRepo"
             value={repo}
             onChange={(e)=>{setRepo(e.target.value)}}
-            //value={user.userRepo}
-            //onChange={handleInputChange}
+            
             label="Custom URL"
             name="userRepo" 
             autoFocus
@@ -295,8 +205,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
           multiline
           value={bio}
           onChange={(e)=>{setBio(e.target.value)}}
-          //value={user.userBio}
-          //onChange={handleInputChange}
+          
           name="userBio"
           rowsMax={4}
           variant="outlined"
@@ -306,7 +215,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
          <div style={{display:"flex",justifyContent:"space-evenly"}}>
           <Button
             type="submit"
-           // href="/account"
+           
             variant="contained"
             color="primary"
             className={classes.submit}
@@ -325,6 +234,7 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
                  type="button"
                  className="close"
                  data-dismiss="alert"
+                  onClick={()=>setUserName("")}
                >
                  <span>&times;</span>
                </button>
@@ -340,6 +250,8 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
                  type="button"
                  className="close"
                  data-dismiss="alert"
+                 onClick={()=>setEmail("")}
+
                >
                  <span>&times;</span>
                </button>

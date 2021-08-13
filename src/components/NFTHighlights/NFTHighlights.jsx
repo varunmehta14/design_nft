@@ -76,22 +76,22 @@ const NFTHighlights=(props)=> {
    
      
       const getCurrentUser=async()=>{
-       if(props.usersContract&&props.users){
-         //const currentMinted=await props.users.find((user)=>user.userAddress===props.cryptoboy.mintedBy);
-        // console.log("Current using array",currentMinted)
-         console.log(props)
-           const currentMinted=await props.usersContract.methods
-           .allUsers(props.cryptoboy.mintedBy)
-           .call();
-          setMintedByName(currentMinted[1]);
-          setMintedAvatar(currentMinted[6]);
-          //const currentOwned=await props.users.find((user)=>user.userAddress===props.cryptoboy.currentOwner);
-           const currentOwned=await props.usersContract.methods
-          .allUsers(props.cryptoboy.currentOwner)
-           .call();
-          setOwnedByName(currentOwned[1]);
-          setOwnedAvatar(currentOwned[6]);
-        }
+      //  if(props.usersContract&&props.users){
+      //    //const currentMinted=await props.users.find((user)=>user.userAddress===props.cryptoboy.mintedBy);
+      //   // console.log("Current using array",currentMinted)
+      //    console.log(props)
+      //      const currentMinted=await props.usersContract.methods
+      //      .allUsers(props.cryptoboy.mintedBy)
+      //      .call();
+      //     setMintedByName(currentMinted[1]);
+      //     setMintedAvatar(currentMinted[6]);
+      //     //const currentOwned=await props.users.find((user)=>user.userAddress===props.cryptoboy.currentOwner);
+      //      const currentOwned=await props.usersContract.methods
+      //     .allUsers(props.cryptoboy.currentOwner)
+      //      .call();
+      //     setOwnedByName(currentOwned[1]);
+      //     setOwnedAvatar(currentOwned[6]);
+      //   }
         
         UserDataService.getByAddress(props.cryptoboy.mintedBy)
         .then(response => 
@@ -129,11 +129,11 @@ const NFTHighlights=(props)=> {
         
       }
       useEffect(()=>{
-        if(props.users){
+        
           getCurrentUser();
-        }
+        
        
-      },[props.users,props.cryptoboy]);
+      },[props.cryptoboy]);
 console.log(mintedByName,ownedByName)
 
 //   callChangeTokenPriceFromApp = (tokenId, newPrice) => {

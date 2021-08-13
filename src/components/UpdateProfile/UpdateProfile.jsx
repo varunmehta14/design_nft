@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import Button from '@material-ui/core/Button';
-//import Avatar from 'react-avatar-edit';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import AvatarImageCropper from 'react-avatar-image-cropper';
@@ -27,7 +27,7 @@ const useStyles=makeStyles((theme)=>({
     },
   },
 }))
-const UpdateProfile = ({ updateUserFromApp,accountAddress, accountBalance,currentUser,cryptoBoysContract,nameIsUsed,emailIsUsed,loading}) => {
+const UpdateProfile = ({ updateUserFromApp,accountAddress, accountBalance,currentUser,emailIsUsed,loading}) => {
 const classes=useStyles();
   console.log(currentUser)
   useEffect(()=>{
@@ -54,8 +54,7 @@ const classes=useStyles();
   const [emailError, setEmailError] = useState(false);
   const [clickedChange,setClickedChange]=useState(false);
 
-  const oldemail=currentUser.userEmail;
-  console.log(oldemail)
+
   
   const validateEmail = (e) => {
     var email = e;
@@ -95,28 +94,11 @@ const classes=useStyles();
     //setUpdatedUser(current);
     //console.log(updatedUser);
     if(em){
-      updateUserFromApp(userName,oldemail,email,social,repo,bio,buffer,accountAddress);
+      updateUserFromApp(userName,email,social,repo,bio,buffer,accountAddress);
     }
     
   }
-  // const captureFile=(event)=> {
-  //   event.preventDefault()
-  //   const file = event.target.files[0]
-  //   const reader = new window.FileReader()
-  //   reader.readAsArrayBuffer(file)
-  //   reader.onloadend = () => {
-  //     setBuffer( Buffer(reader.result) )
-  //     console.log('buffer', buffer)
-  //   }
-  // }
-  // const onClose=()=> {
-  //   setPreview(null)
-  // }
-  
-  // const onCrop=(preview)=> {
-  //   setPreview(preview)
-  //   console.log(preview)
-  // }
+ 
   const apply = (file) => {
     
     // handle the blob file you want
@@ -127,14 +109,9 @@ const classes=useStyles();
      var src = window.URL.createObjectURL(file);
      setSrc(src);
      setClickedChange(false)
-    // console.log(src);
-//     const reader = new window.FileReader()
-//     reader.readAsBinaryString(file)
-//     console.log(reader.result)
-//     reader.onloadend = () => {
-//       setBuffer( Buffer(reader.result) )
+    
  console.log('buffer', buffer)
-// }
+
   }
   const renderMobile=(
     <div style={{padding:"0.5%"}}>
@@ -161,15 +138,11 @@ const classes=useStyles();
           
          </div>
          <div style={{display:"flex",justifyContent:"space-around"}}>
-         {/* <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
-             Remove Dp
-            </Button> */}
+        
             <IconButton color="primary"  style={{float:"left"}}component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
            <HighlightOffIcon style={{fontSize:"-webkit-xxx-large"}}/>
          </IconButton>
-            {/* <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setClickedChange(true)}}>
-             Change Dp
-            </Button>  */}
+           
             <IconButton color="primary" aria-label="upload picture" component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setClickedChange(true)}}>
            <PhotoCamera style={{fontSize:"-webkit-xxx-large"}}/>
          </IconButton>
@@ -267,7 +240,7 @@ const classes=useStyles();
              style={{backgroundColor:"#173e43"}}
              variant="contained"
              color="primary"
-             //className={classes.submit}
+             
            >
              Update Profile
            </Button>
@@ -282,6 +255,7 @@ const classes=useStyles();
                   type="button"
                   className="close"
                   data-dismiss="alert"
+                  onClick={()=>{setEmail("")}}
                 >
                   <span>&times;</span>
                 </button>
@@ -442,6 +416,7 @@ const classes=useStyles();
                       type="button"
                       className="close"
                       data-dismiss="alert"
+                      onClick={()=>setEmail("")}
                     >
                       <span>&times;</span>
                     </button>

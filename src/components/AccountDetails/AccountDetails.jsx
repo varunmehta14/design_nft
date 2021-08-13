@@ -1,14 +1,8 @@
 import React,{useState,useEffect} from "react";
 import Button from '@material-ui/core/Button';
-//import Avatar from 'react-avatar-edit';
-import CssBaseline from '@material-ui/core/CssBaseline';
+
 import Paper from '@material-ui/core/Paper';
-import AvatarImageCropper from 'react-avatar-image-cropper';
-import validator from 'validator';
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import ArrowBackIosSharpIcon from '@material-ui/icons/ArrowBackIosSharp';
+
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles=makeStyles((theme)=>({
@@ -28,7 +22,7 @@ const useStyles=makeStyles((theme)=>({
   },
 }))
 
-const AccountDetails = ({ updateUserFromApp,accountAddress, accountBalance,currentUser,cryptoBoysContract,nameIsUsed,emailIsUsed}) => {
+const AccountDetails = ({ accountAddress, accountBalance,currentUser}) => {
 
 
 const classes=useStyles();  

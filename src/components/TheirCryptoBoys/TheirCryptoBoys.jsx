@@ -21,26 +21,7 @@ const useGridStyles = makeStyles(({ breakpoints }) => ({
      justifyContent: 'center',
     },
   },
-  // parent:{
-  //   display: "grid",// activate grid
-  //   gridTemplateColumns: "repeat(4, 1fr)", //make 4 cols with size 1fr
-  //   gridGap: "20px", //gap between the rows
-  // },
-  // child:{
-  //   '&:nthChild(3n+1)' :{
-  //     gridColumn: 1,
-  //   },
-  //  ' &:nthChild(3n+2)' :{
-  //     gridColumn: 2,
-  //   },
-  //   '&:nthChild(3n+3)' :{
-  //     gridColumn: 3,
-  //   },
-  //   '&:nthChild(3n+4)' :{
-  //     gridColumn: 1, //put the fourth item in a new row
-  //   },
-    
-  // },
+  
   
 }));
 const useStyles = makeStyles((theme) => ({
@@ -69,12 +50,12 @@ const initialUserState = {
 const TheirCryptoBoys = ({
   accountAddress,
   cryptoBoys,
-  totalTokensOwnedByAccount,
+  
   callbackFromParent1,
   cryptoBoysContract,
-  usersContract,
+  
   userExists,
-  users
+ 
 
 }) => {
   const [loading, setLoading] = useState(false);
@@ -109,17 +90,14 @@ const TheirCryptoBoys = ({
           userAddress: response.data[0].userAddress
         }
         );
-        //  setSubmitted(true);
-       // console.log(response.data);
+     
        console.log(currentUser)
       
       })
       .catch(e => {
         console.log(e);
       });
-    // const current=await usersContract.methods
-    // .allUsers(theirAccountAddress)
-    // .call();
+   
    
    
     }
@@ -157,7 +135,7 @@ const TheirCryptoBoys = ({
            <TheirAccountDetails 
            accountAddress={theirAccountAddress}
            cryptoBoysContract={cryptoBoysContract}
-           usersContract={usersContract}
+          
            currentUser={currentUser}
            />
         ):(<Loading/>)}

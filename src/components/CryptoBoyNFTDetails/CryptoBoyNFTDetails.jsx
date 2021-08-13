@@ -1,15 +1,15 @@
 import React, { useState,useEffect,useCallback } from "react";
 import { Link } from "react-router-dom";
-import queryString from 'query-string';
+
 import {Paper,Grid,Button,Select,Divider} from '@material-ui/core';
-import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage"; 
+
 import Queries from "../Queries/Queries";
 import Loading from "../Loading/Loading";
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+
+
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
-import { Slide } from 'react-slideshow-image';
+
+
 import 'react-slideshow-image/dist/styles.css';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -68,16 +68,16 @@ const CryptoBoyNFTDetails=(props)=> {
 
   
 
- // const value=queryString.parse(props.location.search);
+ 
   console.log(window.location.href.split("/")[4])
   const classes=useStyles();
   const theme=useTheme();
-  //console.log(props.cryptoBoys[thistokenId]sContract)
+
   
   const [ newCryptoBoyPrice,setNewCryptoBoyPrice]=useState("");
   const [ newCryptoBoyDressPrice,setNewCryptoBoyDressPrice]=useState("");
   //const [loading, setLoading] = useState(false);
-  const [ isHidden,setIsHidden]=useState(true);
+
   const [mintedByName,setMintedByName]=useState("") 
   const [ownedByName,setOwnedByName]=useState("") 
   const [ownedByEmail,setOwnedByEmail]=useState("") 
@@ -87,36 +87,23 @@ const CryptoBoyNFTDetails=(props)=> {
   const [prevAvatar,setPrevAvatar]=useState(null) 
   const [activeStep, setActiveStep] = useState(0);
   
- // const [props.cryptoBoys[thistokenId],setprops.cryptoBoys[thistokenId]]=useState("");
-  //const [tokenNo,setTokenNo]=useState(window.location.href.split("/")[4]);
- // const maxSteps = props.cryptoBoys[thistokenId].metaData.images.length;
+ 
  let thistokenId=props.clickedAddress-1;
  if(!props.clickedAddress){thistokenId=window.location.href.split("/")[4]-1};
 console.log(props.cryptoBoys[thistokenId])
-//console.log(tokenNo)
+
 console.log(props.users)
 const [designMetadata,setDesignMetadata]=useState("");
 
-// if (props.cryptoBoys[window.location.href.split("/")[4]].metaData) {
-//   setLoading(false);
-//   setprops.cryptoBoys[thistokenId](props.cryptoBoys[window.location.href.split("/")[4]-1]);
-// } else {
-//   setLoading(true);
-// }
 
   const getCurrentUser=(async()=>{
-    //setprops.cryptoBoys[thistokenId](props.cryptoBoys[window.location.href.split("/")[4]]);
    
-     
-
-     // const currentMinted=await props.users.find((user)=>user.userAddress.includes(props.cryptoBoys[thistokenId].mintedBy));
-   // console.log("Curent minted by array",currentMinted)
     
     
    
   if(props.cryptoBoys[thistokenId]){
     
-   UserDataService.getByAddress(props.cryptoBoys[thistokenId].mintedBy)
+   await UserDataService.getByAddress(props.cryptoBoys[thistokenId].mintedBy)
    .then(response => 
      { 
        console.log(response);
@@ -133,7 +120,7 @@ const [designMetadata,setDesignMetadata]=useState("");
    .catch(e => {
      console.log(e);
    });
-   UserDataService.getByAddress(props.cryptoBoys[thistokenId].currentOwner)
+   await UserDataService.getByAddress(props.cryptoBoys[thistokenId].currentOwner)
    .then(response => 
      { 
        console.log(response);
@@ -150,7 +137,7 @@ const [designMetadata,setDesignMetadata]=useState("");
    .catch(e => {
      console.log(e);
    });
-   UserDataService.getByAddress(props.cryptoBoys[thistokenId].previousOwner)
+   await UserDataService.getByAddress(props.cryptoBoys[thistokenId].previousOwner)
    .then(response => 
      { 
        console.log(response);
@@ -159,67 +146,40 @@ const [designMetadata,setDesignMetadata]=useState("");
 
      
      
-     //  setSubmitted(true);
-    // console.log(response.data);
+   
     
    
    })
    .catch(e => {
      console.log(e);
    });
-   if(props.cryptoBoys[thistokenId].metaData==undefined){
-    console.log("undefined")
-   const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
-   const metaData = await result.json();
-  // props.cryptoBoys[thistokenId]
-   setDesignMetadata(metaData)
-    console.log(designMetadata)
-  }   
+   
+  //  if(props.cryptoBoys[thistokenId].metaData==undefined){
+  //   console.log("undefined")
+  //  const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
+  //  const metaData = await result.json();
+  // // props.cryptoBoys[thistokenId]
+  //  setDesignMetadata(metaData)
+  //   console.log(designMetadata)
+  // }   
+    }
+  })
+  const getMetadata=(async()=>{
+    if(props.cryptoBoys[thistokenId]){
+    const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
+    const metaData = await result.json();
+   // props.cryptoBoys[thistokenId]
+    setDesignMetadata(metaData)
+     console.log(designMetadata)
     }
   })
 
   useEffect(()=>{
     getCurrentUser();
-  
-  },[props.usersContract,props.users,props.cryptoBoys[thistokenId]]);
+    getMetadata();
+  },[props.cryptoBoys[thistokenId]]);
  
-  // useEffect(()=>{
-  // // setTokenNo(window.location.href.split("/")[4])
-  // console.log("useEffect called")
-  // async function getCurrentUser(){
-  //   if(props.usersContract&&props.cryptoBoysContract){
-  //     const current1=await props.usersContract.methods
-  //     .allUsers(props.cryptoBoys[thistokenId].mintedBy)
-  //     .call();
-  //     setMintedByName(current1[1]);
-  //     setMintedAvatar(current1[6])
-  //     const current2=await props.usersContract.methods
-  //     .allUsers(props.cryptoBoys[thistokenId].currentOwner)
-  //     .call();
-  //     setOwnedByName(current2[1]);
-  //     setOwnedAvatar(current2[6]);
-  //     const current3=await props.usersContract.methods
-  //     .allUsers(props.cryptoBoys[thistokenId].previousOwner)
-  //     .call();
-  //     setPrevByName(current3[1]);
-  //      setPrevAvatar(current3[6]);
-  //      console.log(props.cryptoBoys[thistokenId].metaData)
-  //     if(props.cryptoBoys[thistokenId].metaData!==undefined){
-  //       console.log("undefined")
-  //      const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
-  //      const metaData = await result.json();
-  //     // props.cryptoBoys[thistokenId]
-  //      setDesignMetadata(metaData)
-  //       console.log(designMetadata)
-  //     }   
-  //    }
-  // }
-  //   getCurrentUser();
-  
-  
-  // },[]);
-  
-//console.log(mintedByName,ownedByName,prevByName)         
+       
   
   const callChangeTokenPriceFromApp = (tokenId, newPrice) => {
     props.changeTokenPrice(tokenId, newPrice);
@@ -238,16 +198,10 @@ const [designMetadata,setDesignMetadata]=useState("");
     e.preventDefault();
     window.open(props.cryptoBoys[thistokenId].metaData.images[id], "_blank") 
   }
-  const sendTokenID=(tokId)=>{
-    props.callBack(tokId)
-  }
+ 
   console.log(props.cryptoBoys[thistokenId]);
  
-  const properties = {
-    duration: 3000,
-    autoplay: false,
-    indicators: true,
-  };
+ 
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -288,11 +242,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
       <span className="font-weight-bold">Created By :&nbsp;</span>
       <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].mintedBy}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].mintedBy)}}style={{textDecorationLine:"none"}}>
-         {/* {props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
-        "..." +
-        props.cryptoBoys[thistokenId].mintedBy.slice(
-          props.cryptoBoys[thistokenId].mintedBy.length - 5
-        )} */}
+      
         {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{mintedByName}</b></div>):(<>{props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].mintedBy.slice(
@@ -303,11 +253,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
       <span className="font-weight-bold">Owned By :&nbsp;</span>
       <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].currentOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].currentOwner)}}style={{textDecorationLine:"none"}}> 
-      {/* {props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
-        "..." +
-        props.cryptoBoys[thistokenId].currentOwner.slice(
-          props.cryptoBoys[thistokenId].currentOwner.length - 5
-        )} */}
+     
         {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{ownedByName}</b></div>):(<>{props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].currentOwner.slice(
@@ -631,11 +577,7 @@ const [designMetadata,setDesignMetadata]=useState("");
       <div style={{display:"flex",alignItems:"center"}}>
       <span className="font-weight-bold">Previous Owner :&nbsp;</span>
       <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].previousOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].previousOwner)}}style={{textDecorationLine:"none"}}> 
-      {/* {props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
-        "..." +
-        props.cryptoBoys[thistokenId].currentOwner.slice(
-          props.cryptoBoys[thistokenId].currentOwner.length - 5
-        )} */}
+     
         {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(<>{props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].previousOwner.slice(
@@ -652,37 +594,7 @@ const [designMetadata,setDesignMetadata]=useState("");
       <br/>
       
     </div>   
-    {/* <div className="card mt-1">
-      {props.cryptoBoys[thistokenId].metaData.images.map
-              ((image)=>{return (
-                            <div className="card-body "style={{display:"contents"}} ><img src={image}/></div>
-                            );
-                        }
-              )
-      } 
-    </div>   */}
-    
-    {/* <div className={useStyles.root} >
-    <GridList className={useStyles.gridList} cols={3}>
-      {props.cryptoBoys[thistokenId].metaData.images.map((image) => (
-        <GridListTile key={image} style={{width:"40%",height:"40%"}}>
-          <img src={image} style={{width:"inherit",height:"inherit"}}/>
-          
-        </GridListTile>
-      ))}
-    </GridList>
-  </div> */}
-  
-  {/* <Carousel showArrows={true} dynamicHeight={true}>
-  {props.cryptoBoys[thistokenId].metaData.images.map((image) => (
-       
-          <img src={image}/>
-       
-      
-          
-        
-      ))}
-  </Carousel> */}
+   
   <br/>
   <div>
     {!props.cryptoBoys[thistokenId].metaData?(
@@ -764,24 +676,6 @@ const [designMetadata,setDesignMetadata]=useState("");
     </>)}
   
     </div>
-  {/* <div>
-  <Slide slidesToShow={2}slidesToScroll={2}{...properties}>
-  {props.cryptoBoys[thistokenId].metaData.images.map((image) => (
-      
-      <div className={useStyles.root} style={{padding:"2%"}}>
-        <a href={image} target="_blank">
-      <img src={image} style={{height: "100%", width: "100%", objectFit:"contain"}}/>
-      </a>
-       
-      </div>
-      
-  
-      
-          
-        
-      ))}
-        </Slide>
-    </div> */}
   
        
       
@@ -826,11 +720,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
      
       <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].mintedBy}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].mintedBy)}}style={{textDecorationLine:"none"}}>
-         {/* {props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
-        "..." +
-        props.cryptoBoys[thistokenId].mintedBy.slice(
-          props.cryptoBoys[thistokenId].mintedBy.length - 5
-        )} */}
+        
         {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;@{mintedByName}<br/>   <>&nbsp;Creator</></div>):(<>{props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].mintedBy.slice(
@@ -840,11 +730,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
          <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].currentOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].currentOwner)}}style={{textDecorationLine:"none"}}> 
-      {/* {props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
-        "..." +
-        props.cryptoBoys[thistokenId].currentOwner.slice(
-          props.cryptoBoys[thistokenId].currentOwner.length - 5
-        )} */}
+     
         {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;@{ownedByName} <br/> <>&nbsp;Owner</></div>):(<>{props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].currentOwner.slice(
@@ -1186,11 +1072,7 @@ const [designMetadata,setDesignMetadata]=useState("");
       <div style={{display:"flex",alignItems:"center"}}>
       <span className="font-weight-bold">Previous Owner :&nbsp;</span>
       <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].previousOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].previousOwner)}}> 
-      {/* {props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
-        "..." +
-        props.cryptoBoys[thistokenId].currentOwner.slice(
-          props.cryptoBoys[thistokenId].currentOwner.length - 5
-        )} */}
+      
         {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(<>{props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].previousOwner.slice(
