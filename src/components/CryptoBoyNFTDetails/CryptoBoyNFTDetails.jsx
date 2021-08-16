@@ -68,7 +68,7 @@ const CryptoBoyNFTDetails=(props)=> {
 
   
 
- 
+ console.log(props.cryptoBoys)
   console.log(window.location.href.split("/")[4])
   const classes=useStyles();
   const theme=useTheme();
@@ -92,16 +92,17 @@ const CryptoBoyNFTDetails=(props)=> {
  if(!props.clickedAddress){thistokenId=window.location.href.split("/")[4]-1};
 console.log(props.cryptoBoys[thistokenId])
 
-console.log(props.users)
+
 const [designMetadata,setDesignMetadata]=useState("");
 
 
   const getCurrentUser=(async()=>{
    
     
-    
+    console.log("before")
    
   if(props.cryptoBoys[thistokenId]){
+    console.log("after")
     
    await UserDataService.getByAddress(props.cryptoBoys[thistokenId].mintedBy)
    .then(response => 
@@ -165,7 +166,9 @@ const [designMetadata,setDesignMetadata]=useState("");
     }
   })
   const getMetadata=(async()=>{
+    console.log("Before")
     if(props.cryptoBoys[thistokenId]){
+      console.log("after")
     const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
     const metaData = await result.json();
    // props.cryptoBoys[thistokenId]
@@ -176,8 +179,11 @@ const [designMetadata,setDesignMetadata]=useState("");
 
   useEffect(()=>{
     getCurrentUser();
-    getMetadata();
-  },[props.cryptoBoys[thistokenId]]);
+    
+      getMetadata();
+  
+    
+  },[props.cryptoBoys[thistokenId],props.cryptoBoysContract,props.clickedAddress]);
  
        
   

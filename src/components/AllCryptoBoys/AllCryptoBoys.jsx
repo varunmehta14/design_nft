@@ -11,7 +11,6 @@ import 'react-dropdown-tree-select/dist/styles.css';
 import data from '../data.json'
 import CategoryContainer from '../DropdownContainer/DropdownContainer';
 
-const _ = require('lodash');
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
     paddingLeft:"5%",
@@ -35,9 +34,7 @@ const AllCryptoBoys = ({
   buyCryptoBoy,
   callbackFromParent,
   cryptoBoysContract,
- // usersContract,
- 
-  //users
+
 }) => {
   
 //   const [loading, setLoading] = useState(true);
@@ -55,25 +52,15 @@ const AllCryptoBoys = ({
   
 
  
-//   useEffect(() => {
-//     if (cryptoBoys.length !== 0) {
-//       if (cryptoBoys[0].metaData !== undefined) {
-//         setLoading(false);
-//       } else {
-//        setLoading(true);
-//       }
-//     }
-   
-//   // loadDesigns(start,end)
-//   }, []);
+
   
 //   //console.log(cryptoBoysContract)
-  // const myCallback1=(dataFromChild1)=>{
-  //   //console.log(dataFromChild)
-  //  // setAddress(dataFromChild1)
-  //   callbackFromParent(dataFromChild1)
-  //  // console.log(address)
-  // }
+//   const myCallback1=(dataFromChild1)=>{
+//     //console.log(dataFromChild)
+//    // setAddress(dataFromChild1)
+//     callbackFromParent(dataFromChild1)
+//    // console.log(address)
+//   }
 
 //   if(window.innerWidth>1280 && window.innerWidth<=1920 ){
     
@@ -193,89 +180,89 @@ const AllCryptoBoys = ({
 //   //  }
 //    const gridStyles = useGridStyles();
   
-  //  const onChange = (currentNode, selectedNodes) => {
-  //   const loc=selectedNodes.map(x=>x.value)
-  //   console.log(loc);
-  //   setCategories(loc);
+//    const onChange = (currentNode, selectedNodes) => {
+//     const loc=selectedNodes.map(x=>x.value)
+//     console.log(loc);
+//     setCategories(loc);
     
-  //   console.log('onChange::', currentNode, selectedNodes)
-  // } 
+//     console.log('onChange::', currentNode, selectedNodes)
+//   } 
 
-  // const searchFilters=()=>{
-  //   console.log(categories[0])
-  //   var flatArray = Array.prototype.concat.apply([], categories);
-  //   console.log(flatArray)
-  //   let searchedResults=[];
-  //   cryptoBoys.filter((cryptoBoy)=>{
-  //     // categories.some((newItem)=>{
-  //     //   cryptoBoy[newItem.push]
-  //     // })
-  //     const found = cryptoBoy.metaData.categories.some(r=> flatArray.indexOf(r) >= 0)
-  //     if(found){
-  //       searchedResults.push(cryptoBoy);
-  //     }
-  //    // console.log( cryptoBoy.metaData.categories)
-  //    // cryptoBoy.metaData.categories.filter((obj)=>obj.includes(categories))
+//   const searchFilters=()=>{
+//     console.log(categories[0])
+//     var flatArray = Array.prototype.concat.apply([], categories);
+//     console.log(flatArray)
+//     let searchedResults=[];
+//     cryptoBoys.filter((cryptoBoy)=>{
+//       // categories.some((newItem)=>{
+//       //   cryptoBoy[newItem.push]
+//       // })
+//       const found = cryptoBoy.metaData.categories.some(r=> flatArray.indexOf(r) >= 0)
+//       if(found){
+//         searchedResults.push(cryptoBoy);
+//       }
+//      // console.log( cryptoBoy.metaData.categories)
+//      // cryptoBoy.metaData.categories.filter((obj)=>obj.includes(categories))
      
-  //   })
-  //   setAllDesigns(searchedResults)
-  //   setEnd(searchedResults.length)
-  //   // const filteredArray = _.cloneDeep(cryptoBoys);
-  //   // filteredArray.map(obj => Object.keys(obj).forEach((key) => {
-  //   //   if (!categories.includes(key)) {
-  //   //     delete obj[key];
-  //   //   }
-  //   // }))
-  //   // console.log(filteredArray);
-  //   //console.log(cryptoBoys.filter((cryptoBoy)=>cryptoBoy.metaData.categories,{categories}));
-  //   console.log(searchedResults)
-  // }
+//     })
+//     setAllDesigns(searchedResults)
+//     setEnd(searchedResults.length)
+//     // const filteredArray = _.cloneDeep(cryptoBoys);
+//     // filteredArray.map(obj => Object.keys(obj).forEach((key) => {
+//     //   if (!categories.includes(key)) {
+//     //     delete obj[key];
+//     //   }
+//     // }))
+//     // console.log(filteredArray);
+//     //console.log(cryptoBoys.filter((cryptoBoy)=>cryptoBoy.metaData.categories,{categories}));
+//     console.log(searchedResults)
+//   }
 //   return (
-    // <div style={{padding:"0.5%"}}>
-    //   <div className="card mt-1">
-    //     <div className="card-body align-items-center d-flex justify-content-center">
-    //       <h5>
-    //         Total No. of Designs On The Platform :{" "}
-    //         {totalTokensMinted}
-    //       </h5>
-    //     </div>
-    //   </div>
+//     <div style={{padding:"0.5%"}}>
+//       <div className="card mt-1">
+//         <div className="card-body align-items-center d-flex justify-content-center">
+//           <h5>
+//             Total No. of Designs On The Platform :{" "}
+//             {totalTokensMinted}
+//           </h5>
+//         </div>
+//       </div>
 
 //       {cryptoBoys?(
 //         <>
-        // <div style={{display:"flex",justifyContent:"flex-end",alignItems:"flex-end"}}>
-        //   {/* <button className="mt-3 btn btn-outline-primary" onClick={()=>{setShowCategory(!showCategory)}} style={{borderRadius:"20px"}}>
-        //         Filters
-        //       </button> */}
-        //       {/* {showCategory?( */}
-        //       <div style={{display:"flex",alignItems:"flex-end"}}> <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} /> 
-        //       <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
-        //       Search
-        //       </button>
-        //       </div>
-        //       {/* ):null} */}
-        //       </div>      
+//         <div style={{display:"flex",justifyContent:"flex-end",alignItems:"flex-end"}}>
+//           {/* <button className="mt-3 btn btn-outline-primary" onClick={()=>{setShowCategory(!showCategory)}} style={{borderRadius:"20px"}}>
+//                 Filters
+//               </button> */}
+//               {/* {showCategory?( */}
+//               <div style={{display:"flex",alignItems:"flex-end"}}> <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} /> 
+//               <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
+//               Search
+//               </button>
+//               </div>
+//               {/* ):null} */}
+//               </div>      
 //         <div style={{display:"flex",justifyContent:"center",padding:"1.5%",height:"100%"}}>
       
 //         <Grid classes={gridStyles} container spacing={4} >
        
-        // {allDesigns.map((cryptoboy) => {
-        //   return (
-        //     <>
-        //      <Grid item xs={12} sm={6} lg={4} xl={3} >
-        //      <NFTHighlights
-        //         cryptoboy={cryptoboy}
-        //         accountAddress={accountAddress}
-        //         changeTokenPrice={changeTokenPrice}
-        //         toggleForSale={toggleForSale}
-        //         buyCryptoBoy={buyCryptoBoy}
-        //         callbackFromParent={myCallback1}
-        //         cryptoBoysContract={cryptoBoysContract}
-        //         //usersContract={usersContract}
-        //         //users={users}
-        //       />
-        //      </Grid>
-        //    </> 
+//         {allDesigns.map((cryptoboy) => {
+//           return (
+//             <>
+//              <Grid item xs={12} sm={6} lg={4} xl={3} >
+//              <NFTHighlights
+//                 cryptoboy={cryptoboy}
+//                 accountAddress={accountAddress}
+//                 changeTokenPrice={changeTokenPrice}
+//                 toggleForSale={toggleForSale}
+//                 buyCryptoBoy={buyCryptoBoy}
+//                 callbackFromParent={myCallback1}
+//                 cryptoBoysContract={cryptoBoysContract}
+//                 //usersContract={usersContract}
+//                 //users={users}
+//               />
+//              </Grid>
+//            </> 
 
 //             // {/* // <div
 //             // //   key={cryptoboy.tokenId.toNumber()}
@@ -337,11 +324,27 @@ const AllCryptoBoys = ({
 //       </div>
    
 //   );
+console.log(cryptoBoys)
+
+useEffect(() => {
+  if (cryptoBoys.length === totalTokensMinted) {
+    //if (cryptoBoys[0].metaData !== undefined) {
+      setLoading(false);
+   // }
+  }
+    else {
+     setLoading(true);
+   }
+  
+ 
+// loadDesigns(start,end)
+}, []);
 const [designList, setDesignList] = useState({
   list: []
 });
 const [categories,setCategories]=useState([]);
 const [end,setEnd]=useState(cryptoBoys.length);
+const [loading,setLoading]=useState(true)
 
 // tracking on which page we currently are
 const [page, setPage] = useState(0);
@@ -418,11 +421,18 @@ useEffect(() => {
 
 useEffect(() => {
   // here we simulate adding new posts to List
-  const newList = designList.list.concat(cryptoBoys.slice(page,page+postsPerPage));
+  console.log("Page",page)
+  console.log("post per page",postsPerPage)
+  console.log(cryptoBoys.length)
+
+  const newList =  designList.list.concat(cryptoBoys.slice(page,page+postsPerPage));
+  console.log("newList",newList)
   setDesignList({
-      list: newList
+      list: cryptoBoys.slice(page,page+postsPerPage)
   })
-}, [page,cryptoBoys,categories])
+  console.log("designList",designList.list)
+
+}, [page,cryptoBoys])
 
 // here we handle what happens when user scrolls to Load More div
 // in this case we just update page variable
@@ -481,7 +491,7 @@ const searchFilters=()=>{
 const gridStyles = useGridStyles();
 return (<>
 
-{cryptoBoys?( 
+{!loading&&cryptoBoys?( 
 
 <div style={{padding:"0.5%"}}>
 <div className="card mt-1">
@@ -492,23 +502,20 @@ return (<>
     </h5>
   </div>
 </div>
-<div style={{display:"flex",justifyContent:"flex-end",alignItems:"flex-end"}}>
-          {/* <button className="mt-3 btn btn-outline-primary" onClick={()=>{setShowCategory(!showCategory)}} style={{borderRadius:"20px"}}>
-                Filters
-              </button> */}
-              {/* {showCategory?( */}
+{/* <div style={{display:"flex",justifyContent:"flex-end",alignItems:"flex-end"}}>
+        
               <div style={{display:"flex",alignItems:"flex-end"}}> <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} /> 
               <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
               Search
               </button>
               </div>
-              {/* ):null} */}
-              </div>      
+            
+              </div>       */}
 <div  ref={ref}style={{display:"flex",justifyContent:"center",padding:"1%",height:"100%" }}>
   
   <Grid classes={gridStyles} container spacing={4} >
  
-  {designList.list.map((cryptoboy) => {
+  {designList.list.map((cryptoboy,index) => {
           return (
             <>
              <Grid item xs={12} sm={6} lg={4} xl={3} >
@@ -539,11 +546,11 @@ return (<>
 </div>
 
 <div className="loading" ref={loader}  style={{display:"flex",justifyContent:"center"}}>
-{designList.length==end?(<> <Alert severity="success" color="info">
+{designList.list.length===cryptoBoys.length?(<> <Alert severity="success" color="info">
 You are all Caught Up      </Alert></>):(<><h2>Load More</h2></>)}
     
 </div></div>):<Loading/>}</>)
 
-};
+ };
 
 export default AllCryptoBoys;

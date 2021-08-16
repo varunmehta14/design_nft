@@ -98,15 +98,28 @@ class App extends Component {
     };
   }
  
-  componentWillMount = async () => {
+  componentDidMount = async () => {
     await this.loadWeb3();
     await this.loadBlockchainData();
     await this.loadAllUsers();
     await this.loadCurrentUser();
   //  await this.loadDesigns(this.state.startState,this.state.endState);
-    await this.setMetaData();
-    await this.setMintBtnTimer();
+  await this.setMetaData();
+  //  await this.setMintBtnTimer();
   };
+  async componentDidUpdate(prevProps,prevState){
+    console.log("prevState",prevState)
+    console.log("this state",this.state)
+    if(prevState.accountAddress!=this.state.accountAddress){
+      await this.loadWeb3()
+      //await this.loadBlockchainData()
+      await this.loadCurrentUser()
+    }
+    // else if(prevState.cryptoBoys!=this.state.cryptoBoys){
+    //   await this.loadBlockchainData()
+    // }
+    
+  }
   
  myCallback2=(dataFromChild2)=>{
    console.log(dataFromChild2)

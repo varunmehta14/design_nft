@@ -185,6 +185,7 @@ const Navbar = ({connectToMetamask,
   //   item.id=i+1;
   // });
   // console.log(allData)
+  console.log(currentUser)
  const fuse1=new Fuse(searchData,{
    keys:[
      "userName"

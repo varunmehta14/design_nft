@@ -249,6 +249,7 @@ import CreatorHighlights from "../CreatorHighlights/CreatorHighlights"
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
+import Loading from "../Loading/Loading"
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
@@ -279,6 +280,7 @@ const useGridStyles = makeStyles(({ breakpoints }) => ({
  }));
 
 const AllCreators = (props) => {
+  console.log(props.allusers)
     const [creatorList, setCreatorList] = useState({
         list: []
     });
@@ -362,6 +364,7 @@ const AllCreators = (props) => {
         setCreatorList({
             list: newList
         })
+        console.log(creatorList.list.length)
     }, [page,props.allusers])
 
     // here we handle what happens when user scrolls to Load More div
@@ -417,10 +420,10 @@ const AllCreators = (props) => {
     </div>
     
     <div className="loading" ref={loader}  style={{display:"flex",justifyContent:"center"}}>
-    {creatorList.length=props.allusers.length?(<> <Alert severity="success" color="info">
+    {creatorList.list.length===props.allusers.length?(<> <Alert severity="success" color="info">
       You are all Caught Up      </Alert></>):(<><h2>Load More</h2></>)}
           
- </div></div>):null}</>)
+ </div></div>):<Loading/>}</>)
 }
 
 export default AllCreators;
