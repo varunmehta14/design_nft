@@ -197,7 +197,15 @@ const renderMobile=(
           {currentUser.userAddress}
           </p>
 </div>
+
 <hr/>
+
+<div style={{display:"flex",justifyContent:"center"}}>
+          <AccountBalanceWalletIcon/>
+          &nbsp;
+          <p>{accountBalance}&nbsp; Ξ</p>
+          </div>
+          <hr/>
 <div style={{display:"flex",justifyContent:'center'}}>
         <WorkTwoToneIcon/> &nbsp;
           <a
