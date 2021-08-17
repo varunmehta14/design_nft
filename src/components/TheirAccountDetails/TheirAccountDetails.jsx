@@ -110,7 +110,7 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) =
 
 <DnsTwoToneIcon/>
 &nbsp;
-<p >
+<p style={{overflowX:"auto"}}>
 {currentUser.userAddress}
 </p>
 </div>
@@ -120,7 +120,7 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) =
             href={currentUser.userRepo}
             target='_blank'
             rel='noopener noreferrer'
-            style={{overflowY:"scroll"}}
+            style={{overflowX:"auto"}}
           >
             {currentUser.userRepo}
           </a>
@@ -134,6 +134,7 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) =
             href={'https://instagram.com/' + currentUser.userSocial}
             target='_blank'
             rel='noopener noreferrer'
+            style={{overflowX:"auto"}}
           >
             {currentUser.userSocial}
           </a>
@@ -159,7 +160,7 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) =
   const renderMobile=(
     <div style={{padding:"0.5%",justifyContent:"center"}}>
       
-    <Paper variant="outlined" elevation={10} style={{padding:"1%",backgroundColor:"azure",textAlign:"center"}}>
+    {/* <Paper variant="outlined" elevation={10} style={{padding:"1%",backgroundColor:"azure",textAlign:"center"}}>
     <div style={{padding:"0.5%"}}>
       <hr className="my-4" />
       <div style={{display:"flex",justifyContent:"center"}}>
@@ -181,7 +182,65 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) =
      <p className="lead"style={{fontStyle:"italic",overflowY:"scroll"}}>{currentUser.userBio}</p>
       
       </div>
-     </Paper>
+     </Paper> */}
+      <div className='app-container '>
+      <div className='app-mobile'>
+       <div className='profile-header'>
+        <img src={currentUser.userAvatarHash} className='profile-picture' alt='Profile' />
+        <div className='profile-name'>{currentUser.userName}</div>
+        {/* <div className='profile-tagline'>{currentUser.userBio}</div> */}
+        <div className='profile-links'>
+        <div style={{display:"flex",justifyContent:'center'}}>
+
+          <DnsTwoToneIcon/>
+          &nbsp;
+          <p style={{overflowX:"auto"}}>
+          {currentUser.userAddress}
+          </p>
+</div>
+<hr/>
+<div style={{display:"flex",justifyContent:'center'}}>
+        <WorkTwoToneIcon/> &nbsp;
+          <a
+            href={currentUser.userRepo}
+            target='_blank'
+            rel='noopener noreferrer'
+            style={{overflowX:"auto"}}
+          >
+            {currentUser.userRepo}
+          </a>
+          </div>
+          <hr/>
+          
+            <div style={{display:"flex",justifyContent:'center'}}>
+          <InstagramIcon />
+          &nbsp;
+         @
+          <a
+            href={'https://instagram.com/' + currentUser.userSocial}
+            target='_blank'
+            rel='noopener noreferrer'
+            style={{overflowX:"auto"}}
+          >
+            {currentUser.userSocial}
+          </a>
+          </div>
+          <hr/>
+          <div style={{display:"flex",justifyContent:'center'}}>
+          <EmailTwoToneIcon/>
+          &nbsp;
+          <p style={{overflowX:"auto"}}>{currentUser.userEmail}</p>
+          </div>
+          
+          <hr/>
+          
+        </div>
+        <p style={{fontSize:"medium"}}>{currentUser.userBio}</p>
+        
+        
+        </div>
+      </div>
+      </div>
   </div>
   );
   return (
