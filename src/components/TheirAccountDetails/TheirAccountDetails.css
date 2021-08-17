@@ -1,0 +1,51 @@
+.profile-header {
+    margin-bottom: 70px;
+    color: var(--header-text);
+  }
+  
+  .profile-picture {
+    display: inline-block;
+    width: 256px;
+    height: 256px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 25px;
+  }
+  
+  .profile-name {
+    font-family: 'Bungee Shade', cursive;
+    font-size: 48px;
+    letter-spacing: 0.2em;
+    margin-bottom: 16px;
+  }
+  
+  .profile-tagline {
+    font-family: Calligraffitti;
+    font-size: 32px;
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+  }
+  
+  .profile-links {
+    font-family: Poppins;
+    font-size: 16px;
+  }
+  .app-container {
+    background-image: var(--outer-bg-image);
+    min-height: calc(100vh - 180px);
+    
+    display: block;
+    padding: 32px 0;
+  }
+  
+  .app {
+    text-align: center;
+    
+    margin: 0 auto;
+    font-size: 12px;
+    background-color: var(--inner-bg-colour);
+    padding: 60px 72px;
+    box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+  }
+  

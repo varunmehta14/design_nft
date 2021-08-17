@@ -3,7 +3,12 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Loading from "../Loading/Loading";
-
+import './TheirAccountDetails.css'
+import InstagramIcon from '@material-ui/icons/Instagram';
+import Divider from '@material-ui/core/Divider';
+import WorkTwoToneIcon from '@material-ui/icons/WorkTwoTone';
+import DnsTwoToneIcon from '@material-ui/icons/DnsTwoTone';
+import EmailTwoToneIcon from '@material-ui/icons/EmailTwoTone';
 
 const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) => {
  // if(!accountAddress){accountAddress=window.location.href.split("/")[4]};
@@ -71,7 +76,7 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) =
   const renderDesktop=(
     <div style={{padding:"0.5%",display:"flex",justifyContent:"center"}}>
       
-    <Paper variant="outlined" elevation={10} style={{padding:"1%",backgroundColor:"azure",textAlign:"center"}}>
+    {/* <Paper variant="outlined" elevation={10} style={{padding:"1%",backgroundColor:"azure",textAlign:"center"}}>
     <div style={{padding:"0.5%"}}>
       <hr className="my-4" />
       <div style={{display:"flex",justifyContent:"center"}}>
@@ -93,7 +98,61 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) =
      <p className="lead"style={{fontStyle:"italic",overflowWrap:"break-word"}}>{currentUser.userBio}</p>
       
       </div>
-     </Paper>
+     </Paper> */}
+      <div className='app-container '>
+      <div className='app'>
+       <div className='profile-header'>
+        <img src={currentUser.userAvatarHash} className='profile-picture' alt='Profile' />
+        <div className='profile-name'>{currentUser.userName}</div>
+        {/* <div className='profile-tagline'>{currentUser.userBio}</div> */}
+        <div className='profile-links'>
+        <div style={{display:"flex",justifyContent:'center'}}>
+
+<DnsTwoToneIcon/>
+&nbsp;
+<p >
+{currentUser.userAddress}
+</p>
+</div>
+<hr/>
+        <WorkTwoToneIcon/> &nbsp;
+          <a
+            href={currentUser.userRepo}
+            target='_blank'
+            rel='noopener noreferrer'
+            style={{overflowY:"scroll"}}
+          >
+            {currentUser.userRepo}
+          </a>
+          <hr/>
+          <div style={{display:"flex",justifyContent:"space-between"}}>
+            <div>
+          <InstagramIcon />
+          &nbsp;
+         @
+          <a
+            href={'https://instagram.com/' + currentUser.userSocial}
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            {currentUser.userSocial}
+          </a>
+          </div>
+          <div style={{display:"flex"}}>
+          <EmailTwoToneIcon/>
+          &nbsp;
+          <p>{currentUser.userEmail}</p>
+          </div>
+          </div>
+          <hr/>
+          
+        </div>
+        <p style={{fontSize:"medium"}}>{currentUser.userBio}</p>
+        
+        
+        </div>
+      </div>
+      </div>
   </div>
   );
 
