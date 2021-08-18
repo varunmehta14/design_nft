@@ -15,6 +15,23 @@ import AvatarImageCropper from 'react-avatar-image-cropper';
 
 
 const useStyles = makeStyles((theme) => ({
+  input: {
+    fontFamily:"inherit"
+},
+sectionDesktop: {
+  display: 'none',
+  [theme.breakpoints.up('md')]: {
+    display: 'flex',
+    justifyContent:"center"
+  },
+},
+sectionMobile: {
+  //display: 'flex',
+
+  [theme.breakpoints.up('md')]: {
+    display: 'none',
+  },
+},
   paper: {
     marginTop: theme.spacing(8),
    display: 'flex',
@@ -99,8 +116,209 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
  console.log('buffer', buffer)
 // }
   }
-  
-  return (
+  const renderMobile=(
+    <div style={{padding:"1%"}}>
+   
+        <div style={{display:"flex",justifyContent:"center"}}>
+     {clickedChange?( <form onSubmit={handleSubmit2} style={{display:"contents"}}>
+        <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+         
+        <AvatarImageCropper apply={apply} text={"Change"} />
+        
+          </div> 
+          </form>  ):( <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+         <img src={src} alt="Preview" name="userAvatarHash"/>
+          </div> )}
+       
+          
+         
+        </div>
+        <div style={{display:"flex",justifyContent:"space-around"}}>
+        
+           <IconButton color="primary"  style={{float:"left"}}component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>
+          <HighlightOffIcon style={{fontSize:"-webkit-xxx-large"}}/>
+        </IconButton>
+           
+           <IconButton color="primary" aria-label="upload picture" component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setClickedChange(true)}}>
+          <PhotoCamera style={{fontSize:"-webkit-xxx-large"}}/>
+        </IconButton>
+
+          </div>  
+        <form validate style={{padding:"1%"}}onSubmit={handleSubmit}>
+           <CssBaseline />
+      <div className={classes.paper}>
+     
+      <div className="card mt-1 p-4">
+        <p className="lead">Account address :</p>
+        <h4>{accountAddress}</h4>
+        <p className="lead">Account balance :</p>
+        <h4>{accountBalance} Ξ</h4>
+        </div>
+        <div className="card mt-1 p-4">
+        
+       <div style={{textAlign:"center"}}>
+         <div>
+        <TextField
+                autoComplete="username"
+                name="userName"
+                variant="outlined"
+                required
+                value={userName}
+                onChange={(e)=>{setUserName(e.target.value)}}
+               
+                error={nameIsUsed}
+                id="userName"
+                label="User Name"
+                autoFocus
+                inputProps={{className: classes.input}}
+                InputLabelProps={{
+                  className: classes.input,
+                }}
+
+                InputProps={{
+                  className: classes.input,
+                }}
+          />
+          </div>
+          <br/>
+          <div>
+          <TextField
+            variant="outlined"
+            
+            required
+            value={email}
+            onChange={(e)=>{setEmail(e.target.value)}}
+            
+            id="userEmail"
+            label="Email Address"
+            name="userEmail"
+            error={emailError||emailIsUsed}
+            autoComplete="email"
+            autoFocus
+            inputProps={{className: classes.input}}
+            InputLabelProps={{
+              className: classes.input,
+            }}
+
+            InputProps={{
+              className: classes.input,
+            }}
+          />
+           </div> 
+        
+        <br/>
+        <div >
+        <TextField
+                
+                name="userSocial"
+                variant="outlined"
+                required
+                value={social}
+                onChange={(e)=>{setSocial(e.target.value)}}
+                
+                id="userSocial"
+                label="Social Media Link"
+                autoFocus
+                inputProps={{className: classes.input}}
+                InputLabelProps={{
+                  className: classes.input,
+                }}
+
+                InputProps={{
+                  className: classes.input,
+                }}
+          />
+          </div>
+          <br/>
+          <div>
+          <TextField
+            variant="outlined"
+            id="userRepo"
+            value={repo}
+            onChange={(e)=>{setRepo(e.target.value)}}
+            
+            label="Custom URL"
+            name="userRepo" 
+            autoFocus
+            inputProps={{className: classes.input}}
+            InputLabelProps={{
+              className: classes.input,
+            }}
+
+            InputProps={{
+              className: classes.input,
+            }}
+          />
+        </div>
+        <br/>
+        <div >
+        <TextField
+          id="standard-multiline-flexible"
+          label="Bio"
+          multiline
+          value={bio}
+          onChange={(e)=>{setBio(e.target.value)}}
+          
+          name="userBio"
+          rowsMax={4}
+          variant="outlined"
+        
+        />
+         </div>
+         </div>
+         <div style={{display:"flex",justifyContent:"space-evenly"}}>
+          <Button
+            type="submit"
+           
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            
+          >
+            Create Profile
+          </Button>
+        </div>
+        
+        </div>
+      </div>
+      <div className="mt-4">
+           {nameIsUsed ? (
+             <div className="alert alert-danger ">
+               <button
+                 type="button"
+                 className="close"
+                 data-dismiss="alert"
+                  onClick={()=>setUserName("")}
+               >
+                 <span>&times;</span>
+               </button>
+               <strong>This name is taken!</strong>
+             </div>
+           ) :     
+             null}
+         </div>
+         <div className="mt-4">
+           {emailIsUsed ? (
+             <div className="alert alert-danger ">
+               <button
+                 type="button"
+                 className="close"
+                 data-dismiss="alert"
+                 onClick={()=>setEmail("")}
+
+               >
+                 <span>&times;</span>
+               </button>
+               <strong>This email is taken!</strong>
+             </div>
+           ) :     
+             null}
+         </div>
+      </form>
+    
+   </div>
+  );
+  const renderDesktop=(
     <div style={{padding:"1%"}}>
    
         <div style={{display:"flex",justifyContent:"center"}}>
@@ -153,6 +371,14 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
                 id="userName"
                 label="User Name"
                 autoFocus
+                inputProps={{className: classes.input}}
+                InputLabelProps={{
+                  className: classes.input,
+                }}
+
+                InputProps={{
+                  className: classes.input,
+                }}
           />
 
           <TextField
@@ -168,6 +394,14 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
             error={emailError||emailIsUsed}
             autoComplete="email"
             autoFocus
+            inputProps={{className: classes.input}}
+            InputLabelProps={{
+              className: classes.input,
+            }}
+
+            InputProps={{
+              className: classes.input,
+            }}
           />
             
         </div>
@@ -184,6 +418,14 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
                 id="userSocial"
                 label="Social Media Link"
                 autoFocus
+                inputProps={{className: classes.input}}
+                InputLabelProps={{
+                  className: classes.input,
+                }}
+
+                InputProps={{
+                  className: classes.input,
+                }}
           />
 
           <TextField
@@ -195,6 +437,14 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
             label="Custom URL"
             name="userRepo" 
             autoFocus
+            inputProps={{className: classes.input}}
+            InputLabelProps={{
+              className: classes.input,
+            }}
+
+            InputProps={{
+              className: classes.input,
+            }}
           />
         </div>
         <br/>
@@ -263,6 +513,16 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
       </form>
     
    </div>
+  );
+  return (
+    < >
+    <div className={classes.sectionMobile}>
+     {renderMobile}
+     </div>
+     <div className={classes.sectionDesktop}>
+     {renderDesktop}
+   </div>
+   </>
   );
 }
 

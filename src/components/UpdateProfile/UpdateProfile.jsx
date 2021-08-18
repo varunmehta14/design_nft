@@ -12,6 +12,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Loading from "../Loading/Loading";
 
 const useStyles=makeStyles((theme)=>({
+
+  input: {
+    fontFamily:"inherit"
+},
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
@@ -174,6 +178,14 @@ const classes=useStyles();
                  label="User Name"
                  autoFocus
                  disabled={true}
+                 inputProps={{className: classes.input}}
+                  InputLabelProps={{
+                    className: classes.input,
+                  }}
+
+                  InputProps={{
+                    className: classes.input,
+                  }}
            />
           </div>
           <br/>
@@ -190,6 +202,14 @@ const classes=useStyles();
              autoComplete="email"
              autoFocus
              error={emailError||emailIsUsed}
+             inputProps={{className: classes.input}}
+             InputLabelProps={{
+               className: classes.input,
+             }}
+
+             InputProps={{
+               className: classes.input,
+             }}
            />
          </div>
          <br/>
@@ -204,6 +224,14 @@ const classes=useStyles();
                  id="socialMedia"
                  label="Social Media Link"
                  autoFocus
+                 inputProps={{className: classes.input}}
+                 InputLabelProps={{
+                   className: classes.input,
+                 }}
+
+                 InputProps={{
+                   className: classes.input,
+                 }}
            />
            </div>
            <br/>
@@ -216,7 +244,16 @@ const classes=useStyles();
              label="Custom URL"
              name="customUrl" 
              autoFocus
+             inputProps={{className: classes.input}}
+             InputLabelProps={{
+               className: classes.input,
+             }}
+
+             InputProps={{
+               className: classes.input,
+             }}
            />
+
            
          </div>
          <br/>
@@ -229,6 +266,14 @@ const classes=useStyles();
            onChange={(e)=>{setBio(e.target.value)}}
            rowsMax={4}
            variant="outlined"
+           inputProps={{className: classes.input}}
+           InputLabelProps={{
+             className: classes.input,
+           }}
+
+           InputProps={{
+             className: classes.input,
+           }}
          
          />
           </div>
@@ -341,6 +386,14 @@ const classes=useStyles();
                      label="User Name"
                      autoFocus
                      disabled={true}
+                     inputProps={{className: classes.input}}
+                     InputLabelProps={{
+                       className: classes.input,
+                     }}
+   
+                     InputProps={{
+                       className: classes.input,
+                     }}
                />
      
                <TextField
@@ -355,6 +408,14 @@ const classes=useStyles();
                  autoComplete="email"
                  autoFocus
                  error={emailError||emailIsUsed}
+                 inputProps={{className: classes.input}}
+                 InputLabelProps={{
+                   className: classes.input,
+                 }}
+
+                 InputProps={{
+                   className: classes.input,
+                 }}
                />
              </div>
              <br/>
@@ -369,6 +430,14 @@ const classes=useStyles();
                      id="socialMedia"
                      label="Social Media Link"
                      autoFocus
+                     inputProps={{className: classes.input}}
+                     InputLabelProps={{
+                       className: classes.input,
+                     }}
+   
+                     InputProps={{
+                       className: classes.input,
+                     }}
                />
      
                <TextField
@@ -379,6 +448,14 @@ const classes=useStyles();
                  label="Custom URL"
                  name="customUrl" 
                  autoFocus
+                 inputProps={{className: classes.input}}
+                 InputLabelProps={{
+                   className: classes.input,
+                 }}
+
+                 InputProps={{
+                   className: classes.input,
+                 }}
                />
              </div>
              <br/>
@@ -391,6 +468,14 @@ const classes=useStyles();
                onChange={(e)=>{setBio(e.target.value)}}
                rowsMax={4}
                variant="outlined"
+               inputProps={{className: classes.input}}
+               InputLabelProps={{
+                 className: classes.input,
+               }}
+
+               InputProps={{
+                 className: classes.input,
+               }}
              
              />
               </div>
