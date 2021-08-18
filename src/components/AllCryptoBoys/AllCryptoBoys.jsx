@@ -11,6 +11,10 @@ import 'react-dropdown-tree-select/dist/styles.css';
 import data from '../data.json'
 import CategoryContainer from '../DropdownContainer/DropdownContainer';
 
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
     paddingLeft:"5%",
@@ -45,7 +49,7 @@ const AllCryptoBoys = ({
   const [endState,setEndState]=useState(3);
   const [showCategory,setShowCategory]=useState(false);
   const [filters,setFilters]=useState([]);
-  const [categories,setCategories]=useState([]);
+  const [categories,setCategories]=useState("");
   //const [lastPosition,setLastPosition]=useState(perPage)
  // const [allCryptoBoys,setAllCryptoBoys]=useState(cryptoBoys.slice(0,perPage));
   const [endOfDesigns,setEndOfDesigns]=useState(false);
@@ -189,18 +193,21 @@ const AllCryptoBoys = ({
   } 
 
   const searchFilters=()=>{
-    console.log(categories[0])
-    var flatArray = Array.prototype.concat.apply([], categories);
-    console.log(flatArray)
+    console.log(categories)
+    //var flatArray = Array.prototype.concat.apply([], categories);
+    //console.log(flatArray)
     let searchedResults=[];
     cryptoBoys.filter((cryptoBoy)=>{
       // categories.some((newItem)=>{
       //   cryptoBoy[newItem.push]
       // })
-      const found = cryptoBoy.metaData.categories.some(r=> flatArray.indexOf(r) >= 0)
-      if(found){
+      if(cryptoBoy.metaData.categories===categories){
         searchedResults.push(cryptoBoy);
       }
+      // const found = cryptoBoy.metaData.categories.some(r=> flatArray.indexOf(r) >= 0)
+      // if(found){
+      //   searchedResults.push(cryptoBoy);
+      // }
      // console.log( cryptoBoy.metaData.categories)
      // cryptoBoy.metaData.categories.filter((obj)=>obj.includes(categories))
      
@@ -235,7 +242,25 @@ const AllCryptoBoys = ({
                 Filters
               </button> */}
               {/* {showCategory?( */}
-              <div style={{display:"flex",alignItems:"flex-end"}}> <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} /> 
+              <div style={{display:"flex",alignItems:"flex-end"}}> 
+              {/* <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />  */}
+              <FormControl variant="outlined">
+        <InputLabel htmlFor="outlined-age-native-simple">Category</InputLabel>
+        <Select
+          native
+          value={categories}
+          onChange={(e)=>{setCategories(e.target.value)}}
+          inputProps={{
+            name: 'age',
+            id: 'outlined-age-native-simple',
+          }}
+        >
+          <option aria-label="None" value="" />
+          <option value={"fashionDesign"}>Fashion Design</option>
+          <option value={"art"}>Art</option>
+          <option value={"photoGraph"}>Photograph</option>
+        </Select>
+      </FormControl>
               <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
               Search
               </button>

@@ -22,6 +22,10 @@ import Fade from '@material-ui/core/Fade';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
+import Select from "react-select";
+
+
+//import Select from '@material-ui/core/Select';
 
 
 
@@ -110,6 +114,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  input: {
+    fontFamily:"inherit"
+}
 
 }));
 
@@ -134,12 +141,29 @@ export default function FormAndPreview(props) {
     const [single,setSingle]=useState(true);
     const [multiple,setMultiple]=useState(false);
     const [show,setShow]=useState(true);
-    const [categories,setCategories]=useState([]);
+    const [categories,setCategories]=useState("");
     const [sizeChart,setSizeChart]=useState([]);
     const [test,setTest]=useState("hello")
     const [aler,setAler]=useState(props.imageIsUsed);
     const [imageUsed,setImageUsed]=useState(props.imageIsUsed)
     //const [preview,setPreview]=useState([]);
+
+    const options = [
+      { value: "fashionDesign", label: "Fashion Design" },
+      { value: "art", label: "Art" },
+      { value: "photoGraph", label: "Photograph" }
+    ];
+
+    const handleCategory=selectedOption=>{
+      if(selectedOption){
+      console.log(selectedOption)
+      setCategories(selectedOption.value);
+      console.log(categories)
+      }
+      else{
+        setCategories("");
+      }
+    }
     const {getRootProps, getInputProps} = useDropzone({
       accept: 'image/*',
       onDrop: acceptedFiles => {
@@ -352,9 +376,15 @@ const onNodeToggle = currentNode => {
          
     
 <TextField
- id="standard-adornment-amount"
+ //id="standard-adornment-amount"
  label="Title"
- 
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
  
  required
  value={cryptoBoyName}
@@ -363,8 +393,15 @@ const onNodeToggle = currentNode => {
 />
 <br/>
 <TextField
- id="standard-multiline-flexible"
+ //id="standard-multiline-flexible"
  label="Description"
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
  multiline
  fullWidth
  rowsMax={4}
@@ -375,8 +412,39 @@ const onNodeToggle = currentNode => {
 />
 <br/><br/>
 <div >
-     <span>Choose Category</span>
-   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />     
+<span>Choose Category</span>
+     {/*
+   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />      */}
+   {/* <FormControl variant="outlined">
+        <InputLabel htmlFor="outlined-age-native-simple">Category</InputLabel>
+        <Select
+          native
+          value={categories}
+          onChange={(e)=>{setCategories(e.target.value)}}
+          inputProps={{
+            name: 'age',
+            id: 'outlined-age-native-simple',
+          }}
+        >
+          <option aria-label="None" value="" />
+          <option value={"fashionDesign"}>Fashion Design</option>
+          <option value={"art"}>Art</option>
+          <option value={"photoGraph"}>Photograph</option>
+        </Select>
+      </FormControl> */}
+       <Select 
+              options={options}
+              className="basic-single"
+              classNamePrefix="select"
+              name="ReactSelect"
+              isClearable
+              isSearchable
+              //onChange={(selected=>{setCategories(selected)})}
+              onChange={handleCategory}
+               
+            
+              //onChange={(e)=>{setCategories(e.target.value)}}
+              />
    </div>   
 {/* <div style={{display:"flex",justifyContent:"space-evenly"}}> 
 
@@ -435,8 +503,15 @@ Unlimited Auction
  placeholder="Enter price for one piece"
 // className={clsx(classes.margin, classes.textField)}
  onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
  }}
  required
 /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
@@ -449,8 +524,15 @@ Unlimited Auction
  placeholder="Enter price for one piece with dress"
 // className={clsx(classes.margin, classes.textField)}
  onChange={(e)=>{setCryptoBoyDressPrice(e.target.value);setReceivePrice2((e.target.value)*2.5/100)}}
+
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
  }}
  required
 /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyDressPrice-receivePrice2} ETH</b></FormHelperText>
@@ -505,8 +587,15 @@ Unlimited Auction
  placeholder="Enter price for one piece"
 // className={clsx(classes.margin, classes.textField)}
  onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
  }}
  required
 /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
@@ -578,185 +667,7 @@ Create Item
 </form>
      </>)
      :multiple?
-     (<>
-    <div className="card mt-1">
-      <div className="card-body   
-      
-      "><div style={{textAlign:"center"}}>
-        {/* <Button variant="contained"color="default" style={{float:"left"}} onClick={()=>{setMultiple(false);setShow(true)}}>
-        ← Back
-       </Button> */}
-       <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setMultiple(false);setShow(true)}}>
-      <ArrowBackIosSharpIcon />
-    </IconButton> 
-        <h3 style={{justifyContent:"center"}}>Create Multiple Collectibles</h3>
-        </div>
-        <br/>
-        You can sell one collectible multiple times 
-
-      </div>
-    </div>
-    <form onSubmit={callMintMyNFTFromApp} style={{padding:"0.5%"}}className="pt-4 mt-1">
-    
-         
-    <div  style={{padding:"0.5%"}}>
-    <Grid container spacing={3}>
-    <Grid item xs={12}><Paper  style={{height:"fitContent",padding:"2%",backgroundColor:"ghostwhite"}}>
-     <span>Upload file to view preview</span>    
-<aside style={thumbsContainer}>{thumbs}</aside></Paper></Grid>
-    <Grid item xs={12}>
-     <Paper variant="outlined" style={{padding:"inherit",backgroundColor:"ghostwhite"}}>
-     
-     <div style={{margin:"2%"}}>
-     
-          <div {...getRootProps({ className: "dropzone" })}>
-<input {...getInputProps()}   />
-{fileName?(<span>{fileName} </span>):( <span>Drag 'n' drop some files here, or click to select files</span>)}
-
-</div>
-         <br/><br/><hr/>
-       
-<TextField
- id="standard-multiline-flexible"
- label="Title"
- //fullWidth
- //rowsMax={4}
- value={cryptoBoyName}
- onChange={(e)=>setCryptoBoyName(e.target.value)}
- error={props.nameIsUsed}
-/>
-<br/>
-<TextField
- id="standard-multiline-flexible"
- label="Description"
- multiline
- fullWidth
- rowsMax={4}
- value={cryptoBoyDescription}
- onChange={(e)=>setCryptoBoyDescription(e.target.value)}
-/>
-<br/><br/>
-
-
-<div style={{display:"flex",justifyContent:"space-evenly"}}> 
-
-<Button
-variant="contained"
-color="default"
-className={classes.button}
-//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
-style={{borderRadius:20,display:"flow-root"}}
-//type="submit"
->
-<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>
-Fixed Price
-</Button>
-  {/* <IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>  Fixed Price </IconButton></div> */}
-
-  <Button
-variant="contained"
-color="default"
-className={classes.button}
-//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
-style={{borderRadius:20,display:"flow-root"}}
-//type="submit"
-disabled
->
-<AccessTimeSharpIcon  fontSize="large"/>
-Timed Auction
-</Button>
-{/* <IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:"larger"}}>  Timed Auction </div></IconButton> */}
-
-<Button
-variant="contained"
-color="default"
-className={classes.button}
-//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
-style={{borderRadius:20,display:"flow-root"}}
-//type="submit"
-disabled
->
-<AllInclusiveSharpIcon  fontSize="large"/>
-Unlimited Auction
-</Button>
-{/* <IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:"larger"}}>  Unlimited Auction</div> </IconButton> */}
-
-</div> 
-
-
-<hr/>
-
-
-<br/><div  style={{textAlign:"center"}}>
- <div>
-<TextField
- label="Price"
- id="standard-start-adornment"
- placeholder="Enter price for one piece"
- className={clsx(classes.margin, classes.textField)}
- onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
- InputProps={{
-   startAdornment: <InputAdornment position="start" >Ξ</InputAdornment>,
- }}
-/><FormHelperText id="filled-weight-helper-text"style={{textAlign:"center"}}>Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
-</div>
-<hr/>
-<div>
-<TextField
-      id="standard-number"
-      label="Enter number of Copies"
-      type="number"
-      onChange={(e)=>{setCryptoBoyCopies(e.target.value)}}
-      InputLabelProps={{
-        shrink: true,
-      }}
-  />
-  </div>
-</div>    
-<br/>
-<hr/>
-<h2>Upload Image</h2>
-          
-          <input type='file' multiple={true} onChange={captureFile} />
-          <hr/>
-<div style={{textAlign:"center"}}>
-<Button
-variant="contained"
-color="default"
-className={classes.button}
-startIcon={<AddIcon />}
-style={{borderRadius:20,backgroundColor:"#173e43",color:"ghostwhite"}}
-type="submit"
->
-Create Item
-<br/> ERC 1155
-</Button>
-</div>
-</div>
-       </Paper>
-      
-       </Grid>
-       
-       </Grid>
-       </div>
-        
-     <div className="mt-4">
-       {props.imageIsUsed ? (
-         <div className="alert alert-danger alert-dissmissible">
-           <button
-             type="button"
-             className="close"
-             data-dismiss="alert"
-             
-           >
-             <span>&times;</span>
-           </button>
-           <strong>This image is taken!</strong>
-         </div>
-       ) :     
-         null}
-     </div>
-</form></>):(null)}
+     (<></>):(null)}
    </div>
   );
  
@@ -831,16 +742,24 @@ Create Item
 </div>
 
          <br/><br/><hr/>
-         
+            
 <TextField
- id="standard-multiline-flexible"
+ //id="standard-multiline-flexible"
+ style={{fontFamily:"inherit"}}
  label="Title"
- autoComplete='off'
+ //autoComplete='off'
  //rowsMax={4}
  required
  value={cryptoBoyName}
  onChange={(e)=>setCryptoBoyName(e.target.value)}
  error={props.nameIsUsed}
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
 />
 
 <br/>
@@ -853,13 +772,53 @@ Create Item
  value={cryptoBoyDescription}
  required
  onChange={(e)=>setCryptoBoyDescription(e.target.value)}
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
 />
 <br/><br/>
 <hr/>
-<div style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
+<div>
    <div >
-     <span>Choose Category</span>
-   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />     
+   <span>Choose Category</span>
+     {/* 
+   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />      */}
+    {/* <FormControl variant="outlined">
+        <InputLabel htmlFor="outlined-age-native-simple">Category</InputLabel>
+        <Select
+          native
+          value={categories}
+          onChange={(e)=>{setCategories(e.target.value)}}
+          inputProps={{
+            name: 'age',
+            id: 'outlined-age-native-simple',
+          }}
+        >
+          <option aria-label="None" value="" />
+          <option value={"fashionDesign"}>Fashion Design</option>
+          <option value={"art"}>Art</option>
+          <option value={"photoGraph"}>Photograph</option>
+        </Select>
+      </FormControl> */}
+       
+              <Select 
+              options={options}
+              className="basic-single"
+              classNamePrefix="select"
+              name="ReactSelect"
+              isClearable
+              isSearchable
+              //onChange={(selected=>{setCategories(selected)})}
+              onChange={handleCategory}
+               
+            
+              //onChange={(e)=>{setCategories(e.target.value)}}
+              />
+            
    </div>
    </div>
 {/* <div style={{display:"flex",justifyContent:"space-evenly"}}> 
@@ -919,8 +878,14 @@ Unlimited Auction
  placeholder="Enter price for one piece"
  className={clsx(classes.margin, classes.textField)}
  onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
  }}
 /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
 </div>
@@ -931,8 +896,14 @@ Unlimited Auction
  placeholder="Enter price for one piece with dress"
 // className={clsx(classes.margin, classes.textField)}
  onChange={(e)=>{setCryptoBoyDressPrice(e.target.value);setReceivePrice2((e.target.value)*2.5/100)}}
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
  }}
 /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyDressPrice-receivePrice2} ETH</b></FormHelperText>
 </div>
@@ -992,8 +963,13 @@ Unlimited Auction
  placeholder="Enter price for one piece"
  className={clsx(classes.margin, classes.textField)}
  onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
  InputProps={{
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
  }}
 /><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
 </div></div>
@@ -1093,187 +1069,7 @@ Create Item
 </form>
      </>)
      :multiple?
-     (<>
-    <div className="card mt-1">
-      <div className="card-body   
-      
-      "><div style={{textAlign:"center"}}>
-        {/* <Button variant="contained"color="default" style={{float:"left"}} onClick={()=>{setMultiple(false);setShow(true)}}>
-        ← Back
-       </Button> */}
-       <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setMultiple(false);setShow(true)}}>
-      <ArrowBackIosSharpIcon />
-    </IconButton> 
-        <h3 style={{justifyContent:"center"}}>Create Multiple Collectibles</h3>
-        </div>
-        <br/>
-        You can sell one collectible multiple times 
-
-      </div>
-    </div>
-    <form onSubmit={callMintMyNFTFromApp} className="pt-4 mt-1">
-    
-         
-    <div  >
-    <Grid container spacing={3}>
-    <Grid item xs={9}>
-     <Paper variant="outlined" style={{padding:"inherit",backgroundColor:"ghostwhite"}}>
-     
-     <div style={{margin:"1%"}}>
-     
-          <div {...getRootProps({ className: "dropzone" })}>
-<input {...getInputProps()}   />
-{!files?(<span>{files[0].name} </span>):( <span>Drag 'n' drop some files here, or click to select files</span>)}
-
-</div>
-         <br/><br/><hr/>
-       
-<TextField
- id="standard-multiline-flexible"
- label="Title"
- //fullWidth
- //rowsMax={4}
- value={cryptoBoyName}
- onChange={(e)=>setCryptoBoyName(e.target.value)}
-/>
-<br/>
-<TextField
- id="standard-multiline-flexible"
- label="Description"
- multiline
- fullWidth
- rowsMax={4}
- value={cryptoBoyDescription}
- onChange={(e)=>setCryptoBoyDescription(e.target.value)}
-/>
-<br/><br/>
-
-<hr/>
-<div style={{display:"flex",justifyContent:"space-evenly"}}> 
-
-<Button
-variant="contained"
-color="default"
-className={classes.button}
-//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
-style={{borderRadius:20}}
-//type="submit"
->
-<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>
-Fixed Price
-</Button>
-  {/* <IconButton  ><LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>  Fixed Price </IconButton></div> */}
-
-  <Button
-variant="contained"
-color="default"
-className={classes.button}
-//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
-style={{borderRadius:20}}
-//type="submit"
-disabled
->
-<AccessTimeSharpIcon  fontSize="large"/>
-Timed Auction
-</Button>
-{/* <IconButton disabled> <AccessTimeSharpIcon  color="disabled"fontSize="large"/><div style={{fontSize:"larger"}}>  Timed Auction </div></IconButton> */}
-
-<Button
-variant="contained"
-color="default"
-className={classes.button}
-//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
-style={{borderRadius:20}}
-//type="submit"
-disabled
->
-<AllInclusiveSharpIcon  fontSize="large"/>
-Unlimited Auction
-</Button>
-{/* <IconButton disabled > <AllInclusiveSharpIcon color="disabled" fontSize="large"/><div style={{fontSize:"larger"}}>  Unlimited Auction</div> </IconButton> */}
-
-</div> 
-
-<hr/>
-
-
-<br/><div  style={{display:"flex",justifyContent:"space-evenly"}}>
- <div>
-<TextField
- label="Price"
- id="standard-start-adornment"
- placeholder="Enter price for one piece"
- className={clsx(classes.margin, classes.textField)}
- onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
- InputProps={{
-   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
- }}
-/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
-</div>
-
-<div>
-<TextField
-      id="standard-number"
-      label="Enter number of Copies"
-      type="number"
-      onChange={(e)=>{setCryptoBoyCopies(e.target.value)}}
-      InputLabelProps={{
-        shrink: true,
-      }}
-  />
-  </div>
-</div>    
-<br/>
-<hr/>
-<h2>Upload Image</h2>
-          
-          <input type='file' multiple={true} onChange={captureFile} />
-<div style={{textAlign:"center"}}>
-<Button
-variant="contained"
-color="default"
-className={classes.button}
-startIcon={<AddIcon />}
-style={{borderRadius:20,backgroundColor:"#173e43",color:"ghostwhite"}}
-type="submit"
->
-Create Item
-<br/> ERC 1155
-</Button>
-</div>
-</div>
-       </Paper>
-      
-       </Grid>
-       <Grid item xs={3}  style={{height:"fitContent", width:"fitContent"}}>
-         <Paper  style={{height:"fitContent", width:"fitContent",padding:"2%",backgroundColor:"ghostwhite"}}>
-     <span>Upload file to view preview</span>    
-<aside style={thumbsContainer}>{thumbs}</aside></Paper>
-</Grid>
-       </Grid>
-       </div>
-        
-     <div className="mt-4">
-       {props.imageIsUsed ? (
-        //  <div className="alert alert-danger alert-dissmissible">
-        //    <button
-        //      type="button"
-        //      className="close"
-        //      data-dismiss="alert"
-        //    >
-        //      <span>&times;</span>
-        //    </button>
-        //    <strong>This image is taken!</strong>
-        //  </div>
-        <>
-        <Alert variant="filled" severity="error">
-        This image is already used !
-      </Alert>
-      </>
-       ) :     
-         null}
-     </div>
-</form></>):(null)}
+     (<></>):(null)}
     
   </div>
   );
