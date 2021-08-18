@@ -1025,6 +1025,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                 usersContract={this.state.usersContract}
                 usersCount={this.state.usersCount}
                // allCreators={this.state.allUsers}
+               cryptoBoys={this.state.cryptoBoys}
                />
               )}/>
             <Route

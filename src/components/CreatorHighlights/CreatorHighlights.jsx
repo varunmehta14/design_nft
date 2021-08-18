@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import Color from 'color';
 //import GoogleFont from 'react-google-font-loader';
 import Avatar from '@material-ui/core/Avatar';
@@ -9,10 +9,12 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
+
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
+import Divider from '@material-ui/core/Divider';
+import WorkTwoToneIcon from '@material-ui/icons/WorkTwoTone';
 
 const useStyles = makeStyles((theme) => ({
   actionArea: {
@@ -42,6 +44,8 @@ const useStyles = makeStyles((theme) => ({
   content2: ({ color }) => {
     return {
       backgroundColor: "aliceblue",
+      display:"flex",
+      justifyContent:"space-between"
      
     };
   },
@@ -52,10 +56,10 @@ const useStyles = makeStyles((theme) => ({
   //  textTransform: 'uppercase',
   },
   subtitle: {
-    fontFamily: 'Montserrat',
+   // fontFamily: 'Montserrat',
     color: 'black',
     opacity: 0.87,
-    marginTop: '2rem',
+   // marginTop: '2rem',
     fontWeight: 500,
     fontSize: 14,
   },
@@ -66,11 +70,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CreatorHighlights=(props)=>{
+
+  const [myBoughtCryptoBoys, setMyBoughtCryptoBoys] = useState(0);
+  const [myMintedCryptoBoys, setMyMintedCryptoBoys] = useState(0);
+  useEffect(() => {
+   
+    
+    const my_bought_crypto_boys = props.designs.filter(
+      (cryptoboy) => cryptoboy.currentOwner === props.user.userAddress && !(cryptoboy.mintedBy === props.user.userAddress)
+    );
+    setMyBoughtCryptoBoys(my_bought_crypto_boys.length);
+    const my_minted_crypto_boys = props.designs.filter(
+      (cryptoboy) => cryptoboy.mintedBy ===  props.user.userAddress 
+    );
+    setMyMintedCryptoBoys(my_minted_crypto_boys.length);
+    
+  }, [props.designs]);
   const handleClick=()=>{
     window.open(`https://www.instagram.com/${props.user.userSocial}/`,"_blank")
   }
+  const handleClick2=()=>{
+    window.open(props.user.userRepo,"_blank")
+  }
   const classes = useStyles();
-  const mediaStyles = useFourThreeCardMediaStyles();
+  
   return (
     <CardActionArea className={classes.actionArea}>
         <Link to={`/their-tokens/${props.user.userAddress}`}style={{textDecorationLine:"none"}} onClick={() => window.location.href=`/their-tokens/${props.user.userAddress}`}>
@@ -90,14 +113,31 @@ const CreatorHighlights=(props)=>{
         </Typography>
         </div>
         <hr style={{borderColor:"aliceblue",borderWidth:"thin"}}/>
-        <Typography className={classes.subtitle}style={{color:"aliceblue"}}>{props.user.userBio}</Typography>
-        <Typography className={classes.subtitle} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
-         <ContactMailIcon/>&nbsp;{props.user.userEmail}
+        <div style={{display:"flex",justifyContent:"space-around"}}>
+          <div style={{textAlign:"center"}}>
+        <Typography className={classes.subtitle}style={{color:"aliceblue"}}>CREATIONS</Typography>
+        <Typography className={classes.title} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
+          {myMintedCryptoBoys}
         </Typography>
+        </div>
+        <Divider orientation="vertical" flexItem style={{backgroundColor:"aliceblue",borderWidth:"thin"}}/>
+        <div style={{textAlign:"center"}}>
+        <Typography className={classes.subtitle}style={{color:"aliceblue"}}>BOUGHT</Typography>
+        <Typography className={classes.title} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
+          {myBoughtCryptoBoys}
+        </Typography>
+        </div>
+        </div>
+        {/* <Typography className={classes.subtitle}style={{color:"aliceblue",textTransform:"none"}}>
+         <ContactMailIcon/>&nbsp;{props.user.userEmail}
+        </Typography> */}
       </CardContent>
       <CardActions className={classes.content2}disableSpacing>
         <IconButton aria-label="instagram" onClick={handleClick} >
           <InstagramIcon />
+        </IconButton>
+        <IconButton aria-label="instagram" onClick={handleClick2} >
+          <WorkTwoToneIcon />
         </IconButton>
         </CardActions>
     </Card>

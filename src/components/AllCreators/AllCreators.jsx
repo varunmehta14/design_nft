@@ -402,7 +402,7 @@ const AllCreators = (props) => {
                   <>
                  
                       <Grid  item xs={12} sm={6} lg={4} xl={3} >
-                     <CreatorHighlights user={user}/>
+                     <CreatorHighlights user={user} designs={props.cryptoBoys}/>
                      </Grid>
                      </>
                     
