@@ -10,11 +10,14 @@ import DropdownTreeSelect from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 import data from '../data.json'
 import CategoryContainer from '../DropdownContainer/DropdownContainer';
-
+import './AllCryptoBoys.css'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+//import Select from '@material-ui/core/Select';
+import Select from "react-select";
+import PageviewOutlinedIcon from '@material-ui/icons/PageviewOutlined';
+import { IconButton } from "@material-ui/core";
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
     paddingLeft:"5%",
@@ -54,7 +57,23 @@ const AllCryptoBoys = ({
  // const [allCryptoBoys,setAllCryptoBoys]=useState(cryptoBoys.slice(0,perPage));
   const [endOfDesigns,setEndOfDesigns]=useState(false);
   
+  const handleCategory=selectedOption=>{
+    if(selectedOption){
+    console.log(selectedOption)
+    setCategories(selectedOption.value);
 
+    console.log(categories)
+    //searchFilters();
+    }
+    else{
+      setCategories("");
+    }
+  }
+  const options = [
+    { value: "fashionDesign", label: "Fashion Design" },
+    { value: "art", label: "Art" },
+    { value: "photoGraph", label: "Photograph" }
+  ];
  
 
   
@@ -237,14 +256,14 @@ const AllCryptoBoys = ({
 
       {cryptoBoys?(
         <>
-        <div style={{display:"flex",justifyContent:"flex-end",alignItems:"flex-end"}}>
+        <div style={{display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
           {/* <button className="mt-3 btn btn-outline-primary" onClick={()=>{setShowCategory(!showCategory)}} style={{borderRadius:"20px"}}>
                 Filters
               </button> */}
               {/* {showCategory?( */}
-              <div style={{display:"flex",alignItems:"flex-end"}}> 
+              
               {/* <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />  */}
-              <FormControl variant="outlined">
+              {/* <FormControl variant="outlined">
         <InputLabel htmlFor="outlined-age-native-simple">Category</InputLabel>
         <Select
           native
@@ -260,11 +279,31 @@ const AllCryptoBoys = ({
           <option value={"art"}>Art</option>
           <option value={"photoGraph"}>Photograph</option>
         </Select>
-      </FormControl>
-              <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
+
+      </FormControl> 
+       <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
               Search
-              </button>
-              </div>
+              </button>*/}
+        <Select 
+              options={options}
+              className="basic-single breadth"
+              classNamePrefix="select"
+              name="ReactSelect"
+              isClearable
+              isSearchable
+              //onChange={(selected=>{setCategories(selected)})}
+              onChange={handleCategory}
+               
+            
+              //onChange={(e)=>{setCategories(e.target.value)}}
+              />
+                {/* <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
+              Search
+              </button> */}
+              <IconButton onClick={searchFilters} >
+              <PageviewOutlinedIcon style={{ fontSize: 40 }}/>
+              </IconButton>
+              
               {/* ):null} */}
               </div>      
         <div style={{display:"flex",justifyContent:"center",padding:"1.5%",height:"100%"}}>
