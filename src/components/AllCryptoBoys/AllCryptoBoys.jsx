@@ -67,6 +67,7 @@ const AllCryptoBoys = ({
     }
     else{
       setCategories("");
+      window.location.reload()
     }
   }
   const options = [
