@@ -45,7 +45,11 @@ app.get("/", (req, res) => {
   
    const oAuth2Client=new google.auth.OAuth2(process.env.OAUTH_CLIENTID,process.env.OAUTH_CLIENT_SECRET,process.env.REDIRECT_URI)
 oAuth2Client.setCredentials({refresh_token:process.env.OAUTH_REFRESH_TOKEN})
+<<<<<<< HEAD
      const accessToken=  oAuth2Client.getAccessToken();
+=======
+      const accessToken=  oAuth2Client.getAccessToken();
+>>>>>>> 23f2568575d1da2654831f1bbba3adba81f9aad7
 let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
