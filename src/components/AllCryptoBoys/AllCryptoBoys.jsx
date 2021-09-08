@@ -40,7 +40,7 @@ const AllCryptoBoys = ({
   toggleForSale,
   buyCryptoBoy,
   callbackFromParent,
-  cryptoBoysContract,
+  //cryptoBoysContract,
 
 }) => {
   
@@ -322,7 +322,7 @@ const AllCryptoBoys = ({
                 toggleForSale={toggleForSale}
                 buyCryptoBoy={buyCryptoBoy}
                 callbackFromParent={myCallback1}
-                cryptoBoysContract={cryptoBoysContract}
+                //cryptoBoysContract={cryptoBoysContract}
                 //usersContract={usersContract}
                 //users={users}
               />

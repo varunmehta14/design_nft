@@ -93,7 +93,7 @@ console.log(cryptoboy)
   return (
   <>
    <CardActionArea className={classes.actionArea}>
-   <Link to={`/nftDetails/${tokenId.toNumber()}`} onClick={()=>{handleClick(tokenId.toNumber())}}style={{textDecorationLine:"none"}}>
+   <Link to={`/nftDetails/${tokenId}`} onClick={()=>{handleClick(tokenId)}}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
     <CardMedia  classes={mediaStyles} image={cryptoboy.imageHash}style={{backgroundSize:"contain"}} /> 
      
@@ -110,13 +110,13 @@ console.log(cryptoboy)
       <CardContent className={classes.content2}>
         <div className={classes.subtitle}>
           Token Id:   
-         {tokenId.toNumber()}
+         {tokenId}
       
         </div>
         <hr/>
         <div className={classes.subtitle}>
           No. of Transfer:   
-          {numberOfTransfers.toNumber()}
+          {numberOfTransfers}
       
         </div>
        
@@ -134,10 +134,10 @@ console.log(cryptoboy)
     </Card>
     </Link>
   </CardActionArea></>
-    // <div key={tokenId.toNumber()} className="mt-4 ml-3">
+    // <div key={tokenId} className="mt-4 ml-3">
     //   <p>
     //     <span className="font-weight-bold">Token Id</span> :{" "}
-    //     {tokenId.toNumber()}
+    //     {tokenId}
     //   </p>
     //   <p>
     //     <span className="font-weight-bold">Name</span> : {tokenName}
@@ -148,7 +148,7 @@ console.log(cryptoboy)
     //   </p>
     //   <p>
     //     <span className="font-weight-bold">No. of Transfers</span> :{" "}
-    //     {numberOfTransfers.toNumber()}
+    //     {numberOfTransfers}
     //   </p>
     //   {/* {props.accountAddress === mintedBy &&
     //   props.accountAddress !== previousOwner ? (
@@ -158,7 +158,7 @@ console.log(cryptoboy)
     //   ) : (
     //     <div className="alert alert-info w-50 text-center m-auto">Bought</div>
     //   )} */}
-    //   <Link to={`/nftDetails/${tokenId.toNumber()}`} style={{textDecoration:"none"}}onClick={()=>{handleClick(tokenId.toNumber())}} ><Button variant="contained" >View NFT</Button></Link> 
+    //   <Link to={`/nftDetails/${tokenId}`} style={{textDecoration:"none"}}onClick={()=>{handleClick(tokenId)}} ><Button variant="contained" >View NFT</Button></Link> 
     // </div>
   
   );

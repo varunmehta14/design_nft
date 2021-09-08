@@ -153,7 +153,7 @@ console.log(mintedByName,ownedByName)
        {props.cryptoboy&&ownedByName?(
          <>
          <CardActionArea className={classes.actionArea}>
-      <Link to={`/nftDetails/${props.cryptoboy.tokenId.toNumber()}`} onClick={()=>handleClick(props.cryptoboy.tokenId.toNumber())}style={{textDecorationLine:"none"}}>
+      <Link to={`/nftDetails/${props.cryptoboy.tokenId}`} onClick={()=>handleClick(props.cryptoboy.tokenId)}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
       <CardMedia  classes={mediaStyles} image={props.cryptoboy.imageHash} style={{backgroundSize:"contain"}}/> 
     
@@ -207,7 +207,8 @@ console.log(mintedByName,ownedByName)
         {window.web3.utils.fromWei(
           props.cryptoboy.price.toString(),
           "Ether"
-        )}{" "}
+        )}
+        {" "}
         Ξ
         </Typography>
        

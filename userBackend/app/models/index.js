@@ -20,5 +20,9 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require("./user.model.js")(sequelize, Sequelize);
+db.rooms = require("./room.model.js")(sequelize, Sequelize);
+db.chats = require("./chats.model.js")(sequelize, Sequelize);
+db.groups = require("./group.model.js")(sequelize, Sequelize);
+
 
 module.exports = db;

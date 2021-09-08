@@ -76,7 +76,7 @@ const CryptoBoyNFTDetails=(props)=> {
   
   const [ newCryptoBoyPrice,setNewCryptoBoyPrice]=useState("");
   const [ newCryptoBoyDressPrice,setNewCryptoBoyDressPrice]=useState("");
-  //const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [mintedByName,setMintedByName]=useState("") 
   const [ownedByName,setOwnedByName]=useState("") 
@@ -167,6 +167,7 @@ const [designMetadata,setDesignMetadata]=useState("");
   })
   const getMetadata=(async()=>{
     console.log("Before")
+    console.log(props.cryptoBoys)
     if(props.cryptoBoys[thistokenId]){
       console.log("after")
     const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
@@ -178,12 +179,16 @@ const [designMetadata,setDesignMetadata]=useState("");
   })
 
   useEffect(()=>{
+    if(props.cryptoBoys!=undefined){
     getCurrentUser();
     
       getMetadata();
-  
+    }
+
+    }
     
-  },[props.cryptoBoys[thistokenId],props.cryptoBoysContract,props.clickedAddress]);
+    
+  ,[props.cryptoBoys,props.clickedAddress]);
  
        
   
@@ -223,11 +228,11 @@ const [designMetadata,setDesignMetadata]=useState("");
     //console.log(props.cryptoBoys[thistokenId].imageHash)
   const renderDesktop=(
     <>
-    {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.loading?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
+    {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.cryptoBoys==undefined?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
      
       (<div className="d-flex flex-wrap mb-2" style={{padding:"1%",alignItems:"center"}}>
       <div
-              key={props.cryptoBoys[thistokenId].tokenId.toNumber()}
+              key={props.cryptoBoys[thistokenId].tokenId}
               className="col-md-6 w-50 p-4 mt-1 border "
               style={{display:"flex",justifyContent:"center"}}
             >
@@ -280,7 +285,7 @@ const [designMetadata,setDesignMetadata]=useState("");
           Ξ
           </b>
         </p>
-        {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0 ?(<>
+        {props.cryptoBoys[thistokenId].numberOfTransfers==0 ?(<>
           {!props.cryptoBoys[thistokenId].metaData?(<>
           {designMetadata.categories=="fashionDesign"?(<>
             <p>
@@ -317,7 +322,7 @@ const [designMetadata,setDesignMetadata]=useState("");
               onSubmit={(e) => {
                 e.preventDefault();
                 callChangeTokenPriceFromApp(
-                  props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                  props.cryptoBoys[thistokenId].tokenId,
                   newCryptoBoyPrice
                 );
                 
@@ -351,14 +356,14 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               </div>
             </form>
-            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0 ?(<>
+            {props.cryptoBoys[thistokenId].numberOfTransfers==0 ?(<>
               {!props.cryptoBoys[thistokenId].metaData ?( <>
               {designMetadata.categories=="fashionDesign"?(<>
                 <form
             onSubmit={(e) => {
               e.preventDefault();
               callChangeTokenDressPriceFromApp(
-                props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                props.cryptoBoys[thistokenId].tokenId,
                 newCryptoBoyDressPrice
               );
               
@@ -397,7 +402,7 @@ const [designMetadata,setDesignMetadata]=useState("");
             onSubmit={(e) => {
               e.preventDefault();
               callChangeTokenDressPriceFromApp(
-                props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                props.cryptoBoys[thistokenId].tokenId,
                 newCryptoBoyDressPrice
               );
               
@@ -443,7 +448,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={() =>
                   props.toggleForSale(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber()
+                    props.cryptoBoys[thistokenId].tokenId
                   )
                 }
               >
@@ -455,7 +460,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={() =>
                   props.toggleForSale(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber()
+                    props.cryptoBoys[thistokenId].tokenId
                   )
                 }
               >
@@ -476,7 +481,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={(e) =>
                   props.buyCryptoBoy(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                    props.cryptoBoys[thistokenId].tokenId,
                     e.target.value
                   )
                 }
@@ -489,7 +494,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 Ξ
               </button>
               {"   "}
-             {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
+             {props.cryptoBoys[thistokenId].numberOfTransfers==0?(<>
               {!props.cryptoBoys[thistokenId].metaData?(<>
                 {designMetadata.categories=="fashionDesign"?(<>
                   <Link to={`/sizeDetails`}
@@ -498,11 +503,11 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 // onClick={(e) =>
                 //   props.buyCryptoBoyWithDress(
-                //     props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                //     props.cryptoBoys[thistokenId].tokenId,
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId,props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}
@@ -519,11 +524,11 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 // onClick={(e) =>
                 //   props.buyCryptoBoyWithDress(
-                //     props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                //     props.cryptoBoys[thistokenId].tokenId,
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId,props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}
@@ -594,7 +599,7 @@ const [designMetadata,setDesignMetadata]=useState("");
     <hr/>
         <p>
           <span className="font-weight-bold">No. of Transfers</span> :{" "}
-          {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()}
+          {props.cryptoBoys[thistokenId].numberOfTransfers}
         </p>
       </div>
       <br/>
@@ -605,9 +610,9 @@ const [designMetadata,setDesignMetadata]=useState("");
   <div>
     {!props.cryptoBoys[thistokenId].metaData?(
       <>
-      {console.log("Metadata undefined",designMetadata.images.length)}
-      
-      {designMetadata.images.length!=0 ?(<>
+      {console.log("Metadata undefined",designMetadata)}
+      {designMetadata?(<>
+        {designMetadata.images.length!=0 ?(<>
         <AutoPlaySwipeableViews
       axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
       index={activeStep}
@@ -640,7 +645,10 @@ const [designMetadata,setDesignMetadata]=useState("");
          
         </Button>
       }
-    /></>):null}
+    />
+    </>):null}
+      </>):(null)}
+      
       
     </>
     ):(<>
@@ -691,7 +699,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         <Grid item xs={12} sm={6}> 
         
         <div className="col-md-12   mt-1 border">
-       <Queries cryptoBoysContract={props.cryptoBoysContract} token={props.cryptoBoys[thistokenId].tokenId.toNumber()} imageUrl={props.cryptoBoys[thistokenId].imageHash} />
+       <Queries cryptoBoysContract={props.cryptoBoysContract} token={props.cryptoBoys[thistokenId].tokenId} imageUrl={props.cryptoBoys[thistokenId].imageHash} />
        </div>
        </Grid>
       </div>):(<><Loading/></>
@@ -702,7 +710,7 @@ const [designMetadata,setDesignMetadata]=useState("");
   
   const renderMobile=(
     <>
-     {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.loading?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
+     {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.cryptoBoys==undefined?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
      
      (
        <div style={{padding:"2%",height:"100%"}}>
@@ -761,7 +769,7 @@ const [designMetadata,setDesignMetadata]=useState("");
          
         </Typography>
         </div>
-        {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
+        {props.cryptoBoys[thistokenId].numberOfTransfers==0?(<>
           {!props.cryptoBoys[thistokenId].metaData?(<>
                 {designMetadata.categories=="fashionDesign"?(<>
                   <div>
@@ -812,7 +820,7 @@ const [designMetadata,setDesignMetadata]=useState("");
               onSubmit={(e) => {
                 e.preventDefault();
                 callChangeTokenPriceFromApp(
-                  props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                  props.cryptoBoys[thistokenId].tokenId,
                   newCryptoBoyPrice
                 );
                 
@@ -846,14 +854,14 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               </div>
             </form>
-            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
+            {props.cryptoBoys[thistokenId].numberOfTransfers==0?(<>
                {!props.cryptoBoys[thistokenId].metaData?(<>
                 {designMetadata.categories=="fashionDesign"?(<>
                   <form
             onSubmit={(e) => {
               e.preventDefault();
               callChangeTokenDressPriceFromApp(
-                props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                props.cryptoBoys[thistokenId].tokenId,
                 newCryptoBoyDressPrice
               );
               
@@ -894,7 +902,7 @@ const [designMetadata,setDesignMetadata]=useState("");
             onSubmit={(e) => {
               e.preventDefault();
               callChangeTokenDressPriceFromApp(
-                props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                props.cryptoBoys[thistokenId].tokenId,
                 newCryptoBoyDressPrice
               );
               
@@ -940,7 +948,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={() =>
                   props.toggleForSale(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber()
+                    props.cryptoBoys[thistokenId].tokenId
                   )
                 }
               >
@@ -952,7 +960,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={() =>
                   props.toggleForSale(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber()
+                    props.cryptoBoys[thistokenId].tokenId
                   )
                 }
               >
@@ -972,7 +980,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={(e) =>
                   props.buyCryptoBoy(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                    props.cryptoBoys[thistokenId].tokenId,
                     e.target.value
                   )
                 }
@@ -986,7 +994,7 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               
               </div>
-              {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
+              {props.cryptoBoys[thistokenId].numberOfTransfers==0?(<>
 
                 {!props.cryptoBoys[thistokenId].metaData?(<>
                 {designMetadata.categories=="fashionDesign"?(<>
@@ -997,11 +1005,11 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 // onClick={(e) =>
                 //   props.buyCryptoBoyWithDress(
-                //     props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                //     props.cryptoBoys[thistokenId].tokenId,
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId,props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}
@@ -1021,11 +1029,11 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 // onClick={(e) =>
                 //   props.buyCryptoBoyWithDress(
-                //     props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                //     props.cryptoBoys[thistokenId].tokenId,
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId,props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}
@@ -1089,7 +1097,7 @@ const [designMetadata,setDesignMetadata]=useState("");
     <hr/>
         <p>
           <span className="font-weight-bold">No. of Transfers</span> :{" "}
-          {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()}
+          {props.cryptoBoys[thistokenId].numberOfTransfers}
         </p>
       </div>
       <br/>
@@ -1100,7 +1108,8 @@ const [designMetadata,setDesignMetadata]=useState("");
            <div style={{padding:"2%"}}>
     {!props.cryptoBoys[thistokenId].metaData?(
       <>
-      {designMetadata.images.length!=0 ?(<>
+      {designMetadata?(<>
+        {designMetadata.images.length!=0 ?(<>
         <AutoPlaySwipeableViews
       axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
       index={activeStep}
@@ -1134,6 +1143,8 @@ const [designMetadata,setDesignMetadata]=useState("");
         </Button>
       }
     /></>):null}
+      </>):(null)}
+      
       
     </>
     ):(<>

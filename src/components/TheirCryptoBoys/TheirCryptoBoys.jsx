@@ -52,7 +52,7 @@ const TheirCryptoBoys = ({
   cryptoBoys,
   
   callbackFromParent1,
-  cryptoBoysContract,
+  //cryptoBoysContract,
   
   userExists,
  
@@ -134,7 +134,7 @@ const TheirCryptoBoys = ({
         {currentUser?(
            <TheirAccountDetails 
            accountAddress={theirAccountAddress}
-           cryptoBoysContract={cryptoBoysContract}
+          // cryptoBoysContract={cryptoBoysContract}
           
            currentUser={currentUser}
            />

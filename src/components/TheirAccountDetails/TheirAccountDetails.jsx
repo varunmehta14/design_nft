@@ -10,7 +10,7 @@ import WorkTwoToneIcon from '@material-ui/icons/WorkTwoTone';
 import DnsTwoToneIcon from '@material-ui/icons/DnsTwoTone';
 import EmailTwoToneIcon from '@material-ui/icons/EmailTwoTone';
 
-const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) => {
+const TheirAccountDetails = ({ accountAddress,currentUser}) => {
  // if(!accountAddress){accountAddress=window.location.href.split("/")[4]};
  //const[currentUser,setCurrentUser]=useState("");
   
@@ -47,7 +47,7 @@ const TheirAccountDetails = ({ accountAddress,cryptoBoysContract,currentUser}) =
 
 //   const[src,setSrc]=useState(currentUser.avatarhash);
  
-  console.log(cryptoBoysContract)
+  //console.log(cryptoBoysContract)
   console.log(accountAddress);
   console.log(currentUser);
 

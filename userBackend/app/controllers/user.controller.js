@@ -22,16 +22,20 @@ exports.create = (req, res) => {
           userRepo: req.body.userRepo,
           userBio: req.body.userBio,
           userAvatarHash: req.body.userAvatarHash,
-          userAddress: req.body.userAddress
+          userAddress: req.body.userAddress,
+          connections:[],
+          rooms:[],
+          groups:[]
   };
 
   // Save Tutorial in the database
- 
+ //console.log(user)
   User.create(user)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
+      console.log(err)
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the User."
@@ -43,12 +47,13 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     //const userName = req.query.userName;
     //var condition = userName ? { userName: { [Op.like]: `%${userName}%` } } : null;
-  
+  //console.log(res)
     User.findAll()
       .then(data => {
         res.send(data);
       })
       .catch(err => {
+        console.log(err)
         res.status(500).send({
           message:
             err.message || "Some error occurred while retrieving tutorials."
@@ -141,7 +146,7 @@ exports.findByAddress = (req, res) => {
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Tutorial with id=" + userName
+          message: "Error retrieving Tutorial with id=" + userAddress
         });
       });
 };

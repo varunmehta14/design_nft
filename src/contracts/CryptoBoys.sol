@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.21 <0.8.0;
 pragma abicoder v2;
+import "./EthSwap.sol";
 
 // import ERC721 iterface
 import "./ERC721.sol";
@@ -15,7 +16,9 @@ contract CryptoBoys is ERC721 {
   // total number of crypto boys minted
   uint256 public cryptoBoyCounter;
   
+  //EthSwap public ethSwap;
 
+  address public deployer;
   // define crypto boy struct
    struct CryptoBoy {
     uint256 tokenId;
@@ -52,12 +55,22 @@ contract CryptoBoys is ERC721 {
   //map name to Id
    mapping(string=>uint256)public nameToId;
 
+// constructor(EthSwap _token) public {
+//     ethSwap = _token;
+//     deployer = msg.sender;
+//   }
   // initialize contract while deployment with contract's collection name and token
-  constructor() ERC721("Crypto Boys Collection", "CB") {
+  constructor()public ERC721("Crypto Boys Collection", "CB") {
+    
+    //ethSwap = _token;
+    deployer = msg.sender;
     collectionName = name();
     collectionNameSymbol = symbol();
+    
   }
-
+  // function getEthSwapAddress(address ethswapadd){
+  //   EthSwap ethSwap=EthSwap(ethswapadd);
+  // }
 
   
 
@@ -144,7 +157,8 @@ contract CryptoBoys is ERC721 {
   }
 
   // by a token by passing in the token's id
-  function buyToken(uint256 _tokenId) public payable {
+  function buyToken(uint256 _tokenId,uint256 _price,address _ethswapadd) public payable {
+    EthSwap ethSwap=EthSwap(_ethswapadd);
     // check if the function caller is not an zero account address
     require(msg.sender != address(0));
     // check if the token id of the token being bought exists or not
@@ -158,7 +172,7 @@ contract CryptoBoys is ERC721 {
     // get that token from all crypto boys mapping and create a memory of it defined as (struct => CryptoBoy)
     CryptoBoy memory cryptoboy = allCryptoBoys[_tokenId];
     // price sent in to buy should be equal to or more than the token's price
-    require(msg.value >= cryptoboy.price);
+   // require(msg.value >= cryptoboy.price);
     // token should be for sale
     require(cryptoboy.forSale);
     // transfer the token from owner to the caller of the function (buyer)
@@ -166,7 +180,9 @@ contract CryptoBoys is ERC721 {
     // get owner of the token
     address payable sendTo = cryptoboy.currentOwner;
     // send token's worth of ethers to the owner from smart contract
-    sendTo.transfer(msg.value);
+    //sendTo.transfer(msg.value);
+    ethSwap.transferTokensToContract(_price,msg.sender);
+    ethSwap.transferTokensToAccount(_price,sendTo);
     // update the token's previous owner
     cryptoboy.previousOwner = cryptoboy.currentOwner;
     // update the token's current owner
@@ -233,3 +249,7 @@ contract CryptoBoys is ERC721 {
     allCryptoBoys[_tokenId] = cryptoboy;
   }
 }
+// contract EthSwap{
+//   function transferTokensToContract(uint , address )public;
+//   function transferTokensToAccount(uint , address )public;
+// }

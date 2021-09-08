@@ -17,7 +17,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import BorderColorSharpIcon from '@material-ui/icons/BorderColorSharp';
-
+import ChatIcon from '@material-ui/icons/Chat';
 import metamaskIcon from "./metamask.svg";
 import MuseumIcon from '@material-ui/icons/Museum';
 import Avatar from '@material-ui/core/Avatar';
@@ -382,7 +382,11 @@ const renderMenu = (
                 My Tokens
               </Link>
             
-           
+              <Link to="/chat" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
+              <ChatIcon/>
+              </Link>
+            
+              
              
               {!metamaskConnected ? (
               <Button

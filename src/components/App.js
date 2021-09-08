@@ -11,13 +11,14 @@ import "./App.css";
 
 import Web3 from "web3";
 import CryptoBoys from "../abis/CryptoBoys.json";
-
+import EthSwap from "../abis/EthSwap.json";
+import Token from "../abis/Token.json";
 import CryptoBoyNFTDetails from "./CryptoBoyNFTDetails/CryptoBoyNFTDetails";
 import FormAndPreview from "../components/FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
 import AllCreators from "./AllCreators/AllCreators";
 import AccountDetails from "./AccountDetails/AccountDetails";
-
+import Chat from "./Chat/Chat";
 import Loading from "./Loading/Loading";
 import Navbar from "./Navbar/Navbar";
 import Profile from "./Profile/Profile";
@@ -29,7 +30,8 @@ import SizeDetails from "./SizeDetails/SizeDetails";
 import {Container,Box} from '@material-ui/core';
 import ipfs from './ipfs';
 import UserDataService from "../services/UserService";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import axios from 'axios'
 // const ipfsClient = require("ipfs-http-client");
 // const ipfs = ipfsClient({
 //   host: "ipfs.infura.io",
@@ -49,7 +51,7 @@ const initialUserState = {
 
 };
 
-
+let res;
 class App extends Component {
   constructor(props) {
     super(props);
@@ -57,6 +59,8 @@ class App extends Component {
       accountAddress: "",
       accountBalance: "",
       cryptoBoysContract: null,
+      token:null,
+      ehtSwap:null,
       usersContract:null,
       cryptoBoysCount: 0,
       usersCount: 0,
@@ -93,7 +97,8 @@ class App extends Component {
       inputFields:[],
       designName:"",
       user:initialUserState,
-      allUsers:[]
+      allUsers:[],
+      ethSwapDataAdd:""
      
     };
   }
@@ -114,6 +119,7 @@ class App extends Component {
       await this.loadWeb3()
       //await this.loadBlockchainData()
       await this.loadCurrentUser()
+      await this.setMetaData();
     }
     // else if(prevState.cryptoBoys!=this.state.cryptoBoys){
     //   await this.loadBlockchainData()
@@ -168,10 +174,29 @@ class App extends Component {
   
 
   loadBlockchainData = async () => {
-   
+    Number.prototype.toFixedSpecial = function(n) {
+      var str = this.toFixed(n);
+      if (str.indexOf('e+') === -1)
+        return str;
+    
+      // if number is in scientific notation, pick (b)ase and (p)ower
+      str = str.replace('.', '').split('e+').reduce(function(b, p) {
+        return b + Array(p - b.length + 2).join(0);
+      });
+      
+      if (n > 0)
+        str += '.' + Array(n + 1).join(0);
+      
+      return str;
+    };
+   let res;
     const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    console.log(accounts[0])
+     const accounts = await web3.eth.getAccounts();
+     console.log(accounts[0])
+    //res = await axios.get('http://localhost:8080/accounts')
+       
+      //const accounts=res.data;
+     // console.log(res.data[0]);
     if (accounts.length === 0) {
       this.setState({ metamaskConnected: false });
     } else {
@@ -179,62 +204,101 @@ class App extends Component {
       this.setState({ userLoggedIn: true });
       this.setState({ loading: true });
       this.setState({ accountAddress: accounts[0] });
-      let accountBalance = await web3.eth.getBalance(accounts[0]);
-      accountBalance = web3.utils.fromWei(accountBalance, "Ether");
-      this.setState({ accountBalance });
-      this.setState({ loading: false });
-      //Network ID
-      const networkId = await web3.eth.net.getId();
-      const networkData1 = CryptoBoys.networks[networkId];
+      
+      //let accountBalance = await web3.eth.getBalance(accounts[0]);
+       //accountBalance = web3.utils.fromWei(accountBalance, "Ether");
+      //console.log(accountBalance)
+      // this.setState({ accountBalance });
+      res = await axios.post('http://localhost:8080/accountBalance',{account:this.state.accountAddress})
+      console.log(res)
 
-      if (networkData1) {
-        this.setState({ loading: true });
-        const cryptoBoysContract = web3.eth.Contract(
-          CryptoBoys.abi,
-          networkData1.address
-        );
-        //set contract
-        this.setState({ cryptoBoysContract });
-        console.log(cryptoBoysContract)
-        this.setState({ contractDetected: true });
+      //let accountBalance = web3.utils.toWei(res.data);
+      let myBalance=parseFloat(res.data)
+      myBalance=myBalance.toFixedSpecial(0)
+      this.setState({ accountBalance:myBalance });
+      //this.setState({ accountBalance:res.data });
+      console.log(myBalance)
+    //console.log(myBalance.toFixed())
+     // console.log(window.web3.utils.fromWei(this.state.accountBalance.toString()))
+      this.setState({ loading: false });
+      
+    
+      
+      //Network ID
+    //  const networkId = await web3.eth.net.getId();
+    //   const networkData1 = CryptoBoys.networks[networkId];
+    //  const ethSwapData = EthSwap.networks[networkId]
+    //   const tokenData = Token.networks[networkId]
+    //   this.setState({ethSwapDataAdd:ethSwapData.address})
+     
+    //  if (networkData1) {
+    //    this.setState({ loading: true });
+    //     const cryptoBoysContract = web3.eth.Contract(
+    //       CryptoBoys.abi,
+    //       networkData1.address
+    //     );
+    //     const token = new web3.eth.Contract(Token.abi, tokenData.address)
+    //     const  ethSwap = new web3.eth.Contract(EthSwap.abi, ethSwapData.address)
+    //     //set contract
+    //     this.setState({ cryptoBoysContract });
+    //     this.setState({ token });
+    //     this.setState({ ethSwap });
+    //     console.log(cryptoBoysContract)
+    //     this.setState({ contractDetected: true });
+    
+
         //get number of designs minted on the platform
-        const cryptoBoysCount = await cryptoBoysContract.methods
-          .cryptoBoyCounter()
-          .call();
-        this.setState({ cryptoBoysCount });
+        // const cryptoBoysCount = await cryptoBoysContract.methods
+        //   .cryptoBoyCounter()
+        //   .call();
         
-       
+        res = await axios.get('http://localhost:8080/count')
+       console.log(res)
+       this.setState({ cryptoBoysCount:res.data });
          //get all the designs
          
-         for (var i = 1; i <=cryptoBoysCount; i++) {
+         for (var i = 1; i <=this.state.cryptoBoysCount; i++) {
            
          
-          const cryptoBoy = await cryptoBoysContract.methods
-            .allCryptoBoys(i)
-            .call();
+          // const cryptoBoy = await cryptoBoysContract.methods
+          //   .allCryptoBoys(i)
+          //   .call();
+          //   console.log(cryptoBoy)
+          //   this.setState({
+          //     cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
+          //   });
+          res = await axios.post('http://localhost:8080/allDesigns',{index:i})
+          console.log(res.data)
           this.setState({
-            cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
+            cryptoBoys: [...this.state.cryptoBoys, res.data],
           });
         }
        
        
         
         //get number of tokens on the platform
-        let totalTokensMinted = await cryptoBoysContract.methods
-          .getNumberOfTokensMinted()
-          .call();
-        totalTokensMinted = totalTokensMinted.toNumber();
-        this.setState({ totalTokensMinted });
+        // let totalTokensMinted = await cryptoBoysContract.methods
+        //   .getNumberOfTokensMinted()
+        //   .call();
+        // totalTokensMinted = totalTokensMinted;
+        // console.log(totalTokensMinted)
+        // this.setState({ totalTokensMinted });
+        res = await axios.get('http://localhost:8080/tokensMinted')
+        console.log(res.data)
+        this.setState({ totalTokensMinted:res.data });
         //get tokens owned by current account
-        let totalTokensOwnedByAccount = await cryptoBoysContract.methods
-          .getTotalNumberOfTokensOwnedByAnAddress(this.state.accountAddress)
-          .call();
-        totalTokensOwnedByAccount = totalTokensOwnedByAccount.toNumber();
-        this.setState({ totalTokensOwnedByAccount });
+        // let totalTokensOwnedByAccount = await cryptoBoysContract.methods
+        //   .getTotalNumberOfTokensOwnedByAnAddress(this.state.accountAddress)
+        //   .call();
+        // totalTokensOwnedByAccount = totalTokensOwnedByAccount;
+        // this.setState({ totalTokensOwnedByAccount });
+        res = await axios.post('http://localhost:8080/tokensOwnedByAccount',{account:this.state.accountAddress})
+      //console.log(res)
+      this.setState({ totalTokensOwnedByAccount:res.data });
         this.setState({ loading: false });
-      } else {
+      //} else {
         this.setState({ contractDetected: false });
-      }
+      //}
    
   }
   };
@@ -282,15 +346,19 @@ loadCurrentUser=()=>{
   loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
-      window.ethereum.on('accountsChanged', function () {
-       document.location.reload()
-      })
+      window.ethereum.on('accountsChanged', function (accounts) {
+        //console.log('accountchange',accounts)
+        this.setState({ accountAddress: accounts[0]});
+       document.location.reload();
+      }.bind(this))
     } else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider);
-      window.ethereum.on('accountsChanged', function () {
-       document.location.reload()
+      window.ethereum.on('accountsChanged', function (accounts) {
+        //console.log('accountchange',accounts)
+        this.setState({ accountAddress: accounts[0]});
+       document.location.reload();
        
-       })
+       }.bind(this))
     } else {
       window.alert(
         "Non-Ethereum browser detected. You should consider trying MetaMask!"
@@ -307,18 +375,20 @@ loadCurrentUser=()=>{
     if (this.state.cryptoBoys.length !== 0) {
       this.setState({loading:true})
       this.state.cryptoBoys.map(async (cryptoboy) => {
-        const result = await fetch(cryptoboy.tokenURI);
+        let result = await fetch(cryptoboy.tokenURI);
         const metaData = await result.json();
+        console.log(metaData)
         this.setState({
           cryptoBoys: this.state.cryptoBoys.map((cryptoboy) =>
-            cryptoboy.tokenId.toNumber() === Number(metaData.tokenId)
+            cryptoboy.tokenId === metaData.tokenId
               ? {
                   ...cryptoboy,
                   metaData,
                 }
               : cryptoboy
           ),
-        });
+        })
+        console.log(this.state.cryptoBoys);
       });this.setState({loading:false});
     }
   };
@@ -384,7 +454,7 @@ if(!emailUsed && !nameUsed){
     userAddress:this.state.accountAddress
   }
 
-  //console.log(data)
+  console.log(data)
   UserDataService.create(data)
       .then(response => {
         this.setState({user:{
@@ -613,19 +683,27 @@ if(!emailUsed){
    console.log("categories",categories)
    console.log("sizechart",sizeChart)
    console.log("name",name)
-    const nameIsUsed = await this.state.cryptoBoysContract.methods
-      .tokenNameExists(name)
-      .call();
-      console.log("nameisused",nameIsUsed)
+   console.log("tokenPrice",tokenPrice)
+    // const nameIsUsed = await this.state.cryptoBoysContract.methods
+    //   .tokenNameExists(name)
+    //   .call();
+    //   console.log("nameisused",nameIsUsed)
+    let nameIsUsed;
+      res = await axios.post('http://localhost:8080/nameUsed',{name:name})
+      console.log(res.data)
+      nameIsUsed=res.data
     if ( !nameIsUsed) {
-    console.log(this.state.cryptoBoysContract)
+    //console.log(this.state.cryptoBoysContract)
       let imageHashes=[];
       //let allCategories=[];
       let previousTokenId;
-      previousTokenId = await this.state.cryptoBoysContract.methods
-        .cryptoBoyCounter()
-        .call();
-      previousTokenId = previousTokenId.toNumber();
+      // previousTokenId = await this.state.cryptoBoysContract.methods
+      //   .cryptoBoyCounter()
+      //   .call();
+      // previousTokenId = previousTokenId;
+      res = await axios.get('http://localhost:8080/count')
+      console.log(res.data)
+      previousTokenId=res.data;
 
       //set Token ID 
       const tokenId = previousTokenId + 1;
@@ -642,9 +720,13 @@ if(!emailUsed){
       //creating  a image hash to store on blockchain
       const imageHash = `https://ipfs.infura.io/ipfs/${file.path}`;
       
-      const imageIsUsed=await this.state.cryptoBoysContract.methods.imageExists(imageHash).call();
-      //this.setState({ imageIsUsed: imageIsUsed });
-      console.log(imageIsUsed);
+      // const imageIsUsed=await this.state.cryptoBoysContract.methods.imageExists(imageHash).call();
+      // //this.setState({ imageIsUsed: imageIsUsed });
+      // console.log(imageIsUsed);
+      let imageIsUsed;
+      res = await axios.post('http://localhost:8080/imageUsed',{image:imageHash})
+      console.log(res.data)
+      imageIsUsed=res.data
       if(!imageIsUsed){
       const tokenObject = {
         tokenName: "Crypto Boy",
@@ -653,6 +735,7 @@ if(!emailUsed){
         image:`${imageHash}`,
         name:name,
         description:description,
+        //price:window.web3.utils.toWei(tokenPrice.toString(), "ether"),
         price:tokenPrice,
         dressPrice:tokenDressPrice,
         images:imageHashes,
@@ -665,35 +748,48 @@ if(!emailUsed){
         console.log(cid.path)
         //setting the token uri as the path of token object
         let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
-     const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
-     const dressPrice = window.web3.utils.toWei(tokenDressPrice.toString(), "Ether");
-   
-     this.state.cryptoBoysContract.methods
-        .mintCryptoBoy(name,tokenURI,price,dressPrice,imageHash)
-        .send({ from: this.state.accountAddress })
-        .on("confirmation", () => {
-          localStorage.setItem(this.state.accountAddress, new Date().getTime());
-          this.setState({ loading: false });
-          Swal.fire({
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            title: `Item Created`,
-            confirmButtonText: 'Okay',
-            icon: 'success',
-            backdrop: false,
-            customClass: {
-              container: 'my-swal'
-            }
-            
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.href="/marketplace";
-           
-            } 
-            
-          })
+     const price = window.web3.utils.toWei(tokenPrice.toString(), "ether");
+     //const price = window.web3.utils.fromWei(tokenPrice.toString());
+     //const price=tokenPrice.toString();
+     //console.log(price)
+    const dressPrice = window.web3.utils.toWei(tokenDressPrice.toString(), "Ether");
+  //const dressPrice = window.web3.utils.fromWei(tokenDressPrice.toString());
+     res = await axios.post('http://localhost:8080/createDesign',{ name:name, tokenURI:tokenURI,
+                                                                   price:price, dressPrice:dressPrice,
+                                                                   imageHash:imageHash,account: this.state.accountAddress })
+    
+    console.log(res)
+    if(res)
+    {Swal.fire({
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      title: `Item Created`,
+      confirmButtonText: 'Okay',
+      icon: 'success',
+      backdrop: false,
+      customClass: {
+        container: 'my-swal'
+      }
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href="/marketplace";
+     
+      } 
+      
+    })
+  }
+    //  this.state.cryptoBoysContract.methods
+    //     .mintCryptoBoy(name,tokenURI,price,dressPrice,imageHash)
+    //     .send({ from: this.state.accountAddress })
+    //     .on("confirmation", () => {
+    //       localStorage.setItem(this.state.accountAddress, new Date().getTime());
+    //       this.setState({ loading: false });
          
-        });}
+         
+    //     })
+    //     ;
+      }
         else {
            {
             this.setState({ imageIsUsed: true });
@@ -709,77 +805,17 @@ if(!emailUsed){
     }
   };
 // Put or remove from sale on the marketplace
-  toggleForSale = (tokenId) => {
+  toggleForSale = async(tokenId) => {
     this.setState({ loading: true });
-    this.state.cryptoBoysContract.methods
-      .toggleForSale(tokenId)
-      .send({ from: this.state.accountAddress })
-      .on("confirmation", () => {
-        this.setState({ loading: false });
-        Swal.fire({
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          title: `Sale status changed`,
-          confirmButtonText: 'Okay',
-          icon: 'success',
-          backdrop: false,
-          customClass: {
-            container: 'my-swal'
-          }
-          
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-         
-          } 
-          
-        })
-        
-      });
-  };
-//Change the price of token 
-  changeTokenPrice = (tokenId, newPrice) => {
-    this.setState({ loading: true });
-    const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
-    this.state.cryptoBoysContract.methods
-      .changeTokenPrice(tokenId, newTokenPrice)
-      .send({ from: this.state.accountAddress })
-      .on("confirmation", () => {
-        this.setState({ loading: false });
-        Swal.fire({
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          title: `Price Changed`,
-          confirmButtonText: 'Okay',
-          icon: 'success',
-          backdrop: false,
-          customClass: {
-            container: 'my-swal'
-          }
-          
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-         
-          } 
-          
-        })
-       
-      });
-  };
-//Change the price of tokenDress 
-changeTokenDressPrice = (tokenId, newPrice) => {
-  this.setState({ loading: true });
-  const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
-  this.state.cryptoBoysContract.methods
-    .changeTokenDressPrice(tokenId, newTokenPrice)
-    .send({ from: this.state.accountAddress })
-    .on("confirmation", () => {
+    res = await axios.post('http://localhost:8080/toggleSale',{ tokenId:tokenId,account: this.state.accountAddress })
+    
+    console.log(res)
+    if(res){
       this.setState({ loading: false });
       Swal.fire({
         allowOutsideClick: false,
         allowEscapeKey: false,
-        title:  `Price Changed`,
+        title: `Sale status changed`,
         confirmButtonText: 'Okay',
         icon: 'success',
         backdrop: false,
@@ -794,47 +830,120 @@ changeTokenDressPrice = (tokenId, newPrice) => {
         } 
         
       })
+    }
+    // this.state.cryptoBoysContract.methods
+    //   .toggleForSale(tokenId)
+    //   .send({ from: this.state.accountAddress })
+    //   .on("confirmation", () => {
+    //     this.setState({ loading: false });
       
-    });
+        
+    //   });
+  };
+//Change the price of token 
+  changeTokenPrice = async(tokenId, newPrice) => {
+    this.setState({ loading: true });
+    const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
+    res = await axios.post('http://localhost:8080/changeTokenPrice',{ tokenId:tokenId,
+    newTokenPrice:newTokenPrice,account: this.state.accountAddress })
+    
+    console.log(res)
+    if(res){
+      this.setState({ loading: false });
+      Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        title: `Price Changed`,
+        confirmButtonText: 'Okay',
+        icon: 'success',
+        backdrop: false,
+        customClass: {
+          container: 'my-swal'
+        }
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+       
+        } 
+        
+      })
+    }
+    // this.state.cryptoBoysContract.methods
+    //   .changeTokenPrice(tokenId, newTokenPrice)
+    //   .send({ from: this.state.accountAddress })
+    //   .on("confirmation", () => {
+    //     this.setState({ loading: false });
+        
+       
+    //   });
+  };
+//Change the price of tokenDress 
+changeTokenDressPrice = async(tokenId, newPrice) => {
+  this.setState({ loading: true });
+  const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
+  // this.state.cryptoBoysContract.methods
+  //   .changeTokenDressPrice(tokenId, newTokenPrice)
+  //   .send({ from: this.state.accountAddress })
+  //   .on("confirmation", () => {
+  //     this.setState({ loading: false });
+  //     Swal.fire({
+  //       allowOutsideClick: false,
+  //       allowEscapeKey: false,
+  //       title:  `Price Changed`,
+  //       confirmButtonText: 'Okay',
+  //       icon: 'success',
+  //       backdrop: false,
+  //       customClass: {
+  //         container: 'my-swal'
+  //       }
+        
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         window.location.reload();
+       
+  //       } 
+        
+  //     })
+      
+  //   });
+  res = await axios.post('http://localhost:8080/changeTokenDressPrice',{ tokenId:tokenId,
+    newTokenPrice:newTokenPrice,account: this.state.accountAddress })
+    
+    console.log(res)
+    if(res){
+      this.setState({ loading: false });
+      Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        title: `Price Changed`,
+        confirmButtonText: 'Okay',
+        icon: 'success',
+        backdrop: false,
+        customClass: {
+          container: 'my-swal'
+        }
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+       
+        } 
+        
+      })
+    }
 };  
 
 //Buy a token  
-  buyCryptoBoy = (tokenId, price) => {
+  buyCryptoBoy = async(tokenId, price) => {
+    //console.log(typeof(parseInt(price)));
+    //price = window.web3.utils.toWei(price);
     this.setState({ loading: true });
-    this.state.cryptoBoysContract.methods
-      .buyToken(tokenId)
-      .send({ from: this.state.accountAddress, value: price })
-      .on("confirmation", () => {
-        this.setState({ loading: false });
-        Swal.fire({
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          title: `Item Bought`,
-          confirmButtonText: 'Okay',
-          icon: 'success',
-          backdrop: false,
-          customClass: {
-            container: 'my-swal'
-          }
-          
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-         
-          } 
-          
-        })
-       
-      });
-  };
-//Buy a token with dress
-buyCryptoBoyWithDress = (tokenId, price) => {
-  console.log(price)
-  this.setState({ loading: true });
-  this.state.cryptoBoysContract.methods
-    .buyToken(tokenId)
-    .send({ from: this.state.accountAddress, value: price })
-    .on("confirmation", () => {
+    res = await axios.post('http://localhost:8080/buyCryptoBoy',{ tokenId:tokenId,
+    price:price,account: this.state.accountAddress })
+    
+    console.log(res)
+    if(res){
       this.setState({ loading: false });
       Swal.fire({
         allowOutsideClick: false,
@@ -849,14 +958,122 @@ buyCryptoBoyWithDress = (tokenId, price) => {
         
       }).then((result) => {
         if (result.isConfirmed) {
-          window.location.href="/my-tokens";
+          window.location.reload();
        
         } 
         
       })
+    }
+  //   await this.state.token.methods.approve(this.state.ethSwapDataAdd, price).send({ from: this.state.accountAddress}).on('transactionHash', (hash) => {
+  //     console.log('approved')
+  //    // this.state.token.methods.transfer(this.state.accountAddress,price).send({ from: this.state.accountAddress }).on('transactionHash', (hash) => {
+  //     //console.log("here ")
+  //     this.state.cryptoBoysContract.methods
+  //     .buyToken(tokenId,price,this.state.ethSwapDataAdd)
+  //     .send({ from:this.state.accountAddress })
+  //     .on("transactionHash",(hash)=>{
+  //      console.log("done")
+  //      this.setState({ loading: false });
+  //      Swal.fire({
+  //        allowOutsideClick: false,
+  //        allowEscapeKey: false,
+  //        title: `Item Bought`,
+  //        confirmButtonText: 'Okay',
+  //        icon: 'success',
+  //        backdrop: false,
+  //        customClass: {
+  //          container: 'my-swal'
+  //        }
+         
+  //      }).then((result) => {
+  //        if (result.isConfirmed) {
+  //          window.location.reload();
+        
+  //        }
+  //     })
+  //   })
+  // });
+    // this.state.cryptoBoysContract.methods
+    //   .buyToken(tokenId)
+    //   .send({ from: this.state.accountAddress, value: price })
+    //   .on("confirmation", () => {
+        // this.setState({ loading: false });
+        // Swal.fire({
+        //   allowOutsideClick: false,
+        //   allowEscapeKey: false,
+        //   title: `Item Bought`,
+        //   confirmButtonText: 'Okay',
+        //   icon: 'success',
+        //   backdrop: false,
+        //   customClass: {
+        //     container: 'my-swal'
+        //   }
+          
+        // }).then((result) => {
+        //   if (result.isConfirmed) {
+        //     window.location.reload();
+         
+        //   } 
+          
+    //     })
+       
+    //   });
+  };
+//Buy a token with dress
+buyCryptoBoyWithDress = async(tokenId, price) => {
+  console.log(price)
+  this.setState({ loading: true });
+  res = await axios.post('http://localhost:8080/buyCryptoBoyWithDress',{ tokenId:tokenId,
+    price:price,account: this.state.accountAddress })
+    
+    console.log(res)
+    if(res){
+      this.setState({ loading: false });
+      Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        title: `Item Bought`,
+        confirmButtonText: 'Okay',
+        icon: 'success',
+        backdrop: false,
+        customClass: {
+          container: 'my-swal'
+        }
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+       
+        } 
+        
+      })
+    }
+  // this.state.cryptoBoysContract.methods
+  //   .buyToken(tokenId)
+  //   .send({ from: this.state.accountAddress, value: price })
+  //   .on("confirmation", () => {
+  //     this.setState({ loading: false });
+  //     Swal.fire({
+  //       allowOutsideClick: false,
+  //       allowEscapeKey: false,
+  //       title: `Item Bought`,
+  //       confirmButtonText: 'Okay',
+  //       icon: 'success',
+  //       backdrop: false,
+  //       customClass: {
+  //         container: 'my-swal'
+  //       }
+        
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         window.location.href="/my-tokens";
+       
+  //       } 
+        
+  //     })
       
      
-    });
+  //   });
 };  
   tokenIdAndPrice=(tokenIdOfDress,tokenName,priceOfDress,ownedEmail,ownedName,sizeDetails)=>{
     console.log("tokenId",tokenIdOfDress)
@@ -894,17 +1111,17 @@ buyCryptoBoyWithDress = (tokenId, price) => {
  }
 
  searchNFTFromApp=async(val)=>{
-  //  const result=await this.state.cryptoBoysContract.methods.
+  //  result=await this.state.cryptoBoysContract.methods.
   //  nameToId(val).call();
-   const result=await this.state.cryptoBoys.find( (cryptoboy) =>cryptoboy.tokenName===val);
-   this.setState({clickedAddress: result.tokenId.toNumber()})
+   let result=await this.state.cryptoBoys.find( (cryptoboy) =>cryptoboy.tokenName===val);
+   this.setState({clickedAddress: result.tokenId})
                     
-   window.location.href=`/nftDetails/${result.tokenId.toNumber()}`
+   window.location.href=`/nftDetails/${result.tokenId}`
  }
   
   render() {
     
-    console.log(this.state.cryptoBoysContract)
+    //console.log(this.state.cryptoBoysContract)
     console.log(this.state.cryptoBoys)
     return (
     
@@ -948,7 +1165,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                 toggleForSale={this.toggleForSale}
                 buyCryptoBoy={this.buyCryptoBoy}
                 callbackFromParent={this.myCallback2}
-                cryptoBoysContract={this.state.cryptoBoysContract}
+                //cryptoBoysContract={this.state.cryptoBoysContract}
                 // usersContract={this.state.usersContract}
                
                 //users={this.state.users}
@@ -1010,7 +1227,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                 toggleForSale={this.toggleForSale}
                 buyCryptoBoy={this.buyCryptoBoy}
                 callbackFromParent={this.myCallback2}
-                cryptoBoysContract={this.state.cryptoBoysContract}
+                //cryptoBoysContract={this.state.cryptoBoysContract}
                 // usersContract={this.state.usersContract}
                 
                 //users={this.state.users}
@@ -1056,6 +1273,17 @@ buyCryptoBoyWithDress = (tokenId, price) => {
               )}
             />
             <Route
+              path="/chat"
+              
+              render={() => (
+                <Chat
+                  accountAddress={this.state.accountAddress}
+                  currentUser={this.state.currentUser}
+                  allusers={this.state.allUsers}
+                />
+              )}
+            />
+            <Route
               path={`/their-tokens/${this.state.clickedAddress}`}
               
               render={() => (
@@ -1064,7 +1292,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                   cryptoBoys={this.state.cryptoBoys}
                   
                   callbackFromParent1={this.myCallback2}
-                  cryptoBoysContract={this.state.cryptoBoysContract}
+                  //cryptoBoysContract={this.state.cryptoBoysContract}
                   
                   userExists={this.state.userExists}
                   
@@ -1091,7 +1319,7 @@ buyCryptoBoyWithDress = (tokenId, price) => {
                clickedAddress={this.state.clickedAddress}
                callbackFromParent={this.myCallback2}
                callBack={this.tokenIDfun}
-               cryptoBoysContract={this.state.cryptoBoysContract}
+               //cryptoBoysContract={this.state.cryptoBoysContract}
                
                cryptoBoys={this.state.cryptoBoys}
                loading={this.state.loading}
