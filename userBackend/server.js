@@ -10,7 +10,7 @@ const CryptoBoys=require('../src/abis/CryptoBoys.json')
 const EthSwap=require('../src/abis/EthSwap.json')
 const Token=require('../src/abis/Token.json')
 
-const { authRequired } = require('../middleware/auth');
+const { authRequired } = require('./app/middleware/auth');
 
 require("dotenv").config();
 const app = express();
