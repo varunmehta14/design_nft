@@ -9,6 +9,9 @@ const Web3 =require('web3')
 const CryptoBoys=require('../src/abis/CryptoBoys.json')
 const EthSwap=require('../src/abis/EthSwap.json')
 const Token=require('../src/abis/Token.json')
+
+const { authRequired } = require('../middleware/auth');
+
 require("dotenv").config();
 const app = express();
 
@@ -39,7 +42,7 @@ app.get('/accounts', async (req,res) => {
     console.log(err);
   }
 });
-app.post('/accountBalance', async (req,res) => {
+app.post('/accountBalance', authRequired(), async (req,res) => {
   try {
     console.log("reqacc",req.body.account)
     //let accountBalance = await web3.eth.getBalance(req.body.account);
@@ -90,7 +93,7 @@ app.post('/allDesigns', async (req,res) => {
     console.log(err);
   }
 });
-app.post('/tokensOwnedByAccount', async (req,res) => {
+app.post('/tokensOwnedByAccount', authRequired(), async (req,res) => {
   try {
     let index=req.body.account;
     let totalTokensOwnedByAccount = await cryptoBoysContract.methods
@@ -102,7 +105,7 @@ app.post('/tokensOwnedByAccount', async (req,res) => {
     console.log(err);
   }
 });
-app.post('/nameUsed', async (req,res) => {
+app.post('/nameUsed', authRequired(), async (req,res) => {
   try {
     let index=req.body.name;
     const nameIsUsed = await cryptoBoysContract.methods
@@ -113,7 +116,7 @@ app.post('/nameUsed', async (req,res) => {
     console.log(err);
   }
 });
-app.post('/imageUsed', async (req,res) => {
+app.post('/imageUsed', authRequired(), async (req,res) => {
   try {
     let index=req.body.image;
     const imageIsUsed=await cryptoBoysContract.methods
@@ -123,7 +126,7 @@ app.post('/imageUsed', async (req,res) => {
     console.log(err);
   }
 });
-app.post('/createDesign', async (req,res) => {
+app.post('/createDesign', authRequired(), async (req,res) => {
   try {
     const { name, tokenURI, price, dressPrice,imageHash,account } = req.body;
     console.log(price)
@@ -139,7 +142,7 @@ app.post('/createDesign', async (req,res) => {
     console.log(err);
   }
 });
-app.post('/toggleSale', async (req,res) => {
+app.post('/toggleSale', authRequired(), async (req,res) => {
   try {
     const {tokenId,account}=req.body;
     await cryptoBoysContract.methods
@@ -153,7 +156,7 @@ app.post('/toggleSale', async (req,res) => {
     console.log(err);
   }
 });
-app.post('/changeTokenPrice', async (req,res) => {
+app.post('/changeTokenPrice', authRequired(), async (req,res) => {
   try {
     const {tokenId,newTokenPrice,account}=req.body;
     await cryptoBoysContract.methods
@@ -167,7 +170,7 @@ app.post('/changeTokenPrice', async (req,res) => {
     console.log(err);
   }
 });
-app.post('/changeTokenDressPrice', async (req,res) => {
+app.post('/changeTokenDressPrice', authRequired(), async (req,res) => {
   try {
     const {tokenId,newTokenPrice,account}=req.body;
     await cryptoBoysContract.methods
@@ -181,7 +184,7 @@ app.post('/changeTokenDressPrice', async (req,res) => {
     console.log(err);
   }
 });
-app.post('/buyCryptoBoy', async (req,res) => {
+app.post('/buyCryptoBoy', authRequired(), async (req,res) => {
   try {
     const {tokenId,price,account}=req.body;
     console.log(price)
@@ -202,7 +205,7 @@ app.post('/buyCryptoBoy', async (req,res) => {
     console.log(err);
   }
 });
-app.post('/buyCryptoBoyWithDress', async (req,res) => {
+app.post('/buyCryptoBoyWithDress', authRequired(), async (req,res) => {
   try {
     const {tokenId,price,account}=req.body;
    await token.methods.approve(ethSwapData.address, price).send({ from: account,gas:3000000 }).on('transactionHash', (hash) => {

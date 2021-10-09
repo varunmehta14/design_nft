@@ -1,7 +1,10 @@
 const db = require("../models");
+const config = require("../config/auth.config");
 
 const User = db.users;
 const Op = db.Sequelize.Op;
+
+const jwt = require("jsonwebtoken");
 
 // Create and Save a new User
 exports.create = (req, res) => {
@@ -142,6 +145,11 @@ exports.findByAddress = (req, res) => {
     var condition = userAddress ? { userAddress: { [Op.like]: `%${userAddress}%` } } : null;
     User.findAll({where:condition})
       .then(data => {
+        // Send this token also in response
+        const token = jwt.sign({ id: data[0].id }, config.secret, {
+          expiresIn: 86400 // 24 hours
+        });
+
         res.send(data);
       })
       .catch(err => {
