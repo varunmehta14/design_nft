@@ -1842,7 +1842,7 @@ pragma abicoder v2;
 
 
 // CryptoBoys smart contract inherits ERC721 interface
-contract CryptoBoys is ERC721 {
+contract CryptoBoys is ERC721, Token {
 
   // this contract's token collection name
   string public collectionName;
