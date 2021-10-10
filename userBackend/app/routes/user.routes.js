@@ -1,6 +1,7 @@
 module.exports = app => {
     const users = require("../controllers/user.controller.js");
-  
+    const { authRequired } = require('../middleware/auth');
+    
     var router = require("express").Router();
   
     // Create a new user
@@ -22,10 +23,10 @@ module.exports = app => {
     
   
     // Update a user with id
-    router.put("/address/:id", users.update);
+    router.put("/address/:id", authRequired(), users.update);
   
     // Delete a user with id
-    router.delete("/address/:id", users.delete);
+    router.delete("/address/:id", authRequired(), users.delete);
   
     // Delete all users
     //router.delete("/", users.deleteAll);

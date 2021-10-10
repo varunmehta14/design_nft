@@ -248,6 +248,24 @@ contract CryptoBoys is ERC721 {
     // set and update that token in the mapping
     allCryptoBoys[_tokenId] = cryptoboy;
   }
+
+  // To Transfer VID tokens to smart contract
+  function transferTokensToContract(uint _amount, address _sender) public {
+    // User can't sell more tokens than they have
+    require(balanceOf[_sender] >= _amount);
+
+    // Perform sale
+    transferFrom(_sender, address(this), _amount);  
+  } 
+
+  // To Transfer VID tokens from smart contract to desired address
+  function transferTokensToAccount(uint _amount, address receiver) public payable {
+    // User can't sell more tokens than they have
+    require(balanceOf[address(this)] >= _amount);
+
+    // Transfer tokens to the receiver
+    transfer(receiver, _amount);  
+  }
 }
 // contract EthSwap{
 //   function transferTokensToContract(uint , address )public;
