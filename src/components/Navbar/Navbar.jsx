@@ -361,9 +361,7 @@ const renderMenu = (
           <div className={classes.sectionDesktop}>
            
             
-              <Link to="/creators" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
-                Creators
-              </Link>
+             
            
               
 
@@ -371,7 +369,10 @@ const renderMenu = (
               <Link to="/mint" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
                 Create
               </Link>
-           
+              
+              <Link to="/creators" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
+                Creators
+              </Link>
             
               <Link to="/marketplace" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
                 Marketplace

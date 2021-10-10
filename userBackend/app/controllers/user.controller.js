@@ -142,6 +142,9 @@ exports.findByAddress = (req, res) => {
     var condition = userAddress ? { userAddress: { [Op.like]: `%${userAddress}%` } } : null;
     User.findAll({where:condition})
       .then(data => {
+        // const token=jwt.sign({id:data[0].id},config.secret,{
+        //   expiresIn:86400 //24hours
+        // })
         res.send(data);
       })
       .catch(err => {

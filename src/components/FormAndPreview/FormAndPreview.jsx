@@ -143,7 +143,8 @@ export default function FormAndPreview(props) {
     const [show,setShow]=useState(true);
     const [categories,setCategories]=useState("");
     const [sizeChart,setSizeChart]=useState([]);
-    const [test,setTest]=useState("hello")
+    const [test,setTest]=useState("hello");
+    const [amount,setAmount]=useState(1);
     const [aler,setAler]=useState(props.imageIsUsed);
     const [imageUsed,setImageUsed]=useState(props.imageIsUsed)
     //const [preview,setPreview]=useState([]);
@@ -287,7 +288,8 @@ const onNodeToggle = currentNode => {
       cryptoBoyDressPrice,
       finalbuffer,
       categories,
-      sizeChart
+      sizeChart,
+      amount
     );
   };
   const [open, setOpen] = useState(false);
@@ -978,6 +980,23 @@ Unlimited Auction
           <input type='file' multiple={true} onChange={captureFile} />
                       
              <hr/> </> ):null}
+{categories=="photoGraph"?(<>
+  <TextField
+ //id="standard-adornment-amount"
+ label="Amount"
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
+ 
+ required
+ value={amount}
+ onChange={(e)=>setAmount(e.target.value)}
+
+/></>):null}             
   </>}
      
    <hr/>

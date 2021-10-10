@@ -589,7 +589,7 @@ const [designMetadata,setDesignMetadata]=useState("");
       <span className="font-weight-bold">Previous Owner :&nbsp;</span>
       <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].previousOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].previousOwner)}}style={{textDecorationLine:"none"}}> 
      
-        {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(<>{props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
+        {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;@{prevByName}</div>):(<>{props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
             "..." +
             props.cryptoBoys[thistokenId].previousOwner.slice(
               props.cryptoBoys[thistokenId].previousOwner.length - 5

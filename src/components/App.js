@@ -192,6 +192,7 @@ class App extends Component {
    let res;
     const web3 = window.web3;
      const accounts = await web3.eth.getAccounts();
+    
      console.log(accounts[0])
     //res = await axios.get('http://localhost:8080/accounts')
        
@@ -257,7 +258,7 @@ class App extends Component {
        this.setState({ cryptoBoysCount:res.data });
          //get all the designs
          
-         for (var i = 1; i <=this.state.cryptoBoysCount; i++) {
+         //for (var i = 1; i <=this.state.cryptoBoysCount; i++) {
            
          
           // const cryptoBoy = await cryptoBoysContract.methods
@@ -267,12 +268,13 @@ class App extends Component {
           //   this.setState({
           //     cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
           //   });
-          res = await axios.post('http://localhost:8080/allDesigns',{index:i})
+          //res = await axios.post('http://localhost:8080/allDesigns',{index:i})
+          res = await axios.get('http://localhost:8080/allDesigns')
           console.log(res.data)
           this.setState({
-            cryptoBoys: [...this.state.cryptoBoys, res.data],
+            cryptoBoys: res.data,
           });
-        }
+        //}
        
        
         
@@ -677,8 +679,9 @@ if(!emailUsed){
         
 };
 
-  mintMyNFT = async (name,description,buffer,tokenPrice,tokenDressPrice,finalbuffer,categories,sizeChart) => {
+  mintMyNFT = async (name,description,buffer,tokenPrice,tokenDressPrice,finalbuffer,categories,sizeChart,amount) => {
     this.setState({ loading: true });
+    const web3 = window.web3;
    console.log("buffer2",finalbuffer)
    console.log("categories",categories)
    console.log("sizechart",sizeChart)
@@ -748,6 +751,7 @@ if(!emailUsed){
         console.log(cid.path)
         //setting the token uri as the path of token object
         let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
+        //let tokenURI = `https://ipfs.infura.io/ipfs/${tokenId}`;
      const price = window.web3.utils.toWei(tokenPrice.toString(), "ether");
      //const price = window.web3.utils.fromWei(tokenPrice.toString());
      //const price=tokenPrice.toString();
@@ -756,7 +760,7 @@ if(!emailUsed){
   //const dressPrice = window.web3.utils.fromWei(tokenDressPrice.toString());
      res = await axios.post('http://localhost:8080/createDesign',{ name:name, tokenURI:tokenURI,
                                                                    price:price, dressPrice:dressPrice,
-                                                                   imageHash:imageHash,account: this.state.accountAddress })
+                                                                   imageHash:imageHash,amount:amount,account: this.state.accountAddress,fee:web3.eth.generate_gas_price() })
     
     console.log(res)
     if(res)
@@ -807,7 +811,8 @@ if(!emailUsed){
 // Put or remove from sale on the marketplace
   toggleForSale = async(tokenId) => {
     this.setState({ loading: true });
-    res = await axios.post('http://localhost:8080/toggleSale',{ tokenId:tokenId,account: this.state.accountAddress })
+    const web3 = window.web3;
+    res = await axios.post('http://localhost:8080/toggleSale',{ tokenId:tokenId,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
     
     console.log(res)
     if(res){
@@ -843,9 +848,10 @@ if(!emailUsed){
 //Change the price of token 
   changeTokenPrice = async(tokenId, newPrice) => {
     this.setState({ loading: true });
+    const web3 = window.web3;
     const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
     res = await axios.post('http://localhost:8080/changeTokenPrice',{ tokenId:tokenId,
-    newTokenPrice:newTokenPrice,account: this.state.accountAddress })
+    newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
     
     console.log(res)
     if(res){
@@ -881,6 +887,7 @@ if(!emailUsed){
 //Change the price of tokenDress 
 changeTokenDressPrice = async(tokenId, newPrice) => {
   this.setState({ loading: true });
+  const web3 = window.web3;
   const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
   // this.state.cryptoBoysContract.methods
   //   .changeTokenDressPrice(tokenId, newTokenPrice)
@@ -908,7 +915,7 @@ changeTokenDressPrice = async(tokenId, newPrice) => {
       
   //   });
   res = await axios.post('http://localhost:8080/changeTokenDressPrice',{ tokenId:tokenId,
-    newTokenPrice:newTokenPrice,account: this.state.accountAddress })
+    newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
     
     console.log(res)
     if(res){
@@ -938,12 +945,34 @@ changeTokenDressPrice = async(tokenId, newPrice) => {
   buyCryptoBoy = async(tokenId, price) => {
     //console.log(typeof(parseInt(price)));
     //price = window.web3.utils.toWei(price);
+    const web3 = window.web3;
     this.setState({ loading: true });
     res = await axios.post('http://localhost:8080/buyCryptoBoy',{ tokenId:tokenId,
-    price:price,account: this.state.accountAddress })
+    price:price,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
     
     console.log(res)
-    if(res){
+    if(!res){
+      Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        title: `Could Not Bought`,
+        confirmButtonText: 'Okay',
+        icon: 'anger',
+        backdrop: false,
+        customClass: {
+          container: 'my-swal'
+        }
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+       
+        } 
+        
+      })
+    }
+   
+    else{
       this.setState({ loading: false });
       Swal.fire({
         allowOutsideClick: false,
@@ -1022,9 +1051,10 @@ changeTokenDressPrice = async(tokenId, newPrice) => {
 //Buy a token with dress
 buyCryptoBoyWithDress = async(tokenId, price) => {
   console.log(price)
+  const web3 = window.web3;
   this.setState({ loading: true });
   res = await axios.post('http://localhost:8080/buyCryptoBoyWithDress',{ tokenId:tokenId,
-    price:price,account: this.state.accountAddress })
+    price:price,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
     
     console.log(res)
     if(res){

@@ -221,9 +221,17 @@ const AllCryptoBoys = ({
       // categories.some((newItem)=>{
       //   cryptoBoy[newItem.push]
       // })
-      if(cryptoBoy.metaData.categories===categories){
-        searchedResults.push(cryptoBoy);
-      }
+      //if(cryptoBoy.metaData!=undefined){
+        if(cryptoBoy.metaData.categories===categories){
+          searchedResults.push(cryptoBoy);
+         // setLoading(false)
+        }
+     
+      //}
+      //else{
+       // setLoading(true)
+      //}
+
       // const found = cryptoBoy.metaData.categories.some(r=> flatArray.indexOf(r) >= 0)
       // if(found){
       //   searchedResults.push(cryptoBoy);
@@ -255,7 +263,7 @@ const AllCryptoBoys = ({
         </div>
       </div>
 
-      {cryptoBoys?(
+      {cryptoBoys ?(
         <>
         <div style={{display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
           {/* <button className="mt-3 btn btn-outline-primary" onClick={()=>{setShowCategory(!showCategory)}} style={{borderRadius:"20px"}}>
@@ -285,7 +293,7 @@ const AllCryptoBoys = ({
        <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
               Search
               </button>*/}
-        <Select 
+        {/* <Select 
               options={options}
               className="basic-single breadth"
               classNamePrefix="select"
@@ -297,13 +305,13 @@ const AllCryptoBoys = ({
                
             
               //onChange={(e)=>{setCategories(e.target.value)}}
-              />
+              /> */}
                 {/* <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
               Search
               </button> */}
-              <IconButton onClick={searchFilters} >
+              {/* <IconButton onClick={searchFilters} >
               <PageviewOutlinedIcon style={{ fontSize: 40 }}/>
-              </IconButton>
+              </IconButton> */}
               
               {/* ):null} */}
               </div>      

@@ -36,6 +36,7 @@ app.get('/accounts', async (req,res) => {
     console.log(res)
     res.send(accounts);
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
@@ -52,6 +53,7 @@ app.post('/accountBalance', async (req,res) => {
     console.log("tokenBalance",tokenBalance)
     res.send(myTokenBalance);
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
@@ -63,6 +65,7 @@ app.get('/count', async (req,res) => {
           console.log(cryptoBoysCount)
     res.send(cryptoBoysCount);
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
@@ -75,18 +78,30 @@ app.get('/tokensMinted', async (req,res) => {
           console.log(totalTokensMinted)
     res.send(totalTokensMinted);
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
-app.post('/allDesigns', async (req,res) => {
+app.get('/allDesigns', async (req,res) => {
   try {
-    let index=req.body.index;
-    const cryptoBoy = await cryptoBoysContract.methods
-          .allCryptoBoys(index)
+    //let index=req.body.index;
+    let cryptoBoys=[];
+    //let index;
+   // index=app.get('/count')
+    const cryptoBoysCount = await cryptoBoysContract.methods
+          .cryptoBoyCounter()
+          .call();
+    for(let   i=1;i<=cryptoBoysCount;i++){
+      const cryptoBoy = await cryptoBoysContract.methods
+          .allCryptoBoys(i)
           .call();
           console.log(cryptoBoy)
-    res.send(cryptoBoy);
+          cryptoBoys.push(cryptoBoy)
+    }
+    
+    res.send(cryptoBoys);
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
@@ -99,6 +114,7 @@ app.post('/tokensOwnedByAccount', async (req,res) => {
         //totalTokensOwnedByAccount = totalTokensOwnedByAccount.toNumber();
     res.send(totalTokensOwnedByAccount);
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
@@ -110,6 +126,7 @@ app.post('/nameUsed', async (req,res) => {
       .call();
     res.send(nameIsUsed);
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
@@ -120,59 +137,63 @@ app.post('/imageUsed', async (req,res) => {
     .imageExists(index).call();
     res.send(imageIsUsed);
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
 app.post('/createDesign', async (req,res) => {
   try {
-    const { name, tokenURI, price, dressPrice,imageHash,account } = req.body;
+    const { name, tokenURI, price, dressPrice,imageHash,amount,account,fee } = req.body;
     console.log(price)
     //await token.methods.approve(ethSwapData.address, price).send({ from: account }).on('transactionHash', (hash) => {
     cryptoBoysContract.methods
         .mintCryptoBoy(name,tokenURI,price,dressPrice,imageHash)
-        .send({ from: account,gas:3000000 })
+        .send({ from: account,gas:fee })
         .on("transactionHash",(hash)=>{
           res.json({ name, tokenURI, price, dressPrice,imageHash,account })
         })
       //}) 
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
 app.post('/toggleSale', async (req,res) => {
   try {
-    const {tokenId,account}=req.body;
+    const {tokenId,account,fee}=req.body;
     await cryptoBoysContract.methods
     .toggleForSale(tokenId)
-    .send({ from: account,gas:3000000 })
+    .send({ from: account,gas:fee })
     .on("transactionHash",(hash)=>{
       res.json({tokenId,account})
     })
     
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
 app.post('/changeTokenPrice', async (req,res) => {
   try {
-    const {tokenId,newTokenPrice,account}=req.body;
+    const {tokenId,newTokenPrice,account,fee}=req.body;
     await cryptoBoysContract.methods
     .changeTokenPrice(tokenId, newTokenPrice)
-    .send({ from: account,gas:3000000 })
+    .send({ from: account,gas:fee })
     .on("transactionHash",(hash)=>{
       res.json({tokenId,newTokenPrice,account})
     })
     
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
 app.post('/changeTokenDressPrice', async (req,res) => {
   try {
-    const {tokenId,newTokenPrice,account}=req.body;
+    const {tokenId,newTokenPrice,account,fee}=req.body;
     await cryptoBoysContract.methods
     .changeTokenDressPrice(tokenId, newTokenPrice)
-    .send({ from: account,gas:3000000 })
+    .send({ from: account,gas:fee })
     .on("transactionHash",(hash)=>{
       res.json({tokenId,newTokenPrice,account})
     })
@@ -183,38 +204,39 @@ app.post('/changeTokenDressPrice', async (req,res) => {
 });
 app.post('/buyCryptoBoy', async (req,res) => {
   try {
-    const {tokenId,price,account}=req.body;
+    const {tokenId,price,account,fee}=req.body;
     console.log(price)
     console.log("ethswapadd",ethSwapData.address)
     await token.methods.approve(ethSwapData.address, price).send({ from: account,gas:3000000 }).on('transactionHash', (hash) => {
     console.log('approved')
     //token.methods.transfer(account,price).send({ from: account,gas:3000000 }).on('transactionHash', (hash) => {
-    console.log("here ")
+    //console.log("here ")
     cryptoBoysContract.methods
     .buyToken(tokenId,price,ethSwapData.address)
-    .send({ from: account,gas:4000000 })
+    .send({ from: account,gas:fee })
     .on("transactionHash",(hash)=>{
       res.json({tokenId,price,account})
     })
   //})
 })
   } catch (err) {
+    res.send("err");
     console.log(err);
   }
 });
 app.post('/buyCryptoBoyWithDress', async (req,res) => {
   try {
-    const {tokenId,price,account}=req.body;
+    const {tokenId,price,account,fee}=req.body;
    await token.methods.approve(ethSwapData.address, price).send({ from: account,gas:3000000 }).on('transactionHash', (hash) => {
      cryptoBoysContract.methods
     .buyToken(tokenId,price,ethSwapData.address)
-    .send({ from: account,gas:4000000 })
+    .send({ from: account,gas:fee })
     .on("transactionHash",(hash)=>{
       res.json({tokenId,price,account})
     })
   })
   } catch (err) {
-    console.log("here")
+    res.send("err");
     console.log(err);
   }
 });

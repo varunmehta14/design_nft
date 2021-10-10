@@ -95,7 +95,7 @@
         3652
       ],
       "Token": [
-        3890
+        3891
       ]
     },
     "id": 3653,
@@ -122,7 +122,7 @@
         "id": 3581,
         "nodeType": "ImportDirective",
         "scope": 3653,
-        "sourceUnit": 3891,
+        "sourceUnit": 3892,
         "src": "69:21:2",
         "symbolAliases": [],
         "unitAlias": ""
@@ -195,17 +195,17 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Token_$3890",
+              "typeIdentifier": "t_contract$_Token_$3891",
               "typeString": "contract Token"
             },
             "typeName": {
               "id": 3585,
               "name": "Token",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3890,
+              "referencedDeclaration": 3891,
               "src": "168:5:2",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Token_$3890",
+                "typeIdentifier": "t_contract$_Token_$3891",
                 "typeString": "contract Token"
               }
             },
@@ -232,7 +232,7 @@
                       "referencedDeclaration": 3586,
                       "src": "512:5:2",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Token_$3890",
+                        "typeIdentifier": "t_contract$_Token_$3891",
                         "typeString": "contract Token"
                       }
                     },
@@ -246,13 +246,13 @@
                       "referencedDeclaration": 3588,
                       "src": "520:6:2",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Token_$3890",
+                        "typeIdentifier": "t_contract$_Token_$3891",
                         "typeString": "contract Token"
                       }
                     },
                     "src": "512:14:2",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Token_$3890",
+                      "typeIdentifier": "t_contract$_Token_$3891",
                       "typeString": "contract Token"
                     }
                   },
@@ -283,17 +283,17 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Token_$3890",
+                    "typeIdentifier": "t_contract$_Token_$3891",
                     "typeString": "contract Token"
                   },
                   "typeName": {
                     "id": 3587,
                     "name": "Token",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 3890,
+                    "referencedDeclaration": 3891,
                     "src": "484:5:2",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Token_$3890",
+                      "typeIdentifier": "t_contract$_Token_$3891",
                       "typeString": "contract Token"
                     }
                   },
@@ -363,7 +363,7 @@
                               "referencedDeclaration": 3586,
                               "src": "1780:5:2",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Token_$3890",
+                                "typeIdentifier": "t_contract$_Token_$3891",
                                 "typeString": "contract Token"
                               }
                             },
@@ -374,7 +374,7 @@
                             "lValueRequested": false,
                             "memberName": "balanceOf",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 3743,
+                            "referencedDeclaration": 3744,
                             "src": "1780:15:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
@@ -564,7 +564,7 @@
                         "referencedDeclaration": 3586,
                         "src": "1846:5:2",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Token_$3890",
+                          "typeIdentifier": "t_contract$_Token_$3891",
                           "typeString": "contract Token"
                         }
                       },
@@ -575,7 +575,7 @@
                       "lValueRequested": false,
                       "memberName": "transferFrom",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 3889,
+                      "referencedDeclaration": 3890,
                       "src": "1846:18:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -775,7 +775,7 @@
                               "referencedDeclaration": 3586,
                               "src": "2126:5:2",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Token_$3890",
+                                "typeIdentifier": "t_contract$_Token_$3891",
                                 "typeString": "contract Token"
                               }
                             },
@@ -786,7 +786,7 @@
                             "lValueRequested": false,
                             "memberName": "balanceOf",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 3743,
+                            "referencedDeclaration": 3744,
                             "src": "2126:15:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
@@ -916,7 +916,7 @@
                         "referencedDeclaration": 3586,
                         "src": "2217:5:2",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Token_$3890",
+                          "typeIdentifier": "t_contract$_Token_$3891",
                           "typeString": "contract Token"
                         }
                       },
@@ -927,7 +927,7 @@
                       "lValueRequested": false,
                       "memberName": "transfer",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 3801,
+                      "referencedDeclaration": 3802,
                       "src": "2217:14:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -1049,7 +1049,7 @@
           3652
         ],
         "Token": [
-          3890
+          3891
         ]
       },
       "license": "MIT"
@@ -1073,7 +1073,7 @@
       },
       {
         "attributes": {
-          "SourceUnit": 3891,
+          "SourceUnit": 3892,
           "absolutePath": "project:/src/contracts/Token.sol",
           "file": "./Token.sol",
           "scope": 3653,
@@ -1162,7 +1162,7 @@
               {
                 "attributes": {
                   "name": "Token",
-                  "referencedDeclaration": 3890,
+                  "referencedDeclaration": 3891,
                   "type": "contract Token"
                 },
                 "id": 3585,
@@ -1206,7 +1206,7 @@
                       {
                         "attributes": {
                           "name": "Token",
-                          "referencedDeclaration": 3890,
+                          "referencedDeclaration": 3891,
                           "type": "contract Token"
                         },
                         "id": 3587,
@@ -1462,7 +1462,7 @@
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "member_name": "balanceOf",
-                                      "referencedDeclaration": 3743,
+                                      "referencedDeclaration": 3744,
                                       "type": "function (address) view external returns (uint256)"
                                     },
                                     "children": [
@@ -1568,7 +1568,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "transferFrom",
-                              "referencedDeclaration": 3889,
+                              "referencedDeclaration": 3890,
                               "type": "function (address,address,uint256) external returns (bool)"
                             },
                             "children": [
@@ -1865,7 +1865,7 @@
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "member_name": "balanceOf",
-                                      "referencedDeclaration": 3743,
+                                      "referencedDeclaration": 3744,
                                       "type": "function (address) view external returns (uint256)"
                                     },
                                     "children": [
@@ -2015,7 +2015,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "transfer",
-                              "referencedDeclaration": 3801,
+                              "referencedDeclaration": 3802,
                               "type": "function (address,uint256) external returns (bool)"
                             },
                             "children": [
@@ -2101,12 +2101,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x9Fc57e9204d19E640aC927877a6cebFe48D54D0b",
-      "transactionHash": "0x127e50d61194db7deecc706f0a056149558eae61782c7d82e538f419499cc358"
+      "address": "0xDB7507092D3BCBC07E2069747F61BDab4c441dE0",
+      "transactionHash": "0x2db3e5f68ba1aaa9318ac491080cd72e50695b63b1b9b3a1b0cd91891ab226ea"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-09-08T09:14:30.076Z",
+  "updatedAt": "2021-09-16T11:05:12.931Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
