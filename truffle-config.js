@@ -12,6 +12,8 @@ module.exports = {
       host: "127.0.0.1",
       port: 7545,
       network_id: "*", // Match any network id
+      //gas: 6800000,
+     // gasPrice: 25000000000
     },
   //   bscTestnet: {
   //     provider: () => new HDWalletProvider("comfort coconut oil atom cart lawn narrow rhythm dog skirt verb fringe", `https://data-seed-prebsc-1-s1.binance.org:8545`),

@@ -149,11 +149,26 @@ app.post('/createDesign', authRequired(), async (req,res) => {
     const { name, tokenURI, price, dressPrice,imageHash,amount,account,fee } = req.body;
     console.log(price)
     //await token.methods.approve(ethSwapData.address, price).send({ from: account }).on('transactionHash', (hash) => {
+    const gasP =await web3.eth.getGasPrice();
+    let myEstimatedGas;
     cryptoBoysContract.methods
-        .mintCryptoBoy(name,tokenURI,price,dressPrice,imageHash)
-        .send({ from: account,gas:fee })
+        .mintCryptoBoy(name,tokenURI,price,dressPrice,
+          //imageHash
+          )
+        .estimateGas({ from: account,gasPrice:gasP },(error,estimatedGas)
+        =>{
+          myEstimatedGas=estimatedGas;
+        })
+       
+    cryptoBoysContract.methods
+        .mintCryptoBoy(name,tokenURI,price,dressPrice,
+          //imageHash
+          )
+        .send({ from: account,gas:myEstimatedGas })
         .on("transactionHash",(hash)=>{
-          res.json({ name, tokenURI, price, dressPrice,imageHash,account })
+          res.json({ name, tokenURI, price, dressPrice,
+            //imageHash,
+            account })
         })
       //}) 
   } catch (err) {
@@ -164,9 +179,17 @@ app.post('/createDesign', authRequired(), async (req,res) => {
 app.post('/toggleSale', authRequired(), async (req,res) => {
   try {
     const {tokenId,account,fee}=req.body;
+    const gasP =await web3.eth.getGasPrice();
+    let myEstimatedGas;
+    cryptoBoysContract.methods
+        .toggleForSale(tokenId)
+        .estimateGas({ from: account,gasPrice:gasP },(error,estimatedGas)
+        =>{
+          myEstimatedGas=estimatedGas;
+        })
     await cryptoBoysContract.methods
     .toggleForSale(tokenId)
-    .send({ from: account,gas:fee })
+    .send({ from: account,gas:myEstimatedGas })
     .on("transactionHash",(hash)=>{
       res.json({tokenId,account})
     })
@@ -179,9 +202,17 @@ app.post('/toggleSale', authRequired(), async (req,res) => {
 app.post('/changeTokenPrice', authRequired(), async (req,res) => {
   try {
     const {tokenId,newTokenPrice,account,fee}=req.body;
+    const gasP =await web3.eth.getGasPrice();
+    let myEstimatedGas;
+    await cryptoBoysContract.methods
+        .changeTokenPrice(tokenId, newTokenPrice)
+        .estimateGas({ from: account,gasPrice:gasP },(error,estimatedGas)
+        =>{
+          myEstimatedGas=estimatedGas;
+        })
     await cryptoBoysContract.methods
     .changeTokenPrice(tokenId, newTokenPrice)
-    .send({ from: account,gas:fee })
+    .send({ from: account,gas:myEstimatedGas })
     .on("transactionHash",(hash)=>{
       res.json({tokenId,newTokenPrice,account})
     })
@@ -194,9 +225,17 @@ app.post('/changeTokenPrice', authRequired(), async (req,res) => {
 app.post('/changeTokenDressPrice', authRequired(), async (req,res) => {
   try {
     const {tokenId,newTokenPrice,account,fee}=req.body;
+    const gasP =await web3.eth.getGasPrice();
+    let myEstimatedGas;
+    await cryptoBoysContract.methods
+        .changeTokenDressPrice(tokenId, newTokenPrice)
+        .estimateGas({ from: account,gasPrice:gasP },(error,estimatedGas)
+        =>{
+          myEstimatedGas=estimatedGas;
+        })
     await cryptoBoysContract.methods
     .changeTokenDressPrice(tokenId, newTokenPrice)
-    .send({ from: account,gas:fee })
+    .send({ from: account,gas:myEstimatedGas })
     .on("transactionHash",(hash)=>{
       res.json({tokenId,newTokenPrice,account})
     })
@@ -210,6 +249,14 @@ app.post('/buyCryptoBoy', authRequired(), async (req,res) => {
     const {tokenId,price,account,fee}=req.body;
     console.log(price)
     console.log("ethswapadd",ethSwapData.address)
+    const gasP =await web3.eth.getGasPrice();
+    let myEstimatedGas1,myEstimatedGas2;
+    await cryptoBoysContract.methods
+        .buyToken(tokenId,price,ethSwapData.address)
+        .estimateGas({ from: account,gasPrice:gasP },(error,estimatedGas)
+        =>{
+          myEstimatedGas1=estimatedGas;
+        })
     await token.methods.approve(ethSwapData.address, price).send({ from: account,gas:3000000 }).on('transactionHash', (hash) => {
     console.log('approved')
     //token.methods.transfer(account,price).send({ from: account,gas:3000000 }).on('transactionHash', (hash) => {
@@ -230,6 +277,14 @@ app.post('/buyCryptoBoy', authRequired(), async (req,res) => {
 app.post('/buyCryptoBoyWithDress', authRequired(), async (req,res) => {
   try {
     const {tokenId,price,account,fee}=req.body;
+    const gasP =await web3.eth.getGasPrice();
+    let myEstimatedGas1,myEstimatedGas2;
+    await cryptoBoysContract.methods
+        .buyToken(tokenId,price,ethSwapData.address)
+        .estimateGas({ from: account,gasPrice:gasP },(error,estimatedGas)
+        =>{
+          myEstimatedGas1=estimatedGas;
+        })
    await token.methods.approve(ethSwapData.address, price).send({ from: account,gas:3000000 }).on('transactionHash', (hash) => {
      cryptoBoysContract.methods
     .buyToken(tokenId,price,ethSwapData.address)
@@ -372,6 +427,7 @@ const io = require('socket.io')(server, {
 //   })
 // })  
 require("./app/routes/user.routes")(app);
+require("./app/routes/nft.routes")(app);
 //require("./app/routes/chat.routes")(app);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

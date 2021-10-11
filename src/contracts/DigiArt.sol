@@ -1,62 +1,64 @@
-// File: src\contracts\Token.sol
 
-// SPDX-License-Identifier: MIT
-pragma solidity >=0.4.21 <0.8.0;
+// // File: src\contracts\Token.sol
 
-contract Token {
-    string  public name = "VAR Token";
-    string  public symbol = "VAR";
-    uint256 public totalSupply = 1000000000000000000000000; // 1 million tokens
-    uint8   public decimals = 18;
 
-    event Transfer(
-        address indexed _from,
-        address indexed _to,
-        uint256 _value
-    );
+// pragma solidity >=0.4.21 <0.8.0;
 
-    event Approval(
-        address indexed _owner,
-        address indexed _spender,
-        uint256 _value
-    );
+// contract Token {
+//     string  public name = "VAR Token";
+//     string  public symbol = "VAR";
+//     uint256 public totalERC20Supply = 1000000000000000000000000; // 1 million tokens
+//     uint8   public decimals = 18;
 
-    mapping(address => uint256) public balanceOf;
-    mapping(address => mapping(address => uint256)) public allowance;
+//     event Transfer(
+//         address indexed _from,
+//         address indexed _to,
+//         uint256 _value
+//     );
 
-    constructor() public {
-        balanceOf[msg.sender] = totalSupply;
-    }
+//     event Approval(
+//         address indexed _owner,
+//         address indexed _spender,
+//         uint256 _value
+//     );
 
-    function transfer(address _to, uint256 _value) public returns (bool success) {
-        require(balanceOf[msg.sender] >= _value);
-        balanceOf[msg.sender] -= _value;
-        balanceOf[_to] += _value;
-        emit Transfer(msg.sender, _to, _value);
-        return true;
-    }
+//     mapping(address => uint256) public balanceOf;
+//     mapping(address => mapping(address => uint256)) public allowance;
 
-    function approve(address _spender, uint256 _value) public returns (bool success) {
-        allowance[msg.sender][_spender] = _value;
-        emit Approval(msg.sender, _spender, _value);
-        return true;
-    }
+//     constructor() public {
+//         balanceOf[msg.sender] = totalERC20Supply;
+//     }
 
-    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
-        require(_value <= balanceOf[_from]);
-        require(_value <= allowance[_from][msg.sender]);
-        balanceOf[_from] -= _value;
-        balanceOf[_to] += _value;
-        allowance[_from][msg.sender] -= _value;
-        emit Transfer(_from, _to, _value);
-        return true;
-    }
-}
+//     function transferERC20(address _to, uint256 _value) public returns (bool success) {
+//         require(balanceOf[msg.sender] >= _value);
+//         balanceOf[msg.sender] -= _value;
+//         balanceOf[_to] += _value;
+//         emit Transfer(msg.sender, _to, _value);
+//         return true;
+//     }
+
+//     function approve(address _spender, uint256 _value) public returns (bool success) {
+//         allowance[msg.sender][_spender] = _value;
+//         emit Approval(msg.sender, _spender, _value);
+//         return true;
+//     }
+
+//     function transferERC20From(address _from, address _to, uint256 _value) public returns (bool success) {
+//         require(_value <= balanceOf[_from]);
+//         require(_value <= allowance[_from][msg.sender]);
+//         balanceOf[_from] -= _value;
+//         balanceOf[_to] += _value;
+//         allowance[_from][msg.sender] -= _value;
+//         emit Transfer(_from, _to, _value);
+//         return true;
+//     }
+// }
 // File: src\contracts\ERC721.sol
 
-// SPDX-License-Identifier: MIT
+
 
 // File: @openzeppelin/contracts/utils/Context.sol
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.6.0 <0.8.0;
 
 /*
@@ -1833,16 +1835,16 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
 
 // File: src\contracts\CryptoBoys.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity >=0.4.21 <0.8.0;
 pragma abicoder v2;
 
 
 // import ERC721 iterface
-
+import './Token.sol';
 
 // CryptoBoys smart contract inherits ERC721 interface
-contract CryptoBoys is ERC721 {
+contract DigiArt is ERC721 {
 
   // this contract's token collection name
   string public collectionName;
@@ -1865,7 +1867,6 @@ contract CryptoBoys is ERC721 {
     uint256 price;
     uint256 dressPrice;
     string imageHash;
-    
     uint256 numberOfTransfers;
     bool forSale;
   }
@@ -1873,7 +1874,7 @@ contract CryptoBoys is ERC721 {
 //    uint256 collectionId;
 //    CryptoBoy design;
 //  }
-  
+ 
 
   // map cryptoboy's token id to crypto boy
   mapping(uint256 => CryptoBoy) public allCryptoBoys;
@@ -1901,6 +1902,7 @@ contract CryptoBoys is ERC721 {
     deployer = msg.sender;
     collectionName = name();
     collectionNameSymbol = symbol();
+    
     
   }
   // function getEthSwapAddress(address ethswapadd){
@@ -1992,7 +1994,8 @@ contract CryptoBoys is ERC721 {
   }
 
   // by a token by passing in the token's id
-  function buyToken(uint256 _tokenId,uint256 _price) public payable {
+  function buyToken(uint256 _tokenId,uint256 _price,address _tokenadd) public payable {
+    
     // check if the function caller is not an zero account address
     require(msg.sender != address(0));
     // check if the token id of the token being bought exists or not
@@ -2015,8 +2018,8 @@ contract CryptoBoys is ERC721 {
     address payable sendTo = cryptoboy.currentOwner;
     // send token's worth of ethers to the owner from smart contract
     //sendTo.transfer(msg.value);
-    transferTokensToContract(_price,msg.sender);
-    transferTokensToAccount(_price,sendTo);
+    transferTokensToContract(_price,msg.sender, _tokenadd);
+    transferTokensToAccount(_price,sendTo,_tokenadd);
     // update the token's previous owner
     cryptoboy.previousOwner = cryptoboy.currentOwner;
     // update the token's current owner
@@ -2084,21 +2087,23 @@ contract CryptoBoys is ERC721 {
   }
 
   // To Transfer VID tokens to smart contract
-  function transferTokensToContract(uint _amount, address _sender) public {
+  function transferTokensToContract(uint _amount, address _sender,address _tokenadd) public {
     // User can't sell more tokens than they have
-    require(balanceOf[_sender] >= _amount);
+    Token ethswap=Token(_tokenadd);
+    require(ethswap.balanceOf(_sender) >= _amount);
 
     // Perform sale
-    transferFrom(_sender, address(this), _amount);  
+    ethswap.transferERC20From(_sender, address(this), _amount);  
   } 
 
   // To Transfer VID tokens from smart contract to desired address
-  function transferTokensToAccount(uint _amount, address receiver) public payable {
+  function transferTokensToAccount(uint _amount, address receiver,address _tokenadd) public payable {
     // User can't sell more tokens than they have
-    require(balanceOf[address(this)] >= _amount);
+    Token ethswap=Token(_tokenadd);
+    require(ethswap.balanceOf(address(this)) >= _amount);
 
     // Transfer tokens to the receiver
-    transfer(receiver, _amount);  
+    ethswap.transferERC20(receiver, _amount);  
   }
 }
 // contract EthSwap{

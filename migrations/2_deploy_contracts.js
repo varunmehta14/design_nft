@@ -1,10 +1,11 @@
 // const CryptoBoys = artifacts.require("CryptoBoys");
-// const Token = artifacts.require("Token");
+const Token = artifacts.require("Token");
 // const EthSwap = artifacts.require("EthSwap");
 const DigiArt = artifacts.require("DigiArt");
 
 module.exports = async function(deployer) {
-  
+  await deployer.deploy(Token);
+  const token = await Token.deployed()
   await deployer.deploy(DigiArt);
   const digiArt = await DigiArt.deployed()
   // await deployer.deploy(Token);

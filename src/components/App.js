@@ -30,6 +30,7 @@ import SizeDetails from "./SizeDetails/SizeDetails";
 import {Container,Box} from '@material-ui/core';
 import ipfs from './ipfs';
 import UserDataService from "../services/UserService";
+import NFTDataService from "../services/NFTService";
 import Swal from 'sweetalert2';
 import axios from 'axios'
 // const ipfsClient = require("ipfs-http-client");
@@ -212,7 +213,14 @@ class App extends Component {
       // this.setState({ accountBalance });
       res = await axios.post('http://localhost:8080/accountBalance',{account:this.state.accountAddress})
       console.log(res)
-
+      // NFTDataService.getAccountBalance(this.state.accountAddress)
+      //         .then(response=>
+      //           {
+      //             console.log(response)
+      //             let myBalance=parseFloat(response.data)
+      //             myBalance=myBalance.toFixedSpecial(0)
+      //             this.setState({ accountBalance:myBalance });
+      //           })
       //let accountBalance = web3.utils.toWei(res.data);
       let myBalance=parseFloat(res.data)
       myBalance=myBalance.toFixedSpecial(0)
@@ -743,7 +751,8 @@ if(!emailUsed){
         dressPrice:tokenDressPrice,
         images:imageHashes,
         categories:categories,
-        sizeChart:sizeChart
+        sizeChart:sizeChart,
+        noOfTransfers:0
         
         }
         //storing the token object on ipfs
@@ -760,7 +769,8 @@ if(!emailUsed){
   //const dressPrice = window.web3.utils.fromWei(tokenDressPrice.toString());
      res = await axios.post('http://localhost:8080/createDesign',{ name:name, tokenURI:tokenURI,
                                                                    price:price, dressPrice:dressPrice,
-                                                                   imageHash:imageHash,amount:amount,account: this.state.accountAddress,fee:web3.eth.generate_gas_price() })
+                                                                   //imageHash:imageHash,
+                                                                   amount:amount,account: this.state.accountAddress,fee:web3.eth.generate_gas_price() })
     
     console.log(res)
     if(res)
