@@ -10,9 +10,9 @@ import { useHistory } from 'react-router';
 import "./App.css";
 
 import Web3 from "web3";
-import CryptoBoys from "../abis/CryptoBoys.json";
-import EthSwap from "../abis/EthSwap.json";
-import Token from "../abis/Token.json";
+// import CryptoBoys from "../abis/CryptoBoys.json";
+// import EthSwap from "../abis/EthSwap.json";
+// import Token from "../abis/Token.json";
 import CryptoBoyNFTDetails from "./CryptoBoyNFTDetails/CryptoBoyNFTDetails";
 import FormAndPreview from "../components/FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
@@ -27,7 +27,7 @@ import MyCryptoBoys from "./MyCryptoBoys/MyCryptoBoys";
 import TheirCryptoBoys from "./TheirCryptoBoys/TheirCryptoBoys";
 import Footer from "./Footer/Footer";
 import SizeDetails from "./SizeDetails/SizeDetails";
-import {Container,Box} from '@material-ui/core';
+import {Container,Box, responsiveFontSizes} from '@material-ui/core';
 import ipfs from './ipfs';
 import UserDataService from "../services/UserService";
 import NFTDataService from "../services/NFTService";
@@ -51,8 +51,9 @@ const initialUserState = {
   userAddress: "",
 
 };
-
+let token;
 let res;
+let response;
 class App extends Component {
   constructor(props) {
     super(props);
@@ -102,13 +103,17 @@ class App extends Component {
       ethSwapDataAdd:""
      
     };
+     this.loadWeb3();
+    this.loadCurrentUser();
   }
  
   componentDidMount = async () => {
     await this.loadWeb3();
+     await this.loadCurrentUser();
+    
     await this.loadBlockchainData();
     await this.loadAllUsers();
-    await this.loadCurrentUser();
+   
   //  await this.loadDesigns(this.state.startState,this.state.endState);
   await this.setMetaData();
   //  await this.setMintBtnTimer();
@@ -207,12 +212,13 @@ class App extends Component {
       this.setState({ loading: true });
       this.setState({ accountAddress: accounts[0] });
       
-      //let accountBalance = await web3.eth.getBalance(accounts[0]);
-       //accountBalance = web3.utils.fromWei(accountBalance, "Ether");
-      //console.log(accountBalance)
-      // this.setState({ accountBalance });
-      res = await axios.post('http://localhost:8080/accountBalance',{account:this.state.accountAddress})
-      console.log(res)
+      let accountBalance = await web3.eth.getBalance(accounts[0]);
+       accountBalance = web3.utils.fromWei(accountBalance, "Ether");
+      console.log(accountBalance)
+      this.setState({ accountBalance });
+      //res = await axios.post('http://localhost:8080/accountBalance',{account:this.state.accountAddress})
+      //console.log(res)
+      //here
       // NFTDataService.getAccountBalance(this.state.accountAddress)
       //         .then(response=>
       //           {
@@ -221,12 +227,13 @@ class App extends Component {
       //             myBalance=myBalance.toFixedSpecial(0)
       //             this.setState({ accountBalance:myBalance });
       //           })
-      //let accountBalance = web3.utils.toWei(res.data);
-      let myBalance=parseFloat(res.data)
-      myBalance=myBalance.toFixedSpecial(0)
-      this.setState({ accountBalance:myBalance });
+      //till here
+      // let accountBalance = web3.utils.toWei(res.data);
+      // let myBalance=parseFloat(res.data)
+     // myBalance=myBalance.toFixedSpecial(0)
+      //this.setState({ accountBalance:myBalance });
       //this.setState({ accountBalance:res.data });
-      console.log(myBalance)
+      //console.log(myBalance)
     //console.log(myBalance.toFixed())
      // console.log(window.web3.utils.fromWei(this.state.accountBalance.toString()))
       this.setState({ loading: false });
@@ -234,13 +241,62 @@ class App extends Component {
     
       
       //Network ID
-    //  const networkId = await web3.eth.net.getId();
-    //   const networkData1 = CryptoBoys.networks[networkId];
+     const networkId = await web3.eth.net.getId();
+     const networkData = DigiFashion.networks[networkId];
     //  const ethSwapData = EthSwap.networks[networkId]
-    //   const tokenData = Token.networks[networkId]
-    //   this.setState({ethSwapDataAdd:ethSwapData.address})
+      const tokenData = Token.networks[networkId]
+      this.setState({ethSwapDataAdd:ethSwapData.address})
+
+      if (networkData) {
+        this.setState({ loading: true });
+        const DigiFashionContract = web3.eth.Contract(
+          DigiFashion.abi,
+          networkData.address
+        );
+        //set contract
+        this.setState({ DigiFashionContract });
+        console.log(cryptoBoysContract)
+        this.setState({ contractDetected: true });
+        //get number of designs minted on the platform
+        const cryptoBoysCount = await DigiFashionContract.methods
+          .cryptoBoyCounter()
+          .call();
+        this.setState({ cryptoBoysCount });
+        
+       
+         //get all the designs
+         
+         for (var i = 1; i <=cryptoBoysCount; i++) {
+           
+         
+          const cryptoBoy = await DigiFashionContract.methods
+            .allCryptoBoys(i)
+            .call();
+          this.setState({
+            cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
+          });
+        }
+       
+       
+        
+        //get number of tokens on the platform
+        let totalTokensMinted = await DigiFashionContract.methods
+          .getNumberOfTokensMinted()
+          .call();
+        totalTokensMinted = totalTokensMinted.toNumber();
+        this.setState({ totalTokensMinted });
+        //get tokens owned by current account
+        let totalTokensOwnedByAccount = await DigiFashionContract.methods
+          .getTotalNumberOfTokensOwnedByAnAddress(this.state.accountAddress)
+          .call();
+        totalTokensOwnedByAccount = totalTokensOwnedByAccount.toNumber();
+        this.setState({ totalTokensOwnedByAccount });
+        this.setState({ loading: false });
+      } else {
+        this.setState({ contractDetected: false });
+      }
      
-    //  if (networkData1) {
+    //  if (networkData) {
     //    this.setState({ loading: true });
     //     const cryptoBoysContract = web3.eth.Contract(
     //       CryptoBoys.abi,
@@ -261,9 +317,17 @@ class App extends Component {
         //   .cryptoBoyCounter()
         //   .call();
         
-        res = await axios.get('http://localhost:8080/count')
-       console.log(res)
-       this.setState({ cryptoBoysCount:res.data });
+        //res = await axios.get('http://localhost:8080/count')
+       //console.log(res)
+       //here
+       NFTDataService.getCount()
+       .then(response=>
+         {
+           console.log(response)
+           this.setState({ cryptoBoysCount:response.data });
+         })
+        //till here
+       //this.setState({ cryptoBoysCount:res.data });
          //get all the designs
          
          //for (var i = 1; i <=this.state.cryptoBoysCount; i++) {
@@ -277,11 +341,19 @@ class App extends Component {
           //     cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
           //   });
           //res = await axios.post('http://localhost:8080/allDesigns',{index:i})
-          res = await axios.get('http://localhost:8080/allDesigns')
-          console.log(res.data)
-          this.setState({
-            cryptoBoys: res.data,
-          });
+          //res = await axios.get('http://localhost:8080/allDesigns')
+          //console.log(res.data)
+          // NFTDataService.getAllDesigns()
+          // .then(response=>
+          //   {
+          //     console.log(response)
+          //     this.setState({
+          //       cryptoBoys: response.data,
+          //     });
+          //   })
+          // this.setState({
+          //   cryptoBoys: res.data,
+          // });
         //}
        
        
@@ -293,18 +365,32 @@ class App extends Component {
         // totalTokensMinted = totalTokensMinted;
         // console.log(totalTokensMinted)
         // this.setState({ totalTokensMinted });
-        res = await axios.get('http://localhost:8080/tokensMinted')
-        console.log(res.data)
-        this.setState({ totalTokensMinted:res.data });
+        //res = await axios.get('http://localhost:8080/tokensMinted')
+        
+        //console.log(res.data)
+        NFTDataService.getTokensMinted()
+        .then(response=>
+          {
+            console.log(response)
+            this.setState({ totalTokensMinted:response.data });
+          })
+       
+        //this.setState({ totalTokensMinted:res.data });
         //get tokens owned by current account
         // let totalTokensOwnedByAccount = await cryptoBoysContract.methods
         //   .getTotalNumberOfTokensOwnedByAnAddress(this.state.accountAddress)
         //   .call();
         // totalTokensOwnedByAccount = totalTokensOwnedByAccount;
         // this.setState({ totalTokensOwnedByAccount });
-        res = await axios.post('http://localhost:8080/tokensOwnedByAccount',{account:this.state.accountAddress})
+        //res = await axios.post('http://localhost:8080/tokensOwnedByAccount',{account:this.state.accountAddress})
       //console.log(res)
-      this.setState({ totalTokensOwnedByAccount:res.data });
+      NFTDataService.getTokensOwnedByAccount(this.state.accountAddress)
+        .then(response=>
+          {
+            console.log(response)
+            this.setState({ totalTokensMinted:response.data });
+          })
+      //this.setState({ totalTokensOwnedByAccount:res.data });
         this.setState({ loading: false });
       //} else {
         this.setState({ contractDetected: false });
@@ -328,29 +414,47 @@ loadAllUsers=()=>{
 
   
 }  
-loadCurrentUser=()=>{
-  UserDataService.getByAddress(this.state.accountAddress)
+loadCurrentUser=async()=>{
+  const web3 = window.web3;
+  const accounts = await web3.eth.getAccounts();
+ 
+  console.log(accounts[0])
+ //res = await axios.get('http://localhost:8080/accounts')
+    
+   //const accounts=res.data;
+  // console.log(res.data[0]);
+ if (accounts.length === 0) {
+   this.setState({ metamaskConnected: false });
+ } else {
+   this.setState({ metamaskConnected: true });
+   this.setState({ userLoggedIn: true });
+   this.setState({ loading: true });
+   this.setState({ accountAddress: accounts[0] });
+  UserDataService.getByAddress(accounts[0])
       .then(response => 
         { 
           console.log(response);
         this.setState({currentUser:{
-          userId: response.data[0].userId,
-          userName: response.data[0].userName,
-          userEmail: response.data[0].userEmail,
-          userSocial: response.data[0].userSocial,
-          userRepo: response.data[0].userRepo,
-          userBio: response.data[0].userBio,
-          userAvatarHash: response.data[0].userAvatarHash,
-          userAddress: response.data[0].userAddress
+          userId: response.data.data[0].userId,
+          userName: response.data.data[0].userName,
+          userEmail: response.data.data[0].userEmail,
+          userSocial: response.data.data[0].userSocial,
+          userRepo: response.data.data[0].userRepo,
+          userBio: response.data.data[0].userBio,
+          userAvatarHash: response.data.data[0].userAvatarHash,
+          userAddress: response.data.data[0].userAddress
         }
         });
-      
+      console.log(response.data.token)
+       localStorage.setItem('token',response.data.token);
+       console.log(localStorage.getItem('token'))
        console.log(this.state.currentUser)
       
       })
       .catch(e => {
         console.log(e);
       });
+    }
 }
 
   loadWeb3 = async () => {
@@ -700,9 +804,15 @@ if(!emailUsed){
     //   .call();
     //   console.log("nameisused",nameIsUsed)
     let nameIsUsed;
-      res = await axios.post('http://localhost:8080/nameUsed',{name:name})
-      console.log(res.data)
-      nameIsUsed=res.data
+      //res = await axios.post('http://localhost:8080/nameUsed',{name:name})
+      NFTDataService.getNameIsUsed(name)
+        .then(response=>
+          {
+            console.log(response)
+            nameIsUsed=response.data;
+          })
+      //console.log(res.data)
+      //nameIsUsed=res.data
     if ( !nameIsUsed) {
     //console.log(this.state.cryptoBoysContract)
       let imageHashes=[];
@@ -712,9 +822,15 @@ if(!emailUsed){
       //   .cryptoBoyCounter()
       //   .call();
       // previousTokenId = previousTokenId;
-      res = await axios.get('http://localhost:8080/count')
-      console.log(res.data)
-      previousTokenId=res.data;
+     // res = await axios.get('http://localhost:8080/count')
+      NFTDataService.getCount()
+      .then(response=>
+        {
+          console.log(response)
+          previousTokenId=response.data;
+        })
+     // console.log(res.data)
+     // previousTokenId=res.data;
 
       //set Token ID 
       const tokenId = previousTokenId + 1;
@@ -735,9 +851,15 @@ if(!emailUsed){
       // //this.setState({ imageIsUsed: imageIsUsed });
       // console.log(imageIsUsed);
       let imageIsUsed;
-      res = await axios.post('http://localhost:8080/imageUsed',{image:imageHash})
-      console.log(res.data)
-      imageIsUsed=res.data
+      //res = await axios.post('http://localhost:8080/imageUsed',{image:imageHash})
+      NFTDataService.getImageIsUsed(name)
+        .then(response=>
+          {
+            console.log(response)
+            imageIsUsed=response.data;
+          })
+      //console.log(res.data)
+      //imageIsUsed=res.data
       if(!imageIsUsed){
       const tokenObject = {
         tokenName: "Crypto Boy",
@@ -767,13 +889,22 @@ if(!emailUsed){
      //console.log(price)
     const dressPrice = window.web3.utils.toWei(tokenDressPrice.toString(), "Ether");
   //const dressPrice = window.web3.utils.fromWei(tokenDressPrice.toString());
-     res = await axios.post('http://localhost:8080/createDesign',{ name:name, tokenURI:tokenURI,
-                                                                   price:price, dressPrice:dressPrice,
-                                                                   //imageHash:imageHash,
-                                                                   amount:amount,account: this.state.accountAddress,fee:web3.eth.generate_gas_price() })
-    
-    console.log(res)
-    if(res)
+    //  res = await axios.post('http://localhost:8080/createDesign',{ name:name, tokenURI:tokenURI,
+    //                                                                price:price, dressPrice:dressPrice,
+    //                                                                //imageHash:imageHash,
+    //                                                                amount:amount,account: this.state.accountAddress,fee:web3.eth.generate_gas_price() })
+     
+    const dataDesign= { name:name, tokenURI:tokenURI,
+      price:price, dressPrice:dressPrice,
+      imageHash:imageHash,amount:amount,account: this.state.accountAddress}                                                              
+    NFTDataService.createDesign(dataDesign)
+        .then(response=>
+          {
+            console.log(response)
+            
+          })
+    console.log(response)
+    if(response)
     {Swal.fire({
       allowOutsideClick: false,
       allowEscapeKey: false,
@@ -822,10 +953,18 @@ if(!emailUsed){
   toggleForSale = async(tokenId) => {
     this.setState({ loading: true });
     const web3 = window.web3;
-    res = await axios.post('http://localhost:8080/toggleSale',{ tokenId:tokenId,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
-    
-    console.log(res)
-    if(res){
+    //res = await axios.post('http://localhost:8080/toggleSale',{ tokenId:tokenId,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
+    const toggleData={
+      tokenId:tokenId,account: this.state.accountAddress
+    }
+    NFTDataService.toggleSale(toggleData)
+        .then(response=>
+          {
+            console.log(response)
+            
+          })
+    console.log(response)
+    if(response){
       this.setState({ loading: false });
       Swal.fire({
         allowOutsideClick: false,
@@ -860,11 +999,19 @@ if(!emailUsed){
     this.setState({ loading: true });
     const web3 = window.web3;
     const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
-    res = await axios.post('http://localhost:8080/changeTokenPrice',{ tokenId:tokenId,
-    newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
+    // res = await axios.post('http://localhost:8080/changeTokenPrice',{ tokenId:tokenId,
+    // newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
     
-    console.log(res)
-    if(res){
+    const changePrice={tokenId:tokenId,
+      newTokenPrice:newTokenPrice,account: this.state.accountAddress}
+    NFTDataService.changeTokenPrice(changePrice)
+    .then(response=>
+      {
+        console.log(response)
+        
+      })
+    //console.log(res)
+    if(response){
       this.setState({ loading: false });
       Swal.fire({
         allowOutsideClick: false,
@@ -924,11 +1071,18 @@ changeTokenDressPrice = async(tokenId, newPrice) => {
   //     })
       
   //   });
-  res = await axios.post('http://localhost:8080/changeTokenDressPrice',{ tokenId:tokenId,
-    newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
-    
-    console.log(res)
-    if(res){
+  // res = await axios.post('http://localhost:8080/changeTokenDressPrice',{ tokenId:tokenId,
+  //   newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
+    const changeDressPrice={tokenId:tokenId,
+      newTokenPrice:newTokenPrice,account: this.state.accountAddress}
+    NFTDataService.changeTokenDressPrice(changeDressPrice)
+    .then(response=>
+      {
+        console.log(response)
+        
+      })
+    //console.log(res)
+    if(response){
       this.setState({ loading: false });
       Swal.fire({
         allowOutsideClick: false,
@@ -957,11 +1111,18 @@ changeTokenDressPrice = async(tokenId, newPrice) => {
     //price = window.web3.utils.toWei(price);
     const web3 = window.web3;
     this.setState({ loading: true });
-    res = await axios.post('http://localhost:8080/buyCryptoBoy',{ tokenId:tokenId,
-    price:price,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
-    
-    console.log(res)
-    if(!res){
+    // res = await axios.post('http://localhost:8080/buyCryptoBoy',{ tokenId:tokenId,
+    // price:price,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
+    const onlyDesign={tokenId:tokenId,
+      price:price,account: this.state.accountAddress}
+    NFTDataService.buyCryptoBoy(onlyDesign)
+    .then(response=>
+      {
+        console.log(response)
+        
+      })
+    //console.log(res)
+    if(!response){
       Swal.fire({
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -1063,11 +1224,18 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
   console.log(price)
   const web3 = window.web3;
   this.setState({ loading: true });
-  res = await axios.post('http://localhost:8080/buyCryptoBoyWithDress',{ tokenId:tokenId,
-    price:price,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
-    
-    console.log(res)
-    if(res){
+  // res = await axios.post('http://localhost:8080/buyCryptoBoyWithDress',{ tokenId:tokenId,
+  //   price:price,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
+  const DressDesign={tokenId:tokenId,
+    price:price,account: this.state.accountAddress}
+  NFTDataService.buyCryptoBoyWithDress(DressDesign)
+  .then(response=>
+    {
+      console.log(response)
+      
+    })
+   // console.log(res)
+    if(response){
       this.setState({ loading: false });
       Swal.fire({
         allowOutsideClick: false,

@@ -17,6 +17,7 @@ exports.create = (req, res) => {
     });
     return;
    }
+   console.log(req.body)
    // Create a Tutorial
   const user = {
           userName: req.body.userName,
@@ -71,6 +72,7 @@ exports.findByName = (req, res) => {
     var condition = userName ? { userName: { [Op.like]: `%${userName}%` } } : null;
     User.findAll({where:condition})
       .then(data => {
+        
         res.send(data);
       })
       .catch(err => {
@@ -83,11 +85,15 @@ exports.findByName = (req, res) => {
 // Update a User by the id in the request
 exports.update = (req, res) => {
     const userAddress = req.params.id;
-
-    User.update(req.body, {
+    console.log(userAddress);
+    console.log(req.body)
+    //console.log(JSON.parse(undefined))
+    let upDateUser=req.body;
+    User.update({upDateUser}, {
       where: { userAddress: userAddress }
     })
       .then(num => {
+        
         if (num == 1) {
           res.send({
             message: "Tutorial was updated successfully."
@@ -99,8 +105,9 @@ exports.update = (req, res) => {
         }
       })
       .catch(err => {
+        console.log(err)
         res.status(500).send({
-          message: "Error updating Tutorial with id=" + userName
+          message: `Error updating Tutorial with id=${userAddress} `
         });
       });
 };
@@ -146,13 +153,14 @@ exports.findByAddress = (req, res) => {
     User.findAll({where:condition})
       .then(data => {
         // Send this token also in response
-        const token = jwt.sign({ id: data[0].id }, config.secret, {
+        const token = jwt.sign({ id: data[0].userAddress }, config.secret, {
           expiresIn: 86400 // 24 hours
         });
-
-        res.send(data);
+       console.log("useraddr",token)
+        res.send({data,token});
       })
       .catch(err => {
+        console.log(err);
         res.status(500).send({
           message: "Error retrieving Tutorial with id=" + userAddress
         });

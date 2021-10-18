@@ -14,7 +14,7 @@ const getByEmail = id => {
   return http.get(`/users/email/${id}`);
 };
 
-const getByName = id => {
+const getByName = (id) => {
   return http.get(`/users/name/${id}`);
 };
 
