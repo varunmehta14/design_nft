@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity >=0.6.0 <=0.8.10;
 
 contract Token {
     string  public name = "VAR Token";
@@ -19,17 +19,17 @@ contract Token {
         uint256 _value
     );
 
-    mapping(address => uint256) public balanceOf;
+    mapping(address => uint256) public balanceOfERC20;
     mapping(address => mapping(address => uint256)) public allowance;
 
     constructor() public {
-        balanceOf[msg.sender] = totalSupply;
+        balanceOfERC20[msg.sender] = totalSupply;
     }
 
     function transferERC20(address _to, uint256 _value) public returns (bool success) {
-        require(balanceOf[msg.sender] >= _value);
-        balanceOf[msg.sender] -= _value;
-        balanceOf[_to] += _value;
+        require(balanceOfERC20[msg.sender] >= _value,"transfer erc 20");
+        balanceOfERC20[msg.sender] -= _value;
+        balanceOfERC20[_to] += _value;
         emit Transfer(msg.sender, _to, _value);
         return true;
     }
@@ -41,10 +41,10 @@ contract Token {
     }
 
     function transferERC20From(address _from, address _to, uint256 _value) public returns (bool success) {
-        require(_value <= balanceOf[_from]);
-        require(_value <= allowance[_from][msg.sender]);
-        balanceOf[_from] -= _value;
-        balanceOf[_to] += _value;
+        require(_value <= balanceOfERC20[_from],"transfer erc 20 from 1");
+        require(_value <= allowance[_from][msg.sender],"transfer erc 20 from 2");
+        balanceOfERC20[_from] -= _value;
+        balanceOfERC20[_to] += _value;
         allowance[_from][msg.sender] -= _value;
         emit Transfer(_from, _to, _value);
         return true;

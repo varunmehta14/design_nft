@@ -26,7 +26,8 @@
 // const CryptoBoys = artifacts.require("CryptoBoys");
 // const Token = artifacts.require("Token");
 // const EthSwap = artifacts.require("EthSwap");
-const DigiFashion = artifacts.require("DigiFashion");
+// const DigiFashion = artifacts.require("DigiFashion");
+const DigiFashionERC1155 = artifacts.require("DigiFashionERC1155");
 const Token = artifacts.require("Token");
 module.exports = async function(deployer) {
   
@@ -35,5 +36,7 @@ module.exports = async function(deployer) {
   // await deployer.deploy(EthSwap,token.address);
   // const ethSwap = await EthSwap.deployed()
   // await deployer.deploy(CryptoBoys);
-  await deployer.deploy(DigiFashion);
+  await deployer.deploy(DigiFashionERC1155);
+  // await deployer.deploy(DigiFashion);
+
 } 

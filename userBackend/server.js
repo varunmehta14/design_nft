@@ -17,6 +17,7 @@ const app = express();
 
 //const web3 = new Web3(new Web3.providers.HttpProvider('HTTP://127.0.0.1:7545'));
 // parse requests of content-type - application/json
+app.use(express.json());
 app.use(bodyParser.json({limit: '50mb'}));
 var corsOptions = {
   origin: "http://localhost:3000",

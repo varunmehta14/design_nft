@@ -110,13 +110,13 @@ console.log(cryptoboy)
       <CardContent className={classes.content2}>
         <div className={classes.subtitle}>
           Token Id:   
-         {tokenId}
+         {tokenId.toNumber()}
       
         </div>
         <hr/>
         <div className={classes.subtitle}>
           No. of Transfer:   
-          {numberOfTransfers}
+          {numberOfTransfers.toNumber()}
       
         </div>
        

@@ -54,9 +54,10 @@ const renderDesktop=(
             <AccountBalanceWalletIcon/>
             &nbsp;
             {/* <p>{accountBalance}&nbsp; Ξ</p> */}
-            {accountBalance?(
-              <p>{window.web3.utils.fromWei(accountBalance.toString())}&nbsp; Ξ</p>
-            ):null}
+            {/* {accountBalance?(
+              // <p>{window.web3.utils.fromWei(accountBalance.toString())}&nbsp; Ξ</p>
+              <p>{accountBalance}&nbsp; Ξ</p>
+            ):null} */}
             
             </div>
   <hr/>
@@ -142,9 +143,10 @@ const renderMobile=(
         <AccountBalanceWalletIcon/>
         &nbsp;
         {/* <p>{accountBalance}&nbsp; Ξ</p> */}
-        {accountBalance?(
-              <p>{window.web3.utils.fromWei(accountBalance.toString())}&nbsp; Ξ</p>
-            ):null}
+        {/* {accountBalance?(
+              // <p>{window.web3.utils.fromWei(accountBalance.toString())}&nbsp; Ξ</p>
+              <p>{accountBalance}&nbsp; Ξ</p>
+            ):null} */}
         </div>
         <hr/>
 <div style={{display:"flex",justifyContent:'center'}}>

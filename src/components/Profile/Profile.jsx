@@ -57,7 +57,7 @@ sectionMobile: {
 
 export default function Profile( { createUserFromApp,accountAddress, accountBalance,nameIsUsed ,emailIsUsed}) {
   const classes = useStyles();
-
+  console.log(accountBalance)
   const[userName,setUserName]=useState("");
   const[bio,setBio]=useState("");
   const[social,setSocial]=useState("");
@@ -151,8 +151,10 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
       <div className="card mt-1 p-4">
         <p className="lead">Account address :</p>
         <h4>{accountAddress}</h4>
-        <p className="lead">Account balance :</p>
-        <h4>{accountBalance} Ξ</h4>
+
+        {/* <p className="lead">Account balance :</p>
+        {accountBalance?(<> <h4>{accountBalance} Ξ</h4></>):(null)} */}
+       
         </div>
         <div className="card mt-1 p-4">
         
@@ -353,8 +355,8 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
       <div className="card mt-1 p-4">
         <p className="lead">Account address :</p>
         <h4>{accountAddress}</h4>
-        <p className="lead">Account balance :</p>
-        <h4>{accountBalance} Ξ</h4>
+        {/* <p className="lead">Account balance :</p>
+        {accountBalance?(<> <h4>{accountBalance} Ξ</h4></>):(null)} */}
         </div>
         <div className="card mt-1 p-4">
         

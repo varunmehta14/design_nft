@@ -35,12 +35,12 @@ module.exports = {
   contracts_build_directory: "./src/abis/",
   compilers: {
     solc: {
-     //version: "^0.6.0",
-      version:'pragma',
-      optimizer: {
+     version: "^0.8.0", 
+     optimizer: {
         enabled: true,
-        runs: 200,
+        runs: 1,
       },
     },
   },
+  plugins: ["truffle-contract-size"]
 };

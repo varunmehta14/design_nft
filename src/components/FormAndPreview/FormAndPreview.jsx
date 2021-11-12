@@ -122,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function FormAndPreview(props) {
- //console.log(props.imageIsUsed)
+ console.log(props)
   
  
     const classes =useStyles();
@@ -138,7 +138,7 @@ export default function FormAndPreview(props) {
     const [cryptoBoyCopies,setCryptoBoyCopies] = useState("0");
     const [files, setFiles] = useState([]);
     const [fileName,setFileName]=useState("");
-    const [single,setSingle]=useState(true);
+    const [single,setSingle]=useState(false);
     const [multiple,setMultiple]=useState(false);
     const [show,setShow]=useState(true);
     const [categories,setCategories]=useState("");
@@ -292,6 +292,26 @@ const onNodeToggle = currentNode => {
       amount
     );
   };
+  const callMintMyERC1155FromApp  = (e) => {
+    //setCategories(selectedCategories)
+    e.preventDefault();
+    // if(cryptoBoyDressPrice==" "){
+    //   console.log("price 0")
+    //   setCryptoBoyDressPrice("0");
+    // }
+    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,finalbuffer,categories,amount)
+    props.mintMultipleNFT(
+      cryptoBoyName,
+      cryptoBoyDescription,
+      buffer,
+      cryptoBoyPrice,
+      //cryptoBoyDressPrice,
+      finalbuffer,
+      categories,
+      //sizeChart,
+      amount
+    );
+  };
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -304,7 +324,7 @@ const onNodeToggle = currentNode => {
 
   const renderMobile=(
     <div style={{padding:"0.5%"}}>
-   {/* {show?(<> <div className="card mt-1">
+   {show?(<> <div className="card mt-1">
       <div className="card-body  
       
       ">
@@ -329,7 +349,7 @@ const onNodeToggle = currentNode => {
        </button>
        
      
-     </div></div>):(null)} */}
+     </div></div>):(null)}
 
      {single?
      (<>
@@ -338,13 +358,13 @@ const onNodeToggle = currentNode => {
       
       "><div style={{textAlign:"center"}}>
        
-        {/* <Button variant="contained"color="default" style={{float:"left"}}onClick={()=>{setSingle(false);setShow(true)}}>
+        <Button variant="contained"color="default" style={{float:"left"}}onClick={()=>{setSingle(false);setShow(true)}}>
         ← Back
-       </Button> */}
-{/*       
+       </Button>
+      
        <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setSingle(false);setShow(true)}}>
       <ArrowBackIosSharpIcon fontSize="small"/>
-    </IconButton>  */}
+    </IconButton> 
   
       
         <h3 style={{justifyContent:"center"}}>Create Single Collectible</h3>
@@ -669,13 +689,347 @@ Create Item
 </form>
      </>)
      :multiple?
-     (<></>):(null)}
+     (<>
+      <div className="card mt-1">
+      <div className="card-body   
+      
+      "><div style={{textAlign:"center"}}>
+       
+        <Button variant="contained"color="default" style={{float:"left"}}onClick={()=>{setSingle(false);setShow(true)}}>
+        ← Back
+       </Button>
+      
+       <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setSingle(false);setShow(true)}}>
+      <ArrowBackIosSharpIcon fontSize="small"/>
+    </IconButton> 
+  
+      
+        <h3 style={{justifyContent:"center"}}>Create Single Collectible</h3>
+        </div>
+       <br/>
+        Your collectible will be one of a kind 
+
+      </div>
+    </div>
+    
+     <form onSubmit={callMintMyNFTFromApp} style={{padding:"0.5%"}}className="pt-4 mt-1">
+    
+         
+    <div style={{padding:"0.5%"}} >
+    <Grid container spacing={3}>
+    <Grid item xs={12}><Paper  style={{height:"fitContent",padding:"2%",backgroundColor:"ghostwhite"}}>
+     <span>Upload file to view preview</span>    
+     {buffer?(<><aside style={thumbsContainer}>{thumbs}</aside></>):null} </Paper></Grid>
+    <Grid item xs={12}>
+     <Paper variant="outlined" style={{padding:"inherit",backgroundColor:"ghostwhite"}}>
+     
+     
+     <div style={{margin:"2%"}}>
+          <div {...getRootProps({ className: "dropzone" })}>
+<input {...getInputProps()}   />
+{fileName?(<span>{fileName} </span>):( <span>Drag 'n' drop some files here, or click to select files</span>)}
+
+</div>
+
+         <br/><br/><hr/>
+         
+    
+<TextField
+ //id="standard-adornment-amount"
+ label="Title"
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
+ 
+ required
+ value={cryptoBoyName}
+ onChange={(e)=>setCryptoBoyName(e.target.value)}
+ error={props.nameIsUsed}
+/>
+<br/>
+<TextField
+ //id="standard-multiline-flexible"
+ label="Description"
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
+ multiline
+ fullWidth
+ rowsMax={4}
+ value={cryptoBoyDescription}
+ onChange={(e)=>setCryptoBoyDescription(e.target.value)}
+ required
+ 
+/>
+<br/><br/>
+<div >
+<span>Choose Category</span>
+     {/*
+   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />      */}
+   {/* <FormControl variant="outlined">
+        <InputLabel htmlFor="outlined-age-native-simple">Category</InputLabel>
+        <Select
+          native
+          value={categories}
+          onChange={(e)=>{setCategories(e.target.value)}}
+          inputProps={{
+            name: 'age',
+            id: 'outlined-age-native-simple',
+          }}
+        >
+          <option aria-label="None" value="" />
+          <option value={"fashionDesign"}>Fashion Design</option>
+          <option value={"art"}>Art</option>
+          <option value={"photoGraph"}>Photograph</option>
+        </Select>
+      </FormControl> */}
+       <Select 
+              options={options}
+              className="basic-single"
+              classNamePrefix="select"
+              name="ReactSelect"
+              isClearable
+              isSearchable
+              //onChange={(selected=>{setCategories(selected)})}
+              onChange={handleCategory}
+               
+            
+              //onChange={(e)=>{setCategories(e.target.value)}}
+              />
+   </div>   
+{/* <div style={{display:"flex",justifyContent:"space-evenly"}}> 
+
+<Button
+variant="contained"
+color="default"
+className={classes.button}
+//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
+style={{borderRadius:20,display:"flow-root"}}
+//type="submit"
+>
+<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>
+Fixed Price
+</Button>
+
+
+  <Button
+variant="contained"
+color="default"
+className={classes.button}
+//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
+style={{borderRadius:20,display:"flow-root"}}
+//type="submit"
+disabled
+>
+<AccessTimeSharpIcon  fontSize="large"/>
+Timed Auction
+</Button>
+
+
+<Button
+variant="contained"
+color="default"
+className={classes.button}
+//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
+style={{borderRadius:20,display:"flow-root"}}
+//type="submit"
+disabled
+>
+<AllInclusiveSharpIcon  fontSize="large"/>
+Unlimited Auction
+</Button>
+
+
+</div>  */}
+
+<hr/>
+
+<br/>
+{categories=="fashionDesign"?(<>
+
+  <div>
+<TextField
+ label="Price"
+ id="standard-start-adornment"
+ placeholder="Enter price for one piece"
+// className={clsx(classes.margin, classes.textField)}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+
+ InputProps={{
+   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
+ }}
+ required
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+<br/>
+</div>
+<div>
+<TextField
+ label="Price with Dress"
+ id="standard-start-adornment"
+ placeholder="Enter price for one piece with dress"
+// className={clsx(classes.margin, classes.textField)}
+ onChange={(e)=>{setCryptoBoyDressPrice(e.target.value);setReceivePrice2((e.target.value)*2.5/100)}}
+
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+
+ InputProps={{
+   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
+ }}
+ required
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyDressPrice-receivePrice2} ETH</b></FormHelperText>
+</div>
+<hr/>
+<h2>Upload Image</h2>
+          
+<input type='file' multiple={true} onChange={captureFile}  required/>
+      <hr/>
+      <div style={{display:"flex",justifyContent:"center"}}>
+   <Button variant="contained" color="primary" onClick={handleOpen}>
+       Create size chart
+      </Button>
+      <Modal
+        aria-labelledby="spring-modal-title"
+        aria-describedby="spring-modal-description"
+        className={classes.modal}
+        open={open}
+        //onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper2}>
+           
+          <IconButton color="primary"  component="span" style={{float:"right",color:"#173e43"}}onClick={handleClose}>
+          <HighlightOffIcon />
+        </IconButton>
+        <br/>
+        <div  style={{textAlign:"center"}}>
+            <h2 id="spring-modal-title">Size Chart</h2>
+            </div>
+            <p id="spring-modal-description">Add Values from the tree which you want to insert in your form</p>
+            <hr/>
+            <div >
+     <span>Choose Category</span>
+   <SizeContainer data={sizeData} onChange={onChangeSize}  texts={{placeholder:"Category"}} />     
+   </div>
+
+          </div>
+         
+        </Fade>
+      </Modal>
+   </div></>):(<>
+        <div>
+<TextField
+ label="Price"
+ id="standard-start-adornment"
+ placeholder="Enter price for one piece"
+// className={clsx(classes.margin, classes.textField)}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+
+ InputProps={{
+   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
+ }}
+ required
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+<br/>
+</div>
+{categories=="art"?(<>
+  <h2>Upload Image</h2>
+          
+          <input type='file' multiple={true} onChange={captureFile}  required/>
+                
+</>):null}
+</>)}
+      
+      
+   <hr/>          
+<div style={{textAlign:"center"}}>
+<Button
+variant="contained"
+color="default"
+//className={classes.button}
+startIcon={<AddIcon />}
+style={{borderRadius:20,backgroundColor:"#173e43",color:"ghostwhite"}}
+
+type="submit"
+>
+Create Item
+</Button>
+</div>
+</div>
+       </Paper>
+      
+       </Grid>
+    
+       </Grid>
+       </div>
+        
+     <div className="mt-4">
+       {props.imageIsUsed ? (
+         <div className="alert alert-danger alert-dissmissible">
+           <button
+             type="button"
+             className="close"
+             data-dismiss="alert"
+             onClick={(e)=>{setBuffer(null)}}
+           >
+             <span>&times;</span>
+           </button>
+           <strong>This image is taken!</strong>
+         </div>
+       ) :     
+         null}
+     </div>
+     <div className="mt-4">
+       {props.nameIsUsed ? (
+         <div className="alert alert-danger alert-dissmissible">
+           <button
+             type="button"
+             className="close"
+             data-dismiss="alert"
+             onClick={e=>{setCryptoBoyName("")}}
+           >
+             <span>&times;</span>
+           </button>
+           <strong>This name is taken!</strong>
+         </div>
+       ) :     
+         null}
+     </div>
+</form></>):(null)}
    </div>
   );
  
   const renderDesktop=(
     <div style={{padding:"0.5%"}}>
-    {/* {show?(<> <div className="card mt-1">
+    {show?(<> <div className="card mt-1">
       <div className="card-body  
       
       ">
@@ -684,9 +1038,9 @@ Create Item
         Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times
         
       </div>
-    </div></>):null} */}
+    </div></>):null}
    
-   {/* {show ?(<div style={{padding:"0.5%"}}> <div className="p-4 mt-1 border" style={{display:"flex",justifyContent:"space-evenly"}}>
+   {show ?(<div style={{padding:"0.5%"}}> <div className="p-4 mt-1 border" style={{display:"flex",justifyContent:"space-evenly"}}>
    
   
      
@@ -700,7 +1054,7 @@ Create Item
        </button>
        
      
-     </div></div>):(null)} */}
+     </div></div>):(null)}
    
     
      {single?
@@ -714,9 +1068,9 @@ Create Item
         ← Back
        </Button> */}
       
-       {/* <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setSingle(false);setShow(true)}}>
+       <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setSingle(false);setShow(true);setMultiple(false)}}>
       <ArrowBackIosSharpIcon />
-    </IconButton>  */}
+    </IconButton> 
   
       
         <h3 style={{justifyContent:"center"}}>Create Single Collectible</h3>
@@ -1088,7 +1442,404 @@ Create Item
 </form>
      </>)
      :multiple?
-     (<></>):(null)}
+     (<>
+     <div className="card mt-1">
+      <div className="card-body   
+      
+      "><div style={{textAlign:"center"}}>
+       
+        {/* <Button variant="contained"color="default" style={{float:"left"}}onClick={()=>{setSingle(false);setShow(true)}}>
+        ← Back
+       </Button> */}
+      
+       <IconButton color="primary"  component="span" style={{float:"left",color:"#173e43"}}onClick={()=>{setSingle(false);setShow(true);setMultiple(false)}}>
+      <ArrowBackIosSharpIcon />
+    </IconButton> 
+  
+      
+        <h3 style={{justifyContent:"center"}}>Create Multiple Collectible</h3>
+        </div>
+       <br/>
+        Your collectible will be multiple
+
+      </div>
+    </div>
+    
+     <form onSubmit={callMintMyERC1155FromApp} style={{padding:"0.5%"}}className="pt-4 mt-1">
+    
+         
+    <div  >
+    <Grid container spacing={3}>
+    <Grid item xs={9}>
+     <Paper variant="outlined" style={{padding:"inherit",backgroundColor:"ghostwhite"}}>
+     
+     
+     <div style={{margin:"1%"}}>
+          <div {...getRootProps({ className: "dropzone" })}>
+<input {...getInputProps()}   />
+{!files?(<span>{files[0].name} </span>):( <span>Drag 'n' drop some files here, or click to select files</span>)}
+
+</div>
+
+         <br/><br/><hr/>
+            
+<TextField
+ //id="standard-multiline-flexible"
+ style={{fontFamily:"inherit"}}
+ label="Title"
+ //autoComplete='off'
+ //rowsMax={4}
+ required
+ value={cryptoBoyName}
+ onChange={(e)=>setCryptoBoyName(e.target.value)}
+ error={props.nameIsUsed}
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
+/>
+
+<br/>
+<TextField
+ id="standard-multiline-flexible"
+ label="Description"
+ multiline
+ fullWidth
+ rowsMax={4}
+ value={cryptoBoyDescription}
+ required
+ onChange={(e)=>setCryptoBoyDescription(e.target.value)}
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
+/>
+<br/><br/>
+<hr/>
+<div>
+   <div >
+   <span>Choose Category</span>
+     {/* 
+   <CategoryContainer data={data} onChange={onChange}  texts={{placeholder:"Category"}} />      */}
+    {/* <FormControl variant="outlined">
+        <InputLabel htmlFor="outlined-age-native-simple">Category</InputLabel>
+        <Select
+          native
+          value={categories}
+          onChange={(e)=>{setCategories(e.target.value)}}
+          inputProps={{
+            name: 'age',
+            id: 'outlined-age-native-simple',
+          }}
+        >
+          <option aria-label="None" value="" />
+          <option value={"fashionDesign"}>Fashion Design</option>
+          <option value={"art"}>Art</option>
+          <option value={"photoGraph"}>Photograph</option>
+        </Select>
+      </FormControl> */}
+       
+              <Select 
+              options={options}
+              className="basic-single"
+              classNamePrefix="select"
+              name="ReactSelect"
+              isClearable
+              isSearchable
+              //onChange={(selected=>{setCategories(selected)})}
+              onChange={handleCategory}
+               
+            
+              //onChange={(e)=>{setCategories(e.target.value)}}
+              />
+            
+   </div>
+   </div>
+{/* <div style={{display:"flex",justifyContent:"space-evenly"}}> 
+
+<Button
+variant="contained"
+color="default"
+className={classes.button}
+//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
+style={{borderRadius:20}}
+//type="submit"
+>
+<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>
+Fixed Price
+</Button>
+
+
+  <Button
+variant="contained"
+color="default"
+className={classes.button}
+//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
+style={{borderRadius:20}}
+//type="submit"
+disabled
+>
+<AccessTimeSharpIcon  fontSize="large"/>
+Timed Auction
+</Button>
+
+
+<Button
+variant="contained"
+color="default"
+className={classes.button}
+//startIcon={<LocalOfferOutlinedIcon style={{textAlign:"center"}}fontSize="large"/>}
+style={{borderRadius:20}}
+//type="submit"
+disabled
+>
+<AllInclusiveSharpIcon  fontSize="large"/>
+Unlimited Auction
+</Button>
+
+
+</div>  */}
+
+<hr/>
+
+<br/>
+{categories=="fashionDesign"?(<>
+  <div style={{display:"flex",justifyContent:"space-evenly"}}>
+<div>
+<TextField
+ label="Price"
+ id="standard-start-adornment"
+ placeholder="Enter price for one piece"
+ className={clsx(classes.margin, classes.textField)}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+
+ InputProps={{
+   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
+ }}
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+</div>
+{/* <div>
+<TextField
+ label="Price with Dress"
+ id="standard-start-adornment"
+ placeholder="Enter price for one piece with dress"
+// className={clsx(classes.margin, classes.textField)}
+ onChange={(e)=>{setCryptoBoyDressPrice(e.target.value);setReceivePrice2((e.target.value)*2.5/100)}}
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+
+ InputProps={{
+   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
+ }}
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyDressPrice-receivePrice2} ETH</b></FormHelperText>
+</div> */}
+</div>
+
+<br/>
+<hr/>
+<h2>Upload Image</h2>
+          
+<input type='file' multiple={true} onChange={captureFile} />
+            
+   <hr/>  
+   
+   {/* <div style={{display:"flex",justifyContent:"center"}}>
+   <Button variant="contained" color="primary" onClick={handleOpen}>
+       Create size chart
+      </Button>
+      <Modal
+        aria-labelledby="spring-modal-title"
+        aria-describedby="spring-modal-description"
+        className={classes.modal}
+        open={open}
+        //onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper2}>
+           
+          <IconButton color="primary"  component="span" style={{float:"right",color:"#173e43"}}onClick={handleClose}>
+          <HighlightOffIcon />
+        </IconButton>
+        <br/>
+        <div  style={{textAlign:"center"}}>
+            <h2 id="spring-modal-title">Size Chart</h2>
+            </div>
+            <p id="spring-modal-description">Add Values from the tree which you want to insert in your form</p>
+            <hr/>
+            <div >
+     <span>Choose Category</span>
+   <SizeContainer data={sizeData} onChange={onChangeSize}  texts={{placeholder:"Category"}} />     
+   </div>
+
+          </div>
+         
+        </Fade>
+      </Modal>
+   </div> */}
+   </>):<>
+   <div style={{display:"flex",justifyContent:"space-evenly"}}>
+<div>
+<TextField
+ label="Price"
+ id="standard-start-adornment"
+ placeholder="Enter price for one piece"
+ className={clsx(classes.margin, classes.textField)}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+   className: classes.input,
+ }}
+/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+</div></div>
+{categories=="art"?(<><h2>Upload Image</h2>
+          
+          <input type='file' multiple={true} onChange={captureFile} />
+                      
+             <hr/> </> ):null}
+{/* {categories=="photoGraph"?(<>
+  <TextField
+ //id="standard-adornment-amount"
+ label="Amount"
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
+ 
+ required
+ value={amount}
+ onChange={(e)=>setAmount(e.target.value)}
+
+/></>):null}              */}
+  </>}
+  <TextField
+ //id="standard-adornment-amount"
+ label="Amount"
+ inputProps={{className: classes.input}}
+ InputLabelProps={{
+  className: classes.input,
+}}
+ InputProps={{
+  className: classes.input,
+}}
+ 
+ required
+ value={amount}
+ onChange={(e)=>setAmount(e.target.value)}
+
+/>
+   <hr/>
+<div style={{textAlign:"center"}}>
+<Button
+variant="contained"
+color="default"
+//className={classes.button}
+startIcon={<AddIcon />}
+style={{borderRadius:20,backgroundColor:"#173e43",color:"ghostwhite"}}
+
+type="submit"
+>
+Create Item
+
+</Button>
+</div>
+
+</div>
+
+       </Paper>
+      
+       </Grid>
+       <Grid item xs={3}><Paper  style={{height:"fitContent",padding:"2%",backgroundColor:"ghostwhite"}}>
+         
+     <span>Upload file to view preview</span>  
+     {buffer?(<><aside style={thumbsContainer}>{thumbs}</aside></>):null}  
+</Paper></Grid>
+
+       </Grid>
+       </div>
+        
+     <div className="mt-4">
+       {props.imageIsUsed ? (
+         <div className="alert alert-danger alert-dissmissible">
+           <button
+             type="button"
+             className="close"
+             data-dismiss="alert"
+             onClick={(e)=>{setBuffer(null)}}
+           >
+             <span>&times;</span>
+           </button>
+           <strong>This image is taken!</strong>
+         </div>
+      //   <>
+      
+        
+      //     <Alert
+      //     action={
+      //       <IconButton
+      //         aria-label="close"
+      //         color="inherit"
+      //         size="small"
+      //         onClick={()=>{setBuffer(null)}}
+      //       >
+      //         <CloseIcon fontSize="inherit" />
+      //       </IconButton>
+      //     }
+      //     variant="filled" severity="error"
+      //   >
+      //     This image is already used !
+      //   </Alert>
+        
+        
+       
+      //  </>  
+       ) :     
+         null}
+     </div>
+     <div className="mt-4">
+       {props.nameIsUsed ? (
+         <div className="alert alert-danger alert-dissmissible">
+           <button
+             type="button"
+             className="close"
+             data-dismiss="alert"
+             onClick={e=>{setCryptoBoyName("")}}
+           >
+             <span>&times;</span>
+           </button>
+           <strong>This name is taken!</strong>
+         </div>
+         
+       ) :     
+         null}
+     </div>
+     
+</form></>):(null)}
     
   </div>
   );

@@ -80,14 +80,14 @@ const TheirCryptoBoys = ({
         { 
           console.log(response);
         setCurrentUser({
-          userId: response.data[0].userId,
-          userName: response.data[0].userName,
-          userEmail: response.data[0].userEmail,
-          userSocial: response.data[0].userSocial,
-          userRepo: response.data[0].userRepo,
-          userBio: response.data[0].userBio,
-          userAvatarHash: response.data[0].userAvatarHash,
-          userAddress: response.data[0].userAddress
+          userId: response.data.data[0].userId,
+          userName: response.data.data[0].userName,
+          userEmail: response.data.data[0].userEmail,
+          userSocial: response.data.data[0].userSocial,
+          userRepo: response.data.data[0].userRepo,
+          userBio: response.data.data[0].userBio,
+          userAvatarHash: response.data.data[0].userAvatarHash,
+          userAddress: response.data.data[0].userAddress
         }
         );
      

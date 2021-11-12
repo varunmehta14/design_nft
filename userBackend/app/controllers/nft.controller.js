@@ -257,7 +257,7 @@ exports.buyCryptoBoy=async(req,res)=>{
     //console.log("here ")
      DigiFashionContract.methods
     .buyToken(tokenId,price,networkDataD.address)
-    .send({ from: account,gas:fee })
+    .send({ from: account,gas:myEstimatedGas1 })
     .on("transactionHash",(hash)=>{
       res.json({tokenId,price,account})
     })

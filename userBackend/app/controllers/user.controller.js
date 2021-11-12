@@ -86,10 +86,11 @@ exports.findByName = (req, res) => {
 exports.update = (req, res) => {
     const userAddress = req.params.id;
     console.log(userAddress);
-    console.log(req.body)
-    //console.log(JSON.parse(undefined))
+    //console.log(JSON.stringify(req.body))
+    //console.log("here",JSON.parse(undefined))
     let upDateUser=req.body;
-    User.update({upDateUser}, {
+    console.log(upDateUser)
+    User.update(upDateUser, {
       where: { userAddress: userAddress }
     })
       .then(num => {

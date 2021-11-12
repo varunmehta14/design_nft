@@ -8,6 +8,8 @@ import Loading from "../Loading/Loading";
 
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+
+
 import 'react-slideshow-image/dist/styles.css';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -62,7 +64,7 @@ backgroundSize: "cover"
   },
 }));
 
-const CryptoBoyNFTDetails=(props)=> {
+const CryptoBoyERC1155Details=(props)=> {
 
   
 
@@ -85,10 +87,10 @@ const CryptoBoyNFTDetails=(props)=> {
   const [prevAvatar,setPrevAvatar]=useState(null) 
   const [activeStep, setActiveStep] = useState(0);
   
- 
+  const [ownedAddress,setOwnedAddress]=useState(null)
  let thistokenId=props.clickedAddress-1;
  if(!props.clickedAddress){thistokenId=window.location.href.split("/")[4]-1};
-console.log(props.cryptoBoys[thistokenId])
+console.log(props.cryptoBoys[thistokenId][0])
 
 
 const [designMetadata,setDesignMetadata]=useState("");
@@ -99,10 +101,10 @@ const [designMetadata,setDesignMetadata]=useState("");
     
     console.log("before")
    
-  if(props.cryptoBoys[thistokenId]){
+  if(props.cryptoBoys[thistokenId][0]){
     console.log("after")
-    console.log(thistokenId);
-   await UserDataService.getByAddress(props.cryptoBoys[thistokenId].mintedBy)
+    console.log("TokenId",thistokenId);
+   await UserDataService.getByAddress(props.cryptoBoys[thistokenId][0].mintedBy)
    .then(response => 
      { 
        console.log(response);
@@ -119,24 +121,49 @@ const [designMetadata,setDesignMetadata]=useState("");
    .catch(e => {
      console.log(e);
    });
-   await UserDataService.getByAddress(props.cryptoBoys[thistokenId].currentOwner)
-   .then(response => 
-     { 
-       console.log(response);
-       setOwnedByName(response.data.data[0].userName)
-       setOwnedByEmail(response.data.data[0].userEmail)
-       setOwnedAvatar(response.data.data[0].userAvatarHash)
+   console.log(props.erc1155contract);
+        if(props.erc1155contract){
+        const currentOwned=await props.erc1155contract.methods
+        .tokenIdToAdd(thistokenId+1)
+        .call()
+        setOwnedAddress(currentOwned)
+        console.log("Current owned",currentOwned)
+        UserDataService.getByAddress(currentOwned)
+        .then(response => 
+          { 
+            console.log(response);
+            setOwnedByName(response.data.data[0].userName)
+            setOwnedByEmail(response.data.data[0].userEmail)
+            setOwnedAvatar(response.data.data[0].userAvatarHash)
+
+          
+          })
+          //  setSubmitted(true);
+         // console.log(response.data);
+        
+        
+        .catch(e => {
+          console.log(e);
+        });
+      }
+  //  await UserDataService.getByAddress(props.cryptoBoys[thistokenId][0].currentOwner)
+  //  .then(response => 
+  //    { 
+  //      console.log(response);
+  //      setOwnedByName(response.data.data[0].userName)
+  //      setOwnedByEmail(response.data.data[0].userEmail)
+  //      setOwnedAvatar(response.data.data[0].userAvatarHash)
 
      
-     })
-     //  setSubmitted(true);
-    // console.log(response.data);
+  //    })
+  //    //  setSubmitted(true);
+  //   // console.log(response.data);
    
    
-   .catch(e => {
-     console.log(e);
-   });
-   await UserDataService.getByAddress(props.cryptoBoys[thistokenId].previousOwner)
+  //  .catch(e => {
+  //    console.log(e);
+  //  });
+   await UserDataService.getByAddress(props.cryptoBoys[thistokenId][0].previousOwner)
    .then(response => 
      { 
        console.log(response);
@@ -153,11 +180,11 @@ const [designMetadata,setDesignMetadata]=useState("");
      console.log(e);
    });
    
-  //  if(props.cryptoBoys[thistokenId].metaData==undefined){
+  //  if(props.cryptoBoys[thistokenId][0].metaData==undefined){
   //   console.log("undefined")
-  //  const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
+  //  const result = await fetch(props.cryptoBoys[thistokenId][0].tokenURI);
   //  const metaData = await result.json();
-  // // props.cryptoBoys[thistokenId]
+  // // props.cryptoBoys[thistokenId][0]
   //  setDesignMetadata(metaData)
   //   console.log(designMetadata)
   // }   
@@ -166,11 +193,11 @@ const [designMetadata,setDesignMetadata]=useState("");
   const getMetadata=(async()=>{
     console.log("Before")
     console.log(props.cryptoBoys)
-    if(props.cryptoBoys[thistokenId]){
+    if(props.cryptoBoys[thistokenId][0]){
       console.log("after")
-    const result = await fetch(props.cryptoBoys[thistokenId].tokenURI);
+    const result = await fetch(props.cryptoBoys[thistokenId][0].tokenURI);
     const metaData = await result.json();
-   // props.cryptoBoys[thistokenId]
+   // props.cryptoBoys[thistokenId][0]
     setDesignMetadata(metaData)
      console.log(designMetadata)
     }
@@ -180,13 +207,13 @@ const [designMetadata,setDesignMetadata]=useState("");
     if(props.cryptoBoys!=undefined){
     getCurrentUser();
     
-      getMetadata();
+     // getMetadata();
     }
 
     }
     
     
-  ,[props.cryptoBoys,props.clickedAddress]);
+  ,[props.erc1155contract,props.cryptoBoys,props.clickedAddress]);
  
        
   
@@ -201,14 +228,14 @@ const [designMetadata,setDesignMetadata]=useState("");
   }
   const handleClick2=(e)=>{
     e.preventDefault();
-    window.open(props.cryptoBoys[thistokenId].imageHash, "_blank") 
+    window.open(props.cryptoBoys[thistokenId][0].imageHash, "_blank") 
   }
   const handleImage=(e,id)=>{
     e.preventDefault();
-    window.open(props.cryptoBoys[thistokenId].metaData.images[id], "_blank") 
+    window.open(props.cryptoBoys[thistokenId][0].metaData.images[id], "_blank") 
   }
  
-  console.log(props.cryptoBoys[thistokenId]);
+  console.log(props.cryptoBoys[thistokenId][0]);
  
  
 
@@ -223,20 +250,20 @@ const [designMetadata,setDesignMetadata]=useState("");
   const handleStepChange = (step) => {
     setActiveStep(step);
   };
-    //console.log(props.cryptoBoys[thistokenId].imageHash)
+    //console.log(props.cryptoBoys[thistokenId][0].imageHash)
   const renderDesktop=(
     <>
-    {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.cryptoBoys==undefined?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
+    {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.cryptoBoys==undefined?(<><Loading/></>):props.cryptoBoys[thistokenId][0]&&ownedAddress ?
      
       (<div className="d-flex flex-wrap mb-2" style={{padding:"1%",alignItems:"center"}}>
       <div
-              key={props.cryptoBoys[thistokenId].tokenId.toNumber()}
+              key={props.cryptoBoys[thistokenId][0].tokenId}
               className="col-md-6 w-50 p-4 mt-1 border "
               style={{display:"flex",justifyContent:"center"}}
             >
               
              
-              <img style={{height:"inherit",width:"inherit"}}src={props.cryptoBoys[thistokenId].imageHash}/>
+              <img style={{height:"inherit",width:"inherit"}}src={props.cryptoBoys[thistokenId][0].image}/>
              
                
         </div>
@@ -244,29 +271,29 @@ const [designMetadata,setDesignMetadata]=useState("");
         
         <p>
          <b style={{fontSize:"-webkit-xxx-large",color:"black",fontWeight:"bold"}}>
-          {props.cryptoBoys[thistokenId].tokenName}
+          {props.cryptoBoys[thistokenId][0].name}
           </b>
         </p>
         <div className="d-flex flex-wrap " style={{justifyContent:"space-evenly"}}>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
       <span className="font-weight-bold">Created By :&nbsp;</span>
-      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].mintedBy}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].mintedBy)}}style={{textDecorationLine:"none"}}>
+      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId][0].mintedBy}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId][0].mintedBy)}}style={{textDecorationLine:"none"}}>
       
-        {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{mintedByName}</b></div>):(<>{props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
+        {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{mintedByName}</b></div>):(<>{props.cryptoBoys[thistokenId][0].mintedBy.substr(0, 5) +
             "..." +
-            props.cryptoBoys[thistokenId].mintedBy.slice(
-              props.cryptoBoys[thistokenId].mintedBy.length - 5)}</>)}
+            props.cryptoBoys[thistokenId][0].mintedBy.slice(
+              props.cryptoBoys[thistokenId][0].mintedBy.length - 5)}</>)}
         </Link>
     </div>
         <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
       <span className="font-weight-bold">Owned By :&nbsp;</span>
-      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].currentOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].currentOwner)}}style={{textDecorationLine:"none"}}> 
+      <Link to={`/their-tokens/${ownedAddress}`} onClick={()=>{handleClick(ownedAddress)}}style={{textDecorationLine:"none"}}> 
      
-        {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{ownedByName}</b></div>):(<>{props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
+        {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;<b style={{color:"black",fontWeight:"bold"}}>@{ownedByName}</b></div>):(<>{ownedAddress.substr(0, 5) +
             "..." +
-            props.cryptoBoys[thistokenId].currentOwner.slice(
-              props.cryptoBoys[thistokenId].currentOwner.length - 5
+            ownedAddress.slice(
+              ownedAddress.length - 5
             )}</>)}
         </Link>
     </div>
@@ -277,50 +304,48 @@ const [designMetadata,setDesignMetadata]=useState("");
           <span className="font-weight-bold">Price</span> :{" "}
           <b style={{fontSize:"xx-large",color:"black"}}>
           {window.web3.utils.fromWei(
-            props.cryptoBoys[thistokenId].price.toString(),
+            props.cryptoBoys[thistokenId][0].price.toString(),
             "Ether"
           )}{" "}
           Ξ
           </b>
         </p>
-        {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0 ?(<>
-          {!props.cryptoBoys[thistokenId].metaData?(<>
+        {/* {props.cryptoBoys[thistokenId][0].numberOfTransfers.toNumber()==0 ?(<>
+          {!props.cryptoBoys[thistokenId][0].metaData?(<>
           {designMetadata.categories=="fashionDesign"?(<>
             <p>
           <span className="font-weight-bold">Price with dress</span> :{" "}
           <b style={{fontSize:"xx-large",color:"black"}}>
           {window.web3.utils.fromWei(
-            props.cryptoBoys[thistokenId].dressPrice.toString(),
+            props.cryptoBoys[thistokenId][0].dressPrice.toString(),
             "Ether"
           )}{" "}
           Ξ
           </b>
         </p>
-          </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+          </>):null}</>):(<>{props.cryptoBoys[thistokenId][0].metaData.categories=="fashionDesign"?(<>
             <p>
           <span className="font-weight-bold">Price with dress</span> :{" "}
           <b style={{fontSize:"xx-large",color:"black"}}>
           {window.web3.utils.fromWei(
-            props.cryptoBoys[thistokenId].dressPrice.toString(),
+            props.cryptoBoys[thistokenId][0].dressPrice.toString(),
             "Ether"
           )}{" "}
           Ξ
           </b>
         </p></>):null}</>)}
-        </>):(null)}
+        </>):(null)} */}
         </div>
       
         <hr/>
-        
-      
         <div>
-          {props.accountAddress === props.cryptoBoys[thistokenId].currentOwner ? (
+        {props.accountAddress === ownedAddress ? (
            <div >
            <form
               onSubmit={(e) => {
                 e.preventDefault();
                 callChangeTokenPriceFromApp(
-                  props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                  props.cryptoBoys[thistokenId][0].tokenId,
                   newCryptoBoyPrice
                 );
                 
@@ -354,14 +379,78 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               </div>
             </form>
-            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0 ?(<>
-              {!props.cryptoBoys[thistokenId].metaData ?( <>
+        </div>):(<>
+          <div style={{display:"flex",justifyContent:"center"}}>
+        <button
+                className="btn btn-outline-primary mt-3 "
+                value={props.cryptoBoys[thistokenId][0].price}
+                style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
+                onClick={(e) =>
+                  props.buyCryptoBoy(
+                    props.cryptoBoys[thistokenId][0].tokenId,
+                    e.target.value
+                  )
+                }
+              >
+                Buy For{" "}
+                {window.web3.utils.fromWei(
+                  props.cryptoBoys[thistokenId][0].price.toString(),
+                  "Ether"
+                )}{" "}
+                Ξ
+              </button>
+              </div></>)}
+        </div>
+      
+        {/* <div>
+          {props.accountAddress === props.cryptoBoys[thistokenId][0].currentOwner ? (
+           <div >
+           <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                callChangeTokenPriceFromApp(
+                  props.cryptoBoys[thistokenId][0].tokenId.toNumber(),
+                  newCryptoBoyPrice
+                );
+                
+              }}
+             
+            >
+              <div className="form-group mt-4 " >
+                <label htmlFor="newCryptoBoyPrice">
+                  <span className="font-weight-bold">Change Token Price</span> :
+                </label>{" "}
+                <input
+                  required
+                  type="number"
+                  name="newCryptoBoyPrice"
+                  id="newCryptoBoyPrice"
+                  value={newCryptoBoyPrice}
+                  className="form-control "
+                  placeholder="Enter new price"
+                  onChange={(e) =>
+                    setNewCryptoBoyPrice(e.target.value)
+                  }
+                />
+              </div>
+              <div style={{display:"flex",justifyContent:"center",padding:"0 2% 0 2%"}}>
+              <button
+                type="submit"
+                style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
+                className="btn btn-outline-info mt-0 "
+              >
+                change price
+              </button>
+              </div>
+            </form>
+            {props.cryptoBoys[thistokenId][0].numberOfTransfers.toNumber()==0 ?(<>
+              {!props.cryptoBoys[thistokenId][0].metaData ?( <>
               {designMetadata.categories=="fashionDesign"?(<>
                 <form
             onSubmit={(e) => {
               e.preventDefault();
               callChangeTokenDressPriceFromApp(
-                props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                props.cryptoBoys[thistokenId][0].tokenId.toNumber(),
                 newCryptoBoyDressPrice
               );
               
@@ -395,12 +484,12 @@ const [designMetadata,setDesignMetadata]=useState("");
             </button>
             </div>
           </form>
-              </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+              </>):null}</>):(<>{props.cryptoBoys[thistokenId][0].metaData.categories=="fashionDesign"?(<>
                 <form
             onSubmit={(e) => {
               e.preventDefault();
               callChangeTokenDressPriceFromApp(
-                props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                props.cryptoBoys[thistokenId][0].tokenId.toNumber(),
                 newCryptoBoyDressPrice
               );
               
@@ -437,16 +526,16 @@ const [designMetadata,setDesignMetadata]=useState("");
            </>):(null)}
           </div>
           ) : null}
-        </div>
+        </div> */}
         <div style={{display:"flex",justifyContent:"center"}}>
-          {props.accountAddress === props.cryptoBoys[thistokenId].currentOwner ? (
-            props.cryptoBoys[thistokenId].forSale ? (
+          {/* {props.accountAddress === props.cryptoBoys[thistokenId][0].currentOwner ? (
+            props.cryptoBoys[thistokenId][0].forSale ? (
               <button
                 className="btn btn-outline-danger mt-4 w-50"
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={() =>
                   props.toggleForSale(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber()
+                    props.cryptoBoys[thistokenId][0].tokenId
                   )
                 }
               >
@@ -458,90 +547,110 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={() =>
                   props.toggleForSale(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber()
+                    props.cryptoBoys[thistokenId][0].tokenId.toNumber()
                   )
                 }
               >
                 Keep for sale
               </button>
             )
-          ) : null}
+          ) : null} */}
           </div>
         
-        <div style={{display:"flex",justifyContent:"center"}}>
-          {props.accountAddress !== props.cryptoBoys[thistokenId].currentOwner ? (
-            props.cryptoBoys[thistokenId].forSale ? (
-              <div>
-                
-              <button
+        {/* <div style={{display:"flex",justifyContent:"center"}}>
+        <button
                 className="btn btn-outline-primary mt-3 "
-                value={props.cryptoBoys[thistokenId].price}
+                value={props.cryptoBoys[thistokenId][0].price}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={(e) =>
                   props.buyCryptoBoy(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                    props.cryptoBoys[thistokenId][0].tokenId,
                     e.target.value
                   )
                 }
               >
                 Buy For{" "}
                 {window.web3.utils.fromWei(
-                  props.cryptoBoys[thistokenId].price.toString(),
+                  props.cryptoBoys[thistokenId][0].price.toString(),
                   "Ether"
                 )}{" "}
                 Ξ
               </button>
-              {"   "}
-             {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
-              {!props.cryptoBoys[thistokenId].metaData?(<>
+              </div> */}
+          {/* {props.accountAddress !== props.cryptoBoys[thistokenId][0].currentOwner ? (
+            props.cryptoBoys[thistokenId][0].forSale ? (
+              <div>
+                
+              <button
+                className="btn btn-outline-primary mt-3 "
+                value={props.cryptoBoys[thistokenId][0].price}
+                style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
+                onClick={(e) =>
+                  props.buyCryptoBoy(
+                    props.cryptoBoys[thistokenId][0].tokenId,
+                    e.target.value
+                  )
+                }
+              >
+                Buy For{" "}
+                {window.web3.utils.fromWei(
+                  props.cryptoBoys[thistokenId][0].price.toString(),
+                  "Ether"
+                )}{" "}
+                Ξ
+              </button>
+              
+              {"   "} */}
+             {/* {props.cryptoBoys[thistokenId][0].numberOfTransfers.toNumber()==0?(<>
+              {!props.cryptoBoys[thistokenId][0].metaData?(<>
                 {designMetadata.categories=="fashionDesign"?(<>
                   <Link to={`/sizeDetails`}
                 className="btn btn-outline-primary mt-3 "
-                value={props.cryptoBoys[thistokenId].dressPrice}
+                value={props.cryptoBoys[thistokenId][0].dressPrice}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 // onClick={(e) =>
                 //   props.buyCryptoBoyWithDress(
-                //     props.cryptoBoys[thistokenId].tokenId,
+                //     props.cryptoBoys[thistokenId][0].tokenId,
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId][0].tokenId.toNumber(),props.cryptoBoys[thistokenId][0].tokenName,props.cryptoBoys[thistokenId][0].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId][0].metaData.sizeChart)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}
                 {window.web3.utils.fromWei(
-                  props.cryptoBoys[thistokenId].dressPrice.toString(),
+                  props.cryptoBoys[thistokenId][0].dressPrice.toString(),
                   "Ether"
                 )}{" "}
                 Ξ
               </Link>
-                </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+                </>):null}</>):(<>{props.cryptoBoys[thistokenId][0].metaData.categories=="fashionDesign"?(<>
                 <Link to={`/sizeDetails`}
                 className="btn btn-outline-primary mt-3 "
-                value={props.cryptoBoys[thistokenId].dressPrice}
+                value={props.cryptoBoys[thistokenId][0].dressPrice}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 // onClick={(e) =>
                 //   props.buyCryptoBoyWithDress(
-                //     props.cryptoBoys[thistokenId].tokenId,
+                //     props.cryptoBoys[thistokenId][0].tokenId,
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId][0].tokenId.toNumber(),props.cryptoBoys[thistokenId][0].tokenName,props.cryptoBoys[thistokenId][0].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId][0].metaData.sizeChart)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}
                 {window.web3.utils.fromWei(
-                  props.cryptoBoys[thistokenId].dressPrice.toString(),
+                  props.cryptoBoys[thistokenId][0].dressPrice.toString(),
                   "Ether"
                 )}{" "}
                 Ξ
               </Link></>):null}</>)}
                 </>
-             ):(null)}
+             ):(null)} */}
              
               
               
-              </div>
+              {/* </div>
             ) : (
               <>
               
@@ -552,7 +661,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 >
                   Buy For{" "}
                   {window.web3.utils.fromWei(
-                    props.cryptoBoys[thistokenId].price.toString(),
+                    props.cryptoBoys[thistokenId][0].price.toString(),
                     "Ether"
                   )}{" "}
                   Ξ
@@ -565,8 +674,8 @@ const [designMetadata,setDesignMetadata]=useState("");
           ) : null}
         </div>
        
-        </div>
-       
+        </div> */}
+       </div>
         <div className="col-md-6 w-50  mt-1 border">
         
        
@@ -574,90 +683,46 @@ const [designMetadata,setDesignMetadata]=useState("");
       <div className="card-body   justify-content-center"> */}
       <h5>Description</h5>
       
-      <p>{!props.cryptoBoys[thistokenId].metaData?(<>{designMetadata.description}</>):(<>{props.cryptoBoys[thistokenId].metaData.description}</>)}</p>
+      <p>{props.cryptoBoys[thistokenId][0].description}</p>
       {/* </div>
     </div> */}
            <hr/>
-          <h5>Sales History</h5>  
+          {/* <h5>Sales History</h5>  
     <div className="card mt-1" style={{backgroundColor:"ghostwhite",borderRadius:"15px"}}>
       <div className="card-body   justify-content-center">
       
      
       <div style={{display:"flex",alignItems:"center"}}>
       <span className="font-weight-bold">Previous Owner :&nbsp;</span>
-      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].previousOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].previousOwner)}}style={{textDecorationLine:"none"}}> 
+      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId][0].previousOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId][0].previousOwner)}}style={{textDecorationLine:"none"}}> 
      
-        {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;@{prevByName}</div>):(<>{props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
+        {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;@{prevByName}</div>):(<>{props.cryptoBoys[thistokenId][0].previousOwner.substr(0, 5) +
             "..." +
-            props.cryptoBoys[thistokenId].previousOwner.slice(
-              props.cryptoBoys[thistokenId].previousOwner.length - 5
+            props.cryptoBoys[thistokenId][0].previousOwner.slice(
+              props.cryptoBoys[thistokenId][0].previousOwner.length - 5
             )}</>)}
         </Link>
     </div>
     <hr/>
         <p>
           <span className="font-weight-bold">No. of Transfers</span> :{" "}
-          {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()}
+          {props.cryptoBoys[thistokenId][0].numberOfTransfers.toNumber()}
         </p>
       </div>
       <br/>
       
-    </div>   
+    </div>    */}
    
   <br/>
   <div>
-    {!props.cryptoBoys[thistokenId].metaData?(
-      <>
-      {console.log("Metadata undefined",designMetadata)}
-      {designMetadata?(<>
-        {designMetadata.images.length!=0 ?(<>
-        <AutoPlaySwipeableViews
-      axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-      index={activeStep}
-      onChangeIndex={handleStepChange}
-      enableMouseEvents
-    >
-      {designMetadata.images.map((image,index) => (
-        <div style={{display:"flex",justifyContent:"center"}}>
-          {Math.abs(activeStep - index) <= 2 ? (
-            <img className={classes.img} src={image}  />
-          ) : null}
-        </div>
-      ))}
-    </AutoPlaySwipeableViews>
-    <MobileStepper
-      style={{backgroundColor:"#173e43",color:"aliceblue"}}
-      steps={designMetadata.images.length}
-      position="static"
-      variant="text"
-      activeStep={activeStep}
-      nextButton={
-        <Button size="small" style={{backgroundColor:"#dddfd4"}} onClick={handleNext} disabled={activeStep ===designMetadata.images.length - 1}>
-         
-          {theme.direction === 'rtl' ? <KeyboardArrowLeft  /> : <KeyboardArrowRight />}
-        </Button>
-      }
-      backButton={
-        <Button size="small" style={{backgroundColor:"#dddfd4"}}onClick={handleBack} disabled={activeStep === 0}>
-          {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-         
-        </Button>
-      }
-    />
-    </>):null}
-      </>):(null)}
-      
-      
-    </>
-    ):(<>
-    {props.cryptoBoys[thistokenId].metaData.images.length!=0?(<>
+  <>
       <AutoPlaySwipeableViews
       axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
       index={activeStep}
       onChangeIndex={handleStepChange}
       enableMouseEvents
     >
-      {props.cryptoBoys[thistokenId].metaData.images.map((image,index) => (
+      {props.cryptoBoys[thistokenId][0].images.map((image,index) => (
         <div style={{display:"flex",justifyContent:"center"}}>
           {Math.abs(activeStep - index) <= 2 ? (
             <img className={classes.img} src={image} onClick={(e)=>{handleImage(e,index)}} />
@@ -668,12 +733,12 @@ const [designMetadata,setDesignMetadata]=useState("");
     </AutoPlaySwipeableViews>
     <MobileStepper
       style={{backgroundColor:"#173e43",color:"aliceblue"}}
-      steps={props.cryptoBoys[thistokenId].metaData.images.length}
+      steps={props.cryptoBoys[thistokenId][0].images.length}
       position="static"
       variant="text"
       activeStep={activeStep}
       nextButton={
-        <Button size="small" style={{backgroundColor:"#dddfd4"}} onClick={handleNext} disabled={activeStep ===props.cryptoBoys[thistokenId].metaData.images.length - 1}>
+        <Button size="small" style={{backgroundColor:"#dddfd4"}} onClick={handleNext} disabled={activeStep ===props.cryptoBoys[thistokenId][0].images.length - 1}>
          
           {theme.direction === 'rtl' ? <KeyboardArrowLeft  /> : <KeyboardArrowRight />}
         </Button>
@@ -684,8 +749,7 @@ const [designMetadata,setDesignMetadata]=useState("");
          
         </Button>
       }
-    /></>):null}
-    </>)}
+    /></>
   
     </div>
   
@@ -697,31 +761,30 @@ const [designMetadata,setDesignMetadata]=useState("");
         <Grid item xs={12} sm={6}> 
         
         <div className="col-md-12   mt-1 border">
-       <Queries cryptoBoysContract={props.cryptoBoysContract} token={props.cryptoBoys[thistokenId].tokenId.toNumber()} imageUrl={props.cryptoBoys[thistokenId].imageHash} />
+       <Queries cryptoBoysContract={props.cryptoBoysContract} token={props.cryptoBoys[thistokenId][0].tokenId} imageUrl={props.cryptoBoys[thistokenId][0].image} />
        </div>
        </Grid>
-      </div>):(<><Loading/></>
-     )
+      </div>):(<><Loading/></>)
     }
    </>
-  )
+  );
   
   const renderMobile=(
     <>
-     {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.cryptoBoys==undefined?(<><Loading/></>):props.cryptoBoys[thistokenId] ?
+     {!props.tokenExists?(<><h3>Token Doesnt exist</h3></>):props.cryptoBoys==undefined?(<><Loading/></>):props.cryptoBoys[thistokenId][0]&&ownedAddress ?
      
      (
        <div style={{padding:"2%",height:"100%"}}>
         <div  style={{margin:"auto",padding:"2%",display:"flex",justifyContent:"center"}}>    
         <Paper>
-             <img style={{width:"100%",height:"100%"}} src={props.cryptoBoys[thistokenId].imageHash}/>       
+             <img style={{width:"100%",height:"100%"}} src={props.cryptoBoys[thistokenId][0].image}/>       
              </Paper>
         </div>
 
         <div style={{paddingLeft:"2%"}}>
         <p >
          <b style={{fontSize:"-webkit-xxx-large",color:"black",fontWeight:"bold"}}>
-          {props.cryptoBoys[thistokenId].tokenName}
+          {props.cryptoBoys[thistokenId][0].name}
           </b>
 
         </p>
@@ -731,24 +794,24 @@ const [designMetadata,setDesignMetadata]=useState("");
         <div className="d-flex flex-wrap " style={{justifyContent:"space-evenly"}}>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
      
-      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].mintedBy}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].mintedBy)}}style={{textDecorationLine:"none"}}>
+      {/* <Link to={`/their-tokens/${props.cryptoBoys[thistokenId][0].mintedBy}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId][0].mintedBy)}}style={{textDecorationLine:"none"}}>
         
-        {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;@{mintedByName}<br/>   <>&nbsp;Creator</></div>):(<>{props.cryptoBoys[thistokenId].mintedBy.substr(0, 5) +
+        {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;@{mintedByName}<br/>   <>&nbsp;Creator</></div>):(<>{props.cryptoBoys[thistokenId][0].mintedBy.substr(0, 5) +
             "..." +
-            props.cryptoBoys[thistokenId].mintedBy.slice(
-              props.cryptoBoys[thistokenId].mintedBy.length - 5)}<br/>  <>&nbsp;Creator</></>)}
-        </Link>
+            props.cryptoBoys[thistokenId][0].mintedBy.slice(
+              props.cryptoBoys[thistokenId][0].mintedBy.length - 5)}<br/>  <>&nbsp;Creator</></>)}
+        </Link> */}
     </div>
         <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-         <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].currentOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].currentOwner)}}style={{textDecorationLine:"none"}}> 
+         {/* <Link to={`/their-tokens/${props.cryptoBoys[thistokenId][0].currentOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId][0].currentOwner)}}style={{textDecorationLine:"none"}}> 
      
-        {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;@{ownedByName} <br/> <>&nbsp;Owner</></div>):(<>{props.cryptoBoys[thistokenId].currentOwner.substr(0, 5) +
+        {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;@{ownedByName} <br/> <>&nbsp;Owner</></div>):(<>{props.cryptoBoys[thistokenId][0].currentOwner.substr(0, 5) +
             "..." +
-            props.cryptoBoys[thistokenId].currentOwner.slice(
-              props.cryptoBoys[thistokenId].currentOwner.length - 5
+            props.cryptoBoys[thistokenId][0].currentOwner.slice(
+              props.cryptoBoys[thistokenId][0].currentOwner.length - 5
             )}<br/> <>&nbsp;Owner</></>)}
-        </Link>
+        </Link> */}
     </div>
     
     </div>
@@ -760,15 +823,15 @@ const [designMetadata,setDesignMetadata]=useState("");
         <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
        
           {window.web3.utils.fromWei(
-            props.cryptoBoys[thistokenId].price.toString(),
+            props.cryptoBoys[thistokenId][0].price.toString(),
             "Ether"
           )}{" "}
           Ξ
          
         </Typography>
         </div>
-        {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
-          {!props.cryptoBoys[thistokenId].metaData?(<>
+        {/* {props.cryptoBoys[thistokenId][0].numberOfTransfers.toNumber()==0?(<>
+          {!props.cryptoBoys[thistokenId][0].metaData?(<>
                 {designMetadata.categories=="fashionDesign"?(<>
                   <div>
         <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
@@ -776,13 +839,13 @@ const [designMetadata,setDesignMetadata]=useState("");
         <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
        
           {window.web3.utils.fromWei(
-            props.cryptoBoys[thistokenId].dressPrice.toString(),
+            props.cryptoBoys[thistokenId][0].dressPrice.toString(),
             "Ether"
           )}{" "}
           Ξ
          
         </Typography></div>
-                </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+                </>):null}</>):(<>{props.cryptoBoys[thistokenId][0].metaData.categories=="fashionDesign"?(<>
                  
         <Divider orientation="vertical" flexItem style={{width:"0.4%",backgroundColor:"black"}}/>
         <div>
@@ -790,7 +853,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
        
           {window.web3.utils.fromWei(
-            props.cryptoBoys[thistokenId].dressPrice.toString(),
+            props.cryptoBoys[thistokenId][0].dressPrice.toString(),
             "Ether"
           )}{" "}
           Ξ
@@ -798,7 +861,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         </Typography></div></>):null}</>)}
 
         
-        </>):(null)}
+        </>):(null)} */}
         </div>
        
     </div>
@@ -812,13 +875,11 @@ const [designMetadata,setDesignMetadata]=useState("");
             </form>
     </div>
         <div>
-        {props.accountAddress === props.cryptoBoys[thistokenId].currentOwner ? (
-           <div >
-           <form
+        <form
               onSubmit={(e) => {
                 e.preventDefault();
                 callChangeTokenPriceFromApp(
-                  props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                  props.cryptoBoys[thistokenId][0].tokenId,
                   newCryptoBoyPrice
                 );
                 
@@ -852,14 +913,54 @@ const [designMetadata,setDesignMetadata]=useState("");
               </button>
               </div>
             </form>
-            {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
-               {!props.cryptoBoys[thistokenId].metaData?(<>
+        {/* {props.accountAddress === props.cryptoBoys[thistokenId][0].currentOwner ? (
+           <div >
+           <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                callChangeTokenPriceFromApp(
+                  props.cryptoBoys[thistokenId][0].tokenId,
+                  newCryptoBoyPrice
+                );
+                
+              }}
+             
+            >
+              <div className="form-group mt-4 " >
+                <label htmlFor="newCryptoBoyPrice">
+                  <span className="font-weight-bold">Change Token Price</span> :
+                </label>{" "}
+                <input
+                  required
+                  type="number"
+                  name="newCryptoBoyPrice"
+                  id="newCryptoBoyPrice"
+                  value={newCryptoBoyPrice}
+                  className="form-control "
+                  placeholder="Enter new price"
+                  onChange={(e) =>
+                    setNewCryptoBoyPrice(e.target.value)
+                  }
+                />
+              </div>
+              <div style={{display:"flex",justifyContent:"center",padding:"0 2% 0 2%"}}>
+              <button
+                type="submit"
+                style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
+                className="btn btn-outline-info mt-0 "
+              >
+                change price
+              </button>
+              </div>
+            </form>
+            {props.cryptoBoys[thistokenId][0].numberOfTransfers.toNumber()==0?(<>
+               {!props.cryptoBoys[thistokenId][0].metaData?(<>
                 {designMetadata.categories=="fashionDesign"?(<>
                   <form
             onSubmit={(e) => {
               e.preventDefault();
               callChangeTokenDressPriceFromApp(
-                props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                props.cryptoBoys[thistokenId][0].tokenId.toNumber(),
                 newCryptoBoyDressPrice
               );
               
@@ -894,13 +995,13 @@ const [designMetadata,setDesignMetadata]=useState("");
             </div>
           </form>
 
-                </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+                </>):null}</>):(<>{props.cryptoBoys[thistokenId][0].metaData.categories=="fashionDesign"?(<>
                 
                   <form
             onSubmit={(e) => {
               e.preventDefault();
               callChangeTokenDressPriceFromApp(
-                props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                props.cryptoBoys[thistokenId][0].tokenId.toNumber(),
                 newCryptoBoyDressPrice
               );
               
@@ -936,17 +1037,17 @@ const [designMetadata,setDesignMetadata]=useState("");
           </form></>):null}</>)}
             </>):(null)}
           </div>
-          ) : null}
+          ) : null} */}
         </div>
         <div style={{display:"flex",justifyContent:"center",padding:"0 2% 0 2%"}}>
-          {props.accountAddress === props.cryptoBoys[thistokenId].currentOwner ? (
-            props.cryptoBoys[thistokenId].forSale ? (
+          {/* {props.accountAddress === props.cryptoBoys[thistokenId][0].currentOwner ? (
+            props.cryptoBoys[thistokenId][0].forSale ? (
               <button
                 className="btn btn-outline-danger mt-4 w-50"
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={() =>
                   props.toggleForSale(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber()
+                    props.cryptoBoys[thistokenId][0].tokenId.toNumber()
                   )
                 }
               >
@@ -958,85 +1059,106 @@ const [designMetadata,setDesignMetadata]=useState("");
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={() =>
                   props.toggleForSale(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber()
+                    props.cryptoBoys[thistokenId][0].tokenId.toNumber()
                   )
                 }
               >
                 Keep for sale
               </button>
             )
-          ) : null}
+          ) : null} */}
           </div>   
           <div >
-          {props.accountAddress !== props.cryptoBoys[thistokenId].currentOwner ? (
-            props.cryptoBoys[thistokenId].forSale ? (
-              <>
-              <div style={{display:"flex",justifyContent:"center",alignItems:"baseline"}}>
+          <div style={{display:"flex",justifyContent:"center",alignItems:"baseline"}}>
               <button
                 className="btn btn-outline-primary mt-3 w-50"
-                value={props.cryptoBoys[thistokenId].price}
+                value={props.cryptoBoys[thistokenId][0].price}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={(e) =>
                   props.buyCryptoBoy(
-                    props.cryptoBoys[thistokenId].tokenId.toNumber(),
+                    props.cryptoBoys[thistokenId][0].tokenId,
                     e.target.value
                   )
                 }
               >
                 Buy For{" "}
                 {window.web3.utils.fromWei(
-                  props.cryptoBoys[thistokenId].price.toString(),
+                  props.cryptoBoys[thistokenId][0].price.toString(),
                   "Ether"
                 )}{" "}
                 Ξ
               </button>
               
               </div>
-              {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()==0?(<>
+          {/* {props.accountAddress !== props.cryptoBoys[thistokenId][0].currentOwner ? (
+            props.cryptoBoys[thistokenId][0].forSale ? (
+              <>
+              <div style={{display:"flex",justifyContent:"center",alignItems:"baseline"}}>
+              <button
+                className="btn btn-outline-primary mt-3 w-50"
+                value={props.cryptoBoys[thistokenId][0].price}
+                style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
+                onClick={(e) =>
+                  props.buyCryptoBoy(
+                    props.cryptoBoys[thistokenId][0].tokenId.toNumber(),
+                    e.target.value
+                  )
+                }
+              >
+                Buy For{" "}
+                {window.web3.utils.fromWei(
+                  props.cryptoBoys[thistokenId][0].price.toString(),
+                  "Ether"
+                )}{" "}
+                Ξ
+              </button>
+              
+              </div>
+              {props.cryptoBoys[thistokenId][0].numberOfTransfers.toNumber()==0?(<>
 
-                {!props.cryptoBoys[thistokenId].metaData?(<>
+                {!props.cryptoBoys[thistokenId][0].metaData?(<>
                 {designMetadata.categories=="fashionDesign"?(<>
                   <div style={{display:"flex",justifyContent:"center",alignItems:"baseline"}}>
              <Link to={`/sizeDetails`}
                 className="btn btn-outline-primary mt-3 "
-                value={props.cryptoBoys[thistokenId].dressPrice}
+                value={props.cryptoBoys[thistokenId][0].dressPrice}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 // onClick={(e) =>
                 //   props.buyCryptoBoyWithDress(
-                //     props.cryptoBoys[thistokenId].tokenId,
+                //     props.cryptoBoys[thistokenId][0].tokenId,
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId][0].tokenId.toNumber(),props.cryptoBoys[thistokenId][0].tokenName,props.cryptoBoys[thistokenId][0].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId][0].metaData.sizeChart)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}
                 {window.web3.utils.fromWei(
-                  props.cryptoBoys[thistokenId].dressPrice.toString(),
+                  props.cryptoBoys[thistokenId][0].dressPrice.toString(),
                   "Ether"
                 )}{" "}
                 Ξ
               </Link>
               
               </div>
-                </>):null}</>):(<>{props.cryptoBoys[thistokenId].metaData.categories=="fashionDesign"?(<>
+                </>):null}</>):(<>{props.cryptoBoys[thistokenId][0].metaData.categories=="fashionDesign"?(<>
                   <div style={{display:"flex",justifyContent:"center",alignItems:"baseline"}}>
              <Link to={`/sizeDetails`}
                 className="btn btn-outline-primary mt-3 "
-                value={props.cryptoBoys[thistokenId].dressPrice}
+                value={props.cryptoBoys[thistokenId][0].dressPrice}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 // onClick={(e) =>
                 //   props.buyCryptoBoyWithDress(
-                //     props.cryptoBoys[thistokenId].tokenId,
+                //     props.cryptoBoys[thistokenId][0].tokenId,
                 //     e.target.value
                 //   )
                 // }
-               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId].tokenId.toNumber(),props.cryptoBoys[thistokenId].tokenName,props.cryptoBoys[thistokenId].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId].metaData.sizeChart)}}
+               onClick={()=>{props.tokenIdAndPrice(props.cryptoBoys[thistokenId][0].tokenId.toNumber(),props.cryptoBoys[thistokenId][0].tokenName,props.cryptoBoys[thistokenId][0].dressPrice,ownedByEmail,ownedByName,props.cryptoBoys[thistokenId][0].metaData.sizeChart)}}
                //onClick={handleOpen}
               >
                 Buy with Dress For{" "}
                 {window.web3.utils.fromWei(
-                  props.cryptoBoys[thistokenId].dressPrice.toString(),
+                  props.cryptoBoys[thistokenId][0].dressPrice.toString(),
                   "Ether"
                 )}{" "}
                 Ξ
@@ -1056,7 +1178,7 @@ const [designMetadata,setDesignMetadata]=useState("");
                 >
                   Buy For{" "}
                   {window.web3.utils.fromWei(
-                    props.cryptoBoys[thistokenId].price.toString(),
+                    props.cryptoBoys[thistokenId][0].price.toString(),
                     "Ether"
                   )}{" "}
                   Ξ
@@ -1066,13 +1188,14 @@ const [designMetadata,setDesignMetadata]=useState("");
                 <p style={{textAlign:"center"}}>Currently not for sale!</p>
               </>
             )
-          ) : null}
+          ) : null} */}
         </div>
        <hr/>
            <div style={{padding:"2%"}}>
            <h5>Description</h5>
       
-      <p>{!props.cryptoBoys[thistokenId].metaData?(<>{designMetadata.description}</>):(<>{props.cryptoBoys[thistokenId].metaData.description}</>)}</p>
+      {/* <p>{!props.cryptoBoys[thistokenId][0].metaData?(<>{designMetadata.description}</>):(<>{props.cryptoBoys[thistokenId][0].metaData.description}</>)}</p> */}
+      <p>{props.cryptoBoys[thistokenId][0].description}</p>
            </div>
            <hr/>
          <div  style={{padding:"2%"}}>
@@ -1083,19 +1206,19 @@ const [designMetadata,setDesignMetadata]=useState("");
      
       <div style={{display:"flex",alignItems:"center"}}>
       <span className="font-weight-bold">Previous Owner :&nbsp;</span>
-      <Link to={`/their-tokens/${props.cryptoBoys[thistokenId].previousOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId].previousOwner)}}> 
+      {/* <Link to={`/their-tokens/${props.cryptoBoys[thistokenId][0].previousOwner}`} onClick={()=>{handleClick(props.cryptoBoys[thistokenId][0].previousOwner)}}> 
       
-        {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(<>{props.cryptoBoys[thistokenId].previousOwner.substr(0, 5) +
+        {!(prevByName=="")?(<div style={{display:"flex",alignItems:"center"}}> <Avatar alt={prevByName} src={prevAvatar}/>&nbsp;{prevByName}</div>):(<>{props.cryptoBoys[thistokenId][0].previousOwner.substr(0, 5) +
             "..." +
-            props.cryptoBoys[thistokenId].previousOwner.slice(
-              props.cryptoBoys[thistokenId].previousOwner.length - 5
+            props.cryptoBoys[thistokenId][0].previousOwner.slice(
+              props.cryptoBoys[thistokenId][0].previousOwner.length - 5
             )}</>)}
-        </Link>
+        </Link> */}
     </div>
     <hr/>
         <p>
           <span className="font-weight-bold">No. of Transfers</span> :{" "}
-          {props.cryptoBoys[thistokenId].numberOfTransfers.toNumber()}
+          {/* {props.cryptoBoys[thistokenId][0].numberOfTransfers.toNumber()} */}
         </p>
       </div>
       <br/>
@@ -1104,7 +1227,41 @@ const [designMetadata,setDesignMetadata]=useState("");
            </div>
            <hr/>
            <div style={{padding:"2%"}}>
-    {!props.cryptoBoys[thistokenId].metaData?(
+           <>
+      <AutoPlaySwipeableViews
+      axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+      index={activeStep}
+      onChangeIndex={handleStepChange}
+      enableMouseEvents
+    >
+      {props.cryptoBoys[thistokenId][0].images.map((image,index) => (
+        <div style={{display:"flex",justifyContent:"center"}}>
+          {Math.abs(activeStep - index) <= 2 ? (
+            <img className={classes.img} src={image} onClick={(e)=>{handleImage(e,index)}} />
+          ) : null}
+        </div>
+      ))}
+    </AutoPlaySwipeableViews>
+    <MobileStepper
+      style={{backgroundColor:"#173e43",color:"aliceblue"}}
+      steps={props.cryptoBoys[thistokenId][0].images.length}
+      position="static"
+      variant="text"
+      activeStep={activeStep}
+      nextButton={
+        <Button size="small" style={{backgroundColor:"#dddfd4"}} onClick={handleNext} disabled={activeStep ===props.cryptoBoys[thistokenId][0].images.length - 1}>
+         
+          {theme.direction === 'rtl' ? <KeyboardArrowLeft  /> : <KeyboardArrowRight />}
+        </Button>
+      }
+      backButton={
+        <Button size="small" style={{backgroundColor:"#dddfd4"}}onClick={handleBack} disabled={activeStep === 0}>
+          {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+         
+        </Button>
+      }
+    /></>
+    {/* {!props.cryptoBoys[thistokenId][0].metaData?(
       <>
       {designMetadata?(<>
         {designMetadata.images.length!=0 ?(<>
@@ -1146,14 +1303,14 @@ const [designMetadata,setDesignMetadata]=useState("");
       
     </>
     ):(<>
-    {props.cryptoBoys[thistokenId].metaData.images.length!=0?(<>
+    {props.cryptoBoys[thistokenId][0].metaData.images.length!=0?(<>
       <AutoPlaySwipeableViews
       axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
       index={activeStep}
       onChangeIndex={handleStepChange}
       enableMouseEvents
     >
-      {props.cryptoBoys[thistokenId].metaData.images.map((image,index) => (
+      {props.cryptoBoys[thistokenId][0].metaData.images.map((image,index) => (
         <div style={{display:"flex",justifyContent:"center"}}>
           {Math.abs(activeStep - index) <= 2 ? (
             <img className={classes.img} src={image} onClick={(e)=>{handleImage(e,index)}} />
@@ -1163,12 +1320,12 @@ const [designMetadata,setDesignMetadata]=useState("");
     </AutoPlaySwipeableViews>
     <MobileStepper
       style={{backgroundColor:"#173e43",color:"aliceblue"}}
-      steps={props.cryptoBoys[thistokenId].metaData.images.length}
+      steps={props.cryptoBoys[thistokenId][0].metaData.images.length}
       position="static"
       variant="text"
       activeStep={activeStep}
       nextButton={
-        <Button size="small" style={{backgroundColor:"#dddfd4"}} onClick={handleNext} disabled={activeStep ===props.cryptoBoys[thistokenId].metaData.images.length - 1}>
+        <Button size="small" style={{backgroundColor:"#dddfd4"}} onClick={handleNext} disabled={activeStep ===props.cryptoBoys[thistokenId][0].metaData.images.length - 1}>
          
           {theme.direction === 'rtl' ? <KeyboardArrowLeft  /> : <KeyboardArrowRight />}
         </Button>
@@ -1180,7 +1337,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         </Button>
       }
     /></>):null}
-    </>)}
+    </>)} */}
   
     </div>
    
@@ -1204,4 +1361,4 @@ const [designMetadata,setDesignMetadata]=useState("");
  
 }
 
-export default CryptoBoyNFTDetails;
+export default CryptoBoyERC1155Details;

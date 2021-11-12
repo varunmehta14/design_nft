@@ -160,7 +160,7 @@ const classes=useStyles();
          <p className="lead">Account address :</p>
          <h4>{accountAddress}</h4>
          <p className="lead">Account balance :</p>
-         <h4>{accountBalance} Ξ</h4>
+         {/* <h4>{window.web3.utils.fromWei(accountBalance.toString())} Ξ</h4> */}
          
         <hr/>
         <br/>
@@ -368,7 +368,7 @@ const classes=useStyles();
              <p className="lead">Account address :</p>
              <h4>{accountAddress}</h4>
              <p className="lead">Account balance :</p>
-             <h4>{accountBalance} Ξ</h4>
+             {/* <h4>{window.web3.utils.fromWei(accountBalance.toString())} Ξ</h4> */}
              
      
             <br/>
