@@ -192,14 +192,48 @@ const Navbar = ({connectToMetamask,
    ],
    includeScore:true
  })
- const fuse2=new Fuse(cryptoBoys,{
+ let tokens=cryptoBoys.map((cryptoBoy)=>{return cryptoBoy[0]});
+ const result = [];
+const map = new Map();
+for (const item of tokens) {
+    if(!map.has(item.name)){
+      if(!map.has(item.price.toString())){
+        // map.set(item.name, true);
+        map.set(item.price.toString(), true);    // set any value to Map
+        result.push(
+            item
+        );
+      }
+        
+    }
+    
+}
+ const fuse2=new Fuse(tokens,{
   keys:[
-    "tokenName"
+    "name"
   ],
   includeScore:true
 })
+// let finalSet=new Set();
+// let filterArray=[];
 
-  const classes = useStyles();
+// let filteredName = new Set(tokens.map((item)=>item.name));
+// console.log("filtername",filteredName)
+// filteredName.forEach((i)=>{
+//   filterArray=tokens.filter((item)=>item.name===i);
+//   console.log("filterArray",filterArray)
+//   finalSet[i]=new Set();
+//   if(filterArray){
+//     filterArray.forEach(it=>{finalSet[i].add(it.price.toString(),it.tokenId.toNumber());
+//     })
+//   }
+
+// });
+//  console.log("tokens",to);
+
+console.log("result",result)
+
+const classes = useStyles();
 const [anchorEl, setAnchorEl] = useState(null);
 //const [metamaskConnected,setMetamaskConnected]=useState(false);
 const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =useState(null);
@@ -237,11 +271,11 @@ console.log("form submitted", val)
 searchTermfromApp(val)
 }
 
-const handleSearchSubmit2=(e,val)=>{
+const handleSearchSubmit2=(e,val,id)=>{
   e.preventDefault();
   setUserSuggestions([]);setTokenSuggestions([]);
   console.log("form submitted", val)
-  searchNFTFromApp(val)
+  searchNFTFromApp(val,id)
   }
 // const connectToMetamask = async () => {
   
@@ -333,8 +367,8 @@ const renderMenu = (
            <div style={{maxHeight:"25vh",overflow:"auto"}}>
             <h4>Designs</h4>
              {tokenSuggestions&&tokenSuggestions.map((result,i)=>
-             <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result[1]);handleSearchSubmit2(e,result[1])}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center",overflowWrap:"break-word"}}>
-               <img alt={result[1]} src={result[8]}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result[1]}</b>
+             <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result.name);handleSearchSubmit2(e,result.name,result.tokenId)}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center",overflowWrap:"break-word"}}>
+               <img alt={result.name} src={result.metadata.image}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result.name}</b>
              </div>
             )}
             </div>
@@ -383,9 +417,9 @@ const renderMenu = (
                 My Tokens
               </Link>
             
-              <Link to="/chat" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
+              {/* <Link to="/chat" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
               <ChatIcon/>
-              </Link>
+              </Link> */}
             
               
              
@@ -492,8 +526,8 @@ const renderMobileMenu = (
            <div style={{maxHeight:"25vh",overflow:"auto"}}>
             <h4>Designs</h4>
              {tokenSuggestions&&tokenSuggestions.map((result,i)=>
-             <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result.tokenName);handleSearchSubmit2(e,result.tokenName);setUserSuggestions([]);setTokenSuggestions([])}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center"}}>
-               <img alt={result.tokenName} src={result.imageHash}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result.tokenName}</b>
+             <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result.name);handleSearchSubmit2(e,result.name,result.tokenId);setUserSuggestions([]);setTokenSuggestions([])}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center"}}>
+               <img alt={result.name} src={result.metadata.image}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result.name}</b>
              </div>
             )}
             </div>

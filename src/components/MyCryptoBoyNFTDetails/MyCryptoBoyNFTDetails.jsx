@@ -89,18 +89,19 @@ const MyCryptoBoyNFTDetails = ({callback1,cryptoboy,accountAddress}) => {
   } = cryptoboy;
 
 
-console.log(cryptoboy)
+console.log("cryptoboy",cryptoboy)
   return (
-  <>
+   
+      <div className="my-card" style={{height: "100%"}}>
    <CardActionArea className={classes.actionArea}>
-   <Link to={`/nftDetails/${tokenId}`} onClick={()=>{handleClick(tokenId)}}style={{textDecorationLine:"none"}}>
+   <Link to={`/nftDetails/${cryptoboy.tokenId.toNumber()}`} onClick={()=>{handleClick(cryptoboy.tokenId.toNumber())}}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
-    <CardMedia  classes={mediaStyles} image={cryptoboy.imageHash}style={{backgroundSize:"contain"}} /> 
+    <CardMedia  classes={mediaStyles} image={cryptoboy.metadata.image}style={{backgroundSize:"contain"}} /> 
       {cryptoboy.currentOwner===cryptoboy.mintedBy?(
           <CardActions className={classes.contentNotSold}disableSpacing>
           <div style={{display:"flex"}}>
             <Typography className={classes.title} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
-            {cryptoboy.tokenName}
+            {cryptoboy.metadata.name}
             </Typography>
             </div>
             </CardActions>
@@ -108,7 +109,7 @@ console.log(cryptoboy)
         <CardActions className={classes.contentSold}disableSpacing  style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         
           <Typography className={classes.title} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
-          {cryptoboy.tokenName} 
+          {cryptoboy.metadata.name}
           </Typography>
          
           <div style={{color:"cornsilk"}}>
@@ -123,13 +124,13 @@ console.log(cryptoboy)
       <CardContent className={classes.content2}>
         <div className={classes.subtitle}>
           Token Id:   
-         {tokenId.toNumber()}
+         {cryptoboy.tokenId.toNumber()}
       
         </div>
         <hr/>
         <div className={classes.subtitle}>
           No. of Transfer:   
-          {numberOfTransfers.toNumber()}
+          {cryptoboy.numberOfTransfers.toNumber()}
       
         </div>
        
@@ -146,34 +147,10 @@ console.log(cryptoboy)
      
     </Card>
     </Link>
-  </CardActionArea></>
-    // <div key={tokenId} className="mt-4 ml-3">
-    //   <p>
-    //     <span className="font-weight-bold">Token Id</span> :{" "}
-    //     {tokenId}
-    //   </p>
-    //   <p>
-    //     <span className="font-weight-bold">Name</span> : {tokenName}
-    //   </p>
-    //   <p>
-    //     <span className="font-weight-bold">Price</span> :{" "}
-    //     {window.web3.utils.fromWei(price.toString(), "Ether")} Ξ
-    //   </p>
-    //   <p>
-    //     <span className="font-weight-bold">No. of Transfers</span> :{" "}
-    //     {numberOfTransfers}
-    //   </p>
-    //   {/* {props.accountAddress === mintedBy &&
-    //   props.accountAddress !== previousOwner ? (
-    //     <div className="alert alert-success w-50 text-center m-auto">
-    //       Minted
-    //     </div>
-    //   ) : (
-    //     <div className="alert alert-info w-50 text-center m-auto">Bought</div>
-    //   )} */}
-    //   <Link to={`/nftDetails/${tokenId}`} style={{textDecoration:"none"}}onClick={()=>{handleClick(tokenId)}} ><Button variant="contained" >View NFT</Button></Link> 
-    // </div>
-  
+  </CardActionArea>
+  </div>
+
+   
   );
 };
 

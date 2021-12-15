@@ -69,31 +69,31 @@ const NFTHighlights=(props)=> {
   const mediaStyles = useFourThreeCardMediaStyles();
   console.log(props)
     
-      const [mintedByName,setMintedByName]=useState(props.cryptoboy.mintedBy) 
+      const [mintedByName,setMintedByName]=useState(props.cryptoboy[0].mintedBy) 
       const [mintedAvatar,setMintedAvatar]=useState(null) 
-      const [ownedByName,setOwnedByName]=useState(props.cryptoboy.currentOwner) 
+      const [ownedByName,setOwnedByName]=useState(props.cryptoboy[0].currentOwner) 
       const [ownedAvatar,setOwnedAvatar]=useState(null) 
    
      
       const getCurrentUser=async()=>{
       //  if(props.usersContract&&props.users){
-      //    //const currentMinted=await props.users.find((user)=>user.userAddress===props.cryptoboy.mintedBy);
+      //    //const currentMinted=await props.users.find((user)=>user.userAddress===props.cryptoboy[0].mintedBy);
       //   // console.log("Current using array",currentMinted)
       //    console.log(props)
       //      const currentMinted=await props.usersContract.methods
-      //      .allUsers(props.cryptoboy.mintedBy)
+      //      .allUsers(props.cryptoboy[0].mintedBy)
       //      .call();
       //     setMintedByName(currentMinted[1]);
       //     setMintedAvatar(currentMinted[6]);
-      //     //const currentOwned=await props.users.find((user)=>user.userAddress===props.cryptoboy.currentOwner);
+      //     //const currentOwned=await props.users.find((user)=>user.userAddress===props.cryptoboy[0].currentOwner);
       //      const currentOwned=await props.usersContract.methods
-      //     .allUsers(props.cryptoboy.currentOwner)
+      //     .allUsers(props.cryptoboy[0].currentOwner)
       //      .call();
       //     setOwnedByName(currentOwned[1]);
       //     setOwnedAvatar(currentOwned[6]);
       //   }
         
-        UserDataService.getByAddress(props.cryptoboy.mintedBy)
+        UserDataService.getByAddress(props.cryptoboy[0].mintedBy)
         .then(response => 
           { 
             console.log(response);
@@ -110,7 +110,7 @@ const NFTHighlights=(props)=> {
         .catch(e => {
           console.log(e);
         });
-        UserDataService.getByAddress(props.cryptoboy.currentOwner)
+        UserDataService.getByAddress(props.cryptoboy[0].currentOwner)
         .then(response => 
           { 
             console.log(response);
@@ -133,7 +133,7 @@ const NFTHighlights=(props)=> {
           getCurrentUser();
         
        
-      },[props.cryptoboy]);
+      },[props.cryptoboy[0]]);
 console.log(mintedByName,ownedByName)
 
 //   callChangeTokenPriceFromApp = (tokenId, newPrice) => {
@@ -146,21 +146,21 @@ console.log(mintedByName,ownedByName)
   }
 
   
-    //console.log(props.cryptoboy.imageHash)
+    //console.log(props.cryptoboy[0].imageHash)
     //console.log(props.toggleForSale)
     return (
       <>
-       {props.cryptoboy&&ownedByName?(
+       {props.cryptoboy[0]?(
          <>
          <CardActionArea className={classes.actionArea}>
-      <Link to={`/nftDetails/${props.cryptoboy.tokenId.toNumber()}`} onClick={()=>handleClick(props.cryptoboy.tokenId.toNumber())}style={{textDecorationLine:"none"}}>
+      <Link to={`/nftDetails/${props.cryptoboy[0].tokenId.toNumber()}`} onClick={()=>handleClick(props.cryptoboy[0].tokenId.toNumber())}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
-      <CardMedia  classes={mediaStyles} image={props.cryptoboy.imageHash} style={{backgroundSize:"contain"}}/> 
+      <CardMedia  classes={mediaStyles} image={props.cryptoboy[0].metadata.image} style={{backgroundSize:"contain"}}/> 
     
       <CardActions className={classes.content}disableSpacing>
       <div style={{display:"flex"}}>
         <Typography className={classes.title} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
-        {props.cryptoboy.tokenName}
+        {props.cryptoboy[0].metadata.name}
         </Typography>
         </div>
         </CardActions>
@@ -169,13 +169,13 @@ console.log(mintedByName,ownedByName)
         
         <div style={{display:"flex",justifyContent:"left",alignItems:"center"}}>
         {/* <span className="font-weight-bold">Created By :&nbsp;</span> */}
-        <Link to={`/their-tokens/${props.cryptoboy.mintedBy}`} onClick={()=>{handleClick(props.cryptoboy.mintedBy); window.location.href=`/their-tokens/${props.cryptoboy.mintedBy}`}}style={{textDecorationLine:"none"}}>
+        <Link to={`/their-tokens/${props.cryptoboy[0].mintedBy}`} onClick={()=>{handleClick(props.cryptoboy[0].mintedBy); window.location.href=`/their-tokens/${props.cryptoboy[0].mintedBy}`}}style={{textDecorationLine:"none"}}>
           
           {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center",fontWeight:"bolder"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;@{mintedByName}  <br/>
-          <>&nbsp;Creator</></div>):(<>{props.cryptoboy.mintedBy.substr(0, 5) +
+          <>&nbsp;Creator</></div>):(<>{props.cryptoboy[0].mintedBy.substr(0, 5) +
               "..." +
-              props.cryptoboy.mintedBy.slice(
-                props.cryptoboy.mintedBy.length - 5  )}<br/>
+              props.cryptoboy[0].mintedBy.slice(
+                props.cryptoboy[0].mintedBy.length - 5  )}<br/>
           <>&nbsp;Creator</></>)}
           </Link>
         
@@ -186,17 +186,17 @@ console.log(mintedByName,ownedByName)
      
       <div style={{display:"flex",justifyContent:"left",alignItems:"center"}}>
         {/* <span className="font-weight-bold">Owned By :&nbsp;</span> */}
-        <Link to={`/their-tokens/${props.cryptoboy.currentOwner}`} onClick={()=>{handleClick(props.cryptoboy.currentOwner); window.location.href=`/their-tokens/${props.cryptoboy.currentOwner}`}}style={{textDecorationLine:"none"}}> 
-        {/* {props.cryptoboy.currentOwner.substr(0, 5) +
+        <Link to={`/their-tokens/${props.cryptoboy[0].currentOwner}`} onClick={()=>{handleClick(props.cryptoboy[0].currentOwner); window.location.href=`/their-tokens/${props.cryptoboy[0].currentOwner}`}}style={{textDecorationLine:"none"}}> 
+        {/* {props.cryptoboy[0].currentOwner.substr(0, 5) +
           "..." +
-          props.cryptoboy.currentOwner.slice(
-            props.cryptoboy.currentOwner.length - 5
+          props.cryptoboy[0].currentOwner.slice(
+            props.cryptoboy[0].currentOwner.length - 5
           )} */}
           {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center",fontWeight:"bolder"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;@{ownedByName} <br/>
-          <>&nbsp;Owner</></div>):(<>{props.cryptoboy.currentOwner.substr(0, 5) +
+          <>&nbsp;Owner</></div>):(<>{props.cryptoboy[0].currentOwner.substr(0, 5) +
               "..." +
-              props.cryptoboy.currentOwner.slice(
-                props.cryptoboy.currentOwner.length - 5
+              props.cryptoboy[0].currentOwner.slice(
+                props.cryptoboy[0].currentOwner.length - 5
               )}<br/>
               <>&nbsp;Owner</></>)}
           </Link>
@@ -205,7 +205,7 @@ console.log(mintedByName,ownedByName)
         Price
         <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
         {window.web3.utils.fromWei(
-          props.cryptoboy.price.toString(),
+          props.cryptoboy[0].price.toString(),
           "Ether"
         )}
         {" "}

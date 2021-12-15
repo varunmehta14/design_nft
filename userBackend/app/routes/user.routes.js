@@ -23,10 +23,10 @@ module.exports = app => {
     
   
     // Update a user with id
-    router.put("/address/:id", authRequired(), users.update);
+    router.put("/address/:id",authRequired(),  users.update);
   
     // Delete a user with id
-    router.delete("/address/:id", authRequired(), users.delete);
+    router.delete("/address/:id" , users.delete);
   
     // Delete all users
     //router.delete("/", users.deleteAll);

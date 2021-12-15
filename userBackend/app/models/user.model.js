@@ -49,61 +49,61 @@ module.exports = (sequelize, Sequelize) => {
         // For uniquely identify user.
         primaryKey:true
       },
-      connections: {
+      // connections: {
        
-        type: Sequelize.STRING,
-      //  foreignKey: true,
-        // references:{
-        //     model:'Users',
-        //     key:'userId'
-        // },
-        get() {
-          //if(connections.length!=0){
-          return JSON.parse(this.getDataValue('connections'))
-         // }
-      },
-      set(val) {
-        //if(connections.length!=0){
-          this.setDataValue('connections',JSON.stringify(val));
-        //}
-      },
-      },
-      rooms: {
-        type: Sequelize.STRING,
-        //foreignKey: true,
-        // references:{
-        //   model:'Rooms',
-        //   key:'roomId'
-        // },
-        get() {
-          //if(rooms.length!=0){
-          return JSON.parse(this.getDataValue('rooms'))
-          //}
-      },
-      set(val) {
-        //if(rooms.length!=0){
-         this.setDataValue('rooms',JSON.stringify(val));
-        //}
-      },
-      },
-      groups: {
-        type: Sequelize.STRING,
-        //foreignKey: true,
-        // references:{
-        //     model:'Groups',
-        //     key:'groupId'
-        // },
-        get() {
-          //if(groups.length!=0){
-          return JSON.parse(this.getDataValue('groups'))
-        //}
-      },
-      set(val) {
-        //if(groups.length!=0){
-          this.setDataValue('groups',JSON.stringify(val));
-        //}
-      },
-      },
+      //   type: Sequelize.STRING,
+      // //  foreignKey: true,
+      //   // references:{
+      //   //     model:'Users',
+      //   //     key:'userId'
+      //   // },
+      //   get() {
+      //     //if(connections.length!=0){
+      //     return JSON.parse(this.getDataValue('connections'))
+      //    // }
+      // },
+      // set(val) {
+      //   //if(connections.length!=0){
+      //     this.setDataValue('connections',JSON.stringify(val));
+      //   //}
+      // },
+      // },
+      // rooms: {
+      //   type: Sequelize.STRING,
+      //   //foreignKey: true,
+      //   // references:{
+      //   //   model:'Rooms',
+      //   //   key:'roomId'
+      //   // },
+      //   get() {
+      //     //if(rooms.length!=0){
+      //     return JSON.parse(this.getDataValue('rooms'))
+      //     //}
+      // },
+      // set(val) {
+      //   //if(rooms.length!=0){
+      //    this.setDataValue('rooms',JSON.stringify(val));
+      //   //}
+      // },
+      // },
+      // groups: {
+      //   type: Sequelize.STRING,
+      //   //foreignKey: true,
+      //   // references:{
+      //   //     model:'Groups',
+      //   //     key:'groupId'
+      //   // },
+      //   get() {
+      //     //if(groups.length!=0){
+      //     return JSON.parse(this.getDataValue('groups'))
+      //   //}
+      // },
+      // set(val) {
+      //   //if(groups.length!=0){
+      //     this.setDataValue('groups',JSON.stringify(val));
+      //   //}
+      // },
+      // },
      
     });
     // User.associate = models => {

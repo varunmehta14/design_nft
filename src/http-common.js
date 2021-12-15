@@ -5,7 +5,7 @@ let token = localStorage.getItem("token");
 export default axios.create({
   baseURL: "http://localhost:8080/api",
   headers: {
-    "Authorization": `Bearer ${token}`,
+    "Authorization": `Bearer ${localStorage.getItem("token")}`,
     "Content-type": "application/json",
     Accept: "application/json",
 

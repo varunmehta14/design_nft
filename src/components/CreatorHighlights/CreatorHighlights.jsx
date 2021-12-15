@@ -73,19 +73,23 @@ const CreatorHighlights=(props)=>{
 
   const [myBoughtCryptoBoys, setMyBoughtCryptoBoys] = useState(0);
   const [myMintedCryptoBoys, setMyMintedCryptoBoys] = useState(0);
+  console.log("creatHig",props)
   useEffect(() => {
    
-    
-    const my_bought_crypto_boys = props.designs.filter(
-      (cryptoboy) => cryptoboy.currentOwner === props.user.userAddress && !(cryptoboy.mintedBy === props.user.userAddress)
-    );
-    setMyBoughtCryptoBoys(my_bought_crypto_boys.length);
     const my_minted_crypto_boys = props.designs.filter(
-      (cryptoboy) => cryptoboy.mintedBy ===  props.user.userAddress 
+      (cryptoboy) => cryptoboy[0].mintedBy ===  props.user.userAddress 
     );
     setMyMintedCryptoBoys(my_minted_crypto_boys.length);
+    console.log("my minted",my_minted_crypto_boys)
+    const my_bought_crypto_boys = props.designs.filter(
+      (cryptoboy) => cryptoboy[0].currentOwner === props.user.userAddress && !(cryptoboy[0].mintedBy === props.user.userAddress)
+    );
     
-  }, [props.designs]);
+
+    setMyBoughtCryptoBoys(my_bought_crypto_boys.length);
+    
+    
+  }, [props.designs,props.user]);
   const handleClick=()=>{
     window.open(`https://www.instagram.com/${props.user.userSocial}/`,"_blank")
   }

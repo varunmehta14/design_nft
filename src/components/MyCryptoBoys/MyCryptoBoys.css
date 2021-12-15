@@ -1,0 +1,65 @@
+.main {
+  display: contents;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  padding: 10px;
+  /* min-height: 70vh; */
+ height:490px;
+}
+
+.main > div {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-start;
+  height:500px;
+  
+}
+
+.containerStack {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  margin: 20px;
+  width: 400px;
+  height: 500px;
+}
+
+.cardStack {
+  background: rgb(255, 255, 255);
+  border-radius: 8px;
+  border: 1px solid #eeeeee;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active,
+.accordion:hover {
+  background-color: #ccc;
+  max-height: unset !important;
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}

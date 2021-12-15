@@ -93,14 +93,14 @@ console.log(cryptoboy)
   return (
   <>
    <CardActionArea className={classes.actionArea}>
-   <Link to={`/nftDetails/${tokenId}`} onClick={()=>{handleClick(tokenId)}}style={{textDecorationLine:"none"}}>
+   <Link to={`/nftDetails/${cryptoboy.tokenId.toNumber()}`} onClick={()=>{handleClick(cryptoboy.tokenId.toNumber())}}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
-    <CardMedia  classes={mediaStyles} image={cryptoboy.imageHash}style={{backgroundSize:"contain"}} /> 
+    <CardMedia  classes={mediaStyles} image={cryptoboy.metadata.image}style={{backgroundSize:"contain"}} /> 
      
           <CardActions className={classes.contentNotSold}disableSpacing>
           <div style={{display:"flex"}}>
             <Typography className={classes.title} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
-            {cryptoboy.tokenName}
+            {cryptoboy.metadata.name}
             </Typography>
             </div>
             </CardActions>
@@ -110,13 +110,13 @@ console.log(cryptoboy)
       <CardContent className={classes.content2}>
         <div className={classes.subtitle}>
           Token Id:   
-         {tokenId.toNumber()}
+         {cryptoboy.tokenId.toNumber()}
       
         </div>
         <hr/>
         <div className={classes.subtitle}>
           No. of Transfer:   
-          {numberOfTransfers.toNumber()}
+          {cryptoboy.numberOfTransfers.toNumber()}
       
         </div>
        

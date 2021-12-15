@@ -36,14 +36,12 @@ const AllCryptoBoys = ({
   cryptoBoys,
   //allcryptoBoys,
   totalTokensMinted,
-  changeTokenPrice,
-  toggleForSale,
-  buyCryptoBoy,
+ 
   callbackFromParent,
   //cryptoBoysContract,
 
 }) => {
-  
+  console.log(cryptoBoys)
   const [loading, setLoading] = useState(true);
   const [address,setAddress]=useState("");
   const [start,setStart]=useState(1);
@@ -123,7 +121,16 @@ const AllCryptoBoys = ({
   let postsPerPage;
   let arrayForHoldingPosts = [];
    const [allDesigns,setAllDesigns]=useState([]);
+   const [creatorList, setCreatorList] = useState({
+    list: []
+});
    const [next,setNext]=useState(postsPerPage);
+   // tracking on which page we currently are
+   const [page, setPage] = useState(0);
+   // add loader refrence 
+   const loader = useRef(null);
+   const [height, setHeight] = useState(0)
+   const ref = useRef(null)
 
    const loopWithSlice = (start, end) => {
    // const slicedPosts = props.users.slice(start, end);
@@ -134,7 +141,8 @@ const AllCryptoBoys = ({
   //   loopWithSlice(0, postsPerPage);
   // }, []);
   useEffect(()=>{
-    setAllDesigns(cryptoBoys.slice(0,postsPerPage))
+    //setAllDesigns(cryptoBoys.slice(0,postsPerPage))
+    setAllDesigns(cryptoBoys);
     setEnd(cryptoBoys.length);
   },[cryptoBoys])
 
@@ -202,6 +210,44 @@ const AllCryptoBoys = ({
   //      console.log("here")
   //    }
   //  }
+  useEffect(() => {
+    if(ref.current){
+    setHeight(ref.current.clientHeight)
+    
+    }
+
+  })
+  const handleObserver = (entities) => {
+    const target = entities[0];
+    if (target.isIntersecting) {   
+        setPage((page) => page + postsPerPage)
+        
+    }
+    }
+  useEffect(() => {
+    var options = {
+       root: null,
+       rootMargin: "20px",
+       threshold: 1.0
+    };
+   // initialize IntersectionObserver
+   // and attaching to Load More div
+    const observer = new IntersectionObserver(handleObserver, options);
+    if (loader.current) {
+       observer.observe(loader.current)
+    }
+
+}, []);
+
+useEffect(() => {
+// here we simulate adding new posts to List
+const newList = creatorList.list.concat(cryptoBoys.slice(page,page+postsPerPage));
+setCreatorList({
+    list: newList
+})
+console.log("length:",creatorList.list.length)
+}, [page,cryptoBoys])
+
    const gridStyles = useGridStyles();
   
    const onChange = (currentNode, selectedNodes) => {
@@ -222,7 +268,7 @@ const AllCryptoBoys = ({
       //   cryptoBoy[newItem.push]
       // })
       //if(cryptoBoy.metaData!=undefined){
-        if(cryptoBoy.metaData.categories===categories){
+        if(cryptoBoy[0].metadata.categories===categories){
           searchedResults.push(cryptoBoy);
          // setLoading(false)
         }
@@ -251,7 +297,9 @@ const AllCryptoBoys = ({
     // console.log(filteredArray);
     //console.log(cryptoBoys.filter((cryptoBoy)=>cryptoBoy.metaData.categories,{categories}));
     console.log(searchedResults)
+ 
   }
+
   return (
     <div style={{padding:"0.5%"}}>
       <div className="card mt-1">
@@ -263,7 +311,7 @@ const AllCryptoBoys = ({
         </div>
       </div>
 
-      {cryptoBoys ?(
+      {cryptoBoys.length!=0 ?(
         <>
         <div style={{display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
           {/* <button className="mt-3 btn btn-outline-primary" onClick={()=>{setShowCategory(!showCategory)}} style={{borderRadius:"20px"}}>
@@ -293,7 +341,7 @@ const AllCryptoBoys = ({
        <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
               Search
               </button>*/}
-        {/* <Select 
+        <Select 
               options={options}
               className="basic-single breadth"
               classNamePrefix="select"
@@ -305,17 +353,17 @@ const AllCryptoBoys = ({
                
             
               //onChange={(e)=>{setCategories(e.target.value)}}
-              /> */}
+              />
                 {/* <button className="mt-3 btn btn-outline-primary" onClick={searchFilters} style={{borderRadius:"20px",marginLeft:"4px"}}>
               Search
               </button> */}
-              {/* <IconButton onClick={searchFilters} >
+              <IconButton onClick={searchFilters} >
               <PageviewOutlinedIcon style={{ fontSize: 40 }}/>
-              </IconButton> */}
+              </IconButton>
               
               {/* ):null} */}
               </div>      
-        <div style={{display:"flex",justifyContent:"center",padding:"1.5%",height:"100%"}}>
+        <div ref={ref} style={{display:"flex",justifyContent:"center",padding:"1.5%",height:"100%"}}>
       
         <Grid classes={gridStyles} container spacing={4} >
        
@@ -326,9 +374,7 @@ const AllCryptoBoys = ({
              <NFTHighlights
                 cryptoboy={cryptoboy}
                 accountAddress={accountAddress}
-                changeTokenPrice={changeTokenPrice}
-                toggleForSale={toggleForSale}
-                buyCryptoBoy={buyCryptoBoy}
+               
                 callbackFromParent={myCallback1}
                 //cryptoBoysContract={cryptoBoysContract}
                 //usersContract={usersContract}
@@ -388,10 +434,17 @@ const AllCryptoBoys = ({
       You are all Caught Up
       </Alert></>):
                (
-                <button onClick={handleShowMorePosts}>Load more</button>
+                // <button onClick={handleShowMorePosts}>Load more</button>
+                <></>
              )}
             
-             </div></>
+             </div>
+              {/* <div className="loading" ref={loader}  style={{display:"flex",justifyContent:"center"}}>
+    {creatorList.list.length===cryptoBoys.length?(<> <Alert severity="success" color="info">
+      You are all Caught Up      </Alert></>):(<><h2>Load More</h2></>)}
+          
+ </div> */}
+             </>
       ):(<Loading/>)}
       
       </div>

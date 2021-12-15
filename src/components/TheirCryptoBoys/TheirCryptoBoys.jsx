@@ -9,7 +9,7 @@ import Switch from '@material-ui/core/Switch';
 import TheirAccountDetails from "../TheirAccountDetails/TheirAccountDetails";
 import MyBoughtDesignsDetails from "../MyBoughtDesigns/MyBoughtDesignsDetails";
 import UserDataService from "../../services/UserService";
-
+import { StackedCarousel } from 'react-stacked-carousel';
 
 
 const useGridStyles = makeStyles(({ breakpoints }) => ({
@@ -69,7 +69,7 @@ const TheirCryptoBoys = ({
   if(!accountAddress){theirAccountAddress=window.location.href.split("/")[4]};
   console.log(accountAddress);
   const [checked, setChecked] = useState(false);
-  
+  console.log("cryptoBoys",cryptoBoys);
   const getCurrentUser=async()=>{
     if(theirAccountAddress){
       console.log("here")
@@ -102,22 +102,35 @@ const TheirCryptoBoys = ({
    
     }
   }
-
+  function groupBy(objectArray, property) {
+    return objectArray.reduce((acc, obj) => {
+       const key = obj[property];
+       if (!acc[key]) {
+          acc[key] = [];
+       }
+       // Add object to list for given key's value
+       acc[key].push(obj);
+       return acc;
+    }, {});
+ }
   useEffect(() => {
     getCurrentUser();
-    
-    const my_bought_crypto_boys = cryptoBoys.filter(
-      (cryptoboy) => cryptoboy.currentOwner === theirAccountAddress && !(cryptoboy.mintedBy === theirAccountAddress)
-    );
-    setMyBoughtCryptoBoys(my_bought_crypto_boys);
-    const my_minted_crypto_boys = cryptoBoys.filter(
+    let tokens=cryptoBoys.map((cryptoBoy)=>{return cryptoBoy[0]});
+    const my_minted_crypto_boys = tokens.filter(
       (cryptoboy) => cryptoboy.mintedBy === theirAccountAddress
     );
-    setMyMintedCryptoBoys(my_minted_crypto_boys);
-    const my_all_crypto_boys = cryptoBoys.filter(
-      (cryptoboy) => cryptoboy.currentOwner === theirAccountAddress
+    const groupedMy = groupBy(my_minted_crypto_boys, 'name');
+    setMyMintedCryptoBoys(groupedMy);
+    const my_bought_crypto_boys = tokens.filter(
+      (cryptoboy) => cryptoboy.currentOwner === theirAccountAddress && !(cryptoboy.mintedBy === theirAccountAddress)
     );
-    setMyAllCryptoBoys(my_all_crypto_boys);
+    const groupedMyBought = groupBy(my_bought_crypto_boys, 'name');
+    setMyBoughtCryptoBoys(groupedMyBought);
+    
+    // const my_all_crypto_boys = cryptoBoys.filter(
+    //   (cryptoboy) => cryptoboy.currentOwner === theirAccountAddress
+    // );
+    // setMyAllCryptoBoys(my_all_crypto_boys);
   }, [cryptoBoys]);
   const myCallback1=(dataFromChild1)=>{
     console.log(dataFromChild1)
@@ -125,6 +138,11 @@ const TheirCryptoBoys = ({
   callbackFromParent1(dataFromChild1)
    // console.log(address)
   }
+  const onCardChange = (event) => {
+    console.log("Card", event);
+  }
+  console.log("myMinted",myMintedCryptoBoys)
+  console.log("myBought",myBoughtCryptoBoys)
   const classes=useStyles();
   const gridStyles = useGridStyles();
   return (
@@ -160,9 +178,8 @@ const TheirCryptoBoys = ({
         </div>
       </div>
      
-
-     
-      {!checked ?
+{cryptoBoys.length!=0?(<>
+  {!checked ?
       ( <>
         
                 <div className="card mt-1">
@@ -172,11 +189,72 @@ const TheirCryptoBoys = ({
           </h5>
         </div>
       </div>
-      <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
-        {myMintedCryptoBoys?(<>
-          {myMintedCryptoBoys.length !=0 ? (<>
-           <Grid classes={gridStyles} container spacing={4} >
-           {myMintedCryptoBoys.map((cryptoboy) => {
+    
+        {myMintedCryptoBoys.length!=0?(<>
+          {myMintedCryptoBoys.length !=0 ? (
+          <div style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
+         
+           {Object.keys(myMintedCryptoBoys).map((key,index)=>{
+              {console.log(key)}
+              return(<div style={{height:"100vh"}}>
+                <StackedCarousel
+      autoRotate={false}
+      onCardChange={onCardChange}
+      // containerClassName={"container"}
+      // cardClassName="card"
+      leftButton={
+        <button
+          style={{
+            marginRight: "10px",
+            borderRadius: "50%",
+            fontSize: "smaller",
+            fontWeight: "700",
+            textAlign: "center",
+            cursor: "pointer",
+            backgroundColor: "#dadde1"
+          }}
+        >
+          {"<"}
+        </button>
+      }
+      rightButton={
+        <button
+          style={{
+            marginLeft: "40px",
+            borderRadius: "50%",
+            fontSize: "smaller",
+            fontWeight: "700",
+            textAlign: "center",
+            cursor: "pointer",
+            backgroundColor: "#dadde1"
+          }}
+        >
+          {">"}
+        </button>
+      }>
+      {myMintedCryptoBoys[key].map((cryptoboy)=>{
+       
+ return(
+  <>
+  <div key ={index}>
+ {console.log("here",cryptoboy)}
+    <MyCryptoBoyNFTDetails
+           callback1={myCallback1}
+           cryptoboy={cryptoboy}
+           accountAddress={accountAddress}
+      
+         />
+         </div>
+  </>
+);
+      }
+                
+          )}
+      </StackedCarousel>
+              </div>)
+    
+       })}
+           {/* {myMintedCryptoBoys.map((cryptoboy) => {
             return (
               <>
               <Grid item xs={12} sm={6} lg={4} xl={3}>
@@ -185,7 +263,7 @@ const TheirCryptoBoys = ({
                       cryptoboy={cryptoboy}
                       accountAddress={theirAccountAddress}
                  
-                    />
+                    /> */}
                     {/* {!loading ? (
                       <CryptoBoyNFTImage
                        cryptoboy={cryptoboy}
@@ -203,19 +281,20 @@ const TheirCryptoBoys = ({
                       
                     />
                   </div> */}
-                  </Grid>
+                  {/* </Grid>
                 </>
               
             );
   
-          })}</Grid>
+          })} */}
+       
   
-         </>):(<>
+         </div>):(<>
           No Items Created</>)}
            
         </>):(<Loading/>)}
      
-        </div>
+       
         </>
             
           )
@@ -229,13 +308,77 @@ const TheirCryptoBoys = ({
           </h5>
         </div>
       </div>
-      <div style={{display:"flex",justifyContent:"center",padding:"1%"}}>
-      {myBoughtCryptoBoys?(<>
-        {myBoughtCryptoBoys.length!=0?(<>
+     
+      {myBoughtCryptoBoys.length!=0?(<>
+        {myBoughtCryptoBoys.length!=0?(
+        <div style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
         
-          <Grid classes={gridStyles} container spacing={4} >
-
-{myBoughtCryptoBoys.map((cryptoboy) => {
+        <Grid classes={gridStyles} container spacing={4} >
+          {Object.keys(myBoughtCryptoBoys).map((key,index)=>{
+              {console.log(key)}
+              return(
+              <div style={{height:"100vh"}}>
+                 <Grid item xs={12} sm={6} lg={4} xl={3} >
+                <StackedCarousel
+      autoRotate={false}
+      onCardChange={onCardChange}
+      // containerClassName={"container"}
+      // cardClassName="card"
+      leftButton={
+        <button
+          style={{
+            marginRight: "10px",
+            borderRadius: "50%",
+            fontSize: "smaller",
+            fontWeight: "700",
+            textAlign: "center",
+            cursor: "pointer",
+            backgroundColor: "#dadde1"
+          }}
+        >
+          {"<"}
+        </button>
+      }
+      rightButton={
+        <button
+          style={{
+            marginLeft: "40px",
+            borderRadius: "50%",
+            fontSize: "smaller",
+            fontWeight: "700",
+            textAlign: "center",
+            cursor: "pointer",
+            backgroundColor: "#dadde1"
+          }}
+        >
+          {">"}
+        </button>
+      }>
+      {myBoughtCryptoBoys[key].map((cryptoboy)=>{
+       
+ return(
+  <>
+  <div key ={index}>
+ {console.log("here",cryptoboy)}
+ < MyBoughtDesignsDetails
+           callback1={myCallback1}
+           cryptoboy={cryptoboy}
+           accountAddress={accountAddress}
+      
+         />
+         </div>
+  </>
+);
+      }
+                
+          )}
+      </StackedCarousel>
+      </Grid>
+              </div>)
+    
+       })}
+       </Grid>
+{/* {myBoughtCryptoBoys.map((cryptoboy) => {
  return (
    <>
    <Grid item xs={12} sm={6} lg={4} xl={3}>
@@ -244,7 +387,7 @@ const TheirCryptoBoys = ({
            cryptoboy={cryptoboy}
            accountAddress={accountAddress}
       
-         />
+         /> */}
          {/* {!loading ? (
            <CryptoBoyNFTImage
             cryptoboy={cryptoboy}
@@ -262,14 +405,19 @@ const TheirCryptoBoys = ({
            
          />
        </div> */}
-       </Grid>
+       {/* </Grid>
      </>
- )})}</Grid></>):(<>
+ )})} */}
+ </div>):(<>
  No Designs Bought</>)}
        </>):(<Loading/>)}
-     </div>
+   
           </>
-        )}</>):(<><h3>User name does not exist</h3></>)}
+        )}
+</>):(<><Loading/></>)}
+     
+
+        </>):(<><h3>User name does not exist</h3></>)}
      
        
     </div>

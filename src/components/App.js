@@ -11,8 +11,8 @@ import "./App.css";
 
 import Web3 from "web3";
 import DigiFashion from "../abis/DigiFashion.json";
-import DigiFashionERC1155 from "../abis/DigiFashionERC1155.json";
-import DigiFashionERC1155Abi from "../abis/1155abi.json";
+//import DigiFashion from "../abis/DigiFashion.json";
+import DigiFashionAbi from "../abis/1155abi.json";
 // import EthSwap from "../abis/EthSwap.json";
 import Token from "../abis/Token.json";
 import CryptoBoyNFTDetails from "./CryptoBoyNFTDetails/CryptoBoyNFTDetails";
@@ -65,7 +65,7 @@ class App extends Component {
       accountAddress: "",
       accountBalance: "",
       DigiFashionContract: null,
-      DigiFashionERC1155Contract: null,
+      DigiFashionContract: null,
       tokenContract:null,
       networkData:null,
       networkERC1155Data:null,
@@ -227,7 +227,7 @@ class App extends Component {
       let accountBalance = await web3.eth.getBalance(accounts[0]);
        accountBalance = web3.utils.fromWei(accountBalance, "Ether");
       console.log(accountBalance)
-      this.setState({ accountBalance });
+      this.setState({ accountBalance:accountBalance });
       //res = await axios.post('http://localhost:8080/accountBalance',{account:this.state.accountAddress})
       //console.log(res)
       //here
@@ -255,7 +255,7 @@ class App extends Component {
       //Network ID
      const networkId = await web3.eth.net.getId();
      const networkData = DigiFashion.networks[networkId];
-     const networkERC1155Data = DigiFashionERC1155.networks[networkId];
+     const networkERC1155Data = DigiFashion.networks[networkId];
     //  const ethSwapData = EthSwap.networks[networkId]
       const tokenData = Token.networks[networkId]
      // this.setState({ethSwapDataAdd:ethSwapData.address})
@@ -263,107 +263,122 @@ class App extends Component {
       console.log(this.state.networkData)
       this.setState({networkERC1155Data});
       this.setState({tokenData});
-      if (networkData) {
-        this.setState({ loading: true });
+      //if (networkData) {
+        //this.setState({ loading: true });
+        const contractAddress="0x5d78a62Eae3E2d191e297BFaa80a88d311c6E578";
         const DigiFashionContract = web3.eth.Contract(
-          DigiFashion.abi,
-          networkData.address
+          DigiFashionAbi,
+          contractAddress
         );
         //set contract
         this.setState({ DigiFashionContract });
         console.log(DigiFashionContract)
         this.setState({ contractDetected: true });
         //get number of designs minted on the platform
-        const cryptoBoysCount = await DigiFashionContract.methods
-          .cryptoBoyCounter()
+        let cryptoBoysCount = await DigiFashionContract.methods
+          ._tokensMintedCount()
           .call();
+          cryptoBoysCount=cryptoBoysCount.toNumber();
         this.setState({ cryptoBoysCount });
         
        
          //get all the designs
-         
+         let tempDes=[];
          for (var i = 1; i <=cryptoBoysCount; i++) {
            
          
-          const cryptoBoy = await DigiFashionContract.methods
+          let cryptoBoy = await DigiFashionContract.methods
             .allCryptoBoys(i)
             .call();
-          this.setState({
-            cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
-          });
+            const metaDataURI = await DigiFashionContract.methods
+            .getTokenMetaData(i)
+            .call();
+          let result = await fetch(metaDataURI);
+          const metaDataERC1155 = await result.json();
+
+          console.log(metaDataERC1155)
+          cryptoBoy=[{...cryptoBoy,"metadata":metaDataERC1155}];
+          tempDes.push(cryptoBoy);
+          // this.setState({
+          //   cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
+          // });
         }
+        this.setState({
+          cryptoBoys: tempDes,
+        });
        
        
         
         //get number of tokens on the platform
-        let totalTokensMinted = await DigiFashionContract.methods
-          .getNumberOfTokensMinted()
-          .call();
-        totalTokensMinted = totalTokensMinted.toNumber();
-        this.setState({ totalTokensMinted });
+        // let totalTokensMinted = await DigiFashionContract.methods
+        //   .getNumberOfTokensMinted()
+        //   .call();
+        // totalTokensMinted = totalTokensMinted.toNumber();
+        // this.setState({ totalTokensMinted });
         //get tokens owned by current account
-        let totalTokensOwnedByAccount = await DigiFashionContract.methods
-          .getTotalNumberOfTokensOwnedByAnAddress(this.state.accountAddress)
-          .call();
-        totalTokensOwnedByAccount = totalTokensOwnedByAccount.toNumber();
-        this.setState({ totalTokensOwnedByAccount });
+        // let totalTokensOwnedByAccount = await DigiFashionContract.methods
+        //   .getTotalNumberOfTokensOwnedByAnAddress(this.state.accountAddress)
+        //   .call();
+        // totalTokensOwnedByAccount = totalTokensOwnedByAccount.toNumber();
+        // this.setState({ totalTokensOwnedByAccount });
         this.setState({ loading: false });
-      } else {
-        this.setState({ contractDetected: false });
-      }
-      if(tokenData){
-        const tokenContract = new web3.eth.Contract(Token.abi, tokenData.address)
+      //} 
+      //else {
+        //this.setState({ contractDetected: false });
+      //}
+      // if(tokenData){
+      //   const tokenContract = new web3.eth.Contract(Token.abi, tokenData.address)
         
-        this.setState({ tokenContract });
-        let myTokenBalance = await this.state.tokenContract.methods.balanceOfERC20(this.state.accountAddress).call()
-        this.setState({ accountBalance:myTokenBalance });
-        console.log(this.state.accountBalance);
-      }
-      else {
-        this.setState({ contractDetected: false });
-      }
-      //if(networkERC1155Data){
-        const contractAddress="0x9a3Aa3BBe16B933e7Ded5C6604c70600065a3557";
-       // const DigiFashionERC1155Contract = new web3.eth.Contract(DigiFashionERC1155.abi,networkERC1155Data.address)
-        const DigiFashionERC1155Contract = new web3.eth.Contract(DigiFashionERC1155Abi.abi,contractAddress);
+      //   this.setState({ tokenContract });
+      //   let myTokenBalance = await this.state.tokenContract.methods.balanceOfERC20(this.state.accountAddress).call()
+      //   this.setState({ accountBalance:myTokenBalance });
+      //   console.log(this.state.accountBalance);
+      // }
+      // else {
+      //   this.setState({ contractDetected: false });
+      // }
+  //     //if(networkERC1155Data){
+  //       const contractAddress="0x9a3Aa3BBe16B933e7Ded5C6604c70600065a3557";
+  //      // const DigiFashionContract = new web3.eth.Contract(DigiFashion.abi,networkERC1155Data.address)
+  //       const DigiFashionContract = new web3.eth.Contract(DigiFashionAbi.abi,contractAddress);
         
-        this.setState({ DigiFashionERC1155Contract });
-        // let myTokenBalance = await this.state.tokenContract.methods.balanceOfERC20(this.state.accountAddress).call()
-        // this.setState({ accountBalance:myTokenBalance });
-        this.setState({ contractDetected: true });
-        let cryptoERC1155Count = await DigiFashionERC1155Contract.methods
-          ._tokensMintedCount()
-          .call();
-          cryptoERC1155Count=cryptoERC1155Count.toNumber();
-        this.setState({ cryptoERC1155Count });
-        console.log(cryptoERC1155Count);
-        // const currentOwned=await DigiFashionERC1155Contract.methods.tokenIdToAdd(1).call();
-        // console.log(currentOwned)
-         //get all the designs
+  //       this.setState({ DigiFashionContract });
+  //       // let myTokenBalance = await this.state.tokenContract.methods.balanceOfERC20(this.state.accountAddress).call()
+  //       // this.setState({ accountBalance:myTokenBalance });
+  //       this.setState({ contractDetected: true });
+        // let cryptoERC1155Count = await DigiFashionContract.methods
+        //   ._tokensMintedCount()
+        //   .call();
+        //   cryptoERC1155Count=cryptoERC1155Count.toNumber();
+        // this.setState({ cryptoERC1155Count });
+  //       console.log(cryptoERC1155Count);
+  //       // const currentOwned=await DigiFashionContract.methods.tokenIdToAdd(1).call();
+  //       // console.log(currentOwned)
+  //        //get all the designs
          
-         for (var i = 1; i <=cryptoERC1155Count; i++) {
+  //        for (var i = 1; i <=cryptoERC1155Count; i++) {
            
          
-          const metaDataURI = await DigiFashionERC1155Contract.methods
-            .getTokenMetaData(i)
-            .call();
-          let result = await fetch(`https://ipfs.infura.io/ipfs/${metaDataURI}`);
-          const metaDataERC1155 = await result.json();
-          console.log(metaDataERC1155)
-          const priceERC1155=await DigiFashionERC1155Contract.methods
-          .tokenPrice(i)
-          .call();
-          const cry1155=[{...metaDataERC1155,"price":priceERC1155,"tokenId":i}]
-          console.log("cry1155",cry1155);
-          this.setState({
-            cryptoERC1155: [...this.state.cryptoERC1155,cry1155],
-          });
-          console.log(this.state.cryptoERC1155);
-      }
-   // }
-    //  else {
-        this.setState({ contractDetected: false });
-    //  }
+  //         const metaDataURI = await DigiFashionContract.methods
+  //           .getTokenMetaData(i)
+  //           .call();
+  //         let result = await fetch(`https://ipfs.infura.io/ipfs/${metaDataURI}`);
+  //         const metaDataERC1155 = await result.json();
+  //         console.log(metaDataERC1155)
+  //         const priceERC1155=await DigiFashionContract.methods
+  //         .tokenPrice(i)
+  //         .call();
+  //         const cry1155=[{...metaDataERC1155,"price":priceERC1155,"tokenId":i}]
+  //         console.log("cry1155",cry1155);
+  //         this.setState({
+  //           cryptoERC1155: [...this.state.cryptoERC1155,cry1155],
+  //         });
+  //         console.log(this.state.cryptoERC1155);
+  //     }
+  //  // }
+  //   //  else {
+  //       this.setState({ contractDetected: false });
+  //   //  }
      
     //  if (networkData) {
     //    this.setState({ loading: true });
@@ -1050,7 +1065,7 @@ if(!emailUsed){
   };
 
   //mint multiple 
-  mintMultipleNFT = async (name,description,buffer,tokenPrice,finalbuffer,categories,amount) => {
+  mintMultipleNFT = async (name,description,buffer,tokenPrice,tokenDressPrice,finalbuffer,categories,sizeChart,amount) => {
     this.setState({ loading: true });
     const web3 = window.web3;
    console.log("buffer2",finalbuffer)
@@ -1124,7 +1139,8 @@ if(!emailUsed){
       //imageIsUsed=res.data
       //if(!imageIsUsed){
       
-     const price = window.web3.utils.toWei(tokenPrice.toString(), "ether");
+     const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
+     const dressPrice = window.web3.utils.toWei(tokenDressPrice.toString(), "Ether");
      //const price = window.web3.utils.fromWei(tokenPrice.toString());
      //const price=tokenPrice.toString();
      //console.log(price)
@@ -1153,12 +1169,12 @@ if(!emailUsed){
         description:description,
         mintedBy:this.state.accountAddress,
         //price:window.web3.utils.toWei(tokenPrice.toString(), "ether"),
-        //price:tokenPrice,
-        //dressPrice:tokenDressPrice,
+        price:tokenPrice,
+        dressPrice:tokenDressPrice,
         images:imageHashes,
-        //categories:categories,
-        //sizeChart:sizeChart,
-        //noOfTransfers:0
+        categories:categories,
+        sizeChart:sizeChart,
+        noOfTransfers:0
         
         }
         //storing the token object on ipfs
@@ -1167,17 +1183,19 @@ if(!emailUsed){
         //setting the token uri as the path of token object
         // let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
         //let tokenURI = `https://ipfs.infura.io/ipfs/${tokenId}`;
-        let tokenURI=cid.path;
-        // this.state.DigiFashionERC1155Contract.methods
+        let tokenURI= `https://ipfs.infura.io/ipfs/${cid.path}`;
+        // this.state.DigiFashionContract.methods
         // .updateTokenMetadata(itokenId,tokenURI)
         // .send({ from: this.state.accountAddress })
         // .on("confirmation",()=>{
 
         // })
     //}
+    
+    
 console.log(amount,tokenURI,window.web3.utils.toWei(tokenPrice, "Ether"))
-    this.state.DigiFashionERC1155Contract.methods
-        .mintMultipleTokens(amount,tokenURI,window.web3.utils.toWei(tokenPrice, "Ether"))
+    this.state.DigiFashionContract.methods
+        .mintMultipleTokens(amount,name,imageHash,tokenURI,price,dressPrice)
         .send({ from: this.state.accountAddress })
         .on("confirmation", () => {
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
@@ -1317,14 +1335,14 @@ console.log(amount,tokenURI,window.web3.utils.toWei(tokenPrice, "Ether"))
     
   };
 //Change the price of token 
-  changeTokenPrice = async(tokenId, newPrice) => {
+  changeTokenPrice = async(tokenId, newPrice,dressOrNo) => {
     this.setState({ loading: true });
     const web3 = window.web3;
     const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
     // res = await axios.post('http://localhost:8080/changeTokenPrice',{ tokenId:tokenId,
     // newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
     this.state.DigiFashionContract.methods
-    .changeTokenPrice(tokenId, newTokenPrice,false)
+    .updateTokenPrice(tokenId, newTokenPrice,dressOrNo)
     .send({ from: this.state.accountAddress })
     .on("confirmation", () => {
       this.setState({ loading: false });
@@ -1391,7 +1409,7 @@ changeTokenPriceERC1155 = async(tokenId, newPrice) => {
   const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
   // res = await axios.post('http://localhost:8080/changeTokenPrice',{ tokenId:tokenId,
   // newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
-  this.state.DigiFashionERC1155Contract.methods
+  this.state.DigiFashionContract.methods
   .updateTokenPrice(tokenId, newTokenPrice)
   .send({ from: this.state.accountAddress })
   .on("confirmation", () => {
@@ -1519,18 +1537,18 @@ changeTokenDressPrice = async(tokenId, newPrice) => {
 };  
 
 //Buy a token  
-  buyCryptoBoy = async(tokenId, price) => {
+  buyCryptoBoy = async(tokenId, price,dress) => {
     //console.log(typeof(parseInt(price)));
     //price = window.web3.utils.toWei(price);
     const web3 = window.web3;
     this.setState({ loading: true });
-    await this.state.tokenContract.methods.approve(this.state.networkData.address, price).send({ from: this.state.accountAddress}).on('transactionHash', (hash) => {
-      console.log('approved')
+    //await this.state.tokenContract.methods.approve(this.state.networkData.address, price).send({ from: this.state.accountAddress}).on('transactionHash', (hash) => {
+    //  console.log('approved')
      // this.state.token.methods.transfer(this.state.accountAddress,price).send({ from: this.state.accountAddress }).on('transactionHash', (hash) => {
       //console.log("here ")
       this.state.DigiFashionContract.methods
-      .buyToken(tokenId,price,this.state.networkData.address)
-      .send({ from:this.state.accountAddress})
+      .buySingleToken(tokenId,dress)
+      .send({ from:this.state.accountAddress,value:price})
       .on("transactionHash",(hash)=>{
        console.log("done")
        this.setState({ loading: false });
@@ -1552,7 +1570,8 @@ changeTokenDressPrice = async(tokenId, newPrice) => {
          }
       })
     })
-  });
+    //)
+  //});
     // this.state.cryptoBoysContract.methods
     //   .buyToken(tokenId)
     //   .send({ from: this.state.accountAddress, value: price })
@@ -1634,7 +1653,8 @@ changeTokenDressPrice = async(tokenId, newPrice) => {
     // }
     //till here
   
-  };
+};
+
 
 // bUy erc 1155
 //Buy a token  
@@ -1648,7 +1668,7 @@ buyCryptoBoyERC1155 = async(tokenId, price) => {
    // console.log('approved')
    // this.state.token.methods.transfer(this.state.accountAddress,price).send({ from: this.state.accountAddress }).on('transactionHash', (hash) => {
     //console.log("here ")
-    this.state.DigiFashionERC1155Contract.methods
+    this.state.DigiFashionContract.methods
     .buySingleToken(tokenId)
     .send({ from:this.state.accountAddress ,value:price})
     .on("transactionHash",(hash)=>{
@@ -1886,13 +1906,17 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
    
  }
 
- searchNFTFromApp=async(val)=>{
+ searchNFTFromApp=async(val,id)=>{
   //  result=await this.state.cryptoBoysContract.methods.
   //  nameToId(val).call();
-   let result=await this.state.cryptoBoys.find( (cryptoboy) =>cryptoboy.tokenName===val);
-   this.setState({clickedAddress: result.tokenId})
+  console.log(id)
+   let result=await this.state.cryptoBoys.find( (cryptoboy) =>cryptoboy[0].tokenId===id);
+   console.log("result",result);
+   if(result){
+   this.setState({clickedAddress: result[0].tokenId.toNumber()})
                     
-   window.location.href=`/nftDetails/${result.tokenId}`
+  window.location.href=`/nftDetails/${result[0].tokenId.toNumber()}`
+   }
  }
   
   render() {
@@ -1936,7 +1960,7 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
                 accountAddress={this.state.accountAddress}
                // allcryptoBoys={this.state.allcryptoBoys}
                 cryptoBoys={this.state.cryptoBoys}
-                totalTokensMinted={this.state.totalTokensMinted}
+                totalTokensMinted={this.state.cryptoBoysCount}
                 changeTokenPrice={this.changeTokenPrice}
                 toggleForSale={this.toggleForSale}
                 buyCryptoBoy={this.buyCryptoBoy}
@@ -1998,10 +2022,10 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
                 accountAddress={this.state.accountAddress}
                // allcryptoBoys={this.state.allcryptoBoys}
                 cryptoBoys={this.state.cryptoBoys}
-                totalTokensMinted={this.state.totalTokensMinted}
-                changeTokenPrice={this.changeTokenPrice}
-                toggleForSale={this.toggleForSale}
-                buyCryptoBoy={this.buyCryptoBoy}
+                totalTokensMinted={this.state.cryptoBoysCount}
+                
+                
+                
                 callbackFromParent={this.myCallback2}
                 //cryptoBoysContract={this.state.cryptoBoysContract}
                 // usersContract={this.state.usersContract}
@@ -2023,7 +2047,7 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
                 toggleForSale={this.toggleForSale}
                 buyCryptoBoy={this.buyCryptoBoyERC1155}
                 callbackFromParent={this.myCallback2}
-                erc1155contract={this.state.DigiFashionERC1155Contract}
+                erc1155contract={this.state.DigiFashionContract}
                 //cryptoBoysContract={this.state.cryptoBoysContract}
                 // usersContract={this.state.usersContract}
                 
@@ -2107,12 +2131,12 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
               <CryptoBoyNFTDetails
                accountAddress={this.state.accountAddress}
                //cryptoboy={this.state.cryptoBoys[this.state.clickedAddress-1]}
-               totalTokensMinted={this.state.totalTokensMinted}
+               totalTokensMinted={this.state.cryptoBoysCount}
                changeTokenPrice={this.changeTokenPrice}
                changeTokenDressPrice={this.changeTokenDressPrice}
                toggleForSale={this.toggleForSale}
                buyCryptoBoy={this.buyCryptoBoy}
-               buyCryptoBoyWithDress={this.buyCryptoBoyWithDress}
+               buyCryptoBoyWithDress={this.buyCryptoBoy}
                clickedAddress={this.state.clickedAddress}
                callbackFromParent={this.myCallback2}
                callBack={this.tokenIDfun}
@@ -2135,8 +2159,8 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
                accountAddress={this.state.accountAddress}
                //cryptoboy={this.state.cryptoBoys[this.state.clickedAddress-1]}
                totalTokensMinted={this.state.cryptoERC1155Count}
-               changeTokenPrice={this.changeTokenPriceERC1155}
-               changeTokenDressPrice={this.changeTokenDressPrice}
+               changeTokenPrice={this.changeTokenPrice}
+               //changeTokenDressPrice={this.changeTokenDressPrice}
                toggleForSale={this.toggleForSale}
                buyCryptoBoy={this.buyCryptoBoyERC1155}
                buyCryptoBoyWithDress={this.buyCryptoBoyWithDress}
@@ -2149,7 +2173,7 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
                //tokenExists={this.state.tokenExists}
                tokenExists={true}
                tokenIdAndPrice={this.tokenIdAndPrice}
-               erc1155contract={this.state.DigiFashionERC1155Contract}
+               erc1155contract={this.state.DigiFashionContract}
                />
               )}
              />
@@ -2165,7 +2189,7 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
                   sendEmailTo={this.state.sendEmailTo}
                   sendName={this.state.sendName}
                   currentUser={this.state.currentUser}
-                  buyCryptoBoyWithDress={this.buyCryptoBoyWithDress}
+                  buyCryptoBoyWithDress={this.buyCryptoBoy}
                 />
               )}
             />

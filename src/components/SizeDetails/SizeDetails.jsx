@@ -127,7 +127,8 @@ const SizeDetails=(props)=>{
             alert("Message Sent");
             props.buyCryptoBoyWithDress(
               props.tokenNoOfDress,
-              props.priceOfDress
+              props.priceOfDress,
+              true
             )
           } else if (resData.status === "fail") {
             alert("Message failed to send");
@@ -206,7 +207,7 @@ const SizeDetails=(props)=>{
       doc.autoTable({
         head: [['Id', 'Name','Price']],
         body: [
-          [props.tokenNoOfDress.toString(),props.designName.toString(),window.web3.utils.fromWei(props.priceOfDress.toString(),"Ether") ],
+          [props.tokenNoOfDress,props.designName,window.web3.utils.fromWei(props.priceOfDress.toString(),"Ether") ],
            
           
         ],

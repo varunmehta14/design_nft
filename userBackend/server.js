@@ -11,14 +11,16 @@ const {google}=require("googleapis")
 // const Token=require('../src/abis/Token.json')
 
 //const { authRequired } = require('./app/middleware/auth');
-const {initializeBlockchain}=require('./app/config/blockchain')
+// const {initializeBlockchain}=require('./app/config/blockchain')
 require("dotenv").config();
 const app = express();
 
 //const web3 = new Web3(new Web3.providers.HttpProvider('HTTP://127.0.0.1:7545'));
 // parse requests of content-type - application/json
-app.use(express.json());
+// app.use(express.json());
 app.use(bodyParser.json({limit: '50mb'}));
+
+
 var corsOptions = {
   origin: "http://localhost:3000",
   credentials:true,            //access-control-allow-credentials:true
@@ -28,10 +30,8 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 //const router = express.Router();
-
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({limit: '50mb',  extended: true }));
-
+app.use(bodyParser.urlencoded({limit: '50mb',  extended: true,parameterLimit:50000 }));
 //app.use(cors(corsOptions));
 
 app.use(express.json());
@@ -329,7 +329,7 @@ app.use(express.json());
   // ethSwap = new web3.eth.Contract(EthSwap.abi, ethSwapData.address)
 //   //console.log(cryptoBoysContract.methods);
 // };
-initializeBlockchain();
+// initializeBlockchain();
 const db = require("./app/models");
 //db.sequelize.query("set FOREIGN_KEY_CHECKS=0");
 // db.sequelize.sync({ force: true }).then(() => {

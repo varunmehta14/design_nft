@@ -87,9 +87,10 @@ exports.update = (req, res) => {
     const userAddress = req.params.id;
     console.log(userAddress);
     //console.log(JSON.stringify(req.body))
-    //console.log("here",JSON.parse(undefined))
+   
     let upDateUser=req.body;
-    console.log(upDateUser)
+    // console.log("here",JSON.parse(upDateUser))
+    console.log(JSON.stringify(upDateUser))
     User.update(upDateUser, {
       where: { userAddress: userAddress }
     })

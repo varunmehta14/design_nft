@@ -228,7 +228,7 @@ const [designMetadata,setDesignMetadata]=useState("");
   }
   const handleClick2=(e)=>{
     e.preventDefault();
-    window.open(props.cryptoBoys[thistokenId][0].imageHash, "_blank") 
+    window.open(props.cryptoBoys[thistokenId][0].metadata.image, "_blank") 
   }
   const handleImage=(e,id)=>{
     e.preventDefault();
@@ -761,7 +761,7 @@ const [designMetadata,setDesignMetadata]=useState("");
         <Grid item xs={12} sm={6}> 
         
         <div className="col-md-12   mt-1 border">
-       <Queries cryptoBoysContract={props.cryptoBoysContract} token={props.cryptoBoys[thistokenId][0].tokenId} imageUrl={props.cryptoBoys[thistokenId][0].image} />
+       <Queries cryptoBoysContract={props.cryptoBoysContract} imageUrl={props.cryptoBoys[thistokenId][0].metadata.image} token={props.cryptoBoys[thistokenId][0].tokenId}  />
        </div>
        </Grid>
       </div>):(<><Loading/></>)
