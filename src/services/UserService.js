@@ -33,6 +33,9 @@ const remove = id => {
 const removeAll = () => {
   return http.delete(`/users`);
 };
+const checkReg=()=>{
+  return http.get(`/users/routesRequired`);
+}
 
 
 
@@ -45,5 +48,6 @@ export default {
   update,
   remove,
   removeAll,
+  checkReg
   
 } ;

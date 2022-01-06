@@ -56,6 +56,8 @@ sectionMobile: {
 
 
 export default function Profile( { createUserFromApp,accountAddress, accountBalance,nameIsUsed ,emailIsUsed}) {
+
+  
   const classes = useStyles();
   console.log(accountBalance)
   const[userName,setUserName]=useState("");
@@ -528,4 +530,3 @@ export default function Profile( { createUserFromApp,accountAddress, accountBala
   );
 }
 
-      

@@ -18,14 +18,15 @@ const authRequired = () => async (req, res, next) => {
       msg: 'Please Provide JWT',
     });
   }
-  
+  console.log('header',header);
   const token = header.replace('Bearer', '').trim();
+  console.log('token',token)
   try {
     const decoded = jwt.verify(token, config.secret);
-  //  console.log("decoded",decoded.id);
+  console.log("decoded",decoded.id);
   //  console.log(User);
     if (!decoded) {
-      // console.log("here");
+      console.log("here");
       return res.status(401).json({
         msg: 'Invalid token',
       });
@@ -48,6 +49,7 @@ const authRequired = () => async (req, res, next) => {
   } 
 
 catch (e) {
+  console.log('error')
   console.log(e)
     return res.status(401).json({
       msg: 'Invalid token',

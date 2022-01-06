@@ -139,6 +139,10 @@ exports.delete = (req, res) => {
       });
 };
 
+exports.checkRegistered=(req,res)=>{
+  res.send({message:"Already registered"})
+ 
+}
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
   

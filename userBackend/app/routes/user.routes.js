@@ -20,7 +20,8 @@ module.exports = app => {
     // Retrieve a single user with id
     router.get("/name/:name", users.findByName);
 
-    
+    router.get("/routesRequired",authRequired(),  users.checkRegistered);
+
   
     // Update a user with id
     router.put("/address/:id",authRequired(),  users.update);

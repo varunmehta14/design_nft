@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import Color from 'color';
-//import GoogleFont from 'react-google-font-loader';
+
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import InstagramIcon from '@material-ui/icons/Instagram';
@@ -12,7 +12,7 @@ import CardActions from '@material-ui/core/CardActions';
 
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
-import ContactMailIcon from '@material-ui/icons/ContactMail';
+
 import Divider from '@material-ui/core/Divider';
 import WorkTwoToneIcon from '@material-ui/icons/WorkTwoTone';
 

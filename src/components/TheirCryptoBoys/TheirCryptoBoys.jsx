@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage";
+
 import MyCryptoBoyNFTDetails from "../MyCryptoBoyNFTDetails/MyCryptoBoyNFTDetails";
 import Loading from "../Loading/Loading";
 import { makeStyles } from '@material-ui/core/styles';
@@ -52,7 +52,7 @@ const TheirCryptoBoys = ({
   cryptoBoys,
   
   callbackFromParent1,
-  //cryptoBoysContract,
+  
   
   userExists,
  
@@ -63,8 +63,7 @@ const TheirCryptoBoys = ({
   const [myMintedCryptoBoys, setMyMintedCryptoBoys] = useState([]);
   const [myAllCryptoBoys, setMyAllCryptoBoys] = useState([]);
   const[currentUser,setCurrentUser]=useState(initialUserState);
-  //const [theirAccountAddress,setTheirAccountAddress]=useState("")
-  //console.log(theirAccountAddress);
+  
   let theirAccountAddress=accountAddress;
   if(!accountAddress){theirAccountAddress=window.location.href.split("/")[4]};
   console.log(accountAddress);
@@ -74,7 +73,7 @@ const TheirCryptoBoys = ({
     if(theirAccountAddress){
       console.log("here")
       
-     //const current=await users.find((user)=>user.userAddress===theirAccountAddress);
+     
      await UserDataService.getByAddress(theirAccountAddress)
       .then(response => 
         { 
@@ -127,10 +126,7 @@ const TheirCryptoBoys = ({
     const groupedMyBought = groupBy(my_bought_crypto_boys, 'name');
     setMyBoughtCryptoBoys(groupedMyBought);
     
-    // const my_all_crypto_boys = cryptoBoys.filter(
-    //   (cryptoboy) => cryptoboy.currentOwner === theirAccountAddress
-    // );
-    // setMyAllCryptoBoys(my_all_crypto_boys);
+    
   }, [cryptoBoys]);
   const myCallback1=(dataFromChild1)=>{
     console.log(dataFromChild1)
@@ -190,13 +186,13 @@ const TheirCryptoBoys = ({
         </div>
       </div>
     
-        {myMintedCryptoBoys.length!=0?(<>
-          {myMintedCryptoBoys.length !=0 ? (
+        {myMintedCryptoBoys?(<>
+          {myMintedCryptoBoys.length!=0 ? (
           <div style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
          
            {Object.keys(myMintedCryptoBoys).map((key,index)=>{
               {console.log(key)}
-              return(<div style={{height:"100vh"}}>
+              return(<><div style={{height:"100vh"}}>
                 <StackedCarousel
       autoRotate={false}
       onCardChange={onCardChange}
@@ -220,7 +216,7 @@ const TheirCryptoBoys = ({
       rightButton={
         <button
           style={{
-            marginLeft: "40px",
+            marginLeft: "10px",
             borderRadius: "50%",
             fontSize: "smaller",
             fontWeight: "700",
@@ -251,7 +247,8 @@ const TheirCryptoBoys = ({
                 
           )}
       </StackedCarousel>
-              </div>)
+              </div>
+              </>)
     
        })}
            {/* {myMintedCryptoBoys.map((cryptoboy) => {
@@ -309,16 +306,16 @@ const TheirCryptoBoys = ({
         </div>
       </div>
      
-      {myBoughtCryptoBoys.length!=0?(<>
+      {myBoughtCryptoBoys?(<>
         {myBoughtCryptoBoys.length!=0?(
         <div style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
         
-        <Grid classes={gridStyles} container spacing={4} >
+       
           {Object.keys(myBoughtCryptoBoys).map((key,index)=>{
               {console.log(key)}
               return(
-              <div style={{height:"100vh"}}>
-                 <Grid item xs={12} sm={6} lg={4} xl={3} >
+              <><div style={{height:"100vh"}}>
+                
                 <StackedCarousel
       autoRotate={false}
       onCardChange={onCardChange}
@@ -342,7 +339,7 @@ const TheirCryptoBoys = ({
       rightButton={
         <button
           style={{
-            marginLeft: "40px",
+            marginLeft: "10px",
             borderRadius: "50%",
             fontSize: "smaller",
             fontWeight: "700",
@@ -373,11 +370,12 @@ const TheirCryptoBoys = ({
                 
           )}
       </StackedCarousel>
-      </Grid>
-              </div>)
+      
+              </div>
+              </>)
     
        })}
-       </Grid>
+      
 {/* {myBoughtCryptoBoys.map((cryptoboy) => {
  return (
    <>

@@ -11,43 +11,7 @@ import DnsTwoToneIcon from '@material-ui/icons/DnsTwoTone';
 import EmailTwoToneIcon from '@material-ui/icons/EmailTwoTone';
 
 const TheirAccountDetails = ({ accountAddress,currentUser}) => {
- // if(!accountAddress){accountAddress=window.location.href.split("/")[4]};
- //const[currentUser,setCurrentUser]=useState("");
-  
-//  const getCurrentUser=async()=>{
-//   if(usersContract){
-//     console.log("here")
-//   const current=await usersContract.methods
-//   .allUsers(accountAddress)
-//   .call();
-//   setCurrentUser(current);
-//   console.log(currentUser);
-  
-  
-// }
-// }
  
-//  useEffect(()=>{
-//   setUserName(currentUser.userName);
-//   setBio(currentUser.bio);
-//   setSocial(currentUser.social);
-//   setRepo(currentUser.repo);
-//   setEmail(currentUser.email);
-//   setSrc(currentUser.avatarhash);
-
-  
-  
-//   },[currentUser]);
-//   const[userName,setUserName]=useState(currentUser.userName);
-//   //const[olduserName,setOlduserName]=useState(currentUser.userName);
-//   const[bio,setBio]=useState(currentUser.bio);
-//   const[social,setSocial]=useState(currentUser.social);
-//   const[repo,setRepo]=useState(currentUser.repo);
-//   const[email,setEmail]=useState(currentUser.email);
-
-//   const[src,setSrc]=useState(currentUser.avatarhash);
- 
-  //console.log(cryptoBoysContract)
   console.log(accountAddress);
   console.log(currentUser);
 
@@ -82,7 +46,7 @@ const TheirAccountDetails = ({ accountAddress,currentUser}) => {
        <div className='profile-header'>
         <img src={currentUser.userAvatarHash} className='profile-picture' alt='Profile' />
         <div className='profile-name'>{currentUser.userName}</div>
-        {/* <div className='profile-tagline'>{currentUser.userBio}</div> */}
+
         <div className='profile-links'>
         <div style={{display:"flex",justifyContent:'center'}}>
 
@@ -146,7 +110,7 @@ const TheirAccountDetails = ({ accountAddress,currentUser}) => {
         <div className='profile-header'>
          <img src={currentUser.userAvatarHash} className='profile-picture' alt='Profile' />
          <div className='profile-name'>{currentUser.userName}</div>
-         {/* <div className='profile-tagline'>{currentUser.userBio}</div> */}
+        
          <div className='profile-links'>
          <div style={{display:"flex",justifyContent:'center'}}>
  

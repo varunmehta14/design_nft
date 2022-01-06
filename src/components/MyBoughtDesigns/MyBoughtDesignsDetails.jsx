@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid,Paper} from '@material-ui/core';
 import { Link } from "react-router-dom";
-import Button from '@material-ui/core/Button';
 import Color from 'color';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
@@ -77,17 +76,6 @@ const MyBoughtDesignsDetails= ({callback1,cryptoboy,accountAddress}) => {
      callback1(tokID)
      
     }
-  
-  const {
-    tokenId,
-    tokenName,
-    price,
-    imageHash,
-    mintedBy,
-    previousOwner,
-    numberOfTransfers,
-  } = cryptoboy;
-
 
 console.log(cryptoboy)
   return (
@@ -134,33 +122,6 @@ console.log(cryptoboy)
     </Card>
     </Link>
   </CardActionArea></>
-    // <div key={tokenId} className="mt-4 ml-3">
-    //   <p>
-    //     <span className="font-weight-bold">Token Id</span> :{" "}
-    //     {tokenId}
-    //   </p>
-    //   <p>
-    //     <span className="font-weight-bold">Name</span> : {tokenName}
-    //   </p>
-    //   <p>
-    //     <span className="font-weight-bold">Price</span> :{" "}
-    //     {window.web3.utils.fromWei(price.toString(), "Ether")} Ξ
-    //   </p>
-    //   <p>
-    //     <span className="font-weight-bold">No. of Transfers</span> :{" "}
-    //     {numberOfTransfers}
-    //   </p>
-    //   {/* {props.accountAddress === mintedBy &&
-    //   props.accountAddress !== previousOwner ? (
-    //     <div className="alert alert-success w-50 text-center m-auto">
-    //       Minted
-    //     </div>
-    //   ) : (
-    //     <div className="alert alert-info w-50 text-center m-auto">Bought</div>
-    //   )} */}
-    //   <Link to={`/nftDetails/${tokenId}`} style={{textDecoration:"none"}}onClick={()=>{handleClick(tokenId)}} ><Button variant="contained" >View NFT</Button></Link> 
-    // </div>
-  
   );
 };
 

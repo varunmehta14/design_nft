@@ -2,7 +2,6 @@ import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import Color from 'color';
 import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
 import Loading from "../Loading/Loading";
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -12,7 +11,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles'
 import { useFourThreeCardMediaStyles } from '@mui-treasury/styles/cardMedia/fourThree';
-//import UserDataService from ".../services/UserService";
 import UserDataService from "../../services/UserService";
 const useStyles = makeStyles((theme) => ({
   actionArea: {
@@ -41,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content2: ({ color }) => {
     return {
-      backgroundColor: "aliceblue",
+      // backgroundColor: "aliceblue",
      
     };
   },
@@ -74,24 +72,8 @@ const NFTHighlights=(props)=> {
       const [ownedByName,setOwnedByName]=useState(props.cryptoboy[0].currentOwner) 
       const [ownedAvatar,setOwnedAvatar]=useState(null) 
    
-     
+      // get name and avatar of the designer and owner
       const getCurrentUser=async()=>{
-      //  if(props.usersContract&&props.users){
-      //    //const currentMinted=await props.users.find((user)=>user.userAddress===props.cryptoboy[0].mintedBy);
-      //   // console.log("Current using array",currentMinted)
-      //    console.log(props)
-      //      const currentMinted=await props.usersContract.methods
-      //      .allUsers(props.cryptoboy[0].mintedBy)
-      //      .call();
-      //     setMintedByName(currentMinted[1]);
-      //     setMintedAvatar(currentMinted[6]);
-      //     //const currentOwned=await props.users.find((user)=>user.userAddress===props.cryptoboy[0].currentOwner);
-      //      const currentOwned=await props.usersContract.methods
-      //     .allUsers(props.cryptoboy[0].currentOwner)
-      //      .call();
-      //     setOwnedByName(currentOwned[1]);
-      //     setOwnedAvatar(currentOwned[6]);
-      //   }
         
         UserDataService.getByAddress(props.cryptoboy[0].mintedBy)
         .then(response => 
@@ -100,12 +82,6 @@ const NFTHighlights=(props)=> {
             setMintedByName(response.data.data[0].userName)
             setMintedAvatar(response.data.data[0].userAvatarHash)
 
-          
-          
-          //  setSubmitted(true);
-         // console.log(response.data);
-         
-        
         })
         .catch(e => {
           console.log(e);
@@ -117,10 +93,8 @@ const NFTHighlights=(props)=> {
             setOwnedByName(response.data.data[0].userName)
             setOwnedAvatar(response.data.data[0].userAvatarHash)
 
-          
           })
-          //  setSubmitted(true);
-         // console.log(response.data);
+    
         
         
         .catch(e => {
@@ -131,23 +105,16 @@ const NFTHighlights=(props)=> {
       useEffect(()=>{
         
           getCurrentUser();
-        
-       
-      },[props.cryptoboy[0]]);
-console.log(mintedByName,ownedByName)
 
-//   callChangeTokenPriceFromApp = (tokenId, newPrice) => {
-//     props.changeTokenPrice(tokenId, newPrice);
-//   };
+        },[props.cryptoboy[0]]);
+
+
   const handleClick=(address)=>{
     props.callbackFromParent(address)
    
     console.log(address)
   }
 
-  
-    //console.log(props.cryptoboy[0].imageHash)
-    //console.log(props.toggleForSale)
     return (
       <>
        {props.cryptoboy[0]?(
@@ -159,7 +126,7 @@ console.log(mintedByName,ownedByName)
     
       <CardActions className={classes.content}disableSpacing>
       <div style={{display:"flex"}}>
-        <Typography className={classes.title} variant={'h2'} style={{color:"aliceblue",textTransform:"none"}}>
+        <Typography className={classes.title} variant={'h2'} style={{color:"white",textTransform:"none"}}>
         {props.cryptoboy[0].metadata.name}
         </Typography>
         </div>
@@ -168,10 +135,10 @@ console.log(mintedByName,ownedByName)
      
         
         <div style={{display:"flex",justifyContent:"left",alignItems:"center"}}>
-        {/* <span className="font-weight-bold">Created By :&nbsp;</span> */}
+       
         <Link to={`/their-tokens/${props.cryptoboy[0].mintedBy}`} onClick={()=>{handleClick(props.cryptoboy[0].mintedBy); window.location.href=`/their-tokens/${props.cryptoboy[0].mintedBy}`}}style={{textDecorationLine:"none"}}>
           
-          {!(mintedByName=="")?(<div style={{display:"flex",alignItems:"center",fontWeight:"bolder"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;@{mintedByName}  <br/>
+          {!(mintedByName==="")?(<div style={{display:"flex",alignItems:"center",fontWeight:"bolder"}}> <Avatar alt={mintedByName} src={mintedAvatar}/>&nbsp;@{mintedByName}  <br/>
           <>&nbsp;Creator</></div>):(<>{props.cryptoboy[0].mintedBy.substr(0, 5) +
               "..." +
               props.cryptoboy[0].mintedBy.slice(
@@ -185,14 +152,10 @@ console.log(mintedByName,ownedByName)
        
      
       <div style={{display:"flex",justifyContent:"left",alignItems:"center"}}>
-        {/* <span className="font-weight-bold">Owned By :&nbsp;</span> */}
+       
         <Link to={`/their-tokens/${props.cryptoboy[0].currentOwner}`} onClick={()=>{handleClick(props.cryptoboy[0].currentOwner); window.location.href=`/their-tokens/${props.cryptoboy[0].currentOwner}`}}style={{textDecorationLine:"none"}}> 
-        {/* {props.cryptoboy[0].currentOwner.substr(0, 5) +
-          "..." +
-          props.cryptoboy[0].currentOwner.slice(
-            props.cryptoboy[0].currentOwner.length - 5
-          )} */}
-          {!(ownedByName=="")?(<div style={{display:"flex",alignItems:"center",fontWeight:"bolder"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;@{ownedByName} <br/>
+      
+          {!(ownedByName==="")?(<div style={{display:"flex",alignItems:"center",fontWeight:"bolder"}}> <Avatar alt={ownedByName} src={ownedAvatar}/>&nbsp;@{ownedByName} <br/>
           <>&nbsp;Owner</></div>):(<>{props.cryptoboy[0].currentOwner.substr(0, 5) +
               "..." +
               props.cryptoboy[0].currentOwner.slice(

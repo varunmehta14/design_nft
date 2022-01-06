@@ -5,11 +5,11 @@ const ConnectToMetamask = ({ connectToMetamask }) => {
   return (
     <div className="jumbotron">
       <h1 className="display-5">
-        CryptoBoy NFT Marketplace
+        Digitart maketplace
       </h1>
       <p className="lead">
-        This is an NFT marketplace where you can mint your ERC721 implemented{" "}
-        <i>Crypto Boy NFTs</i> and manage them.
+        This is an marketplace where you can mint your ERC1155 implemented{" "}
+        <i>tokens</i> and manage them.
       </p>
       <hr className="my-4" />
       <button
@@ -19,7 +19,7 @@ const ConnectToMetamask = ({ connectToMetamask }) => {
       >
         Connect Metamask{" "}
         <img
-         // src={metamaskIcon}
+          src={metamaskIcon}
           alt="metamask-icon"
           style={{ width: "2rem", marginLeft: "0.5rem" }}
         />

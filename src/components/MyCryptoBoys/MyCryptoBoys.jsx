@@ -1,10 +1,7 @@
 import React, { useState, useEffect,StyleSheet } from "react";
-import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage";
 import MyCryptoBoyNFTDetails from "../MyCryptoBoyNFTDetails/MyCryptoBoyNFTDetails";
 import Loading from "../Loading/Loading";
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch'; 
 import MyBoughtDesignsDetails from "../MyBoughtDesigns/MyBoughtDesignsDetails";
 import { StackedCarousel } from 'react-stacked-carousel'
@@ -86,36 +83,10 @@ function groupBy(objectArray, property) {
     //   }
     // }
     if(cryptoBoys.length!=0){
-      console.log("boys",cryptoBoys[0][0])
-      console.log("accountaddress",accountAddress)
+      
     
-    // const my_minted_crypto_boys = cryptoBoys.filter(
-    //   (cryptoboy) => cryptoboy[0].mintedBy === accountAddress
-    // );
-    // const my_bought_crypto_boys = cryptoBoys.filter(
-    //   (cryptoboy) => cryptoboy[0].currentOwner === accountAddress && !(cryptoboy[0].mintedBy === accountAddress)
-    // );
-    // setMyBoughtCryptoBoys(my_bought_crypto_boys);
-    // setMyMintedCryptoBoys(my_minted_crypto_boys);
     let tokens=cryptoBoys.map((cryptoBoy)=>{return cryptoBoy[0]});
-  //   const result = [];
-  //  const map = new Map();
-  //  for (const item of tokens) {
-  //      if(!map.has(item.name)){
-  //        if(!map.has(item.price.toString())){
-  //          // map.set(item.name, true);
-  //          map.set(item.price.toString(), true);    // set any value to Map
-  //          result.push(
-  //              item
-  //          );
-  //        }
-           
-  //      }
-       
-  //  }
-  
 
- 
     const my_minted_crypto_boys = tokens.filter(
       (cryptoboy) => cryptoboy.mintedBy === accountAddress
     );
@@ -128,15 +99,10 @@ function groupBy(objectArray, property) {
     setMyBoughtCryptoBoys(groupedMyBought);
     setMyMintedCryptoBoys(groupedMy);
     }
-    // const my_all_crypto_boys = cryptoBoys.filter(
-    //   (cryptoboy) => cryptoboy.currentOwner === accountAddress
-    // );
-    // setMyAllCryptoBoys(my_all_crypto_boys);
+    
   }, [cryptoBoys]);
   const classes=useStyles();
-  // myCallBack=(address)=>{
-  //   this.props.callbackFromParent(address)
-  // }
+
   const myCallback1=(dataFromChild1)=>{
     console.log(dataFromChild1)
    // setAddress(dataFromChild1)
@@ -154,9 +120,6 @@ function groupBy(objectArray, property) {
      
       <div className="card mt-1">
         <div className="card-body align-items-center d-flex justify-content-center">
-          {/* <h5>
-            Total No. of Designs They Own : {myAllCryptoBoys.length}
-          </h5> */}
            <h5>
             Collections
           </h5>
@@ -186,20 +149,20 @@ function groupBy(objectArray, property) {
       </div>
      
      
-        {myMintedCryptoBoys.length!=0?(<>
-          {myMintedCryptoBoys ? (<div 
-            // style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}
+        {myMintedCryptoBoys?(<>
+          {myMintedCryptoBoys.length!=0 ? (<div 
+            style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}
             >
 
-          <Grid classes={gridStyles} container spacing={6} >
+          
             {Object.keys(myMintedCryptoBoys).map((key,index)=>{
              
               return(
                 <>
-                <Grid item xs={12} sm={6} lg={4} xl={4} >
+                
                 <div 
-                // style={{  height:"500px" }}
-                className={styles.main}
+                style={{  height:"100vh" }}
+                
                 >
                   
                 <StackedCarousel
@@ -243,13 +206,15 @@ function groupBy(objectArray, property) {
  return(
  
   <>
-
+ <div key ={index}>
     <MyCryptoBoyNFTDetails
            callback1={myCallback1}
            cryptoboy={cryptoboy}
            accountAddress={accountAddress}
-          style={{ height: "fit-content" }}
+          
+           
          />
+         </div>
          </>
          
 );
@@ -259,12 +224,12 @@ function groupBy(objectArray, property) {
       </StackedCarousel>
      
       </div>
-      </Grid>
+     
       </>
            )
     
        })}
-       </Grid>
+ 
            {/* {myMintedCryptoBoys.map((cryptoboy) => {
             return (
               <>
@@ -315,18 +280,19 @@ function groupBy(objectArray, property) {
         </div>
       </div>
       
-        {myBoughtCryptoBoys.length!=0?(<>
-        {myBoughtCryptoBoys ?(<div style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
+        {myBoughtCryptoBoys?(<>
+        {myBoughtCryptoBoys.length!=0 ?(<div style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
         
         
           {Object.keys(myBoughtCryptoBoys).map((key,index)=>{
               {console.log(key)}
-              return(<div style={{height:"100vh"}}>
+              return(
+              <><div style={{height:"100vh"}}>
                 <StackedCarousel
       autoRotate={false}
       onCardChange={onCardChange}
-      containerClassName={"container"}
-      cardClassName="card"
+      //containerClassName={"container"}
+      //cardClassName="card"
       leftButton={
         <button
           style={{
@@ -345,7 +311,7 @@ function groupBy(objectArray, property) {
       rightButton={
         <button
           style={{
-            marginLeft: "40px",
+            marginLeft: "10px",
             borderRadius: "50%",
             fontSize: "smaller",
             fontWeight: "700",
@@ -378,7 +344,10 @@ function groupBy(objectArray, property) {
                 
           )}
       </StackedCarousel>
-              </div>)
+              </div>
+              </>
+              )
+
     
        })}
 {/* {myBoughtCryptoBoys.map((cryptoboy) => {

@@ -46,9 +46,6 @@ const buyCryptoBoyWithDress=(data)=>{
   return http.post(`nfts/buyCryptoBoyWithDress`,data)
 }
 
-
-
-
 export default {
   getAccountBalance,
   getCount,

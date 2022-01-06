@@ -129,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
   },
   collapsedIcon1:{
     marginLeft:"2px",
-    color:"aliceblue"
+    color:"white"
   },
   suggestions:{
     borderLeft:"1px solid white ",
@@ -325,13 +325,14 @@ const menuId = 'primary-search-account-menu';
 const renderMenu = (
       <>
   <div className={classes.grow} >
-      <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" ,display:"flex"}}>
+      <AppBar position="static" style={{fontSize:"5 px" ,display:"flex",
+    backgroundImage: "linear-gradient(15deg, #80d0c7 0%, #13547a 100%)"}}>
         <Toolbar>
           <IconButton href="/">
-        <img src={icon} alt="" style={{width:"32px",height:"32px"}}/>
-        
+        {/* <img src={icon} alt="" style={{width:"32px",height:"32px"}}/> */}
+        <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/digital-art-2201596-1836510.png" alt="" style={{width:"32px",height:"32px"}}/>
         </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap style={{fontFamily:"cursive"}}>
+          <Typography className={classes.title} variant="h6" noWrap style={{fontFamily:"inherit",color:"black"}}>
             Digitart
           </Typography>
          
@@ -345,7 +346,7 @@ const renderMenu = (
        <CancelIcon/> </IconButton>
           <div style={{width:"100%"}}>
           <input placeholder="Search NFT or people" type="search" className="col-md-12 input"  onChange={(e)=>{onChangeHandler(e.target.value)}} value={text}
-        style={{borderRadius:"40px",color:"black",backgroundColor:"azure",height:"45px"}}/>
+        style={{borderRadius:"40px",color:"black",backgroundColor:"white",height:"45px"}}/>
           
           {userSuggestions.length!=0 ||tokenSuggestions.length!=0?(
           <div   className="card col-md-12 justify-content-md-center" className={classes.notBlurredCard} > 
@@ -400,20 +401,24 @@ const renderMenu = (
               
 
            
-              <Link to="/mint" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
+              <Link to="/mint" className="nav-link" style={{fontFamily:"Nunito Sans",alignSelf:"center",fontSize:"larger",fontWeight:"100",boxShadow: "0px -1px 20px 0px rgb(0 0 0 / 15%)",
+    borderRadius: "20px",margin:"2px",color:"white"}}>
                 Create
               </Link>
               
-              <Link to="/creators" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
+              <Link to="/creators" className="nav-link" style={{fontFamily:"Nunito Sans",alignSelf:"center",fontSize:"larger",fontWeight:"100",boxShadow: "0px -1px 20px 0px rgb(0 0 0 / 15%)",
+    borderRadius: "20px",margin:"2px",color:"white"}}>
                 Creators
               </Link>
             
-              <Link to="/marketplace" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
+              <Link to="/marketplace" className="nav-link" style={{fontFamily:"Nunito Sans",alignSelf:"center",fontSize:"larger",fontWeight:"100",boxShadow: "0px -1px 20px 0px rgb(0 0 0 / 15%)",
+    borderRadius: "20px",margin:"2px",color:"white"}}>
                 Marketplace
               </Link>
             
             
-              <Link to="/my-tokens" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
+              <Link to="/my-tokens" className="nav-link" style={{fontFamily:"Nunito Sans",alignSelf:"center",fontSize:"larger",fontWeight:"100",boxShadow: "0px -1px 20px 0px rgb(0 0 0 / 15%)",
+    borderRadius: "20px",margin:"2px",color:"white"}}>
                 My Tokens
               </Link>
             
@@ -490,10 +495,12 @@ const mobileMenuId = 'primary-search-account-menu-mobile';
 const renderMobileMenu = (
   <>
   <div className={classes.grow} >
-      <AppBar position="static" style={{fontSize:"5 px",backgroundColor:"#173e43" }}>
+      <AppBar position="static" style={{fontSize:"5 px",backgroundImage: "linear-gradient(15deg, #80d0c7 0%, #13547a 100%)" }}>
         <Toolbar>
           <IconButton href="/">
-        <img src={icon} alt="" style={{width:"32px",height:"32px"}}/>
+        {/* <img src={icon} alt="" style={{width:"32px",height:"32px"}}/> */}
+        <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/digital-art-2201596-1836510.png" alt="" style={{width:"32px",height:"32px"}}/>
+
         
         </IconButton>
          
