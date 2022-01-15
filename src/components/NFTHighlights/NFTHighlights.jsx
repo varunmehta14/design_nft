@@ -166,7 +166,7 @@ const NFTHighlights=(props)=> {
       </div>
         <hr/>
         Price
-        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
+        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}title="WETH">
         {window.web3.utils.fromWei(
           props.cryptoboy[0].price.toString(),
           "Ether"

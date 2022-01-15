@@ -287,7 +287,7 @@ console.log(props.cryptoBoys[thistokenId])
     </div>
         </div>
         <hr style={{borderWidth:"medium",borderColor:"revert"}}/>
-        <div style={{display:"flex",justifyContent:"space-evenly"}}>
+        <div style={{display:"flex",justifyContent:"space-evenly"}} title="WETH">
         <p>
           <span className="font-weight-bold">Price</span> :{" "}
           <b style={{fontSize:"xx-large",color:"black"}}>
@@ -442,6 +442,7 @@ Keep for sale
                     e.target.value,false,ownedByEmail,props.cryptoBoys[thistokenId][0].metadata.name,ownedByName
                   )
                 }
+                title="WETH"
               >
                 Buy For{" "}
                 {window.web3.utils.fromWei(
@@ -455,11 +456,12 @@ Keep for sale
               </>
             ) : (
               <>
-              <div>
+              <div >
                 <button
                   disabled
                   style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" ,borderRadius: '20px'}}
                   className="btn btn-outline-primary mt-3 "
+                  title="WETH"
                 >
                   Buy For{" "}
                   {window.web3.utils.fromWei(
@@ -558,9 +560,9 @@ Keep for sale
 
        
         </div>
-        <Grid item xs={12} sm={6}> 
-        
-        <div className="col-md-12   mt-1">
+        {/* <Grid item xs={12} sm={6}>  */}
+        <div className="col-md-6 w-50  mt-1">
+        {/* <div className="col-md-12   mt-1"> */}
      
        <div>
       <div className="card mt-1">
@@ -587,8 +589,10 @@ Keep for sale
       </div>
   
     </div>
+       {/* </div> */}
        </div>
-       </Grid>
+       {/* </Grid> */}
+       
       </div>):(<><Loading/></>
      )
     }
@@ -648,7 +652,7 @@ Keep for sale
     <div style={{marginLeft:"2%",display:"contents",justifyContent:"space-between"}}>
       <div>
     Price:
-        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
+        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}title="WETH">
        
           {window.web3.utils.fromWei(
             props.cryptoBoys[thistokenId][0].price.toString(),
@@ -760,6 +764,7 @@ Keep for sale
                     e.target.value,false,ownedByEmail,props.cryptoBoys[thistokenId][0].metadata.name,ownedByName
                   )
                 }
+                title="WETH"
               >
                 Buy For{" "}
                 {window.web3.utils.fromWei(
@@ -780,6 +785,7 @@ Keep for sale
                   disabled
                   style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                   className="btn btn-outline-primary mt-3 w-50"
+                  title="WETH"
                 >
                   Buy For{" "}
                   {window.web3.utils.fromWei(

@@ -136,7 +136,7 @@ console.log("cryptoboy",cryptoboy)
        
         <hr/>
         Price
-        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
+        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}title="WETH">
         {window.web3.utils.fromWei(
           cryptoboy.price.toString(),
           "Ether"

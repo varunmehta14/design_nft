@@ -137,7 +137,7 @@ class App extends Component {
     if(prevState.accountAddress!=this.state.accountAddress){
       await this.loadWeb3()
      // await this.loadBlockchainData()
-     await this.loadCurrentUser()
+      await this.loadCurrentUser()
      // await this.setMetaData();
     }
    
@@ -492,7 +492,7 @@ class App extends Component {
   }
   };
 
-loadAllUsers=()=>{
+loadAllUsers=async()=>{
   UserDataService.getAll()
   .then(response=>{
     console.log(response.data);
@@ -548,7 +548,7 @@ loadCurrentUser=async()=>{
         console.log(e);
         localStorage.setItem('token','invalid token');
         
-        if(!this.state.cancelled||window.location.pathname !=='/profile'){
+        if(window.location.pathname !='/profile' || this.state.cancelled){
           Swal.fire({
             allowOutsideClick: false,
             allowEscapeKey: false,
@@ -587,7 +587,7 @@ loadCurrentUser=async()=>{
       window.ethereum.on('accountsChanged', function (accounts) {
         //console.log('accountchange',accounts)
         this.setState({ accountAddress: accounts[0]});
-      //  document.location.reload();
+      document.location.reload();
 
        localStorage.setItem('token','invalid token');
       }.bind(this))
@@ -596,7 +596,7 @@ loadCurrentUser=async()=>{
       window.ethereum.on('accountsChanged', function (accounts) {
         //console.log('accountchange',accounts)
         this.setState({ accountAddress: accounts[0]});
-      //  document.location.reload();
+      document.location.reload();
        localStorage.setItem('token','invalid token');
        
        }.bind(this))
@@ -2264,8 +2264,10 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
         // backgroundImage: 'linear-gradient(315deg, #bdcad9 0%, #e1dada 74%)'
         backgroundColor: '#aee1f9',
         backgroundImage: 'linear-gradient(315deg, #aee1f9 0%, #f6ebe6 74%)'
-
-
+        //backgroundColor: '#d9e4f5',
+        //backgroundImage: 'linear-gradient(315deg, #d9e4f5 0%, #f5e3e6 74%)'
+        // backgroundColor: '#e3efe8',
+        // backgroundImage: 'linear-gradient(315deg, #e3efe8 0%, #96a7cf 74%)'
       
         
       }}
