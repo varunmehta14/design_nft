@@ -120,7 +120,7 @@ const NFTHighlights=(props)=> {
        {props.cryptoboy[0]?(
          <>
          <CardActionArea className={classes.actionArea}>
-      <Link to={`/nftDetails/${props.cryptoboy[0].tokenId.toNumber()}`} onClick={()=>handleClick(props.cryptoboy[0].tokenId.toNumber())}style={{textDecorationLine:"none"}}>
+      <Link to={`/nftDetails/${props.cryptoboy[0].tokenId}`} onClick={()=>handleClick(props.cryptoboy[0].tokenId)}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
       <CardMedia  classes={mediaStyles} image={props.cryptoboy[0].metadata.image} style={{backgroundSize:"contain"}}/> 
     
@@ -166,13 +166,14 @@ const NFTHighlights=(props)=> {
       </div>
         <hr/>
         Price
-        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}title="WETH">
-        {window.web3.utils.fromWei(
+        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}title={props.cryptoboy[0].metadata.customToken}>
+        {/* {window.web3.utils.fromWei(
           props.cryptoboy[0].price.toString(),
           "Ether"
-        )}
-        {" "}
-        Ξ
+        )} */}
+         {props.cryptoboy[0].price}{" "}
+         {props.cryptoboy[0].metadata.customToken}
+        {/* Ξ */}
         </Typography>
        
        

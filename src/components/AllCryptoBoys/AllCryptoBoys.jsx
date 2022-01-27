@@ -172,8 +172,9 @@ console.log("length:",creatorList.list.length)
     setEnd(searchedResults.length)
     console.log(searchedResults)
  
+  
   }
-
+console.log('length',cryptoBoys.length)
   return (
     <div style={{padding:"0.5%"}}>
       <div className="card mt-1">
@@ -184,7 +185,8 @@ console.log("length:",creatorList.list.length)
           </h5>
         </div>
       </div>
-
+    {cryptoBoys?(
+      <>
       {cryptoBoys.length!=0 ?(
         <>
         <div style={{display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
@@ -211,7 +213,7 @@ console.log("length:",creatorList.list.length)
        
         {allDesigns.map((cryptoboy) => {
           return (
-            <>
+            < >
              <Grid item xs={12} sm={6} lg={4} xl={3} >
              <NFTHighlights
                 cryptoboy={cryptoboy}
@@ -240,7 +242,9 @@ console.log("length:",creatorList.list.length)
           
  </div> */}
              </>
-      ):(<Loading/>)}
+      ):(<><p>No Designs created</p></>)}</>
+    ):(<Loading/>)}
+      
       
       </div>
    

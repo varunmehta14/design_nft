@@ -137,7 +137,7 @@ const TheirCryptoBoys = ({
   const onCardChange = (event) => {
     console.log("Card", event);
   }
-  console.log("myMinted",myMintedCryptoBoys)
+  console.log("myMinted",Object.keys(myMintedCryptoBoys).length)
   console.log("myBought",myBoughtCryptoBoys)
   const classes=useStyles();
   const gridStyles = useGridStyles();
@@ -186,8 +186,8 @@ const TheirCryptoBoys = ({
         </div>
       </div>
     
-        {myMintedCryptoBoys?(<>
-          {myMintedCryptoBoys.length!=0 ? (
+        {myMintedCryptoBoys ?(<>
+          {Object.keys(myMintedCryptoBoys).length!=0 ? (
           <div style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
          
            {Object.keys(myMintedCryptoBoys).map((key,index)=>{
@@ -307,7 +307,7 @@ const TheirCryptoBoys = ({
       </div>
      
       {myBoughtCryptoBoys?(<>
-        {myBoughtCryptoBoys.length!=0?(
+        {Object.keys(myBoughtCryptoBoys).length!=0?(
         <div style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
         
        
@@ -407,7 +407,7 @@ const TheirCryptoBoys = ({
      </>
  )})} */}
  </div>):(<>
- No Designs Bought</>)}
+ <p>No Designs Bought</p></>)}
        </>):(<Loading/>)}
    
           </>

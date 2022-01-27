@@ -150,7 +150,7 @@ function groupBy(objectArray, property) {
      
      
         {myMintedCryptoBoys?(<>
-          {myMintedCryptoBoys.length!=0 ? (<div 
+          {Object.keys(myMintedCryptoBoys).length!=0 ? (<div 
             style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}
             >
 
@@ -281,7 +281,7 @@ function groupBy(objectArray, property) {
       </div>
       
         {myBoughtCryptoBoys?(<>
-        {myBoughtCryptoBoys.length!=0 ?(<div style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
+        {Object.keys(myBoughtCryptoBoys).length!=0 ?(<div style={{display:"flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
         
         
           {Object.keys(myBoughtCryptoBoys).map((key,index)=>{

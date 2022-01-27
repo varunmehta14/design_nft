@@ -81,7 +81,7 @@ console.log(cryptoboy)
   return (
   <>
    <CardActionArea className={classes.actionArea}>
-   <Link to={`/nftDetails/${cryptoboy.tokenId.toNumber()}`} onClick={()=>{handleClick(cryptoboy.tokenId.toNumber())}}style={{textDecorationLine:"none"}}>
+   <Link to={`/nftDetails/${cryptoboy.tokenId}`} onClick={()=>{handleClick(cryptoboy.tokenId)}}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
     <CardMedia  classes={mediaStyles} image={cryptoboy.metadata.image}style={{backgroundSize:"contain"}} /> 
      
@@ -98,24 +98,26 @@ console.log(cryptoboy)
       <CardContent className={classes.content2}>
         <div className={classes.subtitle}>
           Token Id:   
-         {cryptoboy.tokenId.toNumber()}
+         {cryptoboy.tokenId}
       
         </div>
         <hr/>
         <div className={classes.subtitle}>
           No. of Transfer:   
-          {cryptoboy.numberOfTransfers.toNumber()}
+          {cryptoboy.numberOfTransfers}
       
         </div>
        
         <hr/>
         Price
-        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}>
-        {window.web3.utils.fromWei(
+        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}title={cryptoboy.metadata.customToken}>
+        {/* {window.web3.utils.fromWei(
           cryptoboy.price.toString(),
           "Ether"
-        )}{" "}
-        Ξ
+        )}{" "} */}
+        {cryptoboy.price}{" "}
+        {cryptoboy.metadata.customToken}
+        {/* Ξ */}
         </Typography>
       </CardContent>
      

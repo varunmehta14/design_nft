@@ -3,7 +3,7 @@ import clsx from 'clsx';
 //import {create} from 'doka';
 import {useDropzone} from 'react-dropzone';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import {Paper,FormControl,InputLabel,Input,TextField,Grid,IconButton,InputAdornment,FormHelperText,Button} from '@material-ui/core';
+import {Paper,FormControl,InputLabel,Input,TextField,Grid,IconButton,InputAdornment,FormHelperText,Button,MenuItem} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles'
 import 'react-dropdown-tree-select/dist/styles.css';
@@ -131,6 +131,7 @@ export default function FormAndPreview(props) {
     const [cryptoBoyName,setCryptoBoyName] = useState("");
     const [cryptoBoyPrice,setCryptoBoyPrice] = useState("");
     const [cryptoBoyDressPrice,setCryptoBoyDressPrice] = useState(0);
+    const [customToken,setCustomToken]=useState('WETH');
     const [cryptoBoyDescription,setCryptoBoyDescription] = useState("");
     const [buffer,setBuffer] = useState(null);
     const [finalbuffer,setFinalbuffer] = useState([]);
@@ -139,7 +140,7 @@ export default function FormAndPreview(props) {
     const [files, setFiles] = useState([]);
     const [fileName,setFileName]=useState("");
     const [single,setSingle]=useState(true);
-    
+    const [serviceFee,setServiceFee]=useState(5);
     const [show,setShow]=useState(true);
     const [categories,setCategories]=useState("");
     const [sizeChart,setSizeChart]=useState([]);
@@ -153,7 +154,12 @@ export default function FormAndPreview(props) {
       { value: "art", label: "Art" },
       { value: "photoGraph", label: "Photograph" }
     ];
-
+    const optionsUnit = [
+      { value: 'VAR', label: "VAR" },
+      { value: 'WETH', label: "WETH" },
+     
+    ];
+   
     const handleCategory=selectedOption=>{
       if(selectedOption){
       console.log(selectedOption)
@@ -263,21 +269,21 @@ const onChangeSize = (currentNode, selectedNodes) => {
 
   const callMintMyERC1155FromApp  = (e) => {
     e.preventDefault();
-    if(cryptoBoyDressPrice==" "){
-      console.log("price 0")
-      setCryptoBoyDressPrice("0");
-    }
-    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,cryptoBoyDressPrice,finalbuffer,categories,sizeChart,amount)
+    // if(cryptoBoyDressPrice==" "){
+    //   console.log("price 0")
+    //   setCryptoBoyDressPrice("0");
+    // }
+    console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,finalbuffer,categories,sizeChart,amount,customToken)
     props.mintMultipleNFT(
       cryptoBoyName,
       cryptoBoyDescription,
       buffer,
       cryptoBoyPrice,
-      cryptoBoyDressPrice,
       finalbuffer,
       categories,
       sizeChart,
-      amount
+      amount,
+      customToken
     );
   };
   const [open, setOpen] = useState(false);
@@ -294,7 +300,7 @@ const onChangeSize = (currentNode, selectedNodes) => {
     <div style={{padding:"0.5%"}}>
      {single?
      (<>
-     <div className="card mt-1">
+     {/* <div className="card mt-1">
       <div className="card-body   
       
       "><div style={{textAlign:"center"}}>
@@ -305,7 +311,16 @@ const onChangeSize = (currentNode, selectedNodes) => {
         Put amount equal to 1 to make your collectible one of a kind 
 
       </div>
-    </div>
+    </div> */}
+    <div style={{padding: '60px',
+  textAlign: 'center',
+  background: '#1abc9c',
+  color: 'white',
+  fontSize: '30px'}}>
+  <h1>Header</h1>
+  <p>My supercool header</p>
+</div>
+
     
      <form onSubmit={callMintMyERC1155FromApp} style={{padding:"0.5%"}}className="pt-4 mt-1">
    
@@ -390,7 +405,7 @@ const onChangeSize = (currentNode, selectedNodes) => {
  id="standard-start-adornment"
  placeholder="Enter price for one piece"
 // className={clsx(classes.margin, classes.textField)}
- onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*serviceFee/100)}}
 
  inputProps={{className: classes.input}}
  InputLabelProps={{
@@ -402,8 +417,27 @@ const onChangeSize = (currentNode, selectedNodes) => {
    className: classes.input,
  }}
  required
-/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+></TextField><TextField
+          id="standard-select-currency-native"
+          select
+          label="Token"
+          className={clsx(classes.margin, classes.textField)}
+          value={customToken}
+          onChange={(e)=>{setCustomToken(e.target.value);if(e.target.value=='VAR'){setServiceFee(1)}else{setServiceFee(5)}}}
+          SelectProps={{
+            native: true,
+          }}
+          // helperText="Token type"
+          variant="standard"
+        >
+          {optionsUnit.map((option) => (
+            <option style={{fontFamily:'Nunito Sans'}} key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </TextField><FormHelperText id="filled-weight-helper-text">Service Fee <b>{serviceFee}%</b><br/>You will receive <b>{cryptoBoyPrice-(cryptoBoyPrice*serviceFee)/100} {customToken}</b></FormHelperText>
 <br/>
+
 </div>
 {/* <div>
 <TextField
@@ -475,7 +509,7 @@ const onChangeSize = (currentNode, selectedNodes) => {
  id="standard-start-adornment"
  placeholder="Enter price for one piece"
 // className={clsx(classes.margin, classes.textField)}
- onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*serviceFee/100)}}
 
  inputProps={{className: classes.input}}
  InputLabelProps={{
@@ -486,8 +520,26 @@ const onChangeSize = (currentNode, selectedNodes) => {
    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
    className: classes.input,
  }}
- required
-/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+ required>
+ </TextField><TextField
+ id="standard-select-currency-native"
+ select
+ label="Token"
+ className={clsx(classes.margin, classes.textField)}
+ value={customToken}
+ onChange={(e)=>{setCustomToken(e.target.value);if(e.target.value=='VAR'){setServiceFee(1)}else{setServiceFee(5)}}}
+ SelectProps={{
+   native: true,
+ }}
+ // helperText="Token type"
+ variant="standard"
+>
+ {optionsUnit.map((option) => (
+   <option style={{fontFamily:'Nunito Sans'}} key={option.value} value={option.value}>
+     {option.label}
+   </option>
+ ))}
+</TextField><FormHelperText id="filled-weight-helper-text">Service Fee <b>{serviceFee}%</b><br/>You will receive <b>{cryptoBoyPrice-(cryptoBoyPrice*serviceFee)/100} {customToken}</b></FormHelperText>
 <br/>
 </div>
 {categories=="art"?(<>
@@ -582,7 +634,7 @@ Create Item
     <div style={{padding:"0.5%"}}>    
      {single?
      (<>
-     <div className="card mt-1">
+     {/* <div className="card mt-1">
       <div className="card-body   
       
       "><div style={{textAlign:"center"}}>
@@ -593,20 +645,41 @@ Create Item
         Put amount equal to 1 to make your collectible one of a kind 
 
       </div>
-    </div>
+    </div> */}
+    <div style={{margin:'-0.5%'}}>
+      <div style={{padding: '40px',
+  textAlign: 'center',
+  // background: '#1abc9c',
+  // backgroundImage:`url('https://image.freepik.com/free-photo/grunge-paint-background_1409-1337.jpg')`,
+  // backgroundImage:`url('https://image.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg')`,
+  //    backgroundRepeat:'no-repeat',
+  //    backgroundSize:'cover',
+  // color: 'white',
+  fontSize: '30px'}}>
+  <h1 style={{
+    // color: 'white',
+    }}>Create Collectible</h1>
+ <span style={{font:'caption'}}> Put amount equal to 1 to make your collectible one of a kind </span>
+</div>
+</div>
     
      <form onSubmit={callMintMyERC1155FromApp} style={{padding:"0.5%"}}className="pt-4 mt-1">
     
          
     <div  >
-    <Grid container spacing={3}>
+    <Grid container spacing={3} >
     <Grid item xs={9}>
      <Paper variant="outlined" style={{padding:"inherit",
-     //backgroundColor:"ghostwhite"
+    //  backgroundImage:`url('https://image.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg')`,
+    //  backgroundRepeat:'no-repeat',
+    //  backgroundSize:'cover',
     borderRadius:"15px"}}>
+    
      
-     
-     <div style={{margin:"1%"}}>
+     <div style={{margin:"1%",
+    
+    //  backgroundImage:`url('https://image.freepik.com/free-photo/grunge-paint-background_1409-1337.jpg')`,
+    }}>
           <div {...getRootProps({ className: "dropzone" })}>
 <input {...getInputProps()}   />
 {!files?(<span>{files[0].name} </span>):( <span>Drag 'n' drop some files here, or click to select files</span>)}
@@ -620,6 +693,7 @@ Create Item
  style={{fontFamily:"inherit"}}
  label="Title"
  required
+ fullWidth
  value={cryptoBoyName}
  onChange={(e)=>setCryptoBoyName(e.target.value)}
  error={props.nameIsUsed}
@@ -671,30 +745,69 @@ Create Item
    </div>
 
 <hr/>
-<h2>Upload Image</h2>
-          
+<span>Upload Image</span>
+       <br/>
 <input type='file' multiple={true} onChange={captureFile} />
             
    <hr/> 
    <div style={{display:"flex",justifyContent:"space-evenly"}}>
-<div>
+     <div>
+<div style={{display:"flex",justifyContent:"space-evenly"}}>
+  <div>
 <TextField
  label="Price"
  id="standard-start-adornment"
  placeholder="Enter price for one piece"
  className={clsx(classes.margin, classes.textField)}
- onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*2.5/100)}}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*serviceFee/100)}}
  inputProps={{className: classes.input}}
  InputLabelProps={{
   className: classes.input,
 }}
+SelectProps={{
+  native: true,
+}}
 
- InputProps={{
-   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
-   className: classes.input,
- }}
-/><FormHelperText id="filled-weight-helper-text">Service Fee <b>2.5%</b><br/>You will receive <b>{cryptoBoyPrice-receivePrice} ETH</b></FormHelperText>
+//  InputProps={{
+//    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+//    className: classes.input,
+//  }}
+></TextField>
 </div>
+<div style={{marginLeft:'2px'}}>
+<TextField
+          // id="standard-select-currency-native"
+          
+          select
+          label="Token"
+          className={clsx(classes.margin, classes.textField)}
+          value={customToken}
+          onChange={(e)=>{setCustomToken(e.target.value);if(e.target.value=='VAR'){setServiceFee(1)}else{setServiceFee(5)}}}
+          SelectProps={{
+            native: true,
+          }}
+         
+          InputLabelProps={{
+            className: classes.input,
+          }}
+          // helperText="Token type"
+          variant="standard"
+        >
+          {optionsUnit.map((option) => (
+            <option style={{fontFamily:'Nunito Sans'}} key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+              
+
+        </TextField>
+        </div>
+        </div>
+        <div>
+        <FormHelperText id="filled-weight-helper-text">Service Fee <b>{serviceFee}%</b><br/>You will receive <b>{cryptoBoyPrice-(cryptoBoyPrice*serviceFee)/100} {customToken}</b></FormHelperText>
+        </div>
+        </div>
+
 <div>
 <TextField
  //id="standard-adornment-amount"

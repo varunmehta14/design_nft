@@ -16,7 +16,7 @@ import DigiFashionAbi from "../abis/1155abi.json";
 // import EthSwap from "../abis/EthSwap.json";
 import Token from "../abis/Token.json";
 import CryptoBoyNFTDetails from "./CryptoBoyNFTDetails/CryptoBoyNFTDetails";
-
+import Home from '../components/Home/Home';
 import FormAndPreview from "../components/FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
 import AllCreators from "./AllCreators/AllCreators";
@@ -270,8 +270,8 @@ class App extends Component {
       this.setState({tokenData});
       //if (networkData) {
         //this.setState({ loading: true });
-        const contractAddress="0x2d37286438813aeD246bcbe83b7104501Fd15e85";
-        const DigiFashionContract = web3.eth.Contract(
+        const contractAddress="0xC9E1B45EFDB18e13F430deF73fA745722307c5EC";
+        const DigiFashionContract = new web3.eth.Contract(
           DigiFashionAbi,
           contractAddress
         );
@@ -283,7 +283,8 @@ class App extends Component {
         let cryptoBoysCount = await DigiFashionContract.methods
           ._tokensMintedCount()
           .call();
-          cryptoBoysCount=cryptoBoysCount.toNumber();
+          cryptoBoysCount=cryptoBoysCount
+          // .toNumber();
         this.setState({ cryptoBoysCount });
         
        
@@ -293,7 +294,7 @@ class App extends Component {
            
          
           let cryptoBoy = await DigiFashionContract.methods
-            .allCryptoBoys(i)
+            .allDesigns(i)
             .call();
             const metaDataURI = await DigiFashionContract.methods
             .getTokenMetaData(i)
@@ -939,193 +940,10 @@ if(!emailUsed){
         
 };
 
-  mintMyNFT = async (name,description,buffer,tokenPrice,tokenDressPrice,finalbuffer,categories,sizeChart,amount) => {
-    this.setState({ loading: true });
-    
-  //   const web3 = window.web3;
-  //  console.log("buffer2",finalbuffer)
-  //  console.log("categories",categories)
-  //  console.log("sizechart",sizeChart)
-  //  console.log("name",name)
-  //  console.log("tokenPrice",tokenPrice)
-  //   const nameIsUsed = await this.state.DigiFashionContract.methods
-  //     .tokenNameExists(name)
-  //     .call();
-  //     console.log("nameisused",nameIsUsed)
-  //     //here
-  //   // let nameIsUsed;
-  //   //   //res = await axios.post('http://localhost:8080/nameUsed',{name:name})
-  //   //   NFTDataService.getNameIsUsed(name)
-  //   //     .then(response=>
-  //   //       {
-  //   //         console.log(response)
-  //   //         nameIsUsed=response.data;
-  //   //       })
-  //     //console.log(res.data)
-  //     //nameIsUsed=res.data
-  //     //here
-  //   if ( !nameIsUsed) {
-  //   //console.log(this.state.cryptoBoysContract)
-  //     let imageHashes=[];
-  //     //let allCategories=[];
-  //     let previousTokenId;
-  //     previousTokenId = await this.state.DigiFashionContract.methods
-  //       .cryptoBoyCounter()
-  //       .call();
-  //     // previousTokenId = previousTokenId;
-  //    // res = await axios.get('http://localhost:8080/count')
-  //    //here
-  //     // NFTDataService.getCount()
-  //     // .then(response=>
-  //     //   {
-  //     //     console.log(response)
-  //     //     previousTokenId=response.data;
-  //     //   })
-  //       //till here
-  //    // console.log(res.data)
-  //    // previousTokenId=res.data;
-
-  //     //set Token ID 
-  //     const tokenId = previousTokenId + 1;
-  //     //adding buffer of image on ipfs
-  //     const  file= await ipfs.add(buffer)
-  //    // const imageHash=file[0]["hash"]
-  //     console.log(file.path)
-  //     for(let i=0;i<finalbuffer.length;i++){
-  //     const filesI=await ipfs.add(finalbuffer[i])
-  //     console.log(filesI.path)
-  //     imageHashes.push(`https://ipfs.infura.io/ipfs/${filesI.path}`);
-  //     }
-    
-  //     //creating  a image hash to store on blockchain
-  //     const imageHash = `https://ipfs.infura.io/ipfs/${file.path}`;
-      
-  //     const imageIsUsed=await this.state.DigiFashionContract.methods.imageExists(imageHash).call();
-  //     console.log(imageIsUsed);
-  //     //let imageIsUsed;
-  //     //res = await axios.post('http://localhost:8080/imageUsed',{image:imageHash})
-  //     //here
-  //     // NFTDataService.getImageIsUsed(name)
-  //     //   .then(response=>
-  //     //     {
-  //     //       console.log(response)
-  //     //       imageIsUsed=response.data;
-  //     //     })
-  //     //till here
-  //     //console.log(res.data)
-  //     //imageIsUsed=res.data
-  //     if(!imageIsUsed){
-  //     const tokenObject = {
-  //       tokenName: "Crypto Boy",
-  //       tokenSymbol: "CB",
-  //       tokenId: `${tokenId}`,
-  //       image:`${imageHash}`,
-  //       name:name,
-  //       description:description,
-  //       //price:window.web3.utils.toWei(tokenPrice.toString(), "ether"),
-  //       price:tokenPrice,
-  //       dressPrice:tokenDressPrice,
-  //       images:imageHashes,
-  //       categories:categories,
-  //       sizeChart:sizeChart,
-  //       noOfTransfers:0
-        
-  //       }
-  //       //storing the token object on ipfs
-  //       const  cid= await ipfs.add(JSON.stringify(tokenObject))
-  //       console.log(cid.path)
-  //       //setting the token uri as the path of token object
-  //       let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
-  //       //let tokenURI = `https://ipfs.infura.io/ipfs/${tokenId}`;
-  //    const price = window.web3.utils.toWei(tokenPrice.toString(), "ether");
-  //    //const price = window.web3.utils.fromWei(tokenPrice.toString());
-  //    //const price=tokenPrice.toString();
-  //    //console.log(price)
-  //   const dressPrice = window.web3.utils.toWei(tokenDressPrice.toString(), "Ether");
-  // //const dressPrice = window.web3.utils.fromWei(tokenDressPrice.toString());
-  //   //  res = await axios.post('http://localhost:8080/createDesign',{ name:name, tokenURI:tokenURI,
-  //   //                                                                price:price, dressPrice:dressPrice,
-  //   //                                                                //imageHash:imageHash,
-  //   //                                                                amount:amount,account: this.state.accountAddress,fee:web3.eth.generate_gas_price() })
-     
-  //   this.state.DigiFashionContract.methods
-  //       .mintCryptoBoy(name,tokenURI,price,dressPrice,imageHash)
-  //       .send({ from: this.state.accountAddress })
-  //       .on("confirmation", () => {
-  //         localStorage.setItem(this.state.accountAddress, new Date().getTime());
-  //         this.setState({ loading: false });
-  //         Swal.fire({
-  //           allowOutsideClick: false,
-  //           allowEscapeKey: false,
-  //           title: `Item Created`,
-  //           confirmButtonText: 'Okay',
-  //           icon: 'success',
-  //           backdrop: false,
-  //           customClass: {
-  //             container: 'my-swal'
-  //           }
-            
-  //         }).then((result) => {
-  //           if (result.isConfirmed) {
-  //             window.location.href="/marketplace";
-           
-  //           } 
-            
-  //         })
-         
-  //       })
-  //       //here
-  //   // const dataDesign= { name:name, tokenURI:tokenURI,
-  //   //   price:price, dressPrice:dressPrice,
-  //   //   imageHash:imageHash,amount:amount,account: this.state.accountAddress}                                                              
-  //   // NFTDataService.createDesign(dataDesign)
-  //   //     .then(response=>
-  //   //       {
-  //   //         console.log(response)
-            
-  //   //       })
-  //         //till here
-  // //   console.log(response)
-  // //   if(response)
-  // //   {Swal.fire({
-  // //     allowOutsideClick: false,
-  // //     allowEscapeKey: false,
-  // //     title: `Item Created`,
-  // //     confirmButtonText: 'Okay',
-  // //     icon: 'success',
-  // //     backdrop: false,
-  // //     customClass: {
-  // //       container: 'my-swal'
-  // //     }
-      
-  // //   }).then((result) => {
-  // //     if (result.isConfirmed) {
-  // //       window.location.href="/marketplace";
-     
-  // //     } 
-      
-  // //   })
-  // // }
-     
-  //   //     ;
-  //     }
-  //       else {
-  //          {
-  //           this.setState({ imageIsUsed: true });
-  //           this.setState({ loading: false });
-  //         }
-  //       }}
-     
-  //   else {
-     
-  //       this.setState({ nameIsUsed: true });
-  //       this.setState({ loading: false });
-      
-  //   }
-  };
+ 
 
   //mint multiple 
-  mintMultipleNFT = async (name,description,buffer,tokenPrice,tokenDressPrice,finalbuffer,categories,sizeChart,amount) => {
+  mintMultipleNFT = async (name,description,buffer,tokenPrice,finalbuffer,categories,sizeChart,amount,customToken) => {
     this.setState({ loading: true });
     console.log("her")
     console.log('token',localStorage.getItem('token'))
@@ -1161,6 +979,11 @@ if(!emailUsed){
    //console.log("sizechart",sizeChart)
    console.log("name",name)
    console.log("tokenPrice",tokenPrice)
+   let isCustom=false;
+   if(customToken=="VAR"){
+    isCustom=true;
+   }
+   
     const nameIsUsed = await this.state.DigiFashionContract.methods
        .tokenNameExists(name)
        .call();
@@ -1227,9 +1050,12 @@ if(!emailUsed){
       //console.log(res.data)
       //imageIsUsed=res.data
       if(!imageIsUsed){
-      
-     const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
-     const dressPrice = window.web3.utils.toWei(tokenDressPrice.toString(), "Ether");
+        let price=tokenPrice;
+      // if(!isCustom){
+        //  price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
+      // }
+     
+    //  const dressPrice = window.web3.utils.toWei(tokenDressPrice.toString(), "Ether");
      //const price = window.web3.utils.fromWei(tokenPrice.toString());
      //const price=tokenPrice.toString();
      //console.log(price)
@@ -1258,8 +1084,9 @@ if(!emailUsed){
         description:description,
         mintedBy:this.state.accountAddress,
         //price:window.web3.utils.toWei(tokenPrice.toString(), "ether"),
-        price:tokenPrice,
-        dressPrice:tokenDressPrice,
+        price:price,
+        // dressPrice:tokenDressPrice,
+        customToken:customToken,
         images:imageHashes,
         categories:categories,
         sizeChart:sizeChart,
@@ -1284,7 +1111,7 @@ if(!emailUsed){
     
 console.log(amount,tokenURI,window.web3.utils.toWei(tokenPrice, "Ether"))
     this.state.DigiFashionContract.methods
-        .mintMultipleTokens(amount,name,imageHash,tokenURI,price,dressPrice)
+        .mintMultipleTokens(amount,name,imageHash,tokenURI,price,isCustom)
         .send({ from: this.state.accountAddress })
         .on("confirmation", () => {
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
@@ -1361,8 +1188,10 @@ console.log(amount,tokenURI,window.web3.utils.toWei(tokenPrice, "Ether"))
 
   };
 // Put or remove from sale on the marketplace
-  toggleForSale = async(tokenId) => {
+  toggleForSale = async(tokenId,tokprice,saleStatus) => {
+
     this.setState({ loading: true });
+
     console.log('token',localStorage.getItem('token'))
     let tok=await localStorage.getItem('token')
     if(tok==='invalid token'){
@@ -1389,8 +1218,10 @@ console.log(amount,tokenURI,window.web3.utils.toWei(tokenPrice, "Ether"))
       });
     }
     else{
+      const web3 = window.web3;
+      let price = window.web3.utils.toWei(tokprice, "Ether");
       this.state.DigiFashionContract.methods
-      .toggleForSale(tokenId)
+      .updateTokenData(tokenId,tokprice,saleStatus)
       .send({ from: this.state.accountAddress })
       .on("confirmation", () => {
         this.setState({ loading: false });
@@ -1453,107 +1284,10 @@ console.log(amount,tokenURI,window.web3.utils.toWei(tokenPrice, "Ether"))
     //till here
     
   };
-//Change the price of token 
-  changeTokenPrice = async(tokenId, newPrice,dressOrNo) => {
-    this.setState({ loading: true });
-    console.log('token',localStorage.getItem('token'))
-    let tok=await localStorage.getItem('token')
-    if(tok==='invalid token'){
-      console.log('invalid token')
-      Swal.fire({
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        title: `Unauthorized user`,
-        confirmButtonText: 'Sign Up',
-        icon: 'error',
-        backdrop: false,
-        customClass: {
-          container: 'my-swal'
-        }
-        
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href=`/profile`
-       
-        } 
-        
-      }) .catch(e => {
-        console.log(e);
-      });
-    }
-    else{
-      const web3 = window.web3;
-      const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
-      // res = await axios.post('http://localhost:8080/changeTokenPrice',{ tokenId:tokenId,
-      // newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
-      this.state.DigiFashionContract.methods
-      .updateTokenPrice(tokenId, newTokenPrice,dressOrNo)
-      .send({ from: this.state.accountAddress })
-      .on("confirmation", () => {
-        this.setState({ loading: false });
-        Swal.fire({
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          title: `Price Changed`,
-          confirmButtonText: 'Okay',
-          icon: 'success',
-          backdrop: false,
-          customClass: {
-            container: 'my-swal'
-          }
-          
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-         
-          } 
-          
-        })
-       
-      });
 
-    }
-   
-     
  
-    //here
-    
-    // const changePrice={tokenId:tokenId,
-    //   newTokenPrice:newTokenPrice,account: this.state.accountAddress}
-    // NFTDataService.changeTokenPrice(changePrice)
-    // .then(response=>
-    //   {
-    //     console.log(response)
-        
-    //   })
-    // //console.log(res)
-    // if(response){
-    //   this.setState({ loading: false });
-    //   Swal.fire({
-    //     allowOutsideClick: false,
-    //     allowEscapeKey: false,
-    //     title: `Price Changed`,
-    //     confirmButtonText: 'Okay',
-    //     icon: 'success',
-    //     backdrop: false,
-    //     customClass: {
-    //       container: 'my-swal'
-    //     }
-        
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       window.location.reload();
-       
-    //     } 
-        
-    //   })
-    // }
-    //till  here
- 
-  };
-//CHange erc1155 price
 //Change the price of token 
-changeTokenPriceERC1155 = async(tokenId, newPrice) => {
+changeTokenPriceERC1155 = async(tokenId, newPrice,saleStatus) => {
   this.setState({ loading: true });
   console.log('token',localStorage.getItem('token'))
     let tok=await localStorage.getItem('token')
@@ -1582,11 +1316,11 @@ changeTokenPriceERC1155 = async(tokenId, newPrice) => {
     }
     else{
       const web3 = window.web3;
-  const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
+  // const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
   // res = await axios.post('http://localhost:8080/changeTokenPrice',{ tokenId:tokenId,
   // newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
   this.state.DigiFashionContract.methods
-  .updateTokenPrice(tokenId, newTokenPrice)
+  .updateTokenData(tokenId, newPrice,saleStatus)
   .send({ from: this.state.accountAddress })
   .on("confirmation", () => {
     this.setState({ loading: false });
@@ -1651,70 +1385,70 @@ changeTokenPriceERC1155 = async(tokenId, newPrice) => {
 
 };
 //Change the price of tokenDress 
-changeTokenDressPrice = async(tokenId, newPrice) => {
-  this.setState({ loading: true });
-  const web3 = window.web3;
-  const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
-  this.state.DigiFashionContract.methods
-    .changeTokenDressPrice(tokenId, newTokenPrice,true)
-    .send({ from: this.state.accountAddress })
-    .on("confirmation", () => {
-      this.setState({ loading: false });
-      Swal.fire({
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        title:  `Price Changed`,
-        confirmButtonText: 'Okay',
-        icon: 'success',
-        backdrop: false,
-        customClass: {
-          container: 'my-swal'
-        }
+// changeTokenDressPrice = async(tokenId, newPrice) => {
+//   this.setState({ loading: true });
+//   const web3 = window.web3;
+//   const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
+//   this.state.DigiFashionContract.methods
+//     .changeTokenDressPrice(tokenId, newTokenPrice,true)
+//     .send({ from: this.state.accountAddress })
+//     .on("confirmation", () => {
+//       this.setState({ loading: false });
+//       Swal.fire({
+//         allowOutsideClick: false,
+//         allowEscapeKey: false,
+//         title:  `Price Changed`,
+//         confirmButtonText: 'Okay',
+//         icon: 'success',
+//         backdrop: false,
+//         customClass: {
+//           container: 'my-swal'
+//         }
         
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.reload();
+//       }).then((result) => {
+//         if (result.isConfirmed) {
+//           window.location.reload();
        
-        } 
+//         } 
         
-      })
+//       })
       
-    });
-  // res = await axios.post('http://localhost:8080/changeTokenDressPrice',{ tokenId:tokenId,
-  //   newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
-  //here 
-  // const changeDressPrice={tokenId:tokenId,
-  //     newTokenPrice:newTokenPrice,account: this.state.accountAddress}
-  //   NFTDataService.changeTokenDressPrice(changeDressPrice)
-  //   .then(response=>
-  //     {
-  //       console.log(response)
+//     });
+//   // res = await axios.post('http://localhost:8080/changeTokenDressPrice',{ tokenId:tokenId,
+//   //   newTokenPrice:newTokenPrice,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
+//   //here 
+//   // const changeDressPrice={tokenId:tokenId,
+//   //     newTokenPrice:newTokenPrice,account: this.state.accountAddress}
+//   //   NFTDataService.changeTokenDressPrice(changeDressPrice)
+//   //   .then(response=>
+//   //     {
+//   //       console.log(response)
         
-  //     })
-  //   //console.log(res)
-  //   if(response){
-  //     this.setState({ loading: false });
-  //     Swal.fire({
-  //       allowOutsideClick: false,
-  //       allowEscapeKey: false,
-  //       title: `Price Changed`,
-  //       confirmButtonText: 'Okay',
-  //       icon: 'success',
-  //       backdrop: false,
-  //       customClass: {
-  //         container: 'my-swal'
-  //       }
+//   //     })
+//   //   //console.log(res)
+//   //   if(response){
+//   //     this.setState({ loading: false });
+//   //     Swal.fire({
+//   //       allowOutsideClick: false,
+//   //       allowEscapeKey: false,
+//   //       title: `Price Changed`,
+//   //       confirmButtonText: 'Okay',
+//   //       icon: 'success',
+//   //       backdrop: false,
+//   //       customClass: {
+//   //         container: 'my-swal'
+//   //       }
         
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         window.location.reload();
+//   //     }).then((result) => {
+//   //       if (result.isConfirmed) {
+//   //         window.location.reload();
        
-  //       } 
+//   //       } 
         
-  //     })
-  //   }
-    //till here
-};  
+//   //     })
+//   //   }
+//     //till here
+// };  
  
 jsPdfGenerator=(tokenId,price,owner,designName,ownerName)=>{
   var doc=new jsPDF('p','pt');
@@ -1818,8 +1552,8 @@ jsPdfGenerator=(tokenId,price,owner,designName,ownerName)=>{
      // this.state.token.methods.transfer(this.state.accountAddress,price).send({ from: this.state.accountAddress }).on('transactionHash', (hash) => {
       //console.log("here ")
     await  this.state.DigiFashionContract.methods
-      .buySingleToken(tokenId,dress)
-      .send({ from:this.state.accountAddress,value:price})
+      .buySingleToken(tokenId)
+      .send({ from:this.state.accountAddress})
       .on("transactionHash",(hash)=>{
        console.log("done")
        this.setState({ loading: false });
@@ -1955,68 +1689,68 @@ jsPdfGenerator=(tokenId,price,owner,designName,ownerName)=>{
 
 
 // bUy erc 1155
-//Buy a token  
-buyCryptoBoyERC1155 = async(tokenId, price) => {
-  //console.log(typeof(parseInt(price)));
-  //price = window.web3.utils.toWei(price);
-console.log('token',localStorage.getItem('token'))
-    let tok=await localStorage.getItem('token')
-    if(tok==='invalid token'){
-      console.log('invalid token')
-      Swal.fire({
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        title: `Unauthorized user`,
-        confirmButtonText: 'Sign Up',
-        icon: 'error',
-        backdrop: false,
-        customClass: {
-          container: 'my-swal'
-        }
+// //Buy a token  
+// buyCryptoBoyERC1155 = async(tokenId, price) => {
+//   //console.log(typeof(parseInt(price)));
+//   //price = window.web3.utils.toWei(price);
+// console.log('token',localStorage.getItem('token'))
+//     let tok=await localStorage.getItem('token')
+//     if(tok==='invalid token'){
+//       console.log('invalid token')
+//       Swal.fire({
+//         allowOutsideClick: false,
+//         allowEscapeKey: false,
+//         title: `Unauthorized user`,
+//         confirmButtonText: 'Sign Up',
+//         icon: 'error',
+//         backdrop: false,
+//         customClass: {
+//           container: 'my-swal'
+//         }
         
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href=`/profile`
+//       }).then((result) => {
+//         if (result.isConfirmed) {
+//           window.location.href=`/profile`
        
-        } 
+//         } 
         
-      }) .catch(e => {
-        console.log(e);
-      });
-    }
-    else{
-      console.log(price);
-  const web3 = window.web3;
-  this.setState({ loading: true });
-  //await this.state.tokenContract.methods.approve(this.state.networkData.address, price).send({ from: this.state.accountAddress}).on('transactionHash', (hash) => {
-   // console.log('approved')
-   // this.state.token.methods.transfer(this.state.accountAddress,price).send({ from: this.state.accountAddress }).on('transactionHash', (hash) => {
-    //console.log("here ")
-    this.state.DigiFashionContract.methods
-    .buySingleToken(tokenId)
-    .send({ from:this.state.accountAddress ,value:price})
-    .on("transactionHash",(hash)=>{
-     console.log("done")
-     this.setState({ loading: false });
-     Swal.fire({
-       allowOutsideClick: false,
-       allowEscapeKey: false,
-       title: `Item Bought`,
-       confirmButtonText: 'Okay',
-       icon: 'success',
-       backdrop: false,
-       customClass: {
-         container: 'my-swal'
-       }
+//       }) .catch(e => {
+//         console.log(e);
+//       });
+//     }
+//     else{
+//       console.log(price);
+//   const web3 = window.web3;
+//   this.setState({ loading: true });
+//   //await this.state.tokenContract.methods.approve(this.state.networkData.address, price).send({ from: this.state.accountAddress}).on('transactionHash', (hash) => {
+//    // console.log('approved')
+//    // this.state.token.methods.transfer(this.state.accountAddress,price).send({ from: this.state.accountAddress }).on('transactionHash', (hash) => {
+//     //console.log("here ")
+//     this.state.DigiFashionContract.methods
+//     .buySingleToken(tokenId)
+//     .send({ from:this.state.accountAddress ,value:price})
+//     .on("transactionHash",(hash)=>{
+//      console.log("done")
+//      this.setState({ loading: false });
+//      Swal.fire({
+//        allowOutsideClick: false,
+//        allowEscapeKey: false,
+//        title: `Item Bought`,
+//        confirmButtonText: 'Okay',
+//        icon: 'success',
+//        backdrop: false,
+//        customClass: {
+//          container: 'my-swal'
+//        }
        
-     }).then((result) => {
-       if (result.isConfirmed) {
-         window.location.reload();
+//      }).then((result) => {
+//        if (result.isConfirmed) {
+//          window.location.reload();
       
-       }
-    })
-  })
-    }  
+//        }
+//     })
+//   })
+//     }  
  
      
  
@@ -2103,42 +1837,42 @@ console.log('token',localStorage.getItem('token'))
   // }
   //till here
 
-};
+//};
 //Buy a token with dress
-buyCryptoBoyWithDress = async(tokenId, price) => {
-  console.log(price)
-  const web3 = window.web3;
-  this.setState({ loading: true });
-  this.setState({ loading: true });
-    await this.state.tokenContract.methods.approve(this.state.networkData.address, price).send({ from: this.state.accountAddress}).on('transactionHash', (hash) => {
-      console.log('approved')
-     // this.state.token.methods.transfer(this.state.accountAddress,price).send({ from: this.state.accountAddress }).on('transactionHash', (hash) => {
-      //console.log("here ")
-      this.state.DigiFashionContract.methods
-      .buyToken(tokenId,price,this.state.networkData.address)
-      .send({ from:this.state.accountAddress })
-      .on("transactionHash",(hash)=>{
-       console.log("done")
-       this.setState({ loading: false });
-       Swal.fire({
-         allowOutsideClick: false,
-         allowEscapeKey: false,
-         title: `Item Bought`,
-         confirmButtonText: 'Okay',
-         icon: 'success',
-         backdrop: false,
-         customClass: {
-           container: 'my-swal'
-         }
+// buyCryptoBoyWithDress = async(tokenId, price) => {
+//   console.log(price)
+//   const web3 = window.web3;
+//   this.setState({ loading: true });
+//   this.setState({ loading: true });
+//     await this.state.tokenContract.methods.approve(this.state.networkData.address, price).send({ from: this.state.accountAddress}).on('transactionHash', (hash) => {
+//       console.log('approved')
+//      // this.state.token.methods.transfer(this.state.accountAddress,price).send({ from: this.state.accountAddress }).on('transactionHash', (hash) => {
+//       //console.log("here ")
+//       this.state.DigiFashionContract.methods
+//       .buyToken(tokenId,price,this.state.networkData.address)
+//       .send({ from:this.state.accountAddress })
+//       .on("transactionHash",(hash)=>{
+//        console.log("done")
+//        this.setState({ loading: false });
+//        Swal.fire({
+//          allowOutsideClick: false,
+//          allowEscapeKey: false,
+//          title: `Item Bought`,
+//          confirmButtonText: 'Okay',
+//          icon: 'success',
+//          backdrop: false,
+//          customClass: {
+//            container: 'my-swal'
+//          }
          
-       }).then((result) => {
-         if (result.isConfirmed) {
-           window.location.reload();
+//        }).then((result) => {
+//          if (result.isConfirmed) {
+//            window.location.reload();
         
-         }
-      })
-    })
-  });
+//          }
+//       })
+//     })
+//   });
   // res = await axios.post('http://localhost:8080/buyCryptoBoyWithDress',{ tokenId:tokenId,
   //   price:price,account: this.state.accountAddress,fee:web3.eth.generate_gas_price()  })
   //here
@@ -2199,7 +1933,7 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
       
      
   //   });
-};  
+//};  
   tokenIdAndPrice=(tokenIdOfDress,tokenName,priceOfDress,ownedEmail,ownedName,sizeDetails)=>{
     console.log("tokenId",tokenIdOfDress)
     console.log("tokenName",tokenName)
@@ -2262,8 +1996,11 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
         // backgroundImage:'linear-gradient(315deg, #e7eff9 0%, #cfd6e6 74%)'
         // backgroundColor: '#bdcad9',
         // backgroundImage: 'linear-gradient(315deg, #bdcad9 0%, #e1dada 74%)'
-        backgroundColor: '#aee1f9',
-        backgroundImage: 'linear-gradient(315deg, #aee1f9 0%, #f6ebe6 74%)'
+        // backgroundImage:`url('https://image.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg')`,
+        // backgroundRepeat:'no-repeat',
+        // backgroundSize:'cover',
+        // backgroundColor: '#aee1f9',
+        // backgroundImage: 'linear-gradient(315deg, #aee1f9 0%, #f6ebe6 74%)'
         //backgroundColor: '#d9e4f5',
         //backgroundImage: 'linear-gradient(315deg, #d9e4f5 0%, #f5e3e6 74%)'
         // backgroundColor: '#e3efe8',
@@ -2302,20 +2039,7 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
               path="/"
               exact
               render={() => (
-                <AllCryptoBoys
-                accountAddress={this.state.accountAddress}
-               // allcryptoBoys={this.state.allcryptoBoys}
-                cryptoBoys={this.state.cryptoBoys}
-                totalTokensMinted={this.state.cryptoBoysCount}
-                changeTokenPrice={this.changeTokenPrice}
-                toggleForSale={this.toggleForSale}
-                buyCryptoBoy={this.buyCryptoBoy}
-                callbackFromParent={this.myCallback2}
-                //cryptoBoysContract={this.state.cryptoBoysContract}
-                // usersContract={this.state.usersContract}
-               
-                //users={this.state.users}
-              />
+            <Home/>
               )}
             />
             <Route
@@ -2445,11 +2169,11 @@ buyCryptoBoyWithDress = async(tokenId, price) => {
                accountAddress={this.state.accountAddress}
                //cryptoboy={this.state.cryptoBoys[this.state.clickedAddress-1]}
                totalTokensMinted={this.state.cryptoBoysCount}
-               changeTokenPrice={this.changeTokenPrice}
-               changeTokenDressPrice={this.changeTokenDressPrice}
+              changeTokenPrice={this.changeTokenPriceERC1155}
+              //  changeTokenDressPrice={this.changeTokenDressPrice}
                toggleForSale={this.toggleForSale}
                buyCryptoBoy={this.buyCryptoBoy}
-               buyCryptoBoyWithDress={this.buyCryptoBoy}
+              //  buyCryptoBoyWithDress={this.buyCryptoBoy}
                clickedAddress={this.state.clickedAddress}
                callbackFromParent={this.myCallback2}
                callBack={this.tokenIDfun}
