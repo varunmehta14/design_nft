@@ -122,7 +122,7 @@ const NFTHighlights=(props)=> {
          <CardActionArea className={classes.actionArea}>
       <Link to={`/nftDetails/${props.cryptoboy[0].tokenId}`} onClick={()=>handleClick(props.cryptoboy[0].tokenId)}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
-      <CardMedia  classes={mediaStyles} image={props.cryptoboy[0].metadata.image} style={{backgroundSize:"contain"}}/> 
+      <CardMedia  classes={mediaStyles} image={`https://ipfs.infura.io${props.cryptoboy[0].metadata.image}`} style={{backgroundSize:"contain"}}/> 
     
       <CardActions className={classes.content}disableSpacing>
       <div style={{display:"flex"}}>
@@ -171,7 +171,7 @@ const NFTHighlights=(props)=> {
           props.cryptoboy[0].price.toString(),
           "Ether"
         )} */}
-         {props.cryptoboy[0].price}{" "}
+         {window.web3.utils.fromWei(props.cryptoboy[0].price.toString(),"Ether")}{" "}
          {props.cryptoboy[0].metadata.customToken}
         {/* Ξ */}
         </Typography>

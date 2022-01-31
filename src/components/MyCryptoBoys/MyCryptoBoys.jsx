@@ -5,10 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch'; 
 import MyBoughtDesignsDetails from "../MyBoughtDesigns/MyBoughtDesignsDetails";
 import { StackedCarousel } from 'react-stacked-carousel'
-import styles from "./CardCarousel.module.css";
+
 import 'react-stacked-carousel/dist/index.css';
 import "./MyCryptoBoys.css";
-import map from 'lodash/map';
+
 const useGridStyles = makeStyles(({ breakpoints }) => ({
   root: {
     paddingLeft:"5%",
@@ -168,9 +168,7 @@ function groupBy(objectArray, property) {
                 <StackedCarousel
       autoRotate={false}
       onCardChange={onCardChange}
-      // containerClassName={styles.containerStack}
-      // cardClassName={styles.cardStack}
-      // style={{width:"350px",height:"490px", minHeight: "300px", margin: "20px"}}
+      
       leftButton={
         <button
           style={{

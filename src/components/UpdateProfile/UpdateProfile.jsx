@@ -121,25 +121,16 @@ const classes=useStyles();
     <div style={{padding:"0.5%"}}>
     {loading?(<><Loading/></>):(
          <>
-  
-   
-    
          <div className="card  p-4">
-           
- 
         <div style={{display:"flex",justifyContent:"center"}}>
       {clickedChange?( <form onSubmit={handleSubmit2} style={{display:"contents"}}>
          <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
-          
          <AvatarImageCropper apply={apply} text={"Change"} />
-         
            </div> 
            </form>  ):( <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
           <img src={src} alt="Preview" />
            </div> )}
-        
-           
-          
+
          </div>
          <div style={{display:"flex",justifyContent:"space-around"}}>
         
@@ -311,11 +302,6 @@ const classes=useStyles();
           </div>
        </form></>
     )}
-
-   
-            
- 
-    
   </div>
 
   );
@@ -325,12 +311,9 @@ const classes=useStyles();
     <div style={{padding:"0.5%"}}>
         {loading?(<><Loading/></>):(
              <>
-      
-       
-        
+
              <div className="card  p-4">
-               
-     
+
             <div style={{display:"flex",justifyContent:"center"}}>
           {clickedChange?( <form onSubmit={handleSubmit2} style={{display:"contents"}}>
              <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
@@ -341,9 +324,7 @@ const classes=useStyles();
                </form>  ):( <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
               <img src={src} alt="Preview" />
                </div> )}
-            
-               
-              
+
              </div>
              <div style={{display:"flex",justifyContent:"space-around"}}>
              {/* <Button variant="contained"color="primary" style={{float:"left"}}onClick={()=>{setBuffer("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX");setSrc("https://ipfs.infura.io/ipfs/QmZ7smTQUxBXZW7Bx14VuxPgBurp2PcF7H9G6F74nC9viX")}}>

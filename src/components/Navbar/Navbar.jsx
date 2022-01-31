@@ -288,15 +288,6 @@ const handleMobileMenuOpen = (event) => {
   setMobileMoreAnchorEl(event.currentTarget);
 };
 
-
-
-
-
-
-
-
-
-
 const onChangeHandler=(text)=>{
   
 
@@ -395,12 +386,6 @@ const renderMenu = (
            
           <div className={classes.sectionDesktop}>
            
-            
-             
-           
-              
-
-           
               <Link to="/mint" className="nav-link" style={{fontFamily:"Nunito Sans",alignSelf:"center",fontSize:"larger",fontWeight:"100",boxShadow: "0px -1px 20px 0px rgb(0 0 0 / 15%)",
     borderRadius: "20px",margin:"2px",color:"white"}}>
                 Create
@@ -425,15 +410,12 @@ const renderMenu = (
               {/* <Link to="/chat" className="nav-link" style={{color: "#e8e2e2",alignSelf:"center"}}>
               <ChatIcon/>
               </Link> */}
-            
-              
-             
+
               {!metamaskConnected ? (
               <Button
         onClick={connectToMetamask}
         variant="contained"
-        className="nav-link" 
-       
+        className="nav-link"  
       >
         Connect Metamask{" "}
         <img
@@ -482,8 +464,6 @@ const renderMenu = (
               </Link></MenuItem>):(   <MenuItem onClick={handleMenuClose}><Link to="/account" className="nav-link" >
     My account
               </Link></MenuItem>)}
-   
- 
   </Menu>
     </div>
   
@@ -500,8 +480,6 @@ const renderMobileMenu = (
           <IconButton href="/">
         {/* <img src={icon} alt="" style={{width:"32px",height:"32px"}}/> */}
         <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/digital-art-2201596-1836510.png" alt="" style={{width:"32px",height:"32px"}}/>
-
-        
         </IconButton>
          
         
@@ -678,11 +656,8 @@ const renderMobileMenu = (
   
   </Menu>
   </>
- 
-);
-  
+); 
   return (
-   
     <div className={classes.grow}>
      <div className={classes.sectionMobile}>
       {renderMobileMenu}

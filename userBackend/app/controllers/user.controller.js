@@ -27,9 +27,7 @@ exports.create = (req, res) => {
           userBio: req.body.userBio,
           userAvatarHash: req.body.userAvatarHash,
           userAddress: req.body.userAddress,
-          connections:[],
-          rooms:[],
-          groups:[]
+         
   };
 
   // Save Tutorial in the database

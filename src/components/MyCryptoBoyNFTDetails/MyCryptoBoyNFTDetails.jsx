@@ -87,7 +87,7 @@ const MyCryptoBoyNFTDetails = ({callback1,cryptoboy,accountAddress}) => {
     previousOwner,
     numberOfTransfers,
   } = cryptoboy;
-
+ 
 
 console.log("cryptoboy",cryptoboy)
   return (
@@ -96,7 +96,7 @@ console.log("cryptoboy",cryptoboy)
    <CardActionArea className={classes.actionArea}>
    <Link to={`/nftDetails/${cryptoboy.tokenId}`} onClick={()=>{handleClick(cryptoboy.tokenId)}}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
-    <CardMedia  classes={mediaStyles} image={cryptoboy.metadata.image}style={{backgroundSize:"contain"}} /> 
+    <CardMedia  classes={mediaStyles} image={`https://ipfs.infura.io${cryptoboy.metadata.image}`}style={{backgroundSize:"contain"}} /> 
       {cryptoboy.currentOwner===cryptoboy.mintedBy?(
           <CardActions className={classes.contentNotSold}disableSpacing>
           <div style={{display:"flex"}}>
@@ -137,11 +137,11 @@ console.log("cryptoboy",cryptoboy)
         <hr/>
         Price
         <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}title={cryptoboy.metadata.customToken}>
-        {/* {window.web3.utils.fromWei(
+        {window.web3.utils.fromWei(
           cryptoboy.price.toString(),
           "Ether"
-        )}{" "} */}
-        {cryptoboy.price}{" "}
+        )}{" "}
+        {/* {cryptoboy.price}{" "} */}
           {cryptoboy.metadata.customToken}
         {/* Ξ */}
         </Typography>

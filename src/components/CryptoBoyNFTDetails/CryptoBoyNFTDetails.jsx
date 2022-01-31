@@ -85,7 +85,7 @@ const CryptoBoyNFTDetails=(props)=> {
 
   
   const [ newCryptoBoyPrice,setNewCryptoBoyPrice]=useState("");
-  const [ newCryptoBoyDressPrice,setNewCryptoBoyDressPrice]=useState("");
+
   const [loading, setLoading] = useState(false);
 
   const [mintedByName,setMintedByName]=useState("") 
@@ -99,7 +99,7 @@ const CryptoBoyNFTDetails=(props)=> {
   
  
  let thistokenId=props.clickedAddress-1;
- if(!props.clickedAddress){thistokenId=window.location.href.split("/")[4]-1};
+ if(!props.clickedAddress){console.log('here');thistokenId=window.location.href.split("/")[4]-1};
  console.log("nft",props.cryptoBoys)
 console.log(props.cryptoBoys[thistokenId])
 
@@ -204,11 +204,12 @@ console.log(props.cryptoBoys[thistokenId])
        
   
   const callChangeTokenPriceFromApp = (tokenId, newPrice,saleStatus) => {
+    
     props.changeTokenPrice(tokenId, newPrice,saleStatus);
   };
-  const callChangeTokenDressPriceFromApp = (tokenId, newPrice) => {
-    props.changeTokenPrice(tokenId, newPrice,true);
-  };
+  // const callChangeTokenDressPriceFromApp = (tokenId, newPrice) => {
+  //   props.changeTokenPrice(tokenId, newPrice,true);
+  // };
   const handleClick=(address)=>{
     props.callbackFromParent(address)
   }
@@ -248,11 +249,9 @@ console.log(props.cryptoBoys[thistokenId])
               className="col-md-6 w-50 p-4 mt-1 "
               style={{display:"flex",justifyContent:"center"}}
             >
-              
-             
               <img style={{height:"inherit",width:"inherit",borderStyle:'solid',borderWidth:'20px',
               // width:'100%',
-              borderImage: 'linear-gradient(315deg, #0cbaba 0%, #380036 74%) 30'}}src={props.cryptoBoys[thistokenId][0].metadata.image}/>
+              borderImage: 'linear-gradient(315deg, #0cbaba 0%, #380036 74%) 30'}}src={`https://ipfs.infura.io${props.cryptoBoys[thistokenId][0].metadata.image}`}/>
              
                
         </div>
@@ -292,11 +291,11 @@ console.log(props.cryptoBoys[thistokenId])
         <p>
           <span className="font-weight-bold">Price</span> :{" "}
           <b style={{fontSize:"xx-large",color:"black"}}>
-          {/* {window.web3.utils.fromWei(
+          {window.web3.utils.fromWei(
             props.cryptoBoys[thistokenId][0].price.toString(),
             "Ether"
-          )}{" "} */}
-         {props.cryptoBoys[thistokenId][0].price}{" "}
+          )}{" "}
+         {/* {props.cryptoBoys[thistokenId][0].price}{" "} */}
           {props.cryptoBoys[thistokenId][0].metadata.customToken}
           {/* Ξ */}
           </b>
@@ -453,11 +452,11 @@ Keep for sale
                 title={props.cryptoBoys[thistokenId][0].metadata.customToken}
               >
                 Buy For{" "}
-                {/* {window.web3.utils.fromWei(
+                {window.web3.utils.fromWei(
                   props.cryptoBoys[thistokenId][0].price.toString(),
                   "Ether"
-                )}{" "} */}
-                {props.cryptoBoys[thistokenId][0].price}{" "}
+                )}{" "}
+                {/* {props.cryptoBoys[thistokenId][0].price}{" "} */}
                 {props.cryptoBoys[thistokenId][0].metadata.customToken}
                 {/* Ξ */}
               </button>
@@ -474,11 +473,11 @@ Keep for sale
                   title={props.cryptoBoys[thistokenId][0].metadata.customToken}
                 >
                   Buy For{" "}
-                  {/* {window.web3.utils.fromWei(
+                  {window.web3.utils.fromWei(
                   props.cryptoBoys[thistokenId][0].price.toString(),
                   "Ether"
-                )}{" "} */}
-                {props.cryptoBoys[thistokenId][0].price}{" "}
+                )}{" "}
+                {/* {props.cryptoBoys[thistokenId][0].price}{" "} */}
                 {props.cryptoBoys[thistokenId][0].metadata.customToken}
                 {/* Ξ */}
                 </button>
@@ -573,7 +572,9 @@ Keep for sale
        
         </div>
         {/* <Grid item xs={12} sm={6}>  */}
-        <div className="col-md-6 w-50  "style={{marginTop:'-30%'}}>
+        <div className="col-md-6 w-50  "
+        //style={{marginTop:'-30%'}}
+        >
         {/* <div className="col-md-6 "> */}
   
        {/* <div style={{marginTop:'-30%'}}> */}
@@ -583,19 +584,22 @@ Keep for sale
         {/* </div>
       </div> */}
       <div 
-      //className="p-4 mt-1" style={{display:"flex",justifyContent:"space-evenly"}}
+      className="p-4 mt-1" style={{display:"flex",justifyContent:"space-evenly"}}
       >
        
          
             
            
-              {/* <button className="mt-3 btn btn-outline-primary"  >
-                View Token Object
-              </button> */}
+              
               <button className="mt-3 btn btn-outline-primary"
               style={{ fontSize: "0.8rem", letterSpacing: "0.14rem",borderRadius: '20px' }}
               onClick={(e)=>{e.preventDefault();window.open(props.cryptoBoys[thistokenId][0].metadata.image, "_blank")} }>
                 View On IPFS
+              </button>
+              <button className="mt-3 btn btn-outline-primary"
+              style={{ fontSize: "0.8rem", letterSpacing: "0.14rem",borderRadius: '20px' }}
+              onClick={(e)=>{e.preventDefault();window.open(`https://mumbai.polygonscan.com/token/0xdC45e39Fc63C89BDF06dc2Efc03Bad9B87691b80?a=${props.cryptoBoys[thistokenId][0].tokenId}`, "_blank")} }>
+                View On Polyscan
               </button>
               
             
@@ -625,7 +629,7 @@ Keep for sale
         <Paper>
              <img style={{width:"100%",height:"100%",
              borderStyle:'solid',borderWidth:'20px',
-             borderImage: 'linear-gradient(315deg, #0cbaba 0%, #380036 74%) 30'}} src={props.cryptoBoys[thistokenId][0].metadata.image}/>       
+             borderImage: 'linear-gradient(315deg, #0cbaba 0%, #380036 74%) 30'}} src={`https://ipfs.infura.io${props.cryptoBoys[thistokenId][0].metadata.image}`}/>       
              </Paper>
         </div>
 
@@ -668,14 +672,15 @@ Keep for sale
     <div style={{marginLeft:"2%",display:"contents",justifyContent:"space-between"}}>
       <div>
     Price:
-        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}title="WETH">
+        <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}title= {props.cryptoBoys[thistokenId][0].metadata.customToken}>
        
           {window.web3.utils.fromWei(
             props.cryptoBoys[thistokenId][0].price.toString(),
             "Ether"
           )}{" "}
-          Ξ
-         
+          {/* Ξ */}
+           {/* {props.cryptoBoys[thistokenId][0].price}{" "} */}
+          {props.cryptoBoys[thistokenId][0].metadata.customToken}
         </Typography>
         </div>
       
@@ -687,7 +692,7 @@ Keep for sale
            
               <button className="mt-3 btn btn-outline-primary" type="submit" style={{borderRadius:"20px",width:"100%"}}>
                 View On IPFS
-              </button>
+              </button> 
             
             </form>
     </div>
@@ -729,7 +734,7 @@ Keep for sale
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 className="btn btn-outline-info mt-0 "
               >
-                change price
+                Change price
               </button>
               </div>
             </form>
@@ -785,14 +790,16 @@ Keep for sale
                     e.target.value,false,ownedByEmail,props.cryptoBoys[thistokenId][0].metadata.name,ownedByName
                   )
                 }
-                title="WETH"
+                title={props.cryptoBoys[thistokenId][0].metadata.customToken}
               >
                 Buy For{" "}
                 {window.web3.utils.fromWei(
                   props.cryptoBoys[thistokenId][0].price.toString(),
                   "Ether"
                 )}{" "}
-                Ξ
+                {/* Ξ */}
+                  {/* {props.cryptoBoys[thistokenId][0].price}{" "} */}
+          {props.cryptoBoys[thistokenId][0].metadata.customToken}
               </button>
               
               </div>
@@ -806,14 +813,16 @@ Keep for sale
                   disabled
                   style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                   className="btn btn-outline-primary mt-3 w-50"
-                  title="WETH"
+                  title={props.cryptoBoys[thistokenId][0].metadata.customToken}
                 >
                   Buy For{" "}
                   {window.web3.utils.fromWei(
                     props.cryptoBoys[thistokenId][0].price.toString(),
                     "Ether"
                   )}{" "}
-                  Ξ
+                  {/* Ξ */}
+                    {/* {props.cryptoBoys[thistokenId][0].price}{" "} */}
+          {props.cryptoBoys[thistokenId][0].metadata.customToken}
                 </button>
                 </div>
                 

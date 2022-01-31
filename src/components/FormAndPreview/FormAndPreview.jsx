@@ -2,24 +2,16 @@ import React, { Component,useEffect,useState } from "react";
 import clsx from 'clsx';
 //import {create} from 'doka';
 import {useDropzone} from 'react-dropzone';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import {Paper,FormControl,InputLabel,Input,TextField,Grid,IconButton,InputAdornment,FormHelperText,Button,MenuItem} from '@material-ui/core';
+import {Paper,TextField,Grid,InputAdornment,FormHelperText,Button} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles'
 import 'react-dropdown-tree-select/dist/styles.css';
-import sizeData from '../sizeData.json'
-import SizeContainer from '../DropdownContainer2/DropdownContainer2';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import Select from "react-select";
 
 const thumbsContainer = {
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
-  //marginTop: 16,
- // padding: 20,
   justifyContent:"center",
   height:"fitContent",
   width:"fitContent",
@@ -130,18 +122,15 @@ export default function FormAndPreview(props) {
   
     const [cryptoBoyName,setCryptoBoyName] = useState("");
     const [cryptoBoyPrice,setCryptoBoyPrice] = useState("");
-    const [cryptoBoyDressPrice,setCryptoBoyDressPrice] = useState(0);
     const [customToken,setCustomToken]=useState('WETH');
     const [cryptoBoyDescription,setCryptoBoyDescription] = useState("");
     const [buffer,setBuffer] = useState(null);
     const [finalbuffer,setFinalbuffer] = useState([]);
-    const [receivePrice, setReceivePrice] = useState("");
-    const [receivePrice2, setReceivePrice2] = useState("");
     const [files, setFiles] = useState([]);
     const [fileName,setFileName]=useState("");
     const [single,setSingle]=useState(true);
     const [serviceFee,setServiceFee]=useState(5);
-    const [show,setShow]=useState(true);
+  
     const [categories,setCategories]=useState("");
     const [sizeChart,setSizeChart]=useState([]);
     const [amount,setAmount]=useState(1);
@@ -203,12 +192,12 @@ export default function FormAndPreview(props) {
   // componentDidMount = async () => {
   //   await this.props.setMintBtnTimer();
   // };
-  async function funA() {
-    await props.setMintBtnTimer();
-  }
- useEffect(()=>{
- funA();
- },[]);
+  // async function funA() {
+  //   await props.setMintBtnTimer();
+  // }
+//  useEffect(()=>{
+//  funA();
+//  },[]);
  useEffect(()=>{
   
   },[props.imageIsUsed,props.nameIsUsed]);
@@ -241,38 +230,34 @@ export default function FormAndPreview(props) {
   [files]
 );
 
-const onChange = (currentNode, selectedNodes) => {
-  const loc=selectedNodes.map(x=>x.value);
-  console.log(loc);
-  setCategories(loc);
+// const onChange = (currentNode, selectedNodes) => {
+//   const loc=selectedNodes.map(x=>x.value);
+//   console.log(loc);
+//   setCategories(loc);
   
-  console.log('onChange::', currentNode, selectedNodes)
-}
-const onChangeSize = (currentNode, selectedNodes) => {
-  let loc=[];
-  selectedNodes.map(x=>{
-    if(Array.isArray(x.value)){
-      loc.push(Array.prototype.concat.apply([], x.value));
+//   console.log('onChange::', currentNode, selectedNodes)
+// }
+// const onChangeSize = (currentNode, selectedNodes) => {
+//   let loc=[];
+//   selectedNodes.map(x=>{
+//     if(Array.isArray(x.value)){
+//       loc.push(Array.prototype.concat.apply([], x.value));
       
-    }
-    else{
-      loc.push(x.value);
-    }
-  })
-  var flatArray = Array.prototype.concat.apply([], loc);
-  console.log(flatArray);
-  setSizeChart(flatArray);
+//     }
+//     else{
+//       loc.push(x.value);
+//     }
+//   })
+//   var flatArray = Array.prototype.concat.apply([], loc);
+//   console.log(flatArray);
+//   setSizeChart(flatArray);
   
-  console.log('onChange::', currentNode, selectedNodes)
-}
+//   console.log('onChange::', currentNode, selectedNodes)
+// }
 //console.log(selectedCategories)
 
   const callMintMyERC1155FromApp  = (e) => {
     e.preventDefault();
-    // if(cryptoBoyDressPrice==" "){
-    //   console.log("price 0")
-    //   setCryptoBoyDressPrice("0");
-    // }
     console.log(buffer,cryptoBoyName,cryptoBoyDescription,cryptoBoyPrice,finalbuffer,categories,sizeChart,amount,customToken)
     props.mintMultipleNFT(
       cryptoBoyName,
@@ -286,15 +271,15 @@ const onChangeSize = (currentNode, selectedNodes) => {
       customToken
     );
   };
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   const renderMobile=(
     <div style={{padding:"0.5%"}}>
@@ -317,8 +302,8 @@ const onChangeSize = (currentNode, selectedNodes) => {
   background: '#1abc9c',
   color: 'white',
   fontSize: '30px'}}>
-  <h1>Header</h1>
-  <p>My supercool header</p>
+  <h1>Create Collectible</h1>
+  <p> Put amount equal to 1 to make your collectible one of a kind </p>
 </div>
 
     
@@ -405,17 +390,17 @@ const onChangeSize = (currentNode, selectedNodes) => {
  id="standard-start-adornment"
  placeholder="Enter price for one piece"
 // className={clsx(classes.margin, classes.textField)}
- onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*serviceFee/100)}}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value)}}
 
  inputProps={{className: classes.input}}
  InputLabelProps={{
   className: classes.input,
 }}
 
- InputProps={{
-   startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
-   className: classes.input,
- }}
+//  InputProps={{
+//    startAdornment: <InputAdornment position="start">Ξ</InputAdornment>,
+//    className: classes.input,
+//  }}
  required
 ></TextField><TextField
           id="standard-select-currency-native"
@@ -509,7 +494,7 @@ const onChangeSize = (currentNode, selectedNodes) => {
  id="standard-start-adornment"
  placeholder="Enter price for one piece"
 // className={clsx(classes.margin, classes.textField)}
- onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*serviceFee/100)}}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value)}}
 
  inputProps={{className: classes.input}}
  InputLabelProps={{
@@ -759,7 +744,7 @@ Create Item
  id="standard-start-adornment"
  placeholder="Enter price for one piece"
  className={clsx(classes.margin, classes.textField)}
- onChange={(e)=>{setCryptoBoyPrice(e.target.value);setReceivePrice((e.target.value)*serviceFee/100)}}
+ onChange={(e)=>{setCryptoBoyPrice(e.target.value)}}
  inputProps={{className: classes.input}}
  InputLabelProps={{
   className: classes.input,

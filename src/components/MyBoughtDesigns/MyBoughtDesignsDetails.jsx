@@ -111,11 +111,11 @@ console.log(cryptoboy)
         <hr/>
         Price
         <Typography className={classes.title} variant={'h4'} style={{color:"black",textTransform:"none"}}title={cryptoboy.metadata.customToken}>
-        {/* {window.web3.utils.fromWei(
+        {window.web3.utils.fromWei(
           cryptoboy.price.toString(),
           "Ether"
-        )}{" "} */}
-        {cryptoboy.price}{" "}
+        )}{" "}
+        {/* {cryptoboy.price}{" "} */}
         {cryptoboy.metadata.customToken}
         {/* Ξ */}
         </Typography>

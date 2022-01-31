@@ -49,14 +49,9 @@ const initialUserState = {
 
 const TheirCryptoBoys = ({
   accountAddress,
-  cryptoBoys,
-  
+  cryptoBoys, 
   callbackFromParent1,
-  
-  
   userExists,
- 
-
 }) => {
   const [loading, setLoading] = useState(false);
   const [myBoughtCryptoBoys, setMyBoughtCryptoBoys] = useState([]);
