@@ -83,7 +83,7 @@ console.log(cryptoboy)
    <CardActionArea className={classes.actionArea}>
    <Link to={`/nftDetails/${cryptoboy.tokenId}`} onClick={()=>{handleClick(cryptoboy.tokenId)}}style={{textDecorationLine:"none"}}>
     <Card className={classes.card}>
-    <CardMedia  classes={mediaStyles} image={cryptoboy.metadata.image}style={{backgroundSize:"contain"}} /> 
+    <CardMedia  classes={mediaStyles} image={`https://ipfs.infura.io${cryptoboy.metadata.image}`}style={{backgroundSize:"contain"}} /> 
      
           <CardActions className={classes.contentNotSold}disableSpacing>
           <div style={{display:"flex"}}>
