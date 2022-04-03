@@ -360,7 +360,7 @@ const renderMenu = (
             <h4>Designs</h4>
              {tokenSuggestions&&tokenSuggestions.map((result,i)=>
              <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result.name);handleSearchSubmit2(e,result.name,result.tokenId)}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center",overflowWrap:"break-word"}}>
-               <img alt={result.name} src={result.metadata.image}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result.name}</b>
+               <img alt={result.name} src={`https://ipfs.infura.io${result.metadata.image}`}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result.name}</b>
              </div>
             )}
             </div>
@@ -512,7 +512,7 @@ const renderMobileMenu = (
             <h4>Designs</h4>
              {tokenSuggestions&&tokenSuggestions.map((result,i)=>
              <div key={i}className={classes.suggestions} onClick={(e)=>{setText(result.name);handleSearchSubmit2(e,result.name,result.tokenId);setUserSuggestions([]);setTokenSuggestions([])}} style={{cursor:"pointer",paddingTop:"1px",padding:"4px",paddingBottom:"1px",borderRadius:"2px",display:"flex",alignItems:"center"}}>
-               <img alt={result.name} src={result.metadata.image}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result.name}</b>
+               <img alt={result.name} src={`https://ipfs.infura.io${result.metadata.image}`}style={{objectFit:"contain",borderRadius:0,width:"45px",height:"45px",display:"flex",alignItems:"center",postion:"relative"}}/><b>@{result.name}</b>
              </div>
             )}
             </div>

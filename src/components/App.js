@@ -257,7 +257,7 @@ class App extends Component {
           //this.setState({ loading: true });
         //   const contractAddress = "0xC9E1B45EFDB18e13F430deF73fA745722307c5EC";
         // const contractAddress="0x4ECB963c02afFEA726f60A866b57B469e73bEB53";
-        const contractAddress="0xdC45e39Fc63C89BDF06dc2Efc03Bad9B87691b80";
+        const contractAddress="0x25d48F215eD1B3C2b51D0c62E25d16279cB2a68e";
           const DigiFashionContract = new web3.eth.Contract(
               DigiFashionAbi,
               contractAddress
