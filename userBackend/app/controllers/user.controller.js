@@ -156,6 +156,7 @@ exports.findByAddress = (req, res) => {
     var condition = userAddress ? { userAddress: { [Op.like]: `%${userAddress}%` } } : null;
     User.findAll({where:condition})
       .then(data => {
+        console.log('data',data)
         // Send this token also in response
         const token = jwt.sign({ id: data[0].userAddress }, config.secret, {
           expiresIn: 86400 // 24 hours

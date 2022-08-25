@@ -257,7 +257,8 @@ class App extends Component {
           //this.setState({ loading: true });
         //   const contractAddress = "0xC9E1B45EFDB18e13F430deF73fA745722307c5EC";
         // const contractAddress="0x4ECB963c02afFEA726f60A866b57B469e73bEB53";
-        const contractAddress="0x25d48F215eD1B3C2b51D0c62E25d16279cB2a68e";
+        // const contractAddress="0x25d48F215eD1B3C2b51D0c62E25d16279cB2a68e";
+        const contractAddress="0xCA96d3c15cba767c65d7673b252B909cA337eD61";
           const DigiFashionContract = new web3.eth.Contract(
               DigiFashionAbi,
               contractAddress
@@ -1371,6 +1372,7 @@ class App extends Component {
                   this.setState({
                       loading: false
                   });
+                  console.log('here')
                   Swal.fire({
                       allowOutsideClick: false,
                       allowEscapeKey: false,
@@ -1383,6 +1385,7 @@ class App extends Component {
                       }
 
                   }).then((result) => {
+                      
                       if (result.isConfirmed) {
                           window.location.reload();
 
@@ -1606,7 +1609,7 @@ class App extends Component {
           // this.state.token.methods.transfer(this.state.accountAddress,price).send({ from: this.state.accountAddress }).on('transactionHash', (hash) => {
           //console.log("here ")
           await this.state.DigiFashionContract.methods
-              .buySingleToken(tokenId)
+              .buySingleToken(tokenId,price)
               .send({
                   from: this.state.accountAddress
               })
